@@ -33,8 +33,11 @@ jobs:
       - name: 📥 Checkout Mã Nguồn
         uses: actions/checkout@v4
 
-      - name: 🛠️ Cài Đặt Theos & iOS SDK
+      - name: 🛠️ Cài Đặt Theos, SDK & Công Cụ Ký (ldid)
         run: |
+          echo "Installing ldid & dpkg..."
+          brew install ldid dpkg || true
+          
           echo "Cloning Theos..."
           git clone --recursive https://github.com/theos/theos.git ~/theos
           echo "THEOS=$HOME/theos" >> $GITHUB_ENV
