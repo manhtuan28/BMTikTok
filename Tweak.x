@@ -1679,7 +1679,8 @@ static BOOL isAuthenticationShowed = FALSE;
 // Spoof bundle ID only inside Passport network requests
 %hook AWEPassportNetworkManager
 - (NSDictionary *)commonParams {
-    NSMutableDictionary *params = [%orig mutableCopy];
+    NSDictionary *origParams = %orig;
+    NSMutableDictionary *params = [origParams mutableCopy];
     if (params) {
         params[@"aid"] = @"1233";
         params[@"app_name"] = @"musical_ly";
