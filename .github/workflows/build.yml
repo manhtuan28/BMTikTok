@@ -40,7 +40,10 @@ jobs:
           echo "THEOS=$HOME/theos" >> $GITHUB_ENV
           
           echo "Downloading iOS SDKs..."
-          git clone --depth 1 https://github.com/theos/sdks.git ~/theos/sdks
+          mkdir -p /tmp/sdks
+          curl -sL https://github.com/theos/sdks/archive/refs/heads/master.tar.gz | tar -xz -C /tmp/sdks --strip-components=1
+          cp -rf /tmp/sdks/*.sdk ~/theos/sdks/ 2>/dev/null || true
+          ls -la ~/theos/sdks
 
       - name: ⚙️ Biên Dịch BMTikTok Tweak (Dylib & Deb)
         run: |
