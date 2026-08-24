@@ -28,7 +28,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor systemBackgroundColor];
+    self.view.backgroundColor = [UIColor systemGroupedBackgroundColor];
     self.title = @"Cài Đặt BMTikTok";
     
     // Nút Xong đóng modal
@@ -54,6 +54,7 @@
     
     self.tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleInsetGrouped];
     self.tableView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.tableView.backgroundColor = [UIColor systemGroupedBackgroundColor];
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     [self.view addSubview:self.tableView];
@@ -72,6 +73,23 @@
                                              selector:@selector(regionSelected:)
                                                  name:@"RegionSelectedNotification"
                                                object:nil];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    if (@available(iOS 13.0, *)) {
+        UINavigationBarAppearance *appearance = [[UINavigationBarAppearance alloc] init];
+        [appearance configureWithDefaultBackground];
+        appearance.backgroundColor = [UIColor secondarySystemGroupedBackgroundColor];
+        appearance.titleTextAttributes = @{
+            NSForegroundColorAttributeName: [UIColor labelColor],
+            NSFontAttributeName: [UIFont systemFontOfSize:17 weight:UIFontWeightBold]
+        };
+        self.navigationController.navigationBar.standardAppearance = appearance;
+        self.navigationController.navigationBar.scrollEdgeAppearance = appearance;
+        self.navigationController.navigationBar.compactAppearance = appearance;
+    }
 }
 
 - (void)dismissVC {

@@ -21,6 +21,7 @@
 @end
 
 NSArray *jailbreakPaths;
+static BOOL gPureModeActive = NO;
 
 static void showConfirmation(void (^okHandler)(void)) {
     [%c(AWEUIAlertView) showAlertWithTitle:@"Xác nhận BMTikTok"
@@ -85,6 +86,7 @@ static BOOL isAuthenticationShowed = FALSE;
 - (void)didSelectItemAtIndex:(NSInteger)index {
     if ([self.itemModel.identifier isEqualToString:@"bmtiktok_settings"]) {
         UINavigationController *BMTikTokSettings = [[UINavigationController alloc] initWithRootViewController:[[ViewController alloc] init]];
+        BMTikTokSettings.modalPresentationStyle = UIModalPresentationPageSheet;
         [topMostController() presentViewController:BMTikTokSettings animated:true completion:nil];
     } else {
         return %orig;
@@ -262,12 +264,18 @@ static BOOL isAuthenticationShowed = FALSE;
     }
 }
 - (void)containerDidFullyDisplayWithReason:(NSInteger)arg1 {
-    if ([[[self container] parentViewController] isKindOfClass:%c(AWENewFeedTableViewController)] && [BMIManager skipRecommendations]) {
-        AWENewFeedTableViewController *rootVC = [[self container] parentViewController];
-        AWEAwemeModel *currentModel = [rootVC currentAweme];
-        if ([currentModel isUserRecommendBigCard]) {
-            [rootVC scrollToNextVideo];
-            return;
+    if ([BMIManager skipRecommendations]) {
+        UIViewController *parentVC = nil;
+        if ([self.container respondsToSelector:@selector(parentViewController)]) {
+            parentVC = [self.container parentViewController];
+        }
+        if ([parentVC isKindOfClass:%c(AWENewFeedTableViewController)]) {
+            AWENewFeedTableViewController *rootVC = (AWENewFeedTableViewController *)parentVC;
+            AWEAwemeModel *currentModel = [rootVC currentAweme];
+            if ([currentModel isUserRecommendBigCard]) {
+                [rootVC scrollToNextVideo];
+                return;
+            }
         }
     }
     %orig;
@@ -303,8 +311,8 @@ static BOOL isAuthenticationShowed = FALSE;
 
 - (void)configWithModel:(id)model {
     %orig;
-    self.elementsHidden = false;
-    [self resetPureModeState];
+    self.elementsHidden = gPureModeActive;
+    [self applyPureModeState:gPureModeActive animated:NO];
     if ([BMIManager downloadButton]){
         [self addDownloadButton];
     }
@@ -315,8 +323,8 @@ static BOOL isAuthenticationShowed = FALSE;
 
 - (void)configureWithModel:(id)model {
     %orig;
-    self.elementsHidden = false;
-    [self resetPureModeState];
+    self.elementsHidden = gPureModeActive;
+    [self applyPureModeState:gPureModeActive animated:NO];
     if ([BMIManager downloadButton]){
         [self addDownloadButton];
     }
@@ -330,7 +338,7 @@ static BOOL isAuthenticationShowed = FALSE;
     [downloadButton setTag:998];
     [downloadButton setTranslatesAutoresizingMaskIntoConstraints:false];
     [downloadButton addTarget:self action:@selector(downloadButtonHandler:) forControlEvents:UIControlEventTouchUpInside];
-    [downloadButton setImage:[UIImage systemImageNamed:@"arrow.down"] forState:UIControlStateNormal];
+    [downloadButton setImage:[UIImage systemImageNamed:@"arrow.down.circle.fill"] forState:UIControlStateNormal];
     if (![self viewWithTag:998]) {
         [downloadButton setTintColor:[UIColor whiteColor]];
         [self addSubview:downloadButton];
@@ -338,53 +346,103 @@ static BOOL isAuthenticationShowed = FALSE;
         [NSLayoutConstraint activateConstraints:@[
             [downloadButton.topAnchor constraintEqualToAnchor:self.safeAreaLayoutGuide.topAnchor constant:90],
             [downloadButton.trailingAnchor constraintEqualToAnchor:self.safeAreaLayoutGuide.trailingAnchor constant:-10],
-            [downloadButton.widthAnchor constraintEqualToConstant:30],
-            [downloadButton.heightAnchor constraintEqualToConstant:30],
+            [downloadButton.widthAnchor constraintEqualToConstant:34],
+            [downloadButton.heightAnchor constraintEqualToConstant:34],
         ]];
     }
 }
 
 %new - (void)downloadHDVideo:(AWEAwemeBaseViewController *)rootVC {
-    NSString *as = rootVC.model.itemID;
-    NSURL *downloadableURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://tikwm.com/video/media/hdplay/%@.mp4", as]];
-    self.fileextension = [rootVC.model.video.playURL bestURLtoDownloadFormat];
-    if (downloadableURL) {
+    NSString *itemID = rootVC.model.itemID;
+    self.fileextension = @"mp4";
+    self.hud = [JGProgressHUD progressHUDWithStyle:JGProgressHUDStyleDark];
+    self.hud.textLabel.text = @"Đang lấy link HD...";
+    [self.hud showInView:topMostController().view];
+
+    // Ưu tiên 1: Lấy URL H.264 bitrate cao nhất từ Model gốc
+    NSURL *directHDURL = [rootVC.model.video.playAddrH264 bestURLtoDownload];
+    if (!directHDURL) {
+        directHDURL = [rootVC.model.video.h264URL bestURLtoDownload];
+    }
+
+    if (itemID.length > 0) {
+        // Thử lấy link từ API TikWM chất lượng HD
+        NSString *apiURLStr = [NSString stringWithFormat:@"https://www.tikwm.com/api/?url=https://www.tiktok.com/@i/video/%@", itemID];
+        NSURL *apiURL = [NSURL URLWithString:apiURLStr];
+        NSURLSessionDataTask *task = [[NSURLSession sharedSession] dataTaskWithURL:apiURL completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+            NSURL *finalURL = directHDURL;
+            if (!error && data) {
+                NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                if ([json isKindOfClass:[NSDictionary class]] && [json[@"code"] integerValue] == 0) {
+                    NSDictionary *dataDict = json[@"data"];
+                    NSString *hdURLStr = dataDict[@"hdplay"] ?: dataDict[@"play"];
+                    if (hdURLStr.length > 0) {
+                        finalURL = [NSURL URLWithString:hdURLStr];
+                    }
+                }
+            }
+            if (!finalURL) {
+                finalURL = [rootVC.model.video.playURL bestURLtoDownload];
+            }
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (finalURL) {
+                    BMDownload *dwManager = [[BMDownload alloc] init];
+                    [dwManager downloadFileWithURL:finalURL];
+                    [dwManager setDelegate:self];
+                    self.hud.textLabel.text = @"Đang tải video HD...";
+                } else {
+                    [self.hud dismiss];
+                    [%c(AWEUIAlertView) showAlertWithTitle:@"BMTikTok" description:@"Không thể lấy liên kết video HD." image:nil actionButtonTitle:@"OK" cancelButtonTitle:nil actionBlock:nil cancelBlock:nil];
+                }
+            });
+        }];
+        [task resume];
+    } else if (directHDURL) {
         BMDownload *dwManager = [[BMDownload alloc] init];
-        [dwManager downloadFileWithURL:downloadableURL];
+        [dwManager downloadFileWithURL:directHDURL];
         [dwManager setDelegate:self];
-        self.hud = [JGProgressHUD progressHUDWithStyle:JGProgressHUDStyleDark];
-        self.hud.textLabel.text = @"Downloading";
-        [self.hud showInView:topMostController().view];
+        self.hud.textLabel.text = @"Đang tải video HD...";
+    } else {
+        NSURL *normalURL = [rootVC.model.video.playURL bestURLtoDownload];
+        if (normalURL) {
+            BMDownload *dwManager = [[BMDownload alloc] init];
+            [dwManager downloadFileWithURL:normalURL];
+            [dwManager setDelegate:self];
+            self.hud.textLabel.text = @"Đang tải video...";
+        } else {
+            [self.hud dismiss];
+            [%c(AWEUIAlertView) showAlertWithTitle:@"BMTikTok" description:@"Không tìm thấy liên kết tải video." image:nil actionButtonTitle:@"OK" cancelButtonTitle:nil actionBlock:nil cancelBlock:nil];
+        }
     }
 }
 
 %new - (void)downloadVideo:(AWEAwemeBaseViewController *)rootVC {
-    NSString *as = rootVC.model.itemID;
     NSURL *downloadableURL = [rootVC.model.video.playURL bestURLtoDownload];
-    self.fileextension = [rootVC.model.video.playURL bestURLtoDownloadFormat];
+    self.fileextension = [rootVC.model.video.playURL bestURLtoDownloadFormat] ?: @"mp4";
     if (downloadableURL) {
         BMDownload *dwManager = [[BMDownload alloc] init];
         [dwManager downloadFileWithURL:downloadableURL];
         [dwManager setDelegate:self];
         self.hud = [JGProgressHUD progressHUDWithStyle:JGProgressHUDStyleDark];
-        self.hud.textLabel.text = @"Downloading";
+        self.hud.textLabel.text = @"Đang tải video...";
         [self.hud showInView:topMostController().view];
     }
 }
 
 %new - (void)downloadPhotos:(TTKPhotoAlbumDetailCellController *)rootVC photoIndex:(unsigned long)index {
     NSArray <AWEPhotoAlbumPhoto *> *photos = rootVC.model.photoAlbum.photos;
-    AWEPhotoAlbumPhoto *currentPhoto = [photos objectAtIndex:index];
-
-    NSURL *downloadableURL = [currentPhoto.originPhotoURL bestURLtoDownload];
-    self.fileextension = [currentPhoto.originPhotoURL bestURLtoDownloadFormat];
-    if (downloadableURL) {
-        BMDownload *dwManager = [[BMDownload alloc] init];
-        [dwManager downloadFileWithURL:downloadableURL];
-        [dwManager setDelegate:self];
-        self.hud = [JGProgressHUD progressHUDWithStyle:JGProgressHUDStyleDark];
-        self.hud.textLabel.text = @"Downloading";
-        [self.hud showInView:topMostController().view];
+    if (index < photos.count) {
+        AWEPhotoAlbumPhoto *currentPhoto = [photos objectAtIndex:index];
+        NSURL *downloadableURL = [currentPhoto.originPhotoURL bestURLtoDownload];
+        self.fileextension = [currentPhoto.originPhotoURL bestURLtoDownloadFormat] ?: @"jpg";
+        if (downloadableURL) {
+            BMDownload *dwManager = [[BMDownload alloc] init];
+            [dwManager downloadFileWithURL:downloadableURL];
+            [dwManager setDelegate:self];
+            self.hud = [JGProgressHUD progressHUDWithStyle:JGProgressHUDStyleDark];
+            self.hud.textLabel.text = [NSString stringWithFormat:@"Đang tải ảnh %lu...", index + 1];
+            [self.hud showInView:topMostController().view];
+        }
     }
 }
 
@@ -394,18 +452,20 @@ static BOOL isAuthenticationShowed = FALSE;
 
     for (AWEPhotoAlbumPhoto *currentPhoto in photos) {
         NSURL *downloadableURL = [currentPhoto.originPhotoURL bestURLtoDownload];
-        self.fileextension = [currentPhoto.originPhotoURL bestURLtoDownloadFormat];
+        self.fileextension = [currentPhoto.originPhotoURL bestURLtoDownloadFormat] ?: @"jpg";
         if (downloadableURL) {
             [fileURLs addObject:downloadableURL];
         }
     }
 
-    BMMultipleDownload *dwManager = [[BMMultipleDownload alloc] init];
-    [dwManager setDelegate:self];
-    [dwManager downloadFiles:fileURLs];
-    self.hud = [JGProgressHUD progressHUDWithStyle:JGProgressHUDStyleDark];
-    self.hud.textLabel.text = @"Downloading";
-    [self.hud showInView:topMostController().view];
+    if (fileURLs.count > 0) {
+        BMMultipleDownload *dwManager = [[BMMultipleDownload alloc] init];
+        [dwManager setDelegate:self];
+        [dwManager downloadFiles:fileURLs];
+        self.hud = [JGProgressHUD progressHUDWithStyle:JGProgressHUDStyleDark];
+        self.hud.textLabel.text = [NSString stringWithFormat:@"Đang tải %lu ảnh...", (unsigned long)fileURLs.count];
+        [self.hud showInView:topMostController().view];
+    }
 }
 
 %new - (void)downloadMusic:(AWEAwemeBaseViewController *)rootVC {
@@ -416,7 +476,7 @@ static BOOL isAuthenticationShowed = FALSE;
         [dwManager downloadFileWithURL:downloadableURL];
         [dwManager setDelegate:self];
         self.hud = [JGProgressHUD progressHUDWithStyle:JGProgressHUDStyleDark];
-        self.hud.textLabel.text = @"Downloading";
+        self.hud.textLabel.text = @"Đang tải âm thanh...";
         [self.hud showInView:topMostController().view];
     }
 }
@@ -426,6 +486,7 @@ static BOOL isAuthenticationShowed = FALSE;
     if (downloadableURL) {
         UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
         pasteboard.string = [downloadableURL absoluteString];
+        [%c(AWEUIAlertView) showAlertWithTitle:@"BMTikTok" description:@"Đã sao chép liên kết âm thanh vào bộ nhớ tạm!" image:nil actionButtonTitle:@"OK" cancelButtonTitle:nil actionBlock:nil cancelBlock:nil];
     } else {
         [%c(AWEUIAlertView) showAlertWithTitle:@"BMTikTok" description:@"Không thể sao chép liên kết âm thanh." image:nil actionButtonTitle:@"OK" cancelButtonTitle:nil actionBlock:nil cancelBlock:nil];
     }
@@ -436,6 +497,7 @@ static BOOL isAuthenticationShowed = FALSE;
     if (downloadableURL) {
         UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
         pasteboard.string = [downloadableURL absoluteString];
+        [%c(AWEUIAlertView) showAlertWithTitle:@"BMTikTok" description:@"Đã sao chép liên kết video vào bộ nhớ tạm!" image:nil actionButtonTitle:@"OK" cancelButtonTitle:nil actionBlock:nil cancelBlock:nil];
     } else {
         [%c(AWEUIAlertView) showAlertWithTitle:@"BMTikTok" description:@"Không thể sao chép liên kết video." image:nil actionButtonTitle:@"OK" cancelButtonTitle:nil actionBlock:nil cancelBlock:nil];
     }
@@ -443,159 +505,108 @@ static BOOL isAuthenticationShowed = FALSE;
 
 %new - (void)copyDecription:(AWEAwemeBaseViewController *)rootVC {
     NSString *video_description = rootVC.model.music_songName;
-    if (video_description) {
+    if (video_description.length > 0) {
         UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
         pasteboard.string = video_description;
+        [%c(AWEUIAlertView) showAlertWithTitle:@"BMTikTok" description:@"Đã sao chép nội dung vào bộ nhớ tạm!" image:nil actionButtonTitle:@"OK" cancelButtonTitle:nil actionBlock:nil cancelBlock:nil];
     } else {
-        [%c(AWEUIAlertView) showAlertWithTitle:@"BMTikTok" description:@"Không có mô tả để sao chép." image:nil actionButtonTitle:@"OK" cancelButtonTitle:nil actionBlock:nil cancelBlock:nil];
+        [%c(AWEUIAlertView) showAlertWithTitle:@"BMTikTok" description:@"Không có nội dung mô tả để sao chép." image:nil actionButtonTitle:@"OK" cancelButtonTitle:nil actionBlock:nil cancelBlock:nil];
     }
 }
 
 %new - (void)downloadButtonHandler:(UIButton *)sender {
     AWEAwemeBaseViewController *rootVC = self.viewController;
     if ([rootVC isKindOfClass:%c(AWEFeedCellViewController)]) {
-        UIAction *action1 = [UIAction actionWithTitle:@"Download Video"
+        UIAction *action0 = [UIAction actionWithTitle:@"Tải Video HD (Siêu Nét)"
+                                                image:[UIImage systemImageNamed:@"sparkles.tv"]
+                                           identifier:nil
+                                              handler:^(__kindof UIAction * _Nonnull action) {
+            [self downloadHDVideo:rootVC];
+        }];
+        UIAction *action1 = [UIAction actionWithTitle:@"Tải Video (Gốc)"
                                                 image:[UIImage systemImageNamed:@"film"]
                                            identifier:nil
                                               handler:^(__kindof UIAction * _Nonnull action) {
             [self downloadVideo:rootVC];
         }];
-        UIAction *action0 = [UIAction actionWithTitle:@"Download HD Video"
-                                                image:[UIImage systemImageNamed:@"film"]
-                                           identifier:nil
-                                              handler:^(__kindof UIAction * _Nonnull action) {
-            [self downloadHDVideo:rootVC];
-        }];
-        UIAction *action2 = [UIAction actionWithTitle:@"Download Music"
+        UIAction *action2 = [UIAction actionWithTitle:@"Tải Nhạc Nền / MP3"
                                                 image:[UIImage systemImageNamed:@"music.note"]
                                            identifier:nil
                                               handler:^(__kindof UIAction * _Nonnull action) {
             [self downloadMusic:rootVC];
         }];
-        UIAction *action3 = [UIAction actionWithTitle:@"Copy Music link"
+        UIAction *action3 = [UIAction actionWithTitle:@"Sao Chép Link Âm Thanh"
                                                 image:[UIImage systemImageNamed:@"link"]
                                            identifier:nil
                                               handler:^(__kindof UIAction * _Nonnull action) {
             [self copyMusic:rootVC];
         }];
-        UIAction *action4 = [UIAction actionWithTitle:@"Copy Video link"
-                                                image:[UIImage systemImageNamed:@"link"]
+        UIAction *action4 = [UIAction actionWithTitle:@"Sao Chép Link Video"
+                                                image:[UIImage systemImageNamed:@"doc.on.doc"]
                                            identifier:nil
                                               handler:^(__kindof UIAction * _Nonnull action) {
             [self copyVideo:rootVC];
         }];
-        UIAction *action5 = [UIAction actionWithTitle:@"Copy Decription"
-                                                image:[UIImage systemImageNamed:@"note.text"]
+        UIAction *action5 = [UIAction actionWithTitle:@"Sao Chép Nội Dung Caption"
+                                                image:[UIImage systemImageNamed:@"text.bubble"]
                                            identifier:nil
                                               handler:^(__kindof UIAction * _Nonnull action) {
             [self copyDecription:rootVC];
         }];
-        UIMenu *downloadMenu = [UIMenu menuWithTitle:@"Downloads Menu" children:@[action1, action0, action2]];
-        UIMenu *copyMenu = [UIMenu menuWithTitle:@"Copy Menu" children:@[action3, action4, action5]];
+        UIMenu *downloadMenu = [UIMenu menuWithTitle:@"Menu Tải Xuống" children:@[action0, action1, action2]];
+        UIMenu *copyMenu = [UIMenu menuWithTitle:@"Menu Sao Chép" children:@[action3, action4, action5]];
         UIMenu *mainMenu = [UIMenu menuWithTitle:@"" children:@[downloadMenu, copyMenu]];
         [sender setMenu:mainMenu];
         sender.showsMenuAsPrimaryAction = YES;
-    } else if ([self.viewController isKindOfClass:%c(TTKPhotoAlbumDetailCellController)]) {
-        TTKPhotoAlbumDetailCellController *rootVC = self.viewController;
-        NSArray <AWEPhotoAlbumPhoto *> *photos = rootVC.model.photoAlbum.photos;
+    } else if ([self.viewController isKindOfClass:%c(TTKPhotoAlbumDetailCellController)] || [self.viewController isKindOfClass:%c(TTKPhotoAlbumFeedCellController)]) {
+        TTKPhotoAlbumDetailCellController *albumVC = (TTKPhotoAlbumDetailCellController *)self.viewController;
+        NSArray <AWEPhotoAlbumPhoto *> *photos = albumVC.model.photoAlbum.photos;
         unsigned long photosCount = [photos count];
         NSMutableArray <UIAction *> *photosActions = [NSMutableArray array];
         for (int i = 0; i < photosCount; i++) {
-            NSString *title = [NSString stringWithFormat:@"Download Photo %d", i+1];
+            NSString *title = [NSString stringWithFormat:@"Tải Ảnh %d", i + 1];
             UIAction *action = [UIAction actionWithTitle:title
                                                    image:[UIImage systemImageNamed:@"photo.fill"]
                                               identifier:nil
                                                  handler:^(__kindof UIAction * _Nonnull action) {
-                [self downloadPhotos:rootVC photoIndex:i];
+                [self downloadPhotos:albumVC photoIndex:i];
             }];
             [photosActions addObject:action];
         }
-        UIAction *allPhotosAction = [UIAction actionWithTitle:@"Download All Photos"
-                                                        image:[UIImage systemImageNamed:@"photo.fill"]
+        UIAction *allPhotosAction = [UIAction actionWithTitle:[NSString stringWithFormat:@"Tải Toàn Bộ Ảnh (%lu)", photosCount]
+                                                        image:[UIImage systemImageNamed:@"square.and.arrow.down.on.square.fill"]
                                                    identifier:nil
                                                       handler:^(__kindof UIAction * _Nonnull action) {
-            [self downloadPhotos:rootVC];
+            [self downloadPhotos:albumVC];
         }];
         [photosActions addObject:allPhotosAction];
-        UIAction *action2 = [UIAction actionWithTitle:@"Download Music"
+        UIAction *action2 = [UIAction actionWithTitle:@"Tải Nhạc Nền / MP3"
                                                 image:[UIImage systemImageNamed:@"music.note"]
                                            identifier:nil
                                               handler:^(__kindof UIAction * _Nonnull action) {
-            [self downloadMusic:rootVC];
+            [self downloadMusic:albumVC];
         }];
-        UIAction *action3 = [UIAction actionWithTitle:@"Copy Music link"
+        UIAction *action3 = [UIAction actionWithTitle:@"Sao Chép Link Âm Thanh"
                                                 image:[UIImage systemImageNamed:@"link"]
                                            identifier:nil
                                               handler:^(__kindof UIAction * _Nonnull action) {
-            [self copyMusic:rootVC];
+            [self copyMusic:albumVC];
         }];
-        UIAction *action4 = [UIAction actionWithTitle:@"Copy Video link"
-                                                image:[UIImage systemImageNamed:@"link"]
+        UIAction *action4 = [UIAction actionWithTitle:@"Sao Chép Link Video"
+                                                image:[UIImage systemImageNamed:@"doc.on.doc"]
                                            identifier:nil
                                               handler:^(__kindof UIAction * _Nonnull action) {
-            [self copyVideo:rootVC];
+            [self copyVideo:albumVC];
         }];
-        UIAction *action5 = [UIAction actionWithTitle:@"Copy Decription"
-                                                image:[UIImage systemImageNamed:@"note.text"]
+        UIAction *action5 = [UIAction actionWithTitle:@"Sao Chép Nội Dung Caption"
+                                                image:[UIImage systemImageNamed:@"text.bubble"]
                                            identifier:nil
                                               handler:^(__kindof UIAction * _Nonnull action) {
-            [self copyDecription:rootVC];
+            [self copyDecription:albumVC];
         }];
-        UIMenu *photosMenu = [UIMenu menuWithTitle:@"Download Photos Menu" children:photosActions];
-        UIMenu *downloadMenu = [UIMenu menuWithTitle:@"Downloads Menu" children:@[action2]];
-        UIMenu *copyMenu = [UIMenu menuWithTitle:@"Copy Menu" children:@[action3, action4, action5]];
-        UIMenu *mainMenu = [UIMenu menuWithTitle:@"" children:@[photosMenu, downloadMenu, copyMenu]];
-        [sender setMenu:mainMenu];
-        sender.showsMenuAsPrimaryAction = YES;
-    } else if ([self.viewController isKindOfClass:%c(TTKPhotoAlbumFeedCellController)]) {
-        TTKPhotoAlbumFeedCellController *rootVC = self.viewController;
-        NSArray <AWEPhotoAlbumPhoto *> *photos = rootVC.model.photoAlbum.photos;
-        unsigned long photosCount = [photos count];
-        NSMutableArray <UIAction *> *photosActions = [NSMutableArray array];
-        for (int i = 0; i < photosCount; i++) {
-            NSString *title = [NSString stringWithFormat:@"Download Photo %d", i+1];
-            UIAction *action = [UIAction actionWithTitle:title
-                                                   image:[UIImage systemImageNamed:@"photo.fill"]
-                                              identifier:nil
-                                                 handler:^(__kindof UIAction * _Nonnull action) {
-                [self downloadPhotos:rootVC photoIndex:i];
-            }];
-            [photosActions addObject:action];
-        }
-        UIAction *allPhotosAction = [UIAction actionWithTitle:@"Download Photos"
-                                                        image:[UIImage systemImageNamed:@"photo.fill"]
-                                                   identifier:nil
-                                                      handler:^(__kindof UIAction * _Nonnull action) {
-            [self downloadPhotos:rootVC];
-        }];
-        [photosActions addObject:allPhotosAction];
-        UIAction *action2 = [UIAction actionWithTitle:@"Download Music"
-                                                image:[UIImage systemImageNamed:@"music.note"]
-                                           identifier:nil
-                                              handler:^(__kindof UIAction * _Nonnull action) {
-            [self downloadMusic:rootVC];
-        }];
-        UIAction *action3 = [UIAction actionWithTitle:@"Copy Music link"
-                                                image:[UIImage systemImageNamed:@"link"]
-                                           identifier:nil
-                                              handler:^(__kindof UIAction * _Nonnull action) {
-            [self copyMusic:rootVC];
-        }];
-        UIAction *action4 = [UIAction actionWithTitle:@"Copy Video link"
-                                                image:[UIImage systemImageNamed:@"link"]
-                                           identifier:nil
-                                              handler:^(__kindof UIAction * _Nonnull action) {
-            [self copyVideo:rootVC];
-        }];
-        UIAction *action5 = [UIAction actionWithTitle:@"Copy Decription"
-                                                image:[UIImage systemImageNamed:@"note.text"]
-                                           identifier:nil
-                                              handler:^(__kindof UIAction * _Nonnull action) {
-            [self copyDecription:rootVC];
-        }];
-        UIMenu *photosMenu = [UIMenu menuWithTitle:@"Download Photos Menu" children:photosActions];
-        UIMenu *downloadMenu = [UIMenu menuWithTitle:@"Downloads Menu" children:@[action2]];
-        UIMenu *copyMenu = [UIMenu menuWithTitle:@"Copy Menu" children:@[action3, action4, action5]];
+        UIMenu *photosMenu = [UIMenu menuWithTitle:@"Menu Tải Bộ Ảnh" children:photosActions];
+        UIMenu *downloadMenu = [UIMenu menuWithTitle:@"Menu Tải Xuống" children:@[action2]];
+        UIMenu *copyMenu = [UIMenu menuWithTitle:@"Menu Sao Chép" children:@[action3, action4, action5]];
         UIMenu *mainMenu = [UIMenu menuWithTitle:@"" children:@[photosMenu, downloadMenu, copyMenu]];
         [sender setMenu:mainMenu];
         sender.showsMenuAsPrimaryAction = YES;
@@ -603,110 +614,82 @@ static BOOL isAuthenticationShowed = FALSE;
 }
 
 %new - (void)addHideElementButton {
-    UIButton *hideElementButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    [hideElementButton setTag:999];
-    [hideElementButton setTranslatesAutoresizingMaskIntoConstraints:false];
-    [hideElementButton addTarget:self action:@selector(hideElementButtonHandler:) forControlEvents:UIControlEventTouchUpInside];
-    [hideElementButton setImage:[UIImage systemImageNamed:@"eye.slash"] forState:UIControlStateNormal];
-
-    if (![self viewWithTag:999]) {
+    UIButton *hideElementButton = (UIButton *)[self viewWithTag:999];
+    if (!hideElementButton) {
+        hideElementButton = [UIButton buttonWithType:UIButtonTypeSystem];
+        [hideElementButton setTag:999];
+        [hideElementButton setTranslatesAutoresizingMaskIntoConstraints:false];
+        [hideElementButton addTarget:self action:@selector(hideElementButtonHandler:) forControlEvents:UIControlEventTouchUpInside];
         [hideElementButton setTintColor:[UIColor whiteColor]];
         [self addSubview:hideElementButton];
 
         [NSLayoutConstraint activateConstraints:@[
             [hideElementButton.topAnchor constraintEqualToAnchor:self.safeAreaLayoutGuide.topAnchor constant:50],
             [hideElementButton.trailingAnchor constraintEqualToAnchor:self.safeAreaLayoutGuide.trailingAnchor constant:-10],
-            [hideElementButton.widthAnchor constraintEqualToConstant:30],
-            [hideElementButton.heightAnchor constraintEqualToConstant:30],
+            [hideElementButton.widthAnchor constraintEqualToConstant:34],
+            [hideElementButton.heightAnchor constraintEqualToConstant:34],
         ]];
-    } else {
-        UIButton *existingButton = (UIButton *)[self viewWithTag:999];
-        [existingButton setImage:[UIImage systemImageNamed:@"eye.slash"] forState:UIControlStateNormal];
     }
+    [hideElementButton setImage:[UIImage systemImageNamed:(gPureModeActive ? @"eye" : @"eye.slash")] forState:UIControlStateNormal];
 }
 
-%new - (void)resetPureModeState {
-    id rootVC = nil;
-    if ([self respondsToSelector:@selector(viewController)]) {
-        rootVC = [self performSelector:@selector(viewController)];
-    }
-    if (!rootVC && [self respondsToSelector:@selector(parentViewController)]) {
-        rootVC = [self performSelector:@selector(parentViewController)];
-    }
+%new - (void)applyPureModeState:(BOOL)hide animated:(BOOL)animated {
+    UIViewController *rootVC = self.viewController ?: self.parentViewController;
     if (rootVC) {
         if ([rootVC respondsToSelector:@selector(setPureMode:animated:)]) {
-            [((id)rootVC) setPureMode:NO animated:NO];
+            [((id)rootVC) setPureMode:hide animated:animated];
         }
         if ([rootVC respondsToSelector:@selector(setNeedsSetPureMode:)]) {
-            [((id)rootVC) setNeedsSetPureMode:NO];
+            [((id)rootVC) setNeedsSetPureMode:hide];
         }
-    }
-    id interactionController = nil;
-    if (rootVC && [rootVC respondsToSelector:@selector(interactionController)]) {
-        interactionController = [((id)rootVC) interactionController];
-    }
-    if (interactionController) {
-        if ([interactionController respondsToSelector:@selector(setPureMode:animated:)]) {
-            [((id)interactionController) setPureMode:NO animated:NO];
+        id interactionController = nil;
+        if ([rootVC respondsToSelector:@selector(interactionController)]) {
+            interactionController = [((id)rootVC) interactionController];
         }
-        if ([interactionController respondsToSelector:@selector(hideAllElements:exceptArray:)]) {
-            [((id)interactionController) hideAllElements:NO exceptArray:nil];
+        if (interactionController) {
+            if ([interactionController respondsToSelector:@selector(setPureMode:animated:)]) {
+                [((id)interactionController) setPureMode:hide animated:animated];
+            }
+            if ([interactionController respondsToSelector:@selector(hideAllElements:exceptArray:)]) {
+                [((id)interactionController) hideAllElements:hide exceptArray:nil];
+            }
+            if ([interactionController respondsToSelector:@selector(view)]) {
+                UIView *interView = [((id)interactionController) view];
+                if (interView) {
+                    if (animated) {
+                        [UIView animateWithDuration:0.25 animations:^{
+                            interView.alpha = hide ? 0.0 : 1.0;
+                        }];
+                    } else {
+                        interView.alpha = hide ? 0.0 : 1.0;
+                    }
+                }
+            }
         }
-        if ([interactionController respondsToSelector:@selector(view)]) {
-            UIView *interView = [((id)interactionController) view];
-            if (interView) interView.alpha = 1.0;
+        
+        // Ẩn thanh Tab Bar trên cùng (Following, For You, Live, Search)
+        UIViewController *parentContainer = rootVC.parentViewController ?: rootVC;
+        if (parentContainer.view) {
+            for (UIView *v in parentContainer.view.subviews) {
+                if ([v isKindOfClass:%c(TikTokFeedTabControl)]) {
+                    if (animated) {
+                        [UIView animateWithDuration:0.25 animations:^{
+                            v.alpha = hide ? 0.0 : 1.0;
+                        }];
+                    } else {
+                        v.alpha = hide ? 0.0 : 1.0;
+                    }
+                }
+            }
         }
     }
 }
 
 %new - (void)hideElementButtonHandler:(UIButton *)sender {
-    id rootVC = nil;
-    if ([self respondsToSelector:@selector(viewController)]) {
-        rootVC = [self performSelector:@selector(viewController)];
-    }
-    if (!rootVC && [self respondsToSelector:@selector(parentViewController)]) {
-        rootVC = [self performSelector:@selector(parentViewController)];
-    }
-    
-    self.elementsHidden = !self.elementsHidden;
-    BOOL hide = self.elementsHidden;
-    
-    if (hide) {
-        [sender setImage:[UIImage systemImageNamed:@"eye"] forState:UIControlStateNormal];
-    } else {
-        [sender setImage:[UIImage systemImageNamed:@"eye.slash"] forState:UIControlStateNormal];
-    }
-    
-    if (rootVC) {
-        if ([rootVC respondsToSelector:@selector(setPureMode:animated:)]) {
-            [((id)rootVC) setPureMode:hide animated:YES];
-        }
-        if ([rootVC respondsToSelector:@selector(setNeedsSetPureMode:)]) {
-            [((id)rootVC) setNeedsSetPureMode:hide];
-        }
-    }
-    
-    id interactionController = nil;
-    if (rootVC && [rootVC respondsToSelector:@selector(interactionController)]) {
-        interactionController = [((id)rootVC) interactionController];
-    }
-    
-    if (interactionController) {
-        if ([interactionController respondsToSelector:@selector(setPureMode:animated:)]) {
-            [((id)interactionController) setPureMode:hide animated:YES];
-        }
-        if ([interactionController respondsToSelector:@selector(hideAllElements:exceptArray:)]) {
-            [((id)interactionController) hideAllElements:hide exceptArray:nil];
-        }
-        if ([interactionController respondsToSelector:@selector(view)]) {
-            UIView *interView = [((id)interactionController) view];
-            if (interView) {
-                [UIView animateWithDuration:0.25 animations:^{
-                    interView.alpha = hide ? 0.0 : 1.0;
-                }];
-            }
-        }
-    }
+    gPureModeActive = !gPureModeActive;
+    self.elementsHidden = gPureModeActive;
+    [sender setImage:[UIImage systemImageNamed:(gPureModeActive ? @"eye" : @"eye.slash")] forState:UIControlStateNormal];
+    [self applyPureModeState:gPureModeActive animated:YES];
 }
 
 %new - (void)downloaderProgress:(float)progress {
@@ -734,7 +717,7 @@ static BOOL isAuthenticationShowed = FALSE;
     self.progressView.progress = progress;
     self.hud.detailTextLabel.text = [BMIManager getDownloadingPersent:progress];
     self.hud.tapOutsideBlock = ^(JGProgressHUD * _Nonnull HUD) {
-        self.hud.textLabel.text = @"Backgrounding ✌️";
+        self.hud.textLabel.text = @"Đang chạy nền ✌️";
         [self.hud dismissAfterDelay:0.4];
     };
 }
@@ -768,8 +751,8 @@ static BOOL isAuthenticationShowed = FALSE;
 
 - (void)configWithModel:(id)model {
     %orig;
-    self.elementsHidden = false;
-    [self resetPureModeState];
+    self.elementsHidden = gPureModeActive;
+    [self applyPureModeState:gPureModeActive animated:NO];
     if ([BMIManager downloadButton]){
         [self addDownloadButton];
     }
@@ -780,8 +763,8 @@ static BOOL isAuthenticationShowed = FALSE;
 
 - (void)configureWithModel:(id)model {
     %orig;
-    self.elementsHidden = false;
-    [self resetPureModeState];
+    self.elementsHidden = gPureModeActive;
+    [self applyPureModeState:gPureModeActive animated:NO];
     if ([BMIManager downloadButton]){
         [self addDownloadButton];
     }
@@ -795,7 +778,7 @@ static BOOL isAuthenticationShowed = FALSE;
     [downloadButton setTag:998];
     [downloadButton setTranslatesAutoresizingMaskIntoConstraints:false];
     [downloadButton addTarget:self action:@selector(downloadButtonHandler:) forControlEvents:UIControlEventTouchUpInside];
-    [downloadButton setImage:[UIImage systemImageNamed:@"arrow.down"] forState:UIControlStateNormal];
+    [downloadButton setImage:[UIImage systemImageNamed:@"arrow.down.circle.fill"] forState:UIControlStateNormal];
     if (![self viewWithTag:998]) {
         [downloadButton setTintColor:[UIColor whiteColor]];
         [self addSubview:downloadButton];
@@ -803,35 +786,83 @@ static BOOL isAuthenticationShowed = FALSE;
         [NSLayoutConstraint activateConstraints:@[
             [downloadButton.topAnchor constraintEqualToAnchor:self.safeAreaLayoutGuide.topAnchor constant:90],
             [downloadButton.trailingAnchor constraintEqualToAnchor:self.safeAreaLayoutGuide.trailingAnchor constant:-10],
-            [downloadButton.widthAnchor constraintEqualToConstant:30],
-            [downloadButton.heightAnchor constraintEqualToConstant:30],
+            [downloadButton.widthAnchor constraintEqualToConstant:34],
+            [downloadButton.heightAnchor constraintEqualToConstant:34],
         ]];
     }
 }
 
 %new - (void)downloadHDVideo:(AWEAwemeBaseViewController *)rootVC {
-    NSString *as = rootVC.model.itemID;
-    NSURL *downloadableURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://tikwm.com/video/media/hdplay/%@.mp4", as]];
-    self.fileextension = [rootVC.model.video.playURL bestURLtoDownloadFormat];
-    if (downloadableURL) {
+    NSString *itemID = rootVC.model.itemID;
+    self.fileextension = @"mp4";
+    self.hud = [JGProgressHUD progressHUDWithStyle:JGProgressHUDStyleDark];
+    self.hud.textLabel.text = @"Đang lấy link HD...";
+    [self.hud showInView:topMostController().view];
+
+    NSURL *directHDURL = [rootVC.model.video.playAddrH264 bestURLtoDownload];
+    if (!directHDURL) {
+        directHDURL = [rootVC.model.video.h264URL bestURLtoDownload];
+    }
+
+    if (itemID.length > 0) {
+        NSString *apiURLStr = [NSString stringWithFormat:@"https://www.tikwm.com/api/?url=https://www.tiktok.com/@i/video/%@", itemID];
+        NSURL *apiURL = [NSURL URLWithString:apiURLStr];
+        NSURLSessionDataTask *task = [[NSURLSession sharedSession] dataTaskWithURL:apiURL completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+            NSURL *finalURL = directHDURL;
+            if (!error && data) {
+                NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                if ([json isKindOfClass:[NSDictionary class]] && [json[@"code"] integerValue] == 0) {
+                    NSDictionary *dataDict = json[@"data"];
+                    NSString *hdURLStr = dataDict[@"hdplay"] ?: dataDict[@"play"];
+                    if (hdURLStr.length > 0) {
+                        finalURL = [NSURL URLWithString:hdURLStr];
+                    }
+                }
+            }
+            if (!finalURL) {
+                finalURL = [rootVC.model.video.playURL bestURLtoDownload];
+            }
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (finalURL) {
+                    BMDownload *dwManager = [[BMDownload alloc] init];
+                    [dwManager downloadFileWithURL:finalURL];
+                    [dwManager setDelegate:self];
+                    self.hud.textLabel.text = @"Đang tải video HD...";
+                } else {
+                    [self.hud dismiss];
+                    [%c(AWEUIAlertView) showAlertWithTitle:@"BMTikTok" description:@"Không thể lấy liên kết video HD." image:nil actionButtonTitle:@"OK" cancelButtonTitle:nil actionBlock:nil cancelBlock:nil];
+                }
+            });
+        }];
+        [task resume];
+    } else if (directHDURL) {
         BMDownload *dwManager = [[BMDownload alloc] init];
-        [dwManager downloadFileWithURL:downloadableURL];
+        [dwManager downloadFileWithURL:directHDURL];
         [dwManager setDelegate:self];
-        self.hud = [JGProgressHUD progressHUDWithStyle:JGProgressHUDStyleDark];
-        self.hud.textLabel.text = @"Downloading";
-        [self.hud showInView:topMostController().view];
+        self.hud.textLabel.text = @"Đang tải video HD...";
+    } else {
+        NSURL *normalURL = [rootVC.model.video.playURL bestURLtoDownload];
+        if (normalURL) {
+            BMDownload *dwManager = [[BMDownload alloc] init];
+            [dwManager downloadFileWithURL:normalURL];
+            [dwManager setDelegate:self];
+            self.hud.textLabel.text = @"Đang tải video...";
+        } else {
+            [self.hud dismiss];
+            [%c(AWEUIAlertView) showAlertWithTitle:@"BMTikTok" description:@"Không tìm thấy liên kết tải video." image:nil actionButtonTitle:@"OK" cancelButtonTitle:nil actionBlock:nil cancelBlock:nil];
+        }
     }
 }
 
 %new - (void)downloadVideo:(AWEAwemeBaseViewController *)rootVC {
     NSURL *downloadableURL = [rootVC.model.video.playURL bestURLtoDownload];
-    self.fileextension = [rootVC.model.video.playURL bestURLtoDownloadFormat];
+    self.fileextension = [rootVC.model.video.playURL bestURLtoDownloadFormat] ?: @"mp4";
     if (downloadableURL) {
         BMDownload *dwManager = [[BMDownload alloc] init];
         [dwManager downloadFileWithURL:downloadableURL];
         [dwManager setDelegate:self];
         self.hud = [JGProgressHUD progressHUDWithStyle:JGProgressHUDStyleDark];
-        self.hud.textLabel.text = @"Downloading";
+        self.hud.textLabel.text = @"Đang tải video...";
         [self.hud showInView:topMostController().view];
     }
 }
@@ -844,7 +875,7 @@ static BOOL isAuthenticationShowed = FALSE;
         [dwManager downloadFileWithURL:downloadableURL];
         [dwManager setDelegate:self];
         self.hud = [JGProgressHUD progressHUDWithStyle:JGProgressHUDStyleDark];
-        self.hud.textLabel.text = @"Downloading";
+        self.hud.textLabel.text = @"Đang tải âm thanh...";
         [self.hud showInView:topMostController().view];
     }
 }
@@ -854,6 +885,7 @@ static BOOL isAuthenticationShowed = FALSE;
     if (downloadableURL) {
         UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
         pasteboard.string = [downloadableURL absoluteString];
+        [%c(AWEUIAlertView) showAlertWithTitle:@"BMTikTok" description:@"Đã sao chép liên kết âm thanh vào bộ nhớ tạm!" image:nil actionButtonTitle:@"OK" cancelButtonTitle:nil actionBlock:nil cancelBlock:nil];
     } else {
         [%c(AWEUIAlertView) showAlertWithTitle:@"BMTikTok" description:@"Không thể sao chép liên kết âm thanh." image:nil actionButtonTitle:@"OK" cancelButtonTitle:nil actionBlock:nil cancelBlock:nil];
     }
@@ -864,6 +896,7 @@ static BOOL isAuthenticationShowed = FALSE;
     if (downloadableURL) {
         UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
         pasteboard.string = [downloadableURL absoluteString];
+        [%c(AWEUIAlertView) showAlertWithTitle:@"BMTikTok" description:@"Đã sao chép liên kết video vào bộ nhớ tạm!" image:nil actionButtonTitle:@"OK" cancelButtonTitle:nil actionBlock:nil cancelBlock:nil];
     } else {
         [%c(AWEUIAlertView) showAlertWithTitle:@"BMTikTok" description:@"Không thể sao chép liên kết video." image:nil actionButtonTitle:@"OK" cancelButtonTitle:nil actionBlock:nil cancelBlock:nil];
     }
@@ -871,55 +904,56 @@ static BOOL isAuthenticationShowed = FALSE;
 
 %new - (void)copyDecription:(AWEAwemeBaseViewController *)rootVC {
     NSString *video_description = rootVC.model.music_songName;
-    if (video_description) {
+    if (video_description.length > 0) {
         UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
         pasteboard.string = video_description;
+        [%c(AWEUIAlertView) showAlertWithTitle:@"BMTikTok" description:@"Đã sao chép nội dung vào bộ nhớ tạm!" image:nil actionButtonTitle:@"OK" cancelButtonTitle:nil actionBlock:nil cancelBlock:nil];
     } else {
-        [%c(AWEUIAlertView) showAlertWithTitle:@"BMTikTok" description:@"Không có mô tả để sao chép." image:nil actionButtonTitle:@"OK" cancelButtonTitle:nil actionBlock:nil cancelBlock:nil];
+        [%c(AWEUIAlertView) showAlertWithTitle:@"BMTikTok" description:@"Không có nội dung mô tả để sao chép." image:nil actionButtonTitle:@"OK" cancelButtonTitle:nil actionBlock:nil cancelBlock:nil];
     }
 }
 
 %new - (void)downloadButtonHandler:(UIButton *)sender {
     AWEAwemeBaseViewController *rootVC = self.viewController;
     if (rootVC) {
-        UIAction *action1 = [UIAction actionWithTitle:@"Download Video"
+        UIAction *action0 = [UIAction actionWithTitle:@"Tải Video HD (Siêu Nét)"
+                                                image:[UIImage systemImageNamed:@"sparkles.tv"]
+                                           identifier:nil
+                                              handler:^(__kindof UIAction * _Nonnull action) {
+            [self downloadHDVideo:rootVC];
+        }];
+        UIAction *action1 = [UIAction actionWithTitle:@"Tải Video (Gốc)"
                                                 image:[UIImage systemImageNamed:@"film"]
                                            identifier:nil
                                               handler:^(__kindof UIAction * _Nonnull action) {
             [self downloadVideo:rootVC];
         }];
-        UIAction *action0 = [UIAction actionWithTitle:@"Download HD Video"
-                                                image:[UIImage systemImageNamed:@"film"]
-                                           identifier:nil
-                                              handler:^(__kindof UIAction * _Nonnull action) {
-            [self downloadHDVideo:rootVC];
-        }];
-        UIAction *action2 = [UIAction actionWithTitle:@"Download Music"
+        UIAction *action2 = [UIAction actionWithTitle:@"Tải Nhạc Nền / MP3"
                                                 image:[UIImage systemImageNamed:@"music.note"]
                                            identifier:nil
                                               handler:^(__kindof UIAction * _Nonnull action) {
             [self downloadMusic:rootVC];
         }];
-        UIAction *action3 = [UIAction actionWithTitle:@"Copy Music link"
+        UIAction *action3 = [UIAction actionWithTitle:@"Sao Chép Link Âm Thanh"
                                                 image:[UIImage systemImageNamed:@"link"]
                                            identifier:nil
                                               handler:^(__kindof UIAction * _Nonnull action) {
             [self copyMusic:rootVC];
         }];
-        UIAction *action4 = [UIAction actionWithTitle:@"Copy Video link"
-                                                image:[UIImage systemImageNamed:@"link"]
+        UIAction *action4 = [UIAction actionWithTitle:@"Sao Chép Link Video"
+                                                image:[UIImage systemImageNamed:@"doc.on.doc"]
                                            identifier:nil
                                               handler:^(__kindof UIAction * _Nonnull action) {
             [self copyVideo:rootVC];
         }];
-        UIAction *action5 = [UIAction actionWithTitle:@"Copy Decription"
-                                                image:[UIImage systemImageNamed:@"note.text"]
+        UIAction *action5 = [UIAction actionWithTitle:@"Sao Chép Nội Dung Caption"
+                                                image:[UIImage systemImageNamed:@"text.bubble"]
                                            identifier:nil
                                               handler:^(__kindof UIAction * _Nonnull action) {
             [self copyDecription:rootVC];
         }];
-        UIMenu *downloadMenu = [UIMenu menuWithTitle:@"Downloads Menu" children:@[action1, action0, action2]];
-        UIMenu *copyMenu = [UIMenu menuWithTitle:@"Copy Menu" children:@[action3, action4, action5]];
+        UIMenu *downloadMenu = [UIMenu menuWithTitle:@"Menu Tải Xuống" children:@[action0, action1, action2]];
+        UIMenu *copyMenu = [UIMenu menuWithTitle:@"Menu Sao Chép" children:@[action3, action4, action5]];
         UIMenu *mainMenu = [UIMenu menuWithTitle:@"" children:@[downloadMenu, copyMenu]];
         [sender setMenu:mainMenu];
         sender.showsMenuAsPrimaryAction = YES;
@@ -927,110 +961,66 @@ static BOOL isAuthenticationShowed = FALSE;
 }
 
 %new - (void)addHideElementButton {
-    UIButton *hideElementButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    [hideElementButton setTag:999];
-    [hideElementButton setTranslatesAutoresizingMaskIntoConstraints:false];
-    [hideElementButton addTarget:self action:@selector(hideElementButtonHandler:) forControlEvents:UIControlEventTouchUpInside];
-    [hideElementButton setImage:[UIImage systemImageNamed:@"eye.slash"] forState:UIControlStateNormal];
-
-    if (![self viewWithTag:999]) {
+    UIButton *hideElementButton = (UIButton *)[self viewWithTag:999];
+    if (!hideElementButton) {
+        hideElementButton = [UIButton buttonWithType:UIButtonTypeSystem];
+        [hideElementButton setTag:999];
+        [hideElementButton setTranslatesAutoresizingMaskIntoConstraints:false];
+        [hideElementButton addTarget:self action:@selector(hideElementButtonHandler:) forControlEvents:UIControlEventTouchUpInside];
         [hideElementButton setTintColor:[UIColor whiteColor]];
         [self addSubview:hideElementButton];
 
         [NSLayoutConstraint activateConstraints:@[
             [hideElementButton.topAnchor constraintEqualToAnchor:self.safeAreaLayoutGuide.topAnchor constant:50],
             [hideElementButton.trailingAnchor constraintEqualToAnchor:self.safeAreaLayoutGuide.trailingAnchor constant:-10],
-            [hideElementButton.widthAnchor constraintEqualToConstant:30],
-            [hideElementButton.heightAnchor constraintEqualToConstant:30],
+            [hideElementButton.widthAnchor constraintEqualToConstant:34],
+            [hideElementButton.heightAnchor constraintEqualToConstant:34],
         ]];
-    } else {
-        UIButton *existingButton = (UIButton *)[self viewWithTag:999];
-        [existingButton setImage:[UIImage systemImageNamed:@"eye.slash"] forState:UIControlStateNormal];
     }
+    [hideElementButton setImage:[UIImage systemImageNamed:(gPureModeActive ? @"eye" : @"eye.slash")] forState:UIControlStateNormal];
 }
 
-%new - (void)resetPureModeState {
-    id rootVC = nil;
-    if ([self respondsToSelector:@selector(viewController)]) {
-        rootVC = [self performSelector:@selector(viewController)];
-    }
-    if (!rootVC && [self respondsToSelector:@selector(parentViewController)]) {
-        rootVC = [self performSelector:@selector(parentViewController)];
-    }
+%new - (void)applyPureModeState:(BOOL)hide animated:(BOOL)animated {
+    UIViewController *rootVC = self.viewController ?: self.parentViewController;
     if (rootVC) {
         if ([rootVC respondsToSelector:@selector(setPureMode:animated:)]) {
-            [((id)rootVC) setPureMode:NO animated:NO];
+            [((id)rootVC) setPureMode:hide animated:animated];
         }
         if ([rootVC respondsToSelector:@selector(setNeedsSetPureMode:)]) {
-            [((id)rootVC) setNeedsSetPureMode:NO];
+            [((id)rootVC) setNeedsSetPureMode:hide];
         }
-    }
-    id interactionController = nil;
-    if (rootVC && [rootVC respondsToSelector:@selector(interactionController)]) {
-        interactionController = [((id)rootVC) interactionController];
-    }
-    if (interactionController) {
-        if ([interactionController respondsToSelector:@selector(setPureMode:animated:)]) {
-            [((id)interactionController) setPureMode:NO animated:NO];
+        id interactionController = nil;
+        if ([rootVC respondsToSelector:@selector(interactionController)]) {
+            interactionController = [((id)rootVC) interactionController];
         }
-        if ([interactionController respondsToSelector:@selector(hideAllElements:exceptArray:)]) {
-            [((id)interactionController) hideAllElements:NO exceptArray:nil];
-        }
-        if ([interactionController respondsToSelector:@selector(view)]) {
-            UIView *interView = [((id)interactionController) view];
-            if (interView) interView.alpha = 1.0;
+        if (interactionController) {
+            if ([interactionController respondsToSelector:@selector(setPureMode:animated:)]) {
+                [((id)interactionController) setPureMode:hide animated:animated];
+            }
+            if ([interactionController respondsToSelector:@selector(hideAllElements:exceptArray:)]) {
+                [((id)interactionController) hideAllElements:hide exceptArray:nil];
+            }
+            if ([interactionController respondsToSelector:@selector(view)]) {
+                UIView *interView = [((id)interactionController) view];
+                if (interView) {
+                    if (animated) {
+                        [UIView animateWithDuration:0.25 animations:^{
+                            interView.alpha = hide ? 0.0 : 1.0;
+                        }];
+                    } else {
+                        interView.alpha = hide ? 0.0 : 1.0;
+                    }
+                }
+            }
         }
     }
 }
 
 %new - (void)hideElementButtonHandler:(UIButton *)sender {
-    id rootVC = nil;
-    if ([self respondsToSelector:@selector(viewController)]) {
-        rootVC = [self performSelector:@selector(viewController)];
-    }
-    if (!rootVC && [self respondsToSelector:@selector(parentViewController)]) {
-        rootVC = [self performSelector:@selector(parentViewController)];
-    }
-    
-    self.elementsHidden = !self.elementsHidden;
-    BOOL hide = self.elementsHidden;
-    
-    if (hide) {
-        [sender setImage:[UIImage systemImageNamed:@"eye"] forState:UIControlStateNormal];
-    } else {
-        [sender setImage:[UIImage systemImageNamed:@"eye.slash"] forState:UIControlStateNormal];
-    }
-    
-    if (rootVC) {
-        if ([rootVC respondsToSelector:@selector(setPureMode:animated:)]) {
-            [((id)rootVC) setPureMode:hide animated:YES];
-        }
-        if ([rootVC respondsToSelector:@selector(setNeedsSetPureMode:)]) {
-            [((id)rootVC) setNeedsSetPureMode:hide];
-        }
-    }
-    
-    id interactionController = nil;
-    if (rootVC && [rootVC respondsToSelector:@selector(interactionController)]) {
-        interactionController = [((id)rootVC) interactionController];
-    }
-    
-    if (interactionController) {
-        if ([interactionController respondsToSelector:@selector(setPureMode:animated:)]) {
-            [((id)interactionController) setPureMode:hide animated:YES];
-        }
-        if ([interactionController respondsToSelector:@selector(hideAllElements:exceptArray:)]) {
-            [((id)interactionController) hideAllElements:hide exceptArray:nil];
-        }
-        if ([interactionController respondsToSelector:@selector(view)]) {
-            UIView *interView = [((id)interactionController) view];
-            if (interView) {
-                [UIView animateWithDuration:0.25 animations:^{
-                    interView.alpha = hide ? 0.0 : 1.0;
-                }];
-            }
-        }
-    }
+    gPureModeActive = !gPureModeActive;
+    self.elementsHidden = gPureModeActive;
+    [sender setImage:[UIImage systemImageNamed:(gPureModeActive ? @"eye" : @"eye.slash")] forState:UIControlStateNormal];
+    [self applyPureModeState:gPureModeActive animated:YES];
 }
 %end
 
@@ -1084,16 +1074,6 @@ static BOOL isAuthenticationShowed = FALSE;
         }
     }
     return %orig;
-}
-
-- (void)setIsoCountryCode:(NSString *)arg1 {
-    if ([BMIManager regionChangingEnabled]) {
-        NSDictionary *selectedRegion = [BMIManager selectedRegion];
-        if (selectedRegion && selectedRegion[@"code"]) {
-            return %orig(selectedRegion[@"code"]);
-        }
-    }
-    %orig(arg1);
 }
 
 - (NSString *)isoCountryCode {
@@ -1574,16 +1554,42 @@ static BOOL isAuthenticationShowed = FALSE;
 // ═══════════════════════════════════════════════════════════════
 
 %hook TTKCommentPanelViewController
-- (void)viewDidLoad {
+- (void)viewDidAppear:(BOOL)animated {
     %orig;
     if ([BMIManager transparentCommnet]){
-        UIView *commnetView = [self view];
-        [commnetView setAlpha:0.90];
+        self.view.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.35];
+        for (UIView *sub in self.view.subviews) {
+            if ([sub isKindOfClass:[UIVisualEffectView class]]) {
+                sub.alpha = 0.5;
+            }
+        }
+    }
+}
+- (void)viewDidLayoutSubviews {
+    %orig;
+    if ([BMIManager transparentCommnet]) {
+        self.view.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.35];
+    }
+}
+%end
+
+%hook AWECommentListViewController
+- (void)viewDidAppear:(BOOL)animated {
+    %orig;
+    if ([BMIManager transparentCommnet]) {
+        self.view.backgroundColor = [UIColor clearColor];
     }
 }
 %end
 
 %hook AWECommentPanelCell
+- (void)didMoveToSuperview {
+    %orig;
+    if ([BMIManager transparentCommnet]) {
+        self.backgroundColor = [UIColor clearColor];
+        self.contentView.backgroundColor = [UIColor clearColor];
+    }
+}
 - (void)onLikeAction:(id)arg1 {
     if ([BMIManager likeCommentConfirmation]) {
         void (^actionBlock)(void) = ^{
@@ -1602,15 +1608,6 @@ static BOOL isAuthenticationShowed = FALSE;
         showConfirmation(actionBlock);
     } else {
         %orig(arg1);
-    }
-}
-%end
-
-%hook AWECommentPanelView
-- (void)didMoveToSuperview {
-    %orig;
-    if ([BMIManager transparentCommnet]) {
-        [self setBackgroundColor:[UIColor clearColor]];
     }
 }
 %end
@@ -1715,6 +1712,7 @@ static BOOL isAuthenticationShowed = FALSE;
         %orig;
     } else if ([BMIManager liveActionEnabled] && [[BMIManager selectedLiveAction] intValue] == 1) {
         UINavigationController *BMTikTokSettings = [[UINavigationController alloc] initWithRootViewController:[[ViewController alloc] init]];
+        BMTikTokSettings.modalPresentationStyle = UIModalPresentationPageSheet;
         [topMostController() presentViewController:BMTikTokSettings animated:true completion:nil];
     } else {
         %orig;

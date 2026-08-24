@@ -160,6 +160,9 @@
 @interface AWEVideoModel : NSObject
 @property(readonly, nonatomic) AWEURLModel *playURL;
 @property(readonly, nonatomic) AWEURLModel *downloadURL;
+@property(readonly, nonatomic) AWEURLModel *h264URL;
+@property(readonly, nonatomic) AWEURLModel *playAddrH264;
+@property(readonly, nonatomic) NSArray *bitrateModels;
 @property(readonly, nonatomic) NSNumber *duration;
 @end
 
@@ -291,7 +294,7 @@
 @property (nonatomic, retain) UIProgressView *progressView;
 - (void)addDownloadButton;
 - (void)addHideElementButton;
-- (void)resetPureModeState;
+- (void)applyPureModeState:(BOOL)hide animated:(BOOL)animated;
 - (void)downloadButtonHandler:(UIButton *)sender;
 - (void)hideElementButtonHandler:(UIButton *)sender;
 - (void)downloadVideo:(AWEAwemeBaseViewController *)rootVC;
@@ -311,7 +314,7 @@
 @property (nonatomic, retain) NSString *fileextension;
 - (void)addDownloadButton;
 - (void)addHideElementButton;
-- (void)resetPureModeState;
+- (void)applyPureModeState:(BOOL)hide animated:(BOOL)animated;
 - (void)downloadButtonHandler:(UIButton *)sender;
 - (void)hideElementButtonHandler:(UIButton *)sender;
 - (void)downloadVideo:(AWEAwemeBaseViewController *)rootVC;
