@@ -1308,16 +1308,43 @@ static BOOL isAuthenticationShowed = FALSE;
 }
 %new - (void)hideElementButtonHandler:(UIButton *)sender {
     AWEAwemeBaseViewController *rootVC = self.viewController;
-    if ([rootVC.interactionController isKindOfClass:%c(TTKFeedInteractionLegacyMainContainerElement)]) {
-        TTKFeedInteractionLegacyMainContainerElement *interactionController = rootVC.interactionController;
-        if (self.elementsHidden) {
-            self.elementsHidden = false;
-            [interactionController hideAllElements:false exceptArray:nil];
-            [sender setImage:[UIImage systemImageNamed:@"eye.slash"] forState:UIControlStateNormal];
-        } else {
-            self.elementsHidden = true;
-            [interactionController hideAllElements:true exceptArray:nil];
-            [sender setImage:[UIImage systemImageNamed:@"eye"] forState:UIControlStateNormal];
+    if (!rootVC && [self respondsToSelector:@selector(parentViewController)]) {
+        rootVC = (AWEAwemeBaseViewController *)[self parentViewController];
+    }
+    
+    self.elementsHidden = !self.elementsHidden;
+    BOOL hide = self.elementsHidden;
+    
+    if (hide) {
+        [sender setImage:[UIImage systemImageNamed:@"eye"] forState:UIControlStateNormal];
+    } else {
+        [sender setImage:[UIImage systemImageNamed:@"eye.slash"] forState:UIControlStateNormal];
+    }
+    
+    if ([rootVC respondsToSelector:@selector(setPureMode:animated:)]) {
+        [rootVC setPureMode:hide animated:YES];
+    }
+    if ([rootVC respondsToSelector:@selector(setNeedsSetPureMode:)]) {
+        [rootVC setNeedsSetPureMode:hide];
+    }
+    
+    id interactionController = nil;
+    if ([rootVC respondsToSelector:@selector(interactionController)]) {
+        interactionController = [rootVC interactionController];
+    }
+    
+    if (interactionController) {
+        if ([interactionController respondsToSelector:@selector(setPureMode:animated:)]) {
+            [interactionController setPureMode:hide animated:YES];
+        }
+        if ([interactionController respondsToSelector:@selector(hideAllElements:exceptArray:)]) {
+            [interactionController hideAllElements:hide exceptArray:nil];
+        }
+        if ([interactionController respondsToSelector:@selector(view)]) {
+            UIView *interView = [interactionController view];
+            [UIView animateWithDuration:0.25 animations:^{
+                interView.alpha = hide ? 0.0 : 1.0;
+            }];
         }
     }
 }
@@ -1554,16 +1581,43 @@ static BOOL isAuthenticationShowed = FALSE;
 }
 %new - (void)hideElementButtonHandler:(UIButton *)sender {
     AWEAwemeBaseViewController *rootVC = self.viewController;
-    if ([rootVC.interactionController isKindOfClass:%c(TTKFeedInteractionLegacyMainContainerElement)]) {
-        TTKFeedInteractionLegacyMainContainerElement *interactionController = rootVC.interactionController;
-        if (self.elementsHidden) {
-            self.elementsHidden = false;
-            [interactionController hideAllElements:false exceptArray:nil];
-            [sender setImage:[UIImage systemImageNamed:@"eye.slash"] forState:UIControlStateNormal];
-        } else {
-            self.elementsHidden = true;
-            [interactionController hideAllElements:true exceptArray:nil];
-            [sender setImage:[UIImage systemImageNamed:@"eye"] forState:UIControlStateNormal];
+    if (!rootVC && [self respondsToSelector:@selector(parentViewController)]) {
+        rootVC = (AWEAwemeBaseViewController *)[self parentViewController];
+    }
+    
+    self.elementsHidden = !self.elementsHidden;
+    BOOL hide = self.elementsHidden;
+    
+    if (hide) {
+        [sender setImage:[UIImage systemImageNamed:@"eye"] forState:UIControlStateNormal];
+    } else {
+        [sender setImage:[UIImage systemImageNamed:@"eye.slash"] forState:UIControlStateNormal];
+    }
+    
+    if ([rootVC respondsToSelector:@selector(setPureMode:animated:)]) {
+        [rootVC setPureMode:hide animated:YES];
+    }
+    if ([rootVC respondsToSelector:@selector(setNeedsSetPureMode:)]) {
+        [rootVC setNeedsSetPureMode:hide];
+    }
+    
+    id interactionController = nil;
+    if ([rootVC respondsToSelector:@selector(interactionController)]) {
+        interactionController = [rootVC interactionController];
+    }
+    
+    if (interactionController) {
+        if ([interactionController respondsToSelector:@selector(setPureMode:animated:)]) {
+            [interactionController setPureMode:hide animated:YES];
+        }
+        if ([interactionController respondsToSelector:@selector(hideAllElements:exceptArray:)]) {
+            [interactionController hideAllElements:hide exceptArray:nil];
+        }
+        if ([interactionController respondsToSelector:@selector(view)]) {
+            UIView *interView = [interactionController view];
+            [UIView animateWithDuration:0.25 animations:^{
+                interView.alpha = hide ? 0.0 : 1.0;
+            }];
         }
     }
 }
