@@ -54,13 +54,14 @@ jobs:
           make clean
           make package FINALPACKAGE=1
           
-          # Tìm file dylib sau khi build
-          DYLIB_PATH=$(find .theos/obj -name "BMTikTok.dylib" | head -n 1)
-          if [ -z "$DYLIB_PATH" ]; then
-            DYLIB_PATH=$(find . -name "BMTikTok.dylib" | head -n 1)
+          # Tìm đúng file dylib nhị phân (loại trừ các file debug symbol .dSYM)
+          DYLIB_PATH=$(find .theos/_/Library/MobileSubstrate/DynamicLibraries -name "BMTikTok.dylib" 2>/dev/null | head -n 1)
+          if [ -z "$DYLIB_PATH" ] || [ ! -f "$DYLIB_PATH" ]; then
+            DYLIB_PATH=$(find .theos -name "BMTikTok.dylib" ! -path "*.dSYM*" | head -n 1)
           fi
           echo "DYLIB_PATH=$DYLIB_PATH" >> $GITHUB_ENV
-          echo "✅ Đã build thành công: $DYLIB_PATH"
+          echo "✅ Đã tìm thấy dylib thành phẩm: $DYLIB_PATH"
+          file "$DYLIB_PATH"
 
       - name: 📦 Tải File TikTok IPA Gốc
         run: |

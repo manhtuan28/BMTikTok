@@ -16,6 +16,27 @@ import zipfile
 import struct
 import argparse
 
+def validate_dylib(dylib_path):
+    """
+    Kiểm tra file dylib có phải là Mach-O MH_DYLIB (filetype 6) hợp lệ không,
+    tránh inject nhầm file debug symbols dSYM (filetype 10).
+    """
+    if not os.path.exists(dylib_path):
+        raise FileNotFoundError(f"Không tìm thấy file dylib: {dylib_path}")
+        
+    with open(dylib_path, 'rb') as f:
+        data = f.read(32)
+        magic = struct.unpack('<I', data[:4])[0]
+        if magic == 0xfeedfacf: # 64-bit Mach-O
+            filetype = struct.unpack('<I', data[12:16])[0]
+            if filetype != 6: # MH_DYLIB
+                raise ValueError(f"File {dylib_path} là Mach-O type {filetype} (MH_DSYM={filetype==10}), KHÔNG PHẢI MH_DYLIB (6)!")
+            print(f"[✅] Xác nhận file dylib hợp lệ: {dylib_path} (Mach-O 64-bit MH_DYLIB)")
+        elif magic == 0xbebafeca or magic == 0xcafebabe: # FAT Mach-O
+            print(f"[✅] Xác nhận file dylib hợp lệ: {dylib_path} (Universal FAT binary)")
+        else:
+            raise ValueError(f"File {dylib_path} không phải định dạng Mach-O hợp lệ (Magic: {hex(magic)})!")
+
 def inject_load_dylib(binary_path, dylib_payload_path):
     """
     Chèn load command LC_LOAD_DYLIB (@rpath/BMTikTok.dylib hoặc @executable_path/Frameworks/...)
@@ -72,6 +93,9 @@ def _patch_macho_slice(f, base_offset, dylib_payload_path):
     print(f"[+] Đã chèn thành công LC_LOAD_DYLIB: {dylib_payload_path}")
 
 def repackage_ipa(input_ipa, dylib_path, bundle_path, output_ipa):
+    # Validate dylib
+    validate_dylib(dylib_path)
+    
     print(f"[*] Bắt đầu giải nén IPA: {input_ipa}")
     work_dir = "temp_build_bmtiktok"
     if os.path.exists(work_dir):
