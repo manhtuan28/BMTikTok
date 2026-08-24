@@ -1675,33 +1675,75 @@ static BOOL isAuthenticationShowed = FALSE;
 }
 %end
 
-%hook NSBundle
-- (NSString *)bundleIdentifier {
-    if (self == [NSBundle mainBundle]) {
-        return @"com.zhiliaoapp.musically";
+// --- Passport SMS Login Bypass (targeted, does NOT touch global `NSBundle`) ---
+// Spoof bundle ID only inside Passport network requests
+%hook AWEPassportNetworkManager
+- (NSDictionary *)commonParams {
+    NSMutableDictionary *params = [%orig mutableCopy];
+    if (params) {
+        params[@"aid"] = @"1233";
+        params[@"app_name"] = @"musical_ly";
+        params[@"channel"] = @"App Store";
+        params[@"iid"] = params[@"iid"] ?: @"";
     }
-    return %orig;
-}
-- (id)objectForInfoDictionaryKey:(NSString *)key {
-    if (self == [NSBundle mainBundle] && [key isEqualToString:@"CFBundleIdentifier"]) {
-        return @"com.zhiliaoapp.musically";
-    }
-    return %orig;
-}
-- (NSDictionary *)infoDictionary {
-    NSDictionary *orig = %orig;
-    if (self == [NSBundle mainBundle] && orig) {
-        NSMutableDictionary *mut = [orig mutableCopy];
-        mut[@"CFBundleIdentifier"] = @"com.zhiliaoapp.musically";
-        return mut;
-    }
-    return orig;
+    return params;
 }
 %end
 
+%hook AWEPassportURLSettings
+- (NSString *)appId {
+    return @"1233";
+}
+%end
+
+%hook TTKPassportSettings
+- (NSString *)appId {
+    return @"1233";
+}
+%end
+
+// Bypass anti-spam and risk checks during login
 %hook AWEPassportAntiSpamManager
 - (BOOL)isSpam {
     return NO;
+}
+- (BOOL)shouldBlockRequest {
+    return NO;
+}
+%end
+
+%hook AWEPassportCheckEnvModel
+- (BOOL)isRisky {
+    return NO;
+}
+- (NSInteger)riskLevel {
+    return 0;
+}
+%end
+
+%hook AWERiskControlService
+- (BOOL)isDeviceRisky {
+    return NO;
+}
+- (NSDictionary *)riskInfo {
+    return @{};
+}
+%end
+
+// Bypass `AWEPassportSendCodeTicketManager` rate limiting
+%hook AWEPassportSendCodeTicketManager
+- (BOOL)isTicketExpired {
+    return YES;
+}
+- (BOOL)needsTicket {
+    return NO;
+}
+%end
+
+// Ensure `DYASendCodeModel` (the actual SMS sender) does not get blocked
+%hook DYASendCodeModel
+- (void)setNeedCaptcha:(BOOL)arg1 {
+    %orig(NO);
 }
 %end
 
