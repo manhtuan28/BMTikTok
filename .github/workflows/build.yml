@@ -7,6 +7,7 @@ on:
         description: 'Đường link tải file TikTok IPA gốc (Google Drive, Direct Link, Dropbox...)'
         required: true
         type: string
+        default: 'https://drive.google.com/file/d/1y-FAp-OfRpC5LC46G6eu3maw5CF-KRv8/view?usp=drive_link'
       tiktok_version:
         description: 'Phiên bản TikTok (Ví dụ: 46.5.0)'
         required: false
@@ -17,6 +18,11 @@ on:
         required: false
         default: true
         type: boolean
+
+permissions:
+  contents: write
+  packages: write
+  actions: read
 
 jobs:
   build:
@@ -38,6 +44,7 @@ jobs:
 
       - name: ⚙️ Biên Dịch BMTikTok Tweak (Dylib & Deb)
         run: |
+          export THEOS=$HOME/theos
           make clean
           make package FINALPACKAGE=1
           
@@ -51,25 +58,12 @@ jobs:
 
       - name: 📦 Tải File TikTok IPA Gốc
         run: |
-          python3 -m pip install gdown
-          
-          IPA_URL="${{ inputs.ipa_url }}"
-          echo "Đang tải IPA từ: $IPA_URL"
-          
-          if [[ "$IPA_URL" == *"drive.google.com"* ]]; then
-            echo "Phát hiện link Google Drive, sử dụng gdown..."
-            gdown "$IPA_URL" -O input_tiktok.ipa --fuzzy
-          else
-            echo "Đang tải qua curl..."
-            curl -L -o input_tiktok.ipa "$IPA_URL"
-          fi
+          python3 tools/download_ipa.py -u "${{ inputs.ipa_url }}" -o input_tiktok.ipa
           
           if [ ! -f "input_tiktok.ipa" ] || [ ! -s "input_tiktok.ipa" ]; then
             echo "❌ Lỗi: Không thể tải file IPA gốc!"
             exit 1
           fi
-          
-          echo "✅ Tải IPA thành công! Kích thước: $(ls -lh input_tiktok.ipa | awk '{print $5}')"
 
       - name: 💉 Chèn BMTikTok Vào TikTok IPA
         run: |
