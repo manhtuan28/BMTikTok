@@ -253,6 +253,15 @@
 @interface AWELiveFeedEntranceView: UIView
 @end
 
+@interface TTKFeedInteractionLegacyMainContainerElement : NSObject
+- (void)hideAllElements:(BOOL)hide exceptArray:(NSArray *)exceptArray;
+- (void)hideAllElements:(BOOL)hide;
+- (void)showAllElements;
+- (void)hideAllElements;
+- (void)appear;
+- (void)disAppear;
+@end
+
 @interface AWEFeedViewTemplateCell: UIView <BMMultipleDownloadDelegate>
 @property (nonatomic, strong) JGProgressHUD *hud;
 @property (nonatomic, assign) BOOL elementsHidden;
@@ -274,9 +283,14 @@
 
 @interface AWEAwemeBaseViewController: UIViewController
 @property(readonly, nonatomic) AWEAwemeModel *model;
+@property(nonatomic, strong) id interactionController;
 @end
 
 @interface TTKPhotoAlbumDetailCellController: UIViewController
+@property(readonly, nonatomic) AWEAwemeModel *model;
+@end
+
+@interface TTKPhotoAlbumFeedCellController: UIViewController
 @property(readonly, nonatomic) AWEAwemeModel *model;
 @end
 
@@ -422,14 +436,42 @@
 + (NSString *)carrierRegion;
 @end
 
-@interface AWEAwemeDetailTableViewCell: UIView
+@interface AWEAwemeDetailTableViewCell: UIView <BMMultipleDownloadDelegate>
+@property (nonatomic, strong) JGProgressHUD *hud;
+@property (nonatomic, assign) BOOL elementsHidden;
+@property (nonatomic, retain) NSString *fileextension;
+@property (nonatomic, retain) UIProgressView *progressView;
+@property (nonatomic, readonly) UIViewController *viewController;
+- (UIViewController *)viewController;
 - (void)addDownloadButton;
 - (void)addHideElementButton;
+- (void)downloadVideo:(id)sender;
+- (void)downloadHDVideo:(id)sender;
+- (void)downloadMusic:(id)sender;
+- (void)copyMusic:(id)sender;
+- (void)copyVideo:(id)sender;
+- (void)copyDecription:(id)sender;
+- (void)downloadPhotos:(id)sender photoIndex:(NSInteger)index;
+- (void)downloadPhotos:(id)sender;
 @end
 
-@interface TTKStoryDetailTableViewCell: UIView
+@interface TTKStoryDetailTableViewCell: UIView <BMMultipleDownloadDelegate>
+@property (nonatomic, strong) JGProgressHUD *hud;
+@property (nonatomic, assign) BOOL elementsHidden;
+@property (nonatomic, retain) NSString *fileextension;
+@property (nonatomic, retain) UIProgressView *progressView;
+@property (nonatomic, readonly) UIViewController *viewController;
+- (UIViewController *)viewController;
 - (void)addDownloadButton;
 - (void)addHideElementButton;
+- (void)downloadVideo:(id)sender;
+- (void)downloadHDVideo:(id)sender;
+- (void)downloadMusic:(id)sender;
+- (void)copyMusic:(id)sender;
+- (void)copyVideo:(id)sender;
+- (void)copyDecription:(id)sender;
+- (void)downloadPhotos:(id)sender photoIndex:(NSInteger)index;
+- (void)downloadPhotos:(id)sender;
 @end
 
 static inline BOOL is_iPad() {
