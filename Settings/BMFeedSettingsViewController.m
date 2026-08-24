@@ -31,7 +31,7 @@
     switch (section) {
         case 0: return 3;
         case 1: return 6;
-        case 2: return 7;
+        case 2: return 8;
         default: return 0;
     }
 }
@@ -54,13 +54,14 @@
         }
     } else if (indexPath.section == 2) {
         switch (indexPath.row) {
-            case 0: return [self createSwitchCellWithTitle:@"Ẩn phát trực tiếp trên bảng tin" Detail:@"Không hiển thị các phòng LIVE khi đang lướt Feed" Key:@"disable_live"];
-            case 1: return [self createSwitchCellWithTitle:@"Ẩn biểu tượng Phát/Tạm dừng" Detail:@"Ẩn icon hiệu ứng phát và tạm dừng che giữa màn hình" Key:@"hide_play_pause"];
-            case 2: return [self createSwitchCellWithTitle:@"Ẩn thanh điều hướng trên cùng" Detail:@"Ẩn các tab Dành cho bạn, Đang theo dõi, Cửa hàng ở đầu bảng tin" Key:@"hide_top_items"];
-            case 3: return [self createSwitchCellWithTitle:@"Mở app vào Đang theo dõi" Detail:@"Tự động chuyển sang tab Đang theo dõi khi vừa mở ứng dụng" Key:@"start_fyp_in_following"];
-            case 4: return [self createSwitchCellWithTitle:@"Khóa thao tác vuốt ngang" Detail:@"Chặn vuốt trái/phải để tránh nhảy nhầm sang camera hoặc trang cá nhân" Key:@"disable_swipe_in_fyp"];
-            case 5: return [self createSwitchCellWithTitle:@"Tắt kéo để làm mới" Detail:@"Vô hiệu hóa cử chỉ kéo xuống đầu trang để làm mới bảng tin" Key:@"pull_to_refresh"];
-            case 6: return [self createSwitchCellWithTitle:@"Tự động cuộn bảng tin" Detail:@"Tự động lướt sang video kế tiếp sau khi phát xong" Key:@"auto_scroll_feed"];
+            case 0: return [self createSwitchCellWithTitle:@"Nút ẩn toàn bộ giao diện (Pure Mode)" Detail:@"Thêm nút hình con mắt ở góc trên để ẩn/hiện toàn bộ nút bấm, caption và chỉ xem video tinh khiết" Key:@"remove_elements_button"];
+            case 1: return [self createSwitchCellWithTitle:@"Ẩn phát trực tiếp trên bảng tin" Detail:@"Không hiển thị các phòng LIVE khi đang lướt Feed" Key:@"disable_live"];
+            case 2: return [self createSwitchCellWithTitle:@"Ẩn biểu tượng Phát/Tạm dừng" Detail:@"Ẩn icon hiệu ứng phát và tạm dừng che giữa màn hình" Key:@"hide_play_pause"];
+            case 3: return [self createSwitchCellWithTitle:@"Ẩn thanh điều hướng trên cùng" Detail:@"Ẩn các tab Dành cho bạn, Đang theo dõi, Cửa hàng ở đầu bảng tin" Key:@"hide_top_items"];
+            case 4: return [self createSwitchCellWithTitle:@"Mở app vào Đang theo dõi" Detail:@"Tự động chuyển sang tab Đang theo dõi khi vừa mở ứng dụng" Key:@"start_fyp_in_following"];
+            case 5: return [self createSwitchCellWithTitle:@"Khóa thao tác vuốt ngang" Detail:@"Chặn vuốt trái/phải để tránh nhảy nhầm sang camera hoặc trang cá nhân" Key:@"disable_swipe_in_fyp"];
+            case 6: return [self createSwitchCellWithTitle:@"Tắt kéo để làm mới" Detail:@"Vô hiệu hóa cử chỉ kéo xuống đầu trang để làm mới bảng tin" Key:@"pull_to_refresh"];
+            case 7: return [self createSwitchCellWithTitle:@"Tự động cuộn bảng tin" Detail:@"Tự động lướt sang video kế tiếp sau khi phát xong" Key:@"auto_scroll_feed"];
         }
     }
     return [[UITableViewCell alloc] init];
