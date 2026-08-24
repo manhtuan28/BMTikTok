@@ -129,6 +129,7 @@
 @end
 
 @interface UIView (RCTViewUnmounting)
+@property(retain, nonatomic) id viewController;
 @property(retain, nonatomic) UIViewController *yy_viewController;
 @end
 
@@ -220,7 +221,8 @@
 
 @interface AWEPlayVideoPlayerController: NSObject
 @property (nonatomic, assign) BOOL isLoop;
-@property (nonatomic, strong) id container;
+@property (nonatomic, strong) UIViewController *container;
+- (UIViewController *)container;
 @end
 
 @interface TTKProfileBaseComponentModel: NSObject
@@ -251,13 +253,23 @@
 @interface AWELiveFeedEntranceView: UIView
 @end
 
-@interface AWEFeedViewTemplateCell: UIView
+@interface AWEFeedViewTemplateCell: UIView <BMMultipleDownloadDelegate>
 @property (nonatomic, strong) JGProgressHUD *hud;
 @property (nonatomic, assign) BOOL elementsHidden;
 @property (nonatomic, retain) NSString *fileextension;
 @property (nonatomic, retain) UIProgressView *progressView;
+@property (nonatomic, readonly) UIViewController *viewController;
+- (UIViewController *)viewController;
 - (void)addDownloadButton;
 - (void)addHideElementButton;
+- (void)downloadVideo:(id)sender;
+- (void)downloadHDVideo:(id)sender;
+- (void)downloadMusic:(id)sender;
+- (void)copyMusic:(id)sender;
+- (void)copyVideo:(id)sender;
+- (void)copyDecription:(id)sender;
+- (void)downloadPhotos:(id)sender photoIndex:(NSInteger)index;
+- (void)downloadPhotos:(id)sender;
 @end
 
 @interface AWEAwemeBaseViewController: UIViewController
