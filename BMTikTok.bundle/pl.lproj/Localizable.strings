@@ -1,0 +1,908 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>ALWAYS_OPEN_SAFARI</key>
+	<string>Zawsze otwieraj w Safari</string>
+	<key>About</key>
+	<string>O aplikacji</string>
+	<key>Actions</key>
+	<string>Akcje</string>
+	<key>Add Comment as Post</key>
+	<string>Dodaj komentarz jako post</string>
+	<key>Add Comment as Story</key>
+	<string>Dodaj komentarz jako relację</string>
+	<key>Add Folders To Inbox</key>
+	<string>Dodaj foldery do skrzynki</string>
+	<key>Add Translation Button</key>
+	<string>Dodaj przycisk tłumaczenia</string>
+	<key>Adjust offline download limit</key>
+	<string>Dostosuj limit pobierania offline</string>
+	<key>Adjust value between 50 and 2000</key>
+	<string>Ustaw wartość między 50 a 2000</string>
+	<key>All TikTok data has been cleared.</key>
+	<string>Wszystkie dane TikTok zostały wyczyszczone.</string>
+	<key>All TikTok data has been erased.</key>
+	<string>Wszystkie dane TikTok zostały usunięte.</string>
+	<key>All settings have been reset to default values.</key>
+	<string>Wszystkie ustawienia zostały przywrócone do ustawień domyślnych.</string>
+	<key>Anonymous Seen</key>
+	<string>Anonimowe przeglądanie</string>
+	<key>App Configuration</key>
+	<string>Konfiguracja aplikacji</string>
+	<key>App Lock</key>
+	<string>Blokada aplikacji</string>
+	<key>Apply</key>
+	<string>Zastosuj</string>
+	<key>Are you sure you want to clear all data? This will remove:
+1- TikTok's data directory
+2-all keychains
+3- clears all NSUserDefaults
+ 
+NOTICE!
+ YOU WILL LOSE YOUR DRAFTS AND ANYTHING SAVED LOCALLY.</key>
+	<string>Czy na pewno chcesz wyczyścić wszystkie dane? Spowoduje to usunięcie:
+1- katalogu danych TikTok
+2- wszystkich danych logowania (keychain)
+3- wyczyszczenie wszystkich NSUserDefaults
+
+UWAGA!
+STRACISZ WSZYSTKIE SZKICE I WSZYSTKIE DANE ZAPISANE LOKALNIE.</string>
+	<key>Are you sure you want to erase all TikTok data? This will clear all app data and cannot be undone.</key>
+	<string>Czy na pewno chcesz usunąć wszystkie dane TikTok? Spowoduje to wyczyszczenie wszystkich danych aplikacji i jest nieodwracalne.</string>
+	<key>Are you sure you want to reset all settings to default values? This action cannot be undone.</key>
+	<string>Czy na pewno chcesz zresetować wszystkie ustawienia do wartości domyślnych? Tej czynności nie można cofnąć.</string>
+	<key>Are you sure?</key>
+	<string>Jesteś pewien?</string>
+	<key>Auto Clear History</key>
+	<string>Automatyczne czyszczenie historii</string>
+	<key>Auto Play Next Video</key>
+	<string>Automatyczne odtwarzanie następnego filmu</string>
+	<key>Auto Unfold Comment Texts</key>
+	<string>Automatyczne rozwinięcie tekstów</string>
+	<key>BACKGROUND_PLAY</key>
+	<string>Włącz odtwarzanie w tle</string>
+	<key>BETA!</key>
+	<string>BETA!</string>
+	<key>BLOCK_AI_GENERATED</key>
+	<string>Blokuj posty wygenerowane przez AI</string>
+	<key>BLOCK_MOVIE_TOK</key>
+	<string>Blokuj reklamy filmów</string>
+	<key>BLOCK_POI</key>
+	<string>Blokuj reklamy lokalizacji</string>
+	<key>BLOCK_SHOP_VIDEOS</key>
+	<string>Blokuj posty ze sklepu</string>
+	<key>BLOCK_TCM</key>
+	<string>Blokuj reklamy aplikacji</string>
+	<key>BMTikTok Settings</key>
+	<string>Ustawienia BMTikTok</string>
+	<key>BMTikTok, Hi</key>
+	<string>BMTikTok, cześć</string>
+	<key>BYPASS_FOLLOW_LIST_SEARCH</key>
+	<string>Pomiń limit wyszukiwania na liście obserwujących</string>
+	<key>Back</key>
+	<string>Wróć</string>
+	<key>Backgrounding ✌️</key>
+	<string>Pobieranie filmów w tle ✌️</string>
+	<key>Block</key>
+	<string>Zablokuj</string>
+	<key>Buy Me a Coffee</key>
+	<string>Postaw mi kawę</string>
+	<key>Bypass Media Limit</key>
+	<string>Obejdż limit mediów</string>
+	<key>CONFIRM_QUICK_SHARE</key>
+	<string>Potwierdzenie szybkiego udostępnienia</string>
+	<key>CONFIRM_REPOST</key>
+	<string>Potwierdzenie reposta</string>
+	<key>Cancel</key>
+	<string>Anuluj</string>
+	<key>Cancelled</key>
+	<string>Anulowano</string>
+	<key>Change Action of Live Button</key>
+	<string>Zmień akcję przycisku Live</string>
+	<key>Change the behavior of the Live button</key>
+	<string>Zmień działanie przycisku Live</string>
+	<key>Changes will take effect after restarting the app</key>
+	<string>Zmiany zostaną zastosowane po ponownym uruchomieniu aplikacji</string>
+	<key>Chat Features</key>
+	<string>Funkcje czatu</string>
+	<key>Chat Settings</key>
+	<string>Ustawienia czatu</string>
+	<key>Choose export destination:</key>
+	<string>Wybierz miejsce eksportu:</string>
+	<key>Choose import source:</key>
+	<string>Wybierz źródło importu:</string>
+	<key>Clear</key>
+	<string>Wyczyść</string>
+	<key>Clear Keychain</key>
+	<string>Wyczyść dane logowania (keychain)</string>
+	<key>Close</key>
+	<string>Zamknij</string>
+	<key>Co-Owner</key>
+	<string>Współwłaściciel</string>
+	<key>Comment Cell Redesign</key>
+	<string>Odświeżony wygląd sekcji komentarzy</string>
+	<key>Comment Design</key>
+	<string>Design komentarzy</string>
+	<key>Comment Settings</key>
+	<string>Ustawienia komentarzy</string>
+	<key>Community</key>
+	<string>Społeczności</string>
+	<key>Compact</key>
+	<string>Kompaktowe</string>
+	<key>Configuration</key>
+	<string>Konfiguracja</string>
+	<key>Configuration Management</key>
+	<string>Zarządzanie konfiguracją</string>
+	<key>Configuration imported from keychain successfully.</key>
+	<string>Konfiguracja została pomyślnie zaimportowana z pęku kluczy.</string>
+	<key>Configuration imported successfully.</key>
+	<string>Konfiguracja zaimportowana pomyślnie.</string>
+	<key>Configuration saved to keychain successfully.</key>
+	<string>Konfiguracja została pomyślnie zapisana w pęku kluczy.</string>
+	<key>Configure Advanced Comment Settings</key>
+	<string>Konfiguruj zaawansowane ustawienia komentarzy</string>
+	<key>Confirm</key>
+	<string>Potwierdź</string>
+	<key>Confirm Clear</key>
+	<string>Potwierdź wyczyszczenie</string>
+	<key>Confirm Settings</key>
+	<string>Potwierdź ustawienia</string>
+	<key>Confirmation Settings</key>
+	<string>Ustawienia potwierdzenia</string>
+	<key>Content &amp; Display</key>
+	<string>Treść i wyświetlanie</string>
+	<key>Content Enhancement</key>
+	<string>Ulepszanie treści</string>
+	<key>Content Filtering</key>
+	<string>Filtrowanie treści</string>
+	<key>Content Interactions</key>
+	<string>Interakcje z treścią</string>
+	<key>Contributor</key>
+	<string>Współtwórca</string>
+	<key>Control video playback speed</key>
+	<string>Kontroluj prędkość odtwarzania filmów</string>
+	<key>Copy Description</key>
+	<string>Kopiuj opis</string>
+	<key>Copy Link</key>
+	<string>Kopiuj link</string>
+	<key>Copy Menu</key>
+	<string>Menu kopiowania</string>
+	<key>Copy Music Link</key>
+	<string>Kopiuj link do muzyki</string>
+	<key>Copy Video link</key>
+	<string>Kopiuj link do filmu</string>
+	<key>Copy bio</key>
+	<string>Kopiuj bio</string>
+	<key>Could Not Copy Music</key>
+	<string>Nie można skopiować muzyki</string>
+	<key>Credits</key>
+	<string>Podziękowania</string>
+	<key>DEVELOPER_SUPPORT</key>
+	<string>Wesprzyj BMTikTok i uzyskaj dostęp do grupy testów beta</string>
+	<key>DEVELOPER_TELEGRAM</key>
+	<string>Dołącz do kanału Telegram, aby otrzymywać najnowsze aktualizacje</string>
+	<key>DISABLE_ACTIVITY_STATUS_WARNING</key>
+	<string>Wyłączenie lub włączenie anonimowego statusu aktywności wymaga czasu, aby odzwierciedlić to na serwerach TikTok. Po włączeniu tej funkcji przez jakiś czas możesz nadal być widoczny jako online.</string>
+	<key>DISABLE_FEED_DOUBLE_TAP</key>
+	<string>Wyłącz podwójne dotknięcie w kanale</string>
+	<key>DISABLE_SCREENRECORDING_DETECTION</key>
+	<string>Wyłącz wykrywanie nagrywania ekranu</string>
+	<key>DISABLE_SCREENSHOT_DETECTION</key>
+	<string>Wyłącz wykrywanie zrzutów ekranu</string>
+	<key>DISABLE_STORY_DOUBLE_TAP</key>
+	<string>Wyłącz podwójne dotknięcie w relacjach</string>
+	<key>DISABLE_TYPING_STICKER</key>
+	<string>Wyłącz naklejkę podczas pisania</string>
+	<key>DISABLE_VISUAL_SEARCH_TAG</key>
+	<string>Wyłącz przycisk wyszukiwania wizualnego</string>
+	<key>DOWNLOADING_STICKER</key>
+	<string>Pobieranie naklejki...</string>
+	<key>DOWNLOAD_FAILED</key>
+	<string>Pobieranie nie powiodło się</string>
+	<key>DRM Developer</key>
+	<string>Deweloper DRM</string>
+	<key>Data Cleared</key>
+	<string>Dane wyczyszczone</string>
+	<key>Default</key>
+	<string>Domyślne</string>
+	<key>Delete</key>
+	<string>Usuń</string>
+	<key>Description Link Copied</key>
+	<string>Skopiowano link do opisu</string>
+	<key>Deselect All</key>
+	<string>Odznacz wszystko</string>
+	<key>Design Options</key>
+	<string>Opcje designu</string>
+	<key>Developer</key>
+	<string>Deweloper</string>
+	<key>Disable</key>
+	<string>Wyłącz</string>
+	<key>Disable AI-Generated Replies</key>
+	<string>Wyłącz odpowiedzi AI</string>
+	<key>Disable Comment Tooltip</key>
+	<string>Wyłącz podpowiedzi komentarzy</string>
+	<key>Disable Left &amp; Right Swipe</key>
+	<string>Wyłącz przesuwanie w lewo i prawo</string>
+	<key>Disable Live Streaming</key>
+	<string>Wyłącz transmisje na żywo</string>
+	<key>Disable Sensitive Content</key>
+	<string>Wyłącz treści wrażliwe</string>
+	<key>Disable Survey Popups</key>
+	<string>Wyłącz wyskakujące ankiety</string>
+	<key>Disable TikTok Rewards ADs</key>
+	<string>Wyłącz reklamy z nagrodami TikTok</string>
+	<key>Disable Typing Indicator</key>
+	<string>Wyłącz wskaźnik pisania</string>
+	<key>Disable Warnings</key>
+	<string>Wyłącz ostrzeżenia</string>
+	<key>Dislike Comment Confirmation</key>
+	<string>Potwierdzenie niepolubienia komentarza</string>
+	<key>Done</key>
+	<string>Gotowe</string>
+	<key>Download All Photos</key>
+	<string>Pobierz wszystkie zdjęcia</string>
+	<key>Download Button</key>
+	<string>Przycisk pobierania</string>
+	<key>Download HD Video</key>
+	<string>Pobierz film w HD</string>
+	<key>Download Music</key>
+	<string>Pobierz muzykę</string>
+	<key>Download Photo</key>
+	<string>Pobierz zdjęcie</string>
+	<key>Download Photos Menu</key>
+	<string>Menu pobierania zdjęć</string>
+	<key>Download Video</key>
+	<string>Pobierz film</string>
+	<key>Downloading</key>
+	<string>Pobieranie</string>
+	<key>Downloads &amp; Sharing</key>
+	<string>Pobieranie i udostępnianie</string>
+	<key>Downloads Menu</key>
+	<string>Menu pobierania</string>
+	<key>ENABLE_COMMENT_PHOTO</key>
+	<string>Zezwól na dodawanie zdjęć do komentarzy</string>
+	<key>ENABLE_COMMENT_STICKERS</key>
+	<string>Zezwól na dodawanie naklejek do komentarzy</string>
+	<key>ENABLE_STICKER_DOWNLOAD</key>
+	<string>Dotknij dwukrotnie, aby pobrać naklejkę</string>
+	<key>Edit</key>
+	<string>Edytuj</string>
+	<key>Emoji &amp; Interface</key>
+	<string>Emoji i interfejs</string>
+	<key>Enable</key>
+	<string>Włącz</string>
+	<key>Enable Comment Flags</key>
+	<string>Włącz flagi w komentarzach</string>
+	<key>Enable Comment Photos</key>
+	<string>Włącz zdjęcia w komentarzach</string>
+	<key>Enable Comment Stickers</key>
+	<string>Włącz naklejki w komentarzach</string>
+	<key>Enable Copy Without Username</key>
+	<string>Włącz kopiowanie bez nazwy użytkownika</string>
+	<key>Enable Egypt Stickers</key>
+	<string>Włącz egipskie naklejki</string>
+	<key>Enable Embeded Links</key>
+	<string>Włącz klikalne linki</string>
+	<key>Enable Fake Changes</key>
+	<string>Włącz fałszywe zmiany</string>
+	<key>Enable Flex</key>
+	<string>Włącz Flex</string>
+	<key>Enable Live Button Function</key>
+	<string>Włącz funkcję przycisku Live</string>
+	<key>Enable Oled Keyboard</key>
+	<string>Włącz klawiaturę OLED</string>
+	<key>Enable Persistent Playback Speed.</key>
+	<string>Włącz trwałą prędkość odtwarzania.</string>
+	<key>Enable Pin Chat</key>
+	<string>Włącz przypinanie czatów</string>
+	<key>Enable Playback Speed</key>
+	<string>Włącz prędkość odtwarzania</string>
+	<key>Enable Region Changing</key>
+	<string>Włącz zmianę regionu</string>
+	<key>Enable Region Changing Functionality</key>
+	<string>Włącz funkcję zmiany regionu</string>
+	<key>Enable Small Emoji</key>
+	<string>Włącz małe emoji</string>
+	<key>Enable Streaks</key>
+	<string>Włącz serie (streaks)</string>
+	<key>Enable Text To Reposts</key>
+	<string>Włącz tekst do repostów</string>
+	<key>Enable Voice Messages</key>
+	<string>Włącz wiadomości głosowe</string>
+	<key>Enable region changing to access content from different regions</key>
+	<string>Włącz zmianę regionu, aby uzyskać dostęp do treści z różnych regionów</string>
+	<key>Enhanced Comments Features</key>
+	<string>Rozszerzone funkcje komentarzy</string>
+	<key>Erase</key>
+	<string>Usuń</string>
+	<key>Erase All Data</key>
+	<string>Usuń wszystkie dane</string>
+	<key>Erase All TikTok Data</key>
+	<string>Wyczyść wszystkie dane TikToka</string>
+	<key>Erase all TikTok data from the app  [Becareful!!!]</key>
+	<string>Wyczyść wszystkie dane aplikacji [OSTROŻNIE!!!]</string>
+	<key>Error</key>
+	<string>Błąd</string>
+	<key>Export Configuration</key>
+	<string>Eksportuj konfigurację</string>
+	<key>Export settings to a file</key>
+	<string>Eksportuj ustawienia do pliku</string>
+	<key>Export to File</key>
+	<string>Eksportuj do pliku</string>
+	<key>Extended Comments</key>
+	<string>Rozszerzone komentarze</string>
+	<key>Extracting Media URL…</key>
+	<string>Wyodrębnianie adresu URL multimediów…</string>
+	<key>FEATURE_ADD_COMMENT_POST</key>
+	<string>Włącz publikowanie komentarzy jako postów</string>
+	<key>FEATURE_ADD_COMMENT_STORY</key>
+	<string>Włącz publikowanie komentarzy jako relacji</string>
+	<key>FEATURE_ADD_FOLDERS</key>
+	<string>Dodaj organizację wiadomości w skrzynce do folderów</string>
+	<key>FEATURE_ADD_FOLDERS_DESC</key>
+	<string>Organizuj wiadomości w skrzynce w niestandardowe foldery dla lepszego zarządzania</string>
+	<key>FEATURE_ADD_TRANSLATION</key>
+	<string>Dodaj przycisk tłumaczenia do komentarzy</string>
+	<key>FEATURE_ALWAYS_OPEN_SAFARI</key>
+	<string>Zawsze otwiera linki w Safari zamiast w przeglądarce wbudowanej w aplikację</string>
+	<key>FEATURE_ANONYMOUS_SEEN</key>
+	<string>Przeglądaj czaty bez wiedzy drugiej osoby</string>
+	<key>FEATURE_ANONYMOUS_SEEN_DESC</key>
+	<string>Przeglądaj czaty bez wysyłania potwierdzeń przeczytania do nadawcy</string>
+	<key>FEATURE_APP_LOCK</key>
+	<string>Dodaje możliwość blokowania TikToka hasłem</string>
+	<key>FEATURE_APP_LOCK_DESC</key>
+	<string>Zabezpiecz swoją aplikację TikTok hasłem lub uwierzytelnianiem biometrycznym</string>
+	<key>FEATURE_AUTO_CLEAR</key>
+	<string>Automatycznie czyści historię wyszukiwania co 60 sekund</string>
+	<key>FEATURE_AUTO_PLAY</key>
+	<string>Włącza automatyczne przewijanie filmów</string>
+	<key>FEATURE_AUTO_UNFOLD</key>
+	<string>Automatycznie rozwiń teksty komentarzy</string>
+	<key>FEATURE_BACKGROUND_PLAY</key>
+	<string>Włącza odtwarzanie dźwięku w tle</string>
+	<key>FEATURE_BLOCK_AI_GENERATED</key>
+	<string>Blokuje posty z oznaczeniem 'Zawiera treści generowane przez AI'</string>
+	<key>FEATURE_BLOCK_MOVIE_TOK</key>
+	<string>Blokuje filmy z reklamami filmów</string>
+	<key>FEATURE_BLOCK_POI</key>
+	<string>Blokuj filmy z reklamami lokalizacji</string>
+	<key>FEATURE_BLOCK_SHOP_ADS</key>
+	<string>Blokuj filmy z reklamami sklepu</string>
+	<key>FEATURE_BLOCK_SHOP_VIDEOS</key>
+	<string>Usuwa posty ze sklepu z kanału.</string>
+	<key>FEATURE_BLOCK_TCM</key>
+	<string>Blokuj filmy z reklamami aplikacji</string>
+	<key>FEATURE_BYPASS_FOLLOW_LIST_SEARCH</key>
+	<string>Umożliwia wyszukiwanie na liście obserwujących, nawet jeśli użytkownik ma ponad 5000 obserwujących</string>
+	<key>FEATURE_BYPASS_MEDIA_LIMIT</key>
+	<string>Obchodzi limit mediów w czacie (Domyślnie: 9 zdjęć, 1 min filmu)</string>
+	<key>FEATURE_COMMENT_REDESIGN</key>
+	<string>Włącz odświeżony wygląd sekcji komentarzy</string>
+	<key>FEATURE_CONFIRM_COMMENT_DISLIKE</key>
+	<string>Pokazuje potwierdzenie niepolubienia komentarza</string>
+	<key>FEATURE_CONFIRM_COMMENT_LIKE</key>
+	<string>Pokazuje potwierdzenie polubienia komentarza</string>
+	<key>FEATURE_CONFIRM_FOLLOW</key>
+	<string>Pokazuje potwierdzenie obserwacji użytkownika</string>
+	<key>FEATURE_CONFIRM_LIKE</key>
+	<string>Pokazuje potwierdzenie polubienia filmu</string>
+	<key>FEATURE_CONFIRM_QUICK_SHARE</key>
+	<string>Prosi o potwierdzenie przed użyciem szybkiego udostępniania</string>
+	<key>FEATURE_CONFIRM_REPOST</key>
+	<string>Prosi o potwierdzenie przed ponownym opublikowaniem filmu</string>
+	<key>FEATURE_COPY_WITHOUT_USERNAME</key>
+	<string>Kopiuj komentarze bez 'Nazwa użytkownika: '</string>
+	<key>FEATURE_DISABLE_AI_REPLIES</key>
+	<string>Wyłącz odpowiedzi generowane przez AI na wysłane posty</string>
+	<key>FEATURE_DISABLE_COMMENT_TOOLTIP</key>
+	<string>Wyłącz podpowiedzi w komentarzach</string>
+	<key>FEATURE_DISABLE_FEED_DOUBLE_TAP</key>
+	<string>Wyłącza podwójne dotknięcie, aby polubić w kanale</string>
+	<key>FEATURE_DISABLE_LIVE</key>
+	<string>Ukrywa transmisje na żywo w kanale</string>
+	<key>FEATURE_DISABLE_REWARDS_ADS</key>
+	<string>Ukrywa reklamy z nagrodami TikTok w kanale</string>
+	<key>FEATURE_DISABLE_SCREENRECORDING_DETECTION</key>
+	<string>Wyłącza wykrywanie nagrywania ekranu w czatach</string>
+	<key>FEATURE_DISABLE_SCREENSHOT_DETECTION</key>
+	<string>Wyłącza wykrywanie zrzutów ekranu w czatach</string>
+	<key>FEATURE_DISABLE_SENSITIVE</key>
+	<string>Ukrywa ostrzeżenia o nieodpowiednich treściach</string>
+	<key>FEATURE_DISABLE_STORY_DOUBLE_TAP</key>
+	<string>Wyłącza podwójne dotknięcie, aby polubić w relacjach</string>
+	<key>FEATURE_DISABLE_SURVEY</key>
+	<string>Wyłącz irytujące pytania ankietowe w kanale</string>
+	<key>FEATURE_DISABLE_SWIPE</key>
+	<string>Wyłącz przesuwanie w lewo i prawo w kanale</string>
+	<key>FEATURE_DISABLE_TYPING</key>
+	<string>Pisz anonimowo, inni nie będą widzieć że właśnie piszesz</string>
+	<key>FEATURE_DISABLE_TYPING_STICKER</key>
+	<string>Wyłącz automatyczne rekomendacje GIF-ów podczas pisania</string>
+	<key>FEATURE_DISABLE_VISUAL_SEARCH_TAG</key>
+	<string>Wyłącza przycisk 'Wyszukiwanie wizualne' w kanale podczas zatrzymywania wideo</string>
+	<key>FEATURE_DISABLE_WARNINGS</key>
+	<string>Ukrywa ostrzeżenia TikTok</string>
+	<key>FEATURE_DOWNLOAD_BUTTON</key>
+	<string>Włącza przycisk pobierania dla postów i relacji</string>
+	<key>FEATURE_EMBED_LINKS</key>
+	<string>Włącz osadzone linki podczas kopiowania linku</string>
+	<key>FEATURE_ENABLE_COMMENT_FLAGS</key>
+	<string>Pokaż flagę regionu komentującego</string>
+	<key>FEATURE_ENABLE_FLEX</key>
+	<string>Tylko dla deweloperów, NIE DOTYKAJ jeśli nie wiesz, co to robi</string>
+	<key>FEATURE_ENABLE_STICKER_DOWNLOAD</key>
+	<string>Umożliwia pobieranie naklejek w komentarzach</string>
+	<key>FEATURE_ENABLE_STREAKS</key>
+	<string>Włącz serie (streaks) ze znajomymi</string>
+	<key>FEATURE_ENABLE_TEXT_TO_REPOSTS</key>
+	<string>Włącz dodawanie tekstów do swoich repostów</string>
+	<key>FEATURE_EXTENDED_COMMENTS</key>
+	<string>Zwiększa limit znaków w komentarzach</string>
+	<key>FEATURE_FAKE_CHANGES</key>
+	<string>Włącza fałszowanie danych profilu</string>
+	<key>FEATURE_FAKE_VERIFIED</key>
+	<string>Pokazuje fałszywą odznakę weryfikacji</string>
+	<key>FEATURE_FOLLOWER_COUNT</key>
+	<string>Wprowadź fałszywą liczbę obserwujących</string>
+	<key>FEATURE_FOLLOWING_COUNT</key>
+	<string>Wprowadź fałszywą liczbę obserwowanych</string>
+	<key>FEATURE_FULL_REGION_MODE</key>
+	<string>Włącz tylko jeśli pierwsza opcja nie działa!!</string>
+	<key>FEATURE_HIDE_ACTIVITY_STATUS</key>
+	<string>Ukrywa Twój status 'Ostatnio aktywny' i 'Online' na czatach</string>
+	<key>FEATURE_HIDE_ADS</key>
+	<string>Ukrywa reklamy w kanale</string>
+	<key>FEATURE_HIDE_COMMISSION_POSTS</key>
+	<string>Ukryj sponsorowane filmy z prowizją</string>
+	<key>FEATURE_HIDE_DANGEROUS_ACTION</key>
+	<string>Ukryj irytujące ostrzeżenia pod filmami sportowymi</string>
+	<key>FEATURE_HIDE_EMOJI</key>
+	<string>Ukryj pasek emoji w komentarzach</string>
+	<key>FEATURE_HIDE_FRIENDS_BADGE</key>
+	<string>Ukryj odznakę powiadomień znajomych</string>
+	<key>FEATURE_HIDE_INBOX_BADGE</key>
+	<string>Ukryj odznakę powiadomień skrzynki (Przychodzące)</string>
+	<key>FEATURE_HIDE_PLAY_PAUSE</key>
+	<string>Ukryj widok play/pause w kanale</string>
+	<key>FEATURE_HIDE_PLUS_BTN</key>
+	<string>Ukryj przycisk kamery (plus po środku ekranu na dole) </string>
+	<key>FEATURE_HIDE_REPORT_BUTTON</key>
+	<string>Ukryj przycisk zgłaszania na pasku nawigacyjnym w wiadomościach bezpośrednich.</string>
+	<key>FEATURE_HIDE_STREAK_PET</key>
+	<string>Ukryj zwierzątko serii</string>
+	<key>FEATURE_HIDE_TAB_BAR_LABELS</key>
+	<string>Ukrywa etykiety na pasku zakładek</string>
+	<key>FEATURE_HIDE_TOP_ITEMS</key>
+	<string>Ukrywa przycisk wyszukiwania, LIVE i inne (Dla Ciebie, Obserwowani, Sklep itp...)</string>
+	<key>FEATURE_LIKE_COUNT</key>
+	<string>Pokazuje liczbę polubień wiadomości</string>
+	<key>FEATURE_LOOP_STORY_VIDEOS</key>
+	<string>Zapętla filmy w relacjach</string>
+	<key>FEATURE_MARK_SEEN_ON_REPLY</key>
+	<string>Oznacza wiadomości jako wyświetlone po udzieleniu na nie odpowiedzi</string>
+	<key>FEATURE_MASS_UNFOLD</key>
+	<string>Masowo rozwiń wszystkie odpowiedzi na komentarze</string>
+	<key>FEATURE_MULTI_EMOJI</key>
+	<string>Włącz pasek emoji podczas komentowania</string>
+	<key>FEATURE_OLED_KEYBOARD</key>
+	<string>Działa tylko z ciemnym motywem</string>
+	<key>FEATURE_PAD_AUTO_SCROLL</key>
+	<string>Włącza natywne automatyczne przewijanie postów TikTok dla nieobsługiwanych regionów</string>
+	<key>FEATURE_PIN_CHATS</key>
+	<string>Przypnij ulubione czaty na górze</string>
+	<key>FEATURE_POST_STATS</key>
+	<string>Pokaż przycisk menu statystyk postów w sekcji pobierania</string>
+	<key>FEATURE_PROFILE_COPY</key>
+	<string>Kopiuje informacje o profilu</string>
+	<key>FEATURE_PROFILE_COPY_DESC</key>
+	<string>Kopiuj szczegóły profilu, w tym nazwę użytkownika, bio i inne publiczne informacje</string>
+	<key>FEATURE_PROFILE_SAVE</key>
+	<string>Zapisuje informacje o profilu do schowka</string>
+	<key>FEATURE_PROFILE_SAVE_DESC</key>
+	<string>Zapisz informacje o profilu do schowka jednym dotknięciem</string>
+	<key>FEATURE_PROGRESS_BAR</key>
+	<string>Pokazuje pasek czasu pod każdym filmem</string>
+	<key>FEATURE_PULL_TO_CAMERA</key>
+	<string>Włącz przeciąganie, aby otworzyć kamerę</string>
+	<key>FEATURE_REGIONS_DESC</key>
+	<string>Uzyskaj dostęp do treści specyficznych dla regionu, zmieniając swoją wirtualną lokalizację</string>
+	<key>FEATURE_REMOVE_DRAFT_WATERMARK</key>
+	<string>Usuwa znak wodny podczas zapisywania postów lub szkiców</string>
+	<key>FEATURE_REMOVE_PENDANT</key>
+	<string>Usuń irytujący widok reklamy w lewym górnym rogu ekranu (tylko w niektórych regionach)</string>
+	<key>FEATURE_REMOVE_TIKTOK_AI_BUTTON</key>
+	<string>Usuwa przycisk TikTok AI (tako) ze strony 'Dla Ciebie'</string>
+	<key>FEATURE_REMOVE_WATERMARK</key>
+	<string>Usuwa znak wodny (animowane logo TikTok i nazwę użytkownika) z pobranych mediów</string>
+	<key>FEATURE_RUSSIAN_FIX</key>
+	<string>Włącz to, aby ponownie uruchomić rosyjski kanał [NOWOŚĆ!]</string>
+	<key>FEATURE_SAVE_DM_MEDIA</key>
+	<string>Dodaje przycisk pobierania do multimediów wysyłanych w wiadomościach prywatnych</string>
+	<key>FEATURE_SHARE_SHEET</key>
+	<string>Otwiera menu udostępniania po pobraniu mediów</string>
+	<key>FEATURE_SHOW_ALL_TABS</key>
+	<string>Pokaż wszystkie ukryte zakładki ustawień [Beta!]</string>
+	<key>FEATURE_SHOW_ALL_TABS_DESC</key>
+	<string>Pokaż wszystkie ukryte zakładki ustawień, w tym funkcje eksperymentalne</string>
+	<key>FEATURE_SHOW_USERNAMES</key>
+	<string>Zastępuje pseudonimy tagami</string>
+	<key>FEATURE_SHOW_VIDEO_TIMESTAMP</key>
+	<string>Pokaż czas przesłania obok nazwy użytkownika w Dla Ciebie</string>
+	<key>FEATURE_SKIP_RECOMMENDED</key>
+	<string>Usuwa rekomendacje znajomych itp.</string>
+	<key>FEATURE_SMALL_EMOJI</key>
+	<string>Włącz wysyłanie małych emoji</string>
+	<key>FEATURE_START_FYP_IN_FOLLOWING</key>
+	<string>Uruchamia TikTok w zakładce 'Obserwowani' zamiast 'Dla Ciebie'</string>
+	<key>FEATURE_STOP_PLAYBACK</key>
+	<string>Zatrzymuje odtwarzanie filmu po jego zakończeniu</string>
+	<key>FEATURE_STOP_STORY_PHOTO_ADVANCE</key>
+	<string>Zatrzymuje automatyczne przechodzenie do następnego zdjęcia w relacjach</string>
+	<key>FEATURE_STORY_LIKE_CONFIRMATION</key>
+	<string>Prosi o potwierdzenie przed polubieniem relacji</string>
+	<key>FEATURE_STREAK_INFO</key>
+	<string>Pokazuje informacje o bieżącej serii po dotknięciu ikony płomienia</string>
+	<key>FEATURE_TRANSPARENT_COMMENTS</key>
+	<string>Uczynia sekcję komentarzy przezroczystą</string>
+	<key>FEATURE_UI_BUTTON</key>
+	<string>Pokazuje lub ukrywa przycisk UI</string>
+	<key>FEATURE_UPLOAD_DATE</key>
+	<string>Pokazuje datę przesłania</string>
+	<key>FEATURE_UPLOAD_HD</key>
+	<string>Włącza przesyłanie w HD</string>
+	<key>FEATURE_UPLOAD_REGION</key>
+	<string>Pokazuje flagę regionu przesyłania obok nazwy użytkownika</string>
+	<key>FEATURE_USER_POST_COUNT</key>
+	<string>Pokazuje liczbę przesłanych filmów</string>
+	<key>FEATURE_VIEW_PROFILES_ANONYMOUS</key>
+	<string>Wyłącza śledzenie wyświetleń profilu</string>
+	<key>FEATURE_VOICE_MESSAGES</key>
+	<string>Włącz wysyłanie wiadomości głosowych w czacie</string>
+	<key>FILTERING_OPTIONS</key>
+	<string>Opcje filtrowania</string>
+	<key>Failed to fetch HD video URL. Please try again.</key>
+	<string>Nie udało się pobrać adresu URL wideo HD. Spróbuj ponownie.</string>
+	<key>Failed to save media</key>
+	<string>Nie udało się zapisać mediów</string>
+	<key>Fake Verified</key>
+	<string>Fałszywa weryfikacja</string>
+	<key>Features list</key>
+	<string>Lista funkcji</string>
+	<key>Feed</key>
+	<string>Strona Główna</string>
+	<key>Feed Settings</key>
+	<string>Ustawienia strony głównej</string>
+	<key>File selection was cancelled.</key>
+	<string>Wybór pliku został anulowany.</string>
+	<key>Follow Confirmation</key>
+	<string>Potwierdzenie obserwacji</string>
+	<key>Follower</key>
+	<string>Obserwujący</string>
+	<key>Following</key>
+	<string>Obserwowani</string>
+	<key>Full Region Mode</key>
+	<string>Tryb pełnego regionu</string>
+	<key>Get the latest updates and news</key>
+	<string>Otrzymuj najnowsze aktualizacje i wiadomości</string>
+	<key>HIDE_ACTIVITY_STATUS</key>
+	<string>Ukryj status aktywności</string>
+	<key>HIDE_REPORT_BUTTON</key>
+	<string>Ukryj przycisk zgłaszania</string>
+	<key>Hide</key>
+	<string>Ukryj</string>
+	<key>Hide Ads</key>
+	<string>Ukryj reklamy</string>
+	<key>Hide Commission Posts</key>
+	<string>Ukryj posty z prowizją</string>
+	<key>Hide Emoji-Bar</key>
+	<string>Ukryj pasek emoji</string>
+	<key>Hide Friends Badge</key>
+	<string>Ukryj zakładkę Znajomi</string>
+	<key>Hide Inbox Badge</key>
+	<string>Ukryj licznik powiadomień w zakładce Przychodzące</string>
+	<key>Hide Play/Pause Button</key>
+	<string>Ukryj przycisk odtwarzania/pauzy</string>
+	<key>Hide Plus Button</key>
+	<string>Ukryj przycisk obserwowania</string>
+	<key>Hide Streak Pet</key>
+	<string>Ukryj zwierzątko serii</string>
+	<key>Hide Tab Bar Labels</key>
+	<string>Ukryj etykiety paska zakładek</string>
+	<key>Hide Top Feed items</key>
+	<string>Ukryj górne elementy strony głównej</string>
+	<key>Hide dangerous-action Warning</key>
+	<string>Ukryj ostrzeżenia o niebezpiecznych akcjach</string>
+	<key>Import Configuration</key>
+	<string>Importuj konfigurację</string>
+	<key>Import from File</key>
+	<string>Importuj z pliku</string>
+	<key>Import from Keychain</key>
+	<string>Importuj z pęku kluczy (Keychain)</string>
+	<key>Import settings from a file</key>
+	<string>Importuj ustawienia z pliku</string>
+	<key>Invalid download URL received.</key>
+	<string>Otrzymano nieprawidłowy adres URL do pobrania.</string>
+	<key>Join the community discussion</key>
+	<string>Dołącz do dyskusji społeczności</string>
+	<key>LOOP_STORY_VIDEOS</key>
+	<string>Zapętlaj filmy w relacjach</string>
+	<key>Language</key>
+	<string>Język</string>
+	<key>Language Changed</key>
+	<string>Język zmieniony</string>
+	<key>Language 🌎</key>
+	<string>Język 🌎</string>
+	<key>Like Comment Confirmation</key>
+	<string>Potwierdzenie polubienia komentarza</string>
+	<key>Like Confirmation</key>
+	<string>Potwierdzenie polubienia</string>
+	<key>Live Actions</key>
+	<string>Akcje na żywo</string>
+	<key>Live Button Actions</key>
+	<string>Akcje przycisku Live</string>
+	<key>Live Button Function</key>
+	<string>Funkcja przycisku Live</string>
+	<key>Live Button Function Disabled</key>
+	<string>Funkcja przycisku Live wyłączona</string>
+	<key>Live Button Settings</key>
+	<string>Ustawienia przycisku Live</string>
+	<key>Loading</key>
+	<string>Ładowanie</string>
+	<key>MARK_SEEN_ON_REPLY</key>
+	<string>Oznacz jako wyświetlone po odpowiedzi</string>
+	<key>Main Developer, Owner</key>
+	<string>Główny deweloper, właściciel</string>
+	<key>Mass Unfold Comment Replies</key>
+	<string>Masowe rozwinięcie odpowiedzi</string>
+	<key>Modern</key>
+	<string>Nowoczesne</string>
+	<key>More Options</key>
+	<string>Więcej opcji</string>
+	<key>Multi Emoji Comment Bar</key>
+	<string>Pasek z emotikonami w komentarzach</string>
+	<key>Music Link Copied</key>
+	<string>Skopiowano link do muzyki</string>
+	<key>Navigation &amp; Interaction</key>
+	<string>Nawigacja i interakcja</string>
+	<key>Next</key>
+	<string>Dalej</string>
+	<key>No</key>
+	<string>Nie</string>
+	<key>No Backup</key>
+	<string>Brak kopii zapasowej</string>
+	<key>No backup found</key>
+	<string>Nie znaleziono kopii zapasowej</string>
+	<key>No internet connection</key>
+	<string>Brak połączenia z internetem</string>
+	<key>No settings backup found in keychain.</key>
+	<string>Nie znaleziono kopii zapasowej ustawień w pęku kluczy.</string>
+	<key>Not Selected</key>
+	<string>Nie wybrano</string>
+	<key>Notification Badges</key>
+	<string>Plakietki powiadomień</string>
+	<key>OFF</key>
+	<string>WYŁ.</string>
+	<key>OK</key>
+	<string>OK</string>
+	<key>ON</key>
+	<string>WŁ.</string>
+	<key>OTHER_OPTIONS</key>
+	<string>Inne opcje</string>
+	<key>Organization &amp; Management</key>
+	<string>Organizacja i zarządzanie</string>
+	<key>Other</key>
+	<string>Inne</string>
+	<key>Other Settings</key>
+	<string>Inne ustawienia</string>
+	<key>PAD_AUTO_SCROLL</key>
+	<string>Domyślne automatyczne przewijanie</string>
+	<key>Photo saved successfully</key>
+	<string>Zdjęcie zostało pomyślnie zapisane</string>
+	<key>Playback Controls</key>
+	<string>Kontrolki odtwarzania</string>
+	<key>Playback Speed</key>
+	<string>Prędkość odtwarzania</string>
+	<key>Playback Speed Disabled</key>
+	<string>Prędkość odtwarzania wyłączona</string>
+	<key>Playback Speed Settings</key>
+	<string>Ustawienia prędkości odtwarzania</string>
+	<key>Please enable Live Button Function first</key>
+	<string>Najpierw włącz funkcję przycisku Live</string>
+	<key>Please enable Playback Speed first</key>
+	<string>Najpierw włącz prędkość odtwarzania</string>
+	<key>Please enable region changing first</key>
+	<string>Najpierw włącz zmianę regionu</string>
+	<key>Please restart the app to apply changes, May require two app restarts!</key>
+	<string>Uruchom ponownie aplikację, aby zastosować zmiany. Może być wymagane dwukrotne uruchomienie!</string>
+	<key>Post Info</key>
+	<string>Informacje o poście</string>
+	<key>Post Stats</key>
+	<string>Statystyki postów</string>
+	<key>Privacy &amp; Security</key>
+	<string>Prywatność i bezpieczeństwo</string>
+	<key>Processing...</key>
+	<string>Przetwarzanie...</string>
+	<key>Profile</key>
+	<string>Profil</string>
+	<key>Profile Actions</key>
+	<string>Akcje profilu</string>
+	<key>Profile Copy</key>
+	<string>Kopiuj profil</string>
+	<key>Profile Customization</key>
+	<string>Personalizacja profilu</string>
+	<key>Profile Enhancement</key>
+	<string>Ulepszenia profilu</string>
+	<key>Profile Save</key>
+	<string>Zapisz profil</string>
+	<key>Profile Settings</key>
+	<string>Ustawienia profilu</string>
+	<key>Pull To Camera</key>
+	<string>Otwórz kamerę przeciągnięciem</string>
+	<key>REMOVE_DRAFT_WATERMARK</key>
+	<string>Usuń znak wodny ze zdjęć</string>
+	<key>REMOVE_TIKTOK_AI_BUTTON</key>
+	<string>Usuń przycisk TikTok AI</string>
+	<key>RUSSIAN_FIX</key>
+	<string>Obejście blokady w Rosji</string>
+	<key>Really Clear All Data?</key>
+	<string>Czy na pewno chcesz wyczyścić wszystkie dane?</string>
+	<key>Region</key>
+	<string>Region</string>
+	<key>Region Changing Disabled</key>
+	<string>Zmiana regionu wyłączona</string>
+	<key>Region Settings</key>
+	<string>Ustawienia regionu</string>
+	<key>Regions</key>
+	<string>Regiony</string>
+	<key>Remove Pendant View</key>
+	<string>Usuń PiP</string>
+	<key>Remove Watermark</key>
+	<string>Usuń znak wodny</string>
+	<key>Report</key>
+	<string>Zgłoś</string>
+	<key>Reset</key>
+	<string>Resetuj</string>
+	<key>Reset All Settings</key>
+	<string>Resetuj wszystkie ustawienia</string>
+	<key>Reset Settings</key>
+	<string>Resetuj ustawienia</string>
+	<key>Reset all settings to default values</key>
+	<string>Przywróć ustawienia domyślne</string>
+	<key>SAVE_DM_MEDIA</key>
+	<string>Zapisuj multimedia z wiadomości prywatnych</string>
+	<key>STICKER_SAVED</key>
+	<string>Naklejka zapisana w galerii!</string>
+	<key>STICKER_SAVE_FAILED</key>
+	<string>Nie udało się zapisać naklejki</string>
+	<key>STOP_STORY_PHOTO_ADVANCE</key>
+	<string>Zatrzymaj automatyczne przewijanie zdjęć w relacjach</string>
+	<key>STORY_LIKE_CONFIRMATION</key>
+	<string>Potwierdzenie polubienia relacji</string>
+	<key>Save</key>
+	<string>Zapisz</string>
+	<key>Save to Keychain</key>
+	<string>Zapisz w pęku kluczy (Keychain)</string>
+	<key>Saved!</key>
+	<string>Zapisano!</string>
+	<key>Search</key>
+	<string>Szukaj</string>
+	<key>Select Action</key>
+	<string>Wybierz akcję</string>
+	<key>Select All</key>
+	<string>Zaznacz wszystko</string>
+	<key>Select App Language</key>
+	<string>Wybierz język aplikacji</string>
+	<key>Select Design</key>
+	<string>Wybierz design</string>
+	<key>Select Speed</key>
+	<string>Wybierz prędkość</string>
+	<key>Selected Action</key>
+	<string>Wybrana akcja</string>
+	<key>Selected Region</key>
+	<string>Wybrany region</string>
+	<key>Selected Speed</key>
+	<string>Wybrana prędkość</string>
+	<key>Settings</key>
+	<string>Ustawienia</string>
+	<key>Settings Reset</key>
+	<string>Ustawienia zresetowane</string>
+	<key>Share</key>
+	<string>Udostępnij</string>
+	<key>Share Sheet</key>
+	<string>Menu udostępniania</string>
+	<key>Show</key>
+	<string>Pokaż</string>
+	<key>Show All Settings Tabs</key>
+	<string>Pokaż wszystkie zakładki ustawień</string>
+	<key>Show Progress Bar</key>
+	<string>Pokaż pasek postępu</string>
+	<key>Show Usernames</key>
+	<string>Pokaż nazwy użytkowników</string>
+	<key>Show Video Upload Timestamp</key>
+	<string>Pokaż czas przesłania filmu</string>
+	<key>Show/Hide UI Button</key>
+	<string>Pokaż/ukryj przycisk UI</string>
+	<key>Skip Recommendations</key>
+	<string>Pomiń rekomendacje</string>
+	<key>Social Actions</key>
+	<string>Akcje społecznościowe</string>
+	<key>Special Thanks to</key>
+	<string>Specjalne podziękowania dla</string>
+	<key>Speeds</key>
+	<string>Prędkości</string>
+	<key>Start TikTok in Following</key>
+	<string>Uruchom TikTok w zakładce 'Obserwowani'</string>
+	<key>Stats Menu</key>
+	<string>Menu statystyk</string>
+	<key>Stop Playback</key>
+	<string>Zatrzymaj odtwarzanie</string>
+	<key>Streak Info</key>
+	<string>Informacje o serii</string>
+	<key>Success</key>
+	<string>Sukces</string>
+	<key>Support</key>
+	<string>Wsparcie</string>
+	<key>Support the development</key>
+	<string>Wesprzyj rozwój</string>
+	<key>System Features</key>
+	<string>Funkcje systemowe</string>
+	<key>Tab Bar Configurations</key>
+	<string>Konfiguracje paska nawigacyjnego</string>
+	<key>Tab Bar Elements</key>
+	<string>Elementy paska kart</string>
+	<key>Tab Bar Settings</key>
+	<string>Ustawienia paska nawigacyjnego</string>
+	<key>Tap to Join the Telegram</key>
+	<string>Dotknij, aby dołączyć do Telegrama</string>
+	<key>Telegram Channel</key>
+	<string>Kanał Telegram</string>
+	<key>Telegram Discussion Group</key>
+	<string>Grupa dyskusyjna Telegram</string>
+	<key>Text &amp; Display Options</key>
+	<string>Opcje tekstu i wyświetlania</string>
+	<key>This is your final warning. This action is irreversible and will delete all local TikTok data, including drafts and settings. Are you absolutely sure?</key>
+	<string>To ostatnie ostrzeżenie. Ta operacja jest nieodwracalna i usunie wszystkie lokalne dane TikTok, w tym szkice i ustawienia. Czy jesteś absolutnie pewien?</string>
+	<key>Transparent Comments</key>
+	<string>Przezroczyste komentarze</string>
+	<key>UI Designer</key>
+	<string>Projektant UI</string>
+	<key>Unfollow</key>
+	<string>Przestań obserwować</string>
+	<key>Upload HD</key>
+	<string>Przesyłaj w HD</string>
+	<key>Upload Region</key>
+	<string>Region przesyłania</string>
+	<key>User Post Count</key>
+	<string>Liczba postów użytkownika</string>
+	<key>VIEW_PROFILES_ANONYMOUS</key>
+	<string>Wyświetlaj profile anonimowo</string>
+	<key>Video Info</key>
+	<string>Informacje o filmie</string>
+	<key>Video Information</key>
+	<string>Informacje o filmie</string>
+	<key>Video Like Count</key>
+	<string>Liczba polubień filmu</string>
+	<key>Video Link Copied</key>
+	<string>Skopiowano link do filmu</string>
+	<key>Video Upload Date</key>
+	<string>Data przesłania filmu</string>
+	<key>Video saved successfully</key>
+	<string>Film został pomyślnie zapisany</string>
+	<key>WARNING</key>
+	<string>OSTRZEŻENIE</string>
+	<key>Waiting for TikTok…</key>
+	<string>Oczekiwanie na TikTok…</string>
+	<key>Warning</key>
+	<string>Ostrzeżenie</string>
+	<key>Welcome</key>
+	<string>Witaj</string>
+	<key>X</key>
+	<string>X</string>
+	<key>Yes</key>
+	<string>Tak</string>
+	<key>the video doesn't have music to download</key>
+	<string>Ten film nie zawiera muzyki do pobrania</string>
+</dict>
+</plist>

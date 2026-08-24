@@ -1,0 +1,908 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>ALWAYS_OPEN_SAFARI</key>
+	<string>始终在Safari中打开</string>
+	<key>About</key>
+	<string>关于</string>
+	<key>Actions</key>
+	<string>操作</string>
+	<key>Add Comment as Post</key>
+	<string>将评论添加为帖子</string>
+	<key>Add Comment as Story</key>
+	<string>将评论添加为快拍</string>
+	<key>Add Folders To Inbox</key>
+	<string>向收件箱添加文件夹</string>
+	<key>Add Translation Button</key>
+	<string>添加翻译按钮</string>
+	<key>Adjust offline download limit</key>
+	<string>调整离线下载限制</string>
+	<key>Adjust value between 50 and 2000</key>
+	<string>调整值在50到2000之间</string>
+	<key>All TikTok data has been cleared.</key>
+	<string>所有TikTok数据已清除。</string>
+	<key>All TikTok data has been erased.</key>
+	<string>所有TikTok数据已清除。</string>
+	<key>All settings have been reset to default values.</key>
+	<string>所有设置已重置为默认值。</string>
+	<key>Anonymous Seen</key>
+	<string>匿名已读</string>
+	<key>App Configuration</key>
+	<string>应用配置</string>
+	<key>App Lock</key>
+	<string>应用锁</string>
+	<key>Apply</key>
+	<string>应用</string>
+	<key>Are you sure you want to clear all data? This will remove:
+1- TikTok's data directory
+2-all keychains
+3- clears all NSUserDefaults
+ 
+NOTICE!
+ YOU WILL LOSE YOUR DRAFTS AND ANYTHING SAVED LOCALLY.</key>
+	<string>你确定要清除所有数据吗？这将删除：
+1- TikTok的数据目录
+2- 所有钥匙串
+3- 清除所有NSUserDefaults
+
+注意！
+你将丢失草稿和所有本地保存的内容。</string>
+	<key>Are you sure you want to erase all TikTok data? This will clear all app data and cannot be undone.</key>
+	<string>你确定要清除所有TikTok数据吗？这将清除所有应用数据且无法撤销。</string>
+	<key>Are you sure you want to reset all settings to default values? This action cannot be undone.</key>
+	<string>你确定要将所有设置重置为默认值吗？此操作无法撤销。</string>
+	<key>Are you sure?</key>
+	<string>你确定吗？</string>
+	<key>Auto Clear History</key>
+	<string>自动清除历史记录</string>
+	<key>Auto Play Next Video</key>
+	<string>自动播放下一个视频</string>
+	<key>Auto Unfold Comment Texts</key>
+	<string>自动展开评论文本</string>
+	<key>BACKGROUND_PLAY</key>
+	<string>启用后台播放</string>
+	<key>BETA!</key>
+	<string>测试版！</string>
+	<key>BLOCK_AI_GENERATED</key>
+	<string>屏蔽AI生成的帖子</string>
+	<key>BLOCK_MOVIE_TOK</key>
+	<string>屏蔽电影广告</string>
+	<key>BLOCK_POI</key>
+	<string>屏蔽位置广告</string>
+	<key>BLOCK_SHOP_VIDEOS</key>
+	<string>屏蔽商店帖子</string>
+	<key>BLOCK_TCM</key>
+	<string>屏蔽应用广告</string>
+	<key>BMTikTok Settings</key>
+	<string>BMTikTok 设置</string>
+	<key>BMTikTok, Hi</key>
+	<string>BMTikTok，你好</string>
+	<key>BYPASS_FOLLOW_LIST_SEARCH</key>
+	<string>绕过关注者列表搜索限制</string>
+	<key>Back</key>
+	<string>返回</string>
+	<key>Backgrounding ✌️</key>
+	<string>后台运行中 ✌️</string>
+	<key>Block</key>
+	<string>屏蔽</string>
+	<key>Buy Me a Coffee</key>
+	<string>请我喝杯咖啡</string>
+	<key>Bypass Media Limit</key>
+	<string>绕过媒体限制</string>
+	<key>CONFIRM_QUICK_SHARE</key>
+	<string>快速分享确认</string>
+	<key>CONFIRM_REPOST</key>
+	<string>转发确认</string>
+	<key>Cancel</key>
+	<string>取消</string>
+	<key>Cancelled</key>
+	<string>已取消</string>
+	<key>Change Action of Live Button</key>
+	<string>更改直播按钮的操作</string>
+	<key>Change the behavior of the Live button</key>
+	<string>更改直播按钮的行为</string>
+	<key>Changes will take effect after restarting the app</key>
+	<string>更改将在重启应用后生效</string>
+	<key>Chat Features</key>
+	<string>聊天功能</string>
+	<key>Chat Settings</key>
+	<string>聊天设置</string>
+	<key>Choose export destination:</key>
+	<string>选择导出目标：</string>
+	<key>Choose import source:</key>
+	<string>选择导入源：</string>
+	<key>Clear</key>
+	<string>清除</string>
+	<key>Clear Keychain</key>
+	<string>清除钥匙串</string>
+	<key>Close</key>
+	<string>关闭</string>
+	<key>Co-Owner</key>
+	<string>共同所有者</string>
+	<key>Comment Cell Redesign</key>
+	<string>评论单元格重新设计</string>
+	<key>Comment Design</key>
+	<string>评论设计</string>
+	<key>Comment Settings</key>
+	<string>评论设置</string>
+	<key>Community</key>
+	<string>社区</string>
+	<key>Compact</key>
+	<string>紧凑</string>
+	<key>Configuration</key>
+	<string>配置</string>
+	<key>Configuration Management</key>
+	<string>配置管理</string>
+	<key>Configuration imported from keychain successfully.</key>
+	<string>从钥匙串导入配置成功。</string>
+	<key>Configuration imported successfully.</key>
+	<string>配置导入成功。</string>
+	<key>Configuration saved to keychain successfully.</key>
+	<string>配置保存到钥匙串成功。</string>
+	<key>Configure Advanced Comment Settings</key>
+	<string>配置高级评论设置</string>
+	<key>Confirm</key>
+	<string>确认</string>
+	<key>Confirm Clear</key>
+	<string>确认清除</string>
+	<key>Confirm Settings</key>
+	<string>确认设置</string>
+	<key>Confirmation Settings</key>
+	<string>确认设置</string>
+	<key>Content &amp; Display</key>
+	<string>内容与显示</string>
+	<key>Content Enhancement</key>
+	<string>内容增强</string>
+	<key>Content Filtering</key>
+	<string>内容过滤</string>
+	<key>Content Interactions</key>
+	<string>内容交互</string>
+	<key>Contributor</key>
+	<string>贡献者</string>
+	<key>Control video playback speed</key>
+	<string>控制视频播放速度</string>
+	<key>Copy Description</key>
+	<string>复制描述</string>
+	<key>Copy Link</key>
+	<string>复制链接</string>
+	<key>Copy Menu</key>
+	<string>复制菜单</string>
+	<key>Copy Music Link</key>
+	<string>复制音乐链接</string>
+	<key>Copy Video link</key>
+	<string>复制视频链接</string>
+	<key>Copy bio</key>
+	<string>复制简介</string>
+	<key>Could Not Copy Music</key>
+	<string>无法复制音乐</string>
+	<key>Credits</key>
+	<string>致谢</string>
+	<key>DEVELOPER_SUPPORT</key>
+	<string>支持BMTikTok并获得我们Beta测试组的访问权限</string>
+	<key>DEVELOPER_TELEGRAM</key>
+	<string>加入我们的Telegram频道以获取最新更新</string>
+	<key>DISABLE_ACTIVITY_STATUS_WARNING</key>
+	<string>禁用或启用匿名活动状态需要时间才能在TikTok服务器上反映。启用此功能后，你可能仍会显示在线一段时间。</string>
+	<key>DISABLE_FEED_DOUBLE_TAP</key>
+	<string>禁用信息流双击</string>
+	<key>DISABLE_SCREENRECORDING_DETECTION</key>
+	<string>禁用屏幕录制检测</string>
+	<key>DISABLE_SCREENSHOT_DETECTION</key>
+	<string>禁用截图检测</string>
+	<key>DISABLE_STORY_DOUBLE_TAP</key>
+	<string>禁用快拍双击</string>
+	<key>DISABLE_TYPING_STICKER</key>
+	<string>禁用打字贴纸</string>
+	<key>DISABLE_VISUAL_SEARCH_TAG</key>
+	<string>禁用视觉搜索标签</string>
+	<key>DOWNLOADING_STICKER</key>
+	<string>正在下载贴纸...</string>
+	<key>DOWNLOAD_FAILED</key>
+	<string>下载失败</string>
+	<key>DRM Developer</key>
+	<string>DRM开发者</string>
+	<key>Data Cleared</key>
+	<string>数据已清除</string>
+	<key>Default</key>
+	<string>默认</string>
+	<key>Delete</key>
+	<string>删除</string>
+	<key>Description Link Copied</key>
+	<string>描述链接已复制</string>
+	<key>Deselect All</key>
+	<string>取消全选</string>
+	<key>Design Options</key>
+	<string>界面设置</string>
+	<key>Developer</key>
+	<string>开发者</string>
+	<key>Disable</key>
+	<string>禁用</string>
+	<key>Disable AI-Generated Replies</key>
+	<string>禁用AI生成的回复</string>
+	<key>Disable Comment Tooltip</key>
+	<string>禁用评论提示</string>
+	<key>Disable Left &amp; Right Swipe</key>
+	<string>禁用左右滑动</string>
+	<key>Disable Live Streaming</key>
+	<string>禁用直播</string>
+	<key>Disable Sensitive Content</key>
+	<string>禁用敏感内容</string>
+	<key>Disable Survey Popups</key>
+	<string>禁用调查弹窗</string>
+	<key>Disable TikTok Rewards ADs</key>
+	<string>禁用TikTok奖励广告</string>
+	<key>Disable Typing Indicator</key>
+	<string>禁用输入指示器</string>
+	<key>Disable Warnings</key>
+	<string>禁用警告</string>
+	<key>Dislike Comment Confirmation</key>
+	<string>评论点踩确认</string>
+	<key>Done</key>
+	<string>完成</string>
+	<key>Download All Photos</key>
+	<string>下载所有图片</string>
+	<key>Download Button</key>
+	<string>下载按钮</string>
+	<key>Download HD Video</key>
+	<string>下载高清视频</string>
+	<key>Download Music</key>
+	<string>下载音乐</string>
+	<key>Download Photo</key>
+	<string>下载图片</string>
+	<key>Download Photos Menu</key>
+	<string>图片下载菜单</string>
+	<key>Download Video</key>
+	<string>下载视频</string>
+	<key>Downloading</key>
+	<string>正在下载</string>
+	<key>Downloads &amp; Sharing</key>
+	<string>下载与分享</string>
+	<key>Downloads Menu</key>
+	<string>下载菜单</string>
+	<key>ENABLE_COMMENT_PHOTO</key>
+	<string>在评论中启用照片回复</string>
+	<key>ENABLE_COMMENT_STICKERS</key>
+	<string>在评论中启用贴纸回复</string>
+	<key>ENABLE_STICKER_DOWNLOAD</key>
+	<string>双击下载贴纸</string>
+	<key>Edit</key>
+	<string>编辑</string>
+	<key>Emoji &amp; Interface</key>
+	<string>表情与界面</string>
+	<key>Enable</key>
+	<string>启用</string>
+	<key>Enable Comment Flags</key>
+	<string>启用评论旗帜</string>
+	<key>Enable Comment Photos</key>
+	<string>启用评论图片</string>
+	<key>Enable Comment Stickers</key>
+	<string>启用评论贴纸</string>
+	<key>Enable Copy Without Username</key>
+	<string>启用不带用户名的复制</string>
+	<key>Enable Egypt Stickers</key>
+	<string>启用埃及贴纸</string>
+	<key>Enable Embeded Links</key>
+	<string>启用嵌入式链接</string>
+	<key>Enable Fake Changes</key>
+	<string>启用虚假更改</string>
+	<key>Enable Flex</key>
+	<string>启用 Flex</string>
+	<key>Enable Live Button Function</key>
+	<string>启用直播按钮功能</string>
+	<key>Enable Oled Keyboard</key>
+	<string>启用 OLED 键盘</string>
+	<key>Enable Persistent Playback Speed.</key>
+	<string>在帖子中启用持续播放速度。</string>
+	<key>Enable Pin Chat</key>
+	<string>启用置顶聊天</string>
+	<key>Enable Playback Speed</key>
+	<string>启用播放速度</string>
+	<key>Enable Region Changing</key>
+	<string>启用地区更改</string>
+	<key>Enable Region Changing Functionality</key>
+	<string>启用地区更改功能</string>
+	<key>Enable Small Emoji</key>
+	<string>启用小表情</string>
+	<key>Enable Streaks</key>
+	<string>启用连续互动</string>
+	<key>Enable Text To Reposts</key>
+	<string>启用转发文本</string>
+	<key>Enable Voice Messages</key>
+	<string>启用语音消息</string>
+	<key>Enable region changing to access content from different regions</key>
+	<string>启用地区更改以访问不同地区的内容</string>
+	<key>Enhanced Comments Features</key>
+	<string>增强评论功能</string>
+	<key>Erase</key>
+	<string>清除</string>
+	<key>Erase All Data</key>
+	<string>清除所有数据</string>
+	<key>Erase All TikTok Data</key>
+	<string>清除所有TikTok数据</string>
+	<key>Erase all TikTok data from the app  [Becareful!!!]</key>
+	<string>从应用中清除所有TikTok数据[请小心！！！]</string>
+	<key>Error</key>
+	<string>错误</string>
+	<key>Export Configuration</key>
+	<string>导出配置</string>
+	<key>Export settings to a file</key>
+	<string>将设置导出到文件</string>
+	<key>Export to File</key>
+	<string>导出到文件</string>
+	<key>Extended Comments</key>
+	<string>扩展评论</string>
+	<key>Extracting Media URL…</key>
+	<string>正在提取媒体URL…</string>
+	<key>FEATURE_ADD_COMMENT_POST</key>
+	<string>启用将评论回复发布为帖子</string>
+	<key>FEATURE_ADD_COMMENT_STORY</key>
+	<string>启用将评论回复发布为快拍</string>
+	<key>FEATURE_ADD_FOLDERS</key>
+	<string>为收件箱消息添加文件夹组织</string>
+	<key>FEATURE_ADD_FOLDERS_DESC</key>
+	<string>将收件箱消息整理到自定义文件夹中以便更好地管理</string>
+	<key>FEATURE_ADD_TRANSLATION</key>
+	<string>为每条评论添加翻译按钮</string>
+	<key>FEATURE_ALWAYS_OPEN_SAFARI</key>
+	<string>始终在Safari中打开链接，而不是应用内浏览器</string>
+	<key>FEATURE_ANONYMOUS_SEEN</key>
+	<string>阅读聊天而不通知对方</string>
+	<key>FEATURE_ANONYMOUS_SEEN_DESC</key>
+	<string>查看聊天而不向收件人发送已读回执</string>
+	<key>FEATURE_APP_LOCK</key>
+	<string>启动TikTok时添加应用锁</string>
+	<key>FEATURE_APP_LOCK_DESC</key>
+	<string>使用密码或生物识别验证保护您的TikTok应用</string>
+	<key>FEATURE_AUTO_CLEAR</key>
+	<string>每60秒自动清除你的搜索历史</string>
+	<key>FEATURE_AUTO_PLAY</key>
+	<string>启用自动视频滚动</string>
+	<key>FEATURE_AUTO_UNFOLD</key>
+	<string>自动展开所有长评论</string>
+	<key>FEATURE_BACKGROUND_PLAY</key>
+	<string>启用音频后台播放</string>
+	<key>FEATURE_BLOCK_AI_GENERATED</key>
+	<string>屏蔽带有“包含AI生成媒体”的帖子</string>
+	<key>FEATURE_BLOCK_MOVIE_TOK</key>
+	<string>屏蔽带有电影广告的视频</string>
+	<key>FEATURE_BLOCK_POI</key>
+	<string>屏蔽带有位置广告的视频</string>
+	<key>FEATURE_BLOCK_SHOP_ADS</key>
+	<string>屏蔽带有商店广告的视频</string>
+	<key>FEATURE_BLOCK_SHOP_VIDEOS</key>
+	<string>从信息流中移除商店帖子。</string>
+	<key>FEATURE_BLOCK_TCM</key>
+	<string>屏蔽带有应用广告的视频</string>
+	<key>FEATURE_BYPASS_FOLLOW_LIST_SEARCH</key>
+	<string>即使关注者超过5000，也启用关注者列表搜索</string>
+	<key>FEATURE_BYPASS_MEDIA_LIMIT</key>
+	<string>绕过聊天中的媒体发送限制（默认：9张照片，1分钟视频）</string>
+	<key>FEATURE_COMMENT_REDESIGN</key>
+	<string>启用重新设计的评论单元格</string>
+	<key>FEATURE_CONFIRM_COMMENT_DISLIKE</key>
+	<string>在点踩评论前请求确认</string>
+	<key>FEATURE_CONFIRM_COMMENT_LIKE</key>
+	<string>在点赞评论前请求确认</string>
+	<key>FEATURE_CONFIRM_FOLLOW</key>
+	<string>在关注用户前请求确认</string>
+	<key>FEATURE_CONFIRM_LIKE</key>
+	<string>在点赞帖子前请求确认</string>
+	<key>FEATURE_CONFIRM_QUICK_SHARE</key>
+	<string>在使用快速分享前请求确认</string>
+	<key>FEATURE_CONFIRM_REPOST</key>
+	<string>在转发视频前请求确认</string>
+	<key>FEATURE_COPY_WITHOUT_USERNAME</key>
+	<string>复制评论而不带评论者姓名</string>
+	<key>FEATURE_DISABLE_AI_REPLIES</key>
+	<string>禁用帖子上的AI生成回复</string>
+	<key>FEATURE_DISABLE_COMMENT_TOOLTIP</key>
+	<string>禁用评论部分的提示</string>
+	<key>FEATURE_DISABLE_FEED_DOUBLE_TAP</key>
+	<string>禁用信息流中的双击点赞</string>
+	<key>FEATURE_DISABLE_LIVE</key>
+	<string>从信息流中隐藏直播</string>
+	<key>FEATURE_DISABLE_REWARDS_ADS</key>
+	<string>从信息流中隐藏TikTok的奖励广告</string>
+	<key>FEATURE_DISABLE_SCREENRECORDING_DETECTION</key>
+	<string>禁用聊天中的屏幕录制检测</string>
+	<key>FEATURE_DISABLE_SCREENSHOT_DETECTION</key>
+	<string>禁用聊天中的截图检测</string>
+	<key>FEATURE_DISABLE_SENSITIVE</key>
+	<string>隐藏“不适当内容”警告</string>
+	<key>FEATURE_DISABLE_STORY_DOUBLE_TAP</key>
+	<string>禁用快拍中的双击点赞</string>
+	<key>FEATURE_DISABLE_SURVEY</key>
+	<string>禁用信息流中的调查问题</string>
+	<key>FEATURE_DISABLE_SWIPE</key>
+	<string>禁用信息流中的左右滑动</string>
+	<key>FEATURE_DISABLE_TYPING</key>
+	<string>禁用输入指示器</string>
+	<key>FEATURE_DISABLE_TYPING_STICKER</key>
+	<string>禁用打字时的自动GIF推荐</string>
+	<key>FEATURE_DISABLE_VISUAL_SEARCH_TAG</key>
+	<string>暂停视频时禁用信息流中的“视觉搜索”按钮</string>
+	<key>FEATURE_DISABLE_WARNINGS</key>
+	<string>隐藏TikTok警告</string>
+	<key>FEATURE_DOWNLOAD_BUTTON</key>
+	<string>为帖子和快拍添加下载按钮</string>
+	<key>FEATURE_EMBED_LINKS</key>
+	<string>复制的链接将在发送位置嵌入媒体</string>
+	<key>FEATURE_ENABLE_COMMENT_FLAGS</key>
+	<string>在评论者姓名旁边显示地区旗帜</string>
+	<key>FEATURE_ENABLE_FLEX</key>
+	<string>仅限开发者，如果你不知道FLEX是什么，请不要触碰！</string>
+	<key>FEATURE_ENABLE_STICKER_DOWNLOAD</key>
+	<string>启用评论中的贴纸下载</string>
+	<key>FEATURE_ENABLE_STREAKS</key>
+	<string>启用与好友的连续互动</string>
+	<key>FEATURE_ENABLE_TEXT_TO_REPOSTS</key>
+	<string>为不受支持的地区启用向转发添加说明文字</string>
+	<key>FEATURE_EXTENDED_COMMENTS</key>
+	<string>增加评论字符限制</string>
+	<key>FEATURE_FAKE_CHANGES</key>
+	<string>启用虚假个人资料数据更改</string>
+	<key>FEATURE_FAKE_VERIFIED</key>
+	<string>显示虚假认证徽章</string>
+	<key>FEATURE_FOLLOWER_COUNT</key>
+	<string>输入虚假粉丝数</string>
+	<key>FEATURE_FOLLOWING_COUNT</key>
+	<string>输入虚假关注数</string>
+	<key>FEATURE_FULL_REGION_MODE</key>
+	<string>仅当第一个选项不起作用时启用！</string>
+	<key>FEATURE_HIDE_ACTIVITY_STATUS</key>
+	<string>在聊天中隐藏你的“上次活跃”和“在线”状态</string>
+	<key>FEATURE_HIDE_ADS</key>
+	<string>隐藏信息流中的广告</string>
+	<key>FEATURE_HIDE_COMMISSION_POSTS</key>
+	<string>隐藏“创作者赚取佣金”的帖子</string>
+	<key>FEATURE_HIDE_DANGEROUS_ACTION</key>
+	<string>隐藏体育视频下的警告（UFC、拳击等）</string>
+	<key>FEATURE_HIDE_EMOJI</key>
+	<string>隐藏多表情评论栏</string>
+	<key>FEATURE_HIDE_FRIENDS_BADGE</key>
+	<string>隐藏好友通知徽章</string>
+	<key>FEATURE_HIDE_INBOX_BADGE</key>
+	<string>隐藏收件箱通知徽章</string>
+	<key>FEATURE_HIDE_PLAY_PAUSE</key>
+	<string>隐藏信息流中的播放/暂停视图</string>
+	<key>FEATURE_HIDE_PLUS_BTN</key>
+	<string>隐藏相机按钮</string>
+	<key>FEATURE_HIDE_REPORT_BUTTON</key>
+	<string>在私信导航栏中隐藏举报按钮。</string>
+	<key>FEATURE_HIDE_STREAK_PET</key>
+	<string>隐藏连续互动宠物</string>
+	<key>FEATURE_HIDE_TAB_BAR_LABELS</key>
+	<string>隐藏标签栏中的标签</string>
+	<key>FEATURE_HIDE_TOP_ITEMS</key>
+	<string>隐藏顶部栏（为你推荐、关注、商店等）</string>
+	<key>FEATURE_LIKE_COUNT</key>
+	<string>显示帖子上的点赞数</string>
+	<key>FEATURE_LOOP_STORY_VIDEOS</key>
+	<string>循环播放快拍中的视频</string>
+	<key>FEATURE_MARK_SEEN_ON_REPLY</key>
+	<string>回复时将消息标记为已读</string>
+	<key>FEATURE_MASS_UNFOLD</key>
+	<string>批量展开所有评论回复</string>
+	<key>FEATURE_MULTI_EMOJI</key>
+	<string>启用多表情评论栏</string>
+	<key>FEATURE_OLED_KEYBOARD</key>
+	<string>仅适用于深色主题</string>
+	<key>FEATURE_PAD_AUTO_SCROLL</key>
+	<string>为不受支持的地区启用TikTok原生帖子自动滚动</string>
+	<key>FEATURE_PIN_CHATS</key>
+	<string>启用将收藏聊天置顶</string>
+	<key>FEATURE_POST_STATS</key>
+	<string>在下载部分显示带有帖子信息的子菜单</string>
+	<key>FEATURE_PROFILE_COPY</key>
+	<string>通过长按复制用户的简介</string>
+	<key>FEATURE_PROFILE_COPY_DESC</key>
+	<string>复制个人资料详细信息，包括用户名、简介和其他公开信息</string>
+	<key>FEATURE_PROFILE_SAVE</key>
+	<string>通过长按保存用户的个人资料图片</string>
+	<key>FEATURE_PROFILE_SAVE_DESC</key>
+	<string>一键将个人资料信息保存到剪贴板</string>
+	<key>FEATURE_PROGRESS_BAR</key>
+	<string>在每个帖子下方显示媒体时长</string>
+	<key>FEATURE_PULL_TO_CAMERA</key>
+	<string>启用下拉打开相机功能</string>
+	<key>FEATURE_REGIONS_DESC</key>
+	<string>通过伪造您的虚拟位置访问特定地区的内容</string>
+	<key>FEATURE_REMOVE_DRAFT_WATERMARK</key>
+	<string>保存帖子或草稿时移除水印</string>
+	<key>FEATURE_REMOVE_PENDANT</key>
+	<string>移除信息流中左上角的广告视图</string>
+	<key>FEATURE_REMOVE_TIKTOK_AI_BUTTON</key>
+	<string>从“为你推荐”中移除TikTok AI（Tako）按钮</string>
+	<key>FEATURE_REMOVE_WATERMARK</key>
+	<string>从下载的媒体中移除水印（动画TikTok标志和用户名）</string>
+	<key>FEATURE_RUSSIAN_FIX</key>
+	<string>启用此选项以使俄罗斯信息流再次工作[新！]</string>
+	<key>FEATURE_SAVE_DM_MEDIA</key>
+	<string>为私信中发送的媒体添加下载按钮</string>
+	<key>FEATURE_SHARE_SHEET</key>
+	<string>媒体下载完成后打开分享菜单</string>
+	<key>FEATURE_SHOW_ALL_TABS</key>
+	<string>显示所有隐藏的设置选项卡[测试版]</string>
+	<key>FEATURE_SHOW_ALL_TABS_DESC</key>
+	<string>显示所有隐藏的设置选项卡，包括实验性功能</string>
+	<key>FEATURE_SHOW_USERNAMES</key>
+	<string>在信息流中用用户名替换用户的昵称</string>
+	<key>FEATURE_SHOW_VIDEO_TIMESTAMP</key>
+	<string>在“为你推荐”中显示帖子的上传时间</string>
+	<key>FEATURE_SKIP_RECOMMENDED</key>
+	<string>移除内容推荐（好友推荐等）</string>
+	<key>FEATURE_SMALL_EMOJI</key>
+	<string>启用发送小表情</string>
+	<key>FEATURE_START_FYP_IN_FOLLOWING</key>
+	<string>在“关注”信息流中启动TikTok，而不是“为你推荐”信息流</string>
+	<key>FEATURE_STOP_PLAYBACK</key>
+	<string>在帖子结束时停止播放</string>
+	<key>FEATURE_STOP_STORY_PHOTO_ADVANCE</key>
+	<string>阻止快拍照片自动前进</string>
+	<key>FEATURE_STORY_LIKE_CONFIRMATION</key>
+	<string>在点赞快拍前请求确认</string>
+	<key>FEATURE_STREAK_INFO</key>
+	<string>点击连续火焰时显示你当前的连续互动信息</string>
+	<key>FEATURE_TRANSPARENT_COMMENTS</key>
+	<string>使评论部分的背景透明</string>
+	<key>FEATURE_UI_BUTTON</key>
+	<string>显示“隐藏界面”按钮</string>
+	<key>FEATURE_UPLOAD_DATE</key>
+	<string>显示帖子的上传日期</string>
+	<key>FEATURE_UPLOAD_HD</key>
+	<string>启用高清上传</string>
+	<key>FEATURE_UPLOAD_REGION</key>
+	<string>在用户名旁边显示上传地区旗帜</string>
+	<key>FEATURE_USER_POST_COUNT</key>
+	<string>显示用户的总发帖数</string>
+	<key>FEATURE_VIEW_PROFILES_ANONYMOUS</key>
+	<string>禁用个人资料查看跟踪</string>
+	<key>FEATURE_VOICE_MESSAGES</key>
+	<string>在聊天中启用发送语音消息（仅限某些地区）</string>
+	<key>FILTERING_OPTIONS</key>
+	<string>过滤选项</string>
+	<key>Failed to fetch HD video URL. Please try again.</key>
+	<string>获取高清视频URL失败。请重试。</string>
+	<key>Failed to save media</key>
+	<string>媒体保存失败</string>
+	<key>Fake Verified</key>
+	<string>虚假认证</string>
+	<key>Features list</key>
+	<string>功能列表</string>
+	<key>Feed</key>
+	<string>首页</string>
+	<key>Feed Settings</key>
+	<string>首页设置</string>
+	<key>File selection was cancelled.</key>
+	<string>文件选择已取消。</string>
+	<key>Follow Confirmation</key>
+	<string>关注确认</string>
+	<key>Follower</key>
+	<string>粉丝</string>
+	<key>Following</key>
+	<string>关注</string>
+	<key>Full Region Mode</key>
+	<string>完整地区模式</string>
+	<key>Get the latest updates and news</key>
+	<string>获取最新更新和新闻</string>
+	<key>HIDE_ACTIVITY_STATUS</key>
+	<string>隐藏活动状态</string>
+	<key>HIDE_REPORT_BUTTON</key>
+	<string>隐藏举报按钮</string>
+	<key>Hide</key>
+	<string>隐藏</string>
+	<key>Hide Ads</key>
+	<string>隐藏广告</string>
+	<key>Hide Commission Posts</key>
+	<string>隐藏佣金帖子</string>
+	<key>Hide Emoji-Bar</key>
+	<string>隐藏表情栏</string>
+	<key>Hide Friends Badge</key>
+	<string>隐藏好友徽章</string>
+	<key>Hide Inbox Badge</key>
+	<string>隐藏收件箱徽章</string>
+	<key>Hide Play/Pause Button</key>
+	<string>隐藏播放/暂停按钮</string>
+	<key>Hide Plus Button</key>
+	<string>隐藏加号按钮</string>
+	<key>Hide Streak Pet</key>
+	<string>隐藏连续互动宠物</string>
+	<key>Hide Tab Bar Labels</key>
+	<string>隐藏标签栏标签</string>
+	<key>Hide Top Feed items</key>
+	<string>隐藏首页顶部项目</string>
+	<key>Hide dangerous-action Warning</key>
+	<string>隐藏危险操作警告</string>
+	<key>Import Configuration</key>
+	<string>导入配置</string>
+	<key>Import from File</key>
+	<string>从文件导入</string>
+	<key>Import from Keychain</key>
+	<string>从钥匙串导入</string>
+	<key>Import settings from a file</key>
+	<string>从文件导入设置</string>
+	<key>Invalid download URL received.</key>
+	<string>收到无效的下载URL。</string>
+	<key>Join the community discussion</key>
+	<string>加入社区讨论</string>
+	<key>LOOP_STORY_VIDEOS</key>
+	<string>循环播放快拍视频</string>
+	<key>Language</key>
+	<string>语言</string>
+	<key>Language Changed</key>
+	<string>语言已更改</string>
+	<key>Language 🌎</key>
+	<string>语言 🌎</string>
+	<key>Like Comment Confirmation</key>
+	<string>评论点赞确认</string>
+	<key>Like Confirmation</key>
+	<string>点赞确认</string>
+	<key>Live Actions</key>
+	<string>直播操作</string>
+	<key>Live Button Actions</key>
+	<string>直播按钮操作</string>
+	<key>Live Button Function</key>
+	<string>直播按钮功能</string>
+	<key>Live Button Function Disabled</key>
+	<string>直播按钮功能已禁用</string>
+	<key>Live Button Settings</key>
+	<string>直播按钮设置</string>
+	<key>Loading</key>
+	<string>加载中</string>
+	<key>MARK_SEEN_ON_REPLY</key>
+	<string>回复时标记为已读</string>
+	<key>Main Developer, Owner</key>
+	<string>主要开发者，所有者</string>
+	<key>Mass Unfold Comment Replies</key>
+	<string>批量展开评论回复</string>
+	<key>Modern</key>
+	<string>现代</string>
+	<key>More Options</key>
+	<string>更多选项</string>
+	<key>Multi Emoji Comment Bar</key>
+	<string>多表情评论栏</string>
+	<key>Music Link Copied</key>
+	<string>音乐链接已复制</string>
+	<key>Navigation &amp; Interaction</key>
+	<string>导航与交互</string>
+	<key>Next</key>
+	<string>下一步</string>
+	<key>No</key>
+	<string>否</string>
+	<key>No Backup</key>
+	<string>无备份</string>
+	<key>No backup found</key>
+	<string>未找到备份</string>
+	<key>No internet connection</key>
+	<string>无网络连接</string>
+	<key>No settings backup found in keychain.</key>
+	<string>钥匙串中未找到设置备份。</string>
+	<key>Not Selected</key>
+	<string>未选择</string>
+	<key>Notification Badges</key>
+	<string>通知徽章</string>
+	<key>OFF</key>
+	<string>关闭</string>
+	<key>OK</key>
+	<string>确定</string>
+	<key>ON</key>
+	<string>开启</string>
+	<key>OTHER_OPTIONS</key>
+	<string>其他选项</string>
+	<key>Organization &amp; Management</key>
+	<string>组织与管理</string>
+	<key>Other</key>
+	<string>其他</string>
+	<key>Other Settings</key>
+	<string>其他设置</string>
+	<key>PAD_AUTO_SCROLL</key>
+	<string>默认自动滚动</string>
+	<key>Photo saved successfully</key>
+	<string>图片保存成功</string>
+	<key>Playback Controls</key>
+	<string>播放控制</string>
+	<key>Playback Speed</key>
+	<string>播放速度</string>
+	<key>Playback Speed Disabled</key>
+	<string>播放速度已禁用</string>
+	<key>Playback Speed Settings</key>
+	<string>播放速度设置</string>
+	<key>Please enable Live Button Function first</key>
+	<string>请先启用直播按钮功能</string>
+	<key>Please enable Playback Speed first</key>
+	<string>请先启用播放速度</string>
+	<key>Please enable region changing first</key>
+	<string>请先启用地区更改</string>
+	<key>Please restart the app to apply changes, May require two app restarts!</key>
+	<string>请重启应用以应用更改，可能需要重启两次！</string>
+	<key>Post Info</key>
+	<string>帖子信息</string>
+	<key>Post Stats</key>
+	<string>帖子统计</string>
+	<key>Privacy &amp; Security</key>
+	<string>隐私与安全</string>
+	<key>Processing...</key>
+	<string>处理中...</string>
+	<key>Profile</key>
+	<string>个人主页</string>
+	<key>Profile Actions</key>
+	<string>个人资料操作</string>
+	<key>Profile Copy</key>
+	<string>复制个人资料</string>
+	<key>Profile Customization</key>
+	<string>个人资料自定义</string>
+	<key>Profile Enhancement</key>
+	<string>个人资料增强</string>
+	<key>Profile Save</key>
+	<string>保存个人资料</string>
+	<key>Profile Settings</key>
+	<string>个人主页设置</string>
+	<key>Pull To Camera</key>
+	<string>下拉打开相机</string>
+	<key>REMOVE_DRAFT_WATERMARK</key>
+	<string>移除照片水印</string>
+	<key>REMOVE_TIKTOK_AI_BUTTON</key>
+	<string>移除TikTok AI按钮</string>
+	<key>RUSSIAN_FIX</key>
+	<string>绕过俄罗斯禁令</string>
+	<key>Really Clear All Data?</key>
+	<string>真的清除所有数据吗？</string>
+	<key>Region</key>
+	<string>地区</string>
+	<key>Region Changing Disabled</key>
+	<string>地区更改已禁用</string>
+	<key>Region Settings</key>
+	<string>地区设置</string>
+	<key>Regions</key>
+	<string>地区</string>
+	<key>Remove Pendant View</key>
+	<string>移除悬挂视图</string>
+	<key>Remove Watermark</key>
+	<string>去除水印</string>
+	<key>Report</key>
+	<string>举报</string>
+	<key>Reset</key>
+	<string>重置</string>
+	<key>Reset All Settings</key>
+	<string>重置所有设置</string>
+	<key>Reset Settings</key>
+	<string>重置设置</string>
+	<key>Reset all settings to default values</key>
+	<string>将所有设置重置为默认值</string>
+	<key>SAVE_DM_MEDIA</key>
+	<string>保存私信媒体</string>
+	<key>STICKER_SAVED</key>
+	<string>贴纸已保存到图库！</string>
+	<key>STICKER_SAVE_FAILED</key>
+	<string>贴纸保存失败</string>
+	<key>STOP_STORY_PHOTO_ADVANCE</key>
+	<string>停止快拍照片自动前进</string>
+	<key>STORY_LIKE_CONFIRMATION</key>
+	<string>快拍点赞确认</string>
+	<key>Save</key>
+	<string>保存</string>
+	<key>Save to Keychain</key>
+	<string>保存到钥匙串</string>
+	<key>Saved!</key>
+	<string>已保存！</string>
+	<key>Search</key>
+	<string>搜索</string>
+	<key>Select Action</key>
+	<string>选择操作</string>
+	<key>Select All</key>
+	<string>全选</string>
+	<key>Select App Language</key>
+	<string>选择应用语言</string>
+	<key>Select Design</key>
+	<string>选择设计</string>
+	<key>Select Speed</key>
+	<string>选择速度</string>
+	<key>Selected Action</key>
+	<string>已选择操作</string>
+	<key>Selected Region</key>
+	<string>已选地区</string>
+	<key>Selected Speed</key>
+	<string>已选速度</string>
+	<key>Settings</key>
+	<string>设置</string>
+	<key>Settings Reset</key>
+	<string>设置已重置</string>
+	<key>Share</key>
+	<string>分享</string>
+	<key>Share Sheet</key>
+	<string>分享菜单</string>
+	<key>Show</key>
+	<string>显示</string>
+	<key>Show All Settings Tabs</key>
+	<string>显示所有设置选项卡</string>
+	<key>Show Progress Bar</key>
+	<string>显示进度条</string>
+	<key>Show Usernames</key>
+	<string>显示用户名</string>
+	<key>Show Video Upload Timestamp</key>
+	<string>显示视频上传时间戳</string>
+	<key>Show/Hide UI Button</key>
+	<string>显示/隐藏界面按钮</string>
+	<key>Skip Recommendations</key>
+	<string>跳过推荐</string>
+	<key>Social Actions</key>
+	<string>社交操作</string>
+	<key>Special Thanks to</key>
+	<string>特别感谢</string>
+	<key>Speeds</key>
+	<string>速度</string>
+	<key>Start TikTok in Following</key>
+	<string>在关注中启动TikTok</string>
+	<key>Stats Menu</key>
+	<string>统计菜单</string>
+	<key>Stop Playback</key>
+	<string>停止播放</string>
+	<key>Streak Info</key>
+	<string>连续互动信息</string>
+	<key>Success</key>
+	<string>成功</string>
+	<key>Support</key>
+	<string>支持</string>
+	<key>Support the development</key>
+	<string>支持开发</string>
+	<key>System Features</key>
+	<string>系统功能</string>
+	<key>Tab Bar Configurations</key>
+	<string>标签栏配置</string>
+	<key>Tab Bar Elements</key>
+	<string>标签栏元素</string>
+	<key>Tab Bar Settings</key>
+	<string>标签栏设置</string>
+	<key>Tap to Join the Telegram</key>
+	<string>点击加入 Telegram</string>
+	<key>Telegram Channel</key>
+	<string>Telegram频道</string>
+	<key>Telegram Discussion Group</key>
+	<string>Telegram讨论组</string>
+	<key>Text &amp; Display Options</key>
+	<string>文本与显示选项</string>
+	<key>This is your final warning. This action is irreversible and will delete all local TikTok data, including drafts and settings. Are you absolutely sure?</key>
+	<string>这是你的最后警告。此操作不可逆，并将删除所有本地TikTok数据，包括草稿和设置。你绝对确定吗？</string>
+	<key>Transparent Comments</key>
+	<string>半透明评论</string>
+	<key>UI Designer</key>
+	<string>UI设计师</string>
+	<key>Unfollow</key>
+	<string>取消关注</string>
+	<key>Upload HD</key>
+	<string>上传高清</string>
+	<key>Upload Region</key>
+	<string>上传地区</string>
+	<key>User Post Count</key>
+	<string>用户发帖数</string>
+	<key>VIEW_PROFILES_ANONYMOUS</key>
+	<string>匿名查看个人资料</string>
+	<key>Video Info</key>
+	<string>视频信息</string>
+	<key>Video Information</key>
+	<string>视频信息</string>
+	<key>Video Like Count</key>
+	<string>视频点赞数</string>
+	<key>Video Link Copied</key>
+	<string>视频链接已复制</string>
+	<key>Video Upload Date</key>
+	<string>视频上传日期</string>
+	<key>Video saved successfully</key>
+	<string>视频保存成功</string>
+	<key>WARNING</key>
+	<string>警告</string>
+	<key>Waiting for TikTok…</key>
+	<string>正在等待TikTok…</string>
+	<key>Warning</key>
+	<string>警告</string>
+	<key>Welcome</key>
+	<string>欢迎</string>
+	<key>X</key>
+	<string>X</string>
+	<key>Yes</key>
+	<string>是</string>
+	<key>the video doesn't have music to download</key>
+	<string>此视频没有可下载的音乐</string>
+</dict>
+</plist>

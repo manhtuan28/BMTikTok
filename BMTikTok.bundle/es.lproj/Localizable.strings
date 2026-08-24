@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Actions</key>
+	<string>Acciones</string>
+	<key>Add Comment as Post</key>
+	<string>Agregar Comentario como Publicacion</string>
+	<key>Add Comment as Story</key>
+	<string>Agregar Comentario como Historia</string>
+	<key>Add Translation Button</key>
+	<string>Agregar Boton de Traduccion</string>
+	<key>Anonymous Seen</key>
+	<string>Visto Anonimo</string>
+	<key>App Lock</key>
+	<string>Bloqueo de Aplicacion</string>
+	<key>Are you sure?</key>
+	<string>Estas seguro?</string>
+	<key>Auto Clear History</key>
+	<string>Borrar Historial Automaticamente</string>
+	<key>Auto Play Next Video</key>
+	<string>Reproducir Automaticamente el Siguiente Video</string>
+	<key>Auto Unfold Comment Texts</key>
+	<string>Desplegar Automaticamente Textos</string>
+	<key>BMTikTok Settings</key>
+	<string>BMTikTok Configuracion</string>
+	<key>BMTikTok, Hi</key>
+	<string>BMTikTok, Hola</string>
+	<key>Backgrounding ✌️</key>
+	<string>Mandando al Fondo ✌️</string>
+	<key>Bypass Media Limit</key>
+	<string>Omitir Limite de Medios</string>
+	<key>Cancel</key>
+	<string>Cancelar</string>
+	<key>Change Action of Live Button</key>
+	<string>Cambiar Accion del Boton en Vivo</string>
+	<key>Change the behavior of the Live button</key>
+	<string>Cambiar el Comportamiento del Boton en Vivo</string>
+	<key>Changes will take effect after restarting the app</key>
+	<string>Los Cambios se Aplicaran despues de Reiniciar la App</string>
+	<key>Chat Settings</key>
+	<string>Configuracion de Chat</string>
+	<key>Comment Cell Redesign</key>
+	<string>Redisenyo de Celda de Comentario</string>
+	<key>Comment Design</key>
+	<string>Diseno de Comentarios</string>
+	<key>Comment Settings</key>
+	<string>Configuracion de Comentarios</string>
+	<key>Compact</key>
+	<string>Compacto</string>
+	<key>Configure Advanced Comment Settings</key>
+	<string>Configurar Ajustes Avanzados de Comentarios</string>
+	<key>Confirm</key>
+	<string>Confirmar</string>
+	<key>Confirm Settings</key>
+	<string>Configuracion de Confirmacion</string>
+	<key>Confirmation Settings</key>
+	<string>Configuracion de Confirmacion</string>
+	<key>Control video playback speed</key>
+	<string>Controlar la velocidad de reproduccion de video</string>
+	<key>Copy Description</key>
+	<string>Copiar Descripcion</string>
+	<key>Copy Menu</key>
+	<string>Menu de Copia</string>
+	<key>Copy Music Link</key>
+	<string>Copiar Enlace de Musica</string>
+	<key>Copy Video link</key>
+	<string>Copiar Enlace de Video</string>
+	<key>Copy bio</key>
+	<string>Copiar Biografia</string>
+	<key>Could Not Copy Music</key>
+	<string>No Se Pudo Copiar La Musica</string>
+	<key>DEVELOPER_SUPPORT</key>
+	<string>Apoya A BMTikTok Y Obten Acceso Al Grupo De Pruebas Beta</string>
+	<key>DEVELOPER_TELEGRAM</key>
+	<string>Unete Al Canal De Telegram Para Las Ultimas Actualizaciones</string>
+	<key>Default</key>
+	<string>Por Defecto</string>
+	<key>Description Link Copied</key>
+	<string>Enlace de Descripcion Copiado</string>
+	<key>Design Options</key>
+	<string>Opciones de Diseno</string>
+	<key>Developer</key>
+	<string>Desarrollador</string>
+	<key>Disable AI-Generated Replies</key>
+	<string>Desactivar Respuestas Generadas por IA</string>
+	<key>Disable Comment Tooltip</key>
+	<string>Desactivar Tooltip de Comentarios</string>
+	<key>Disable Live Streaming</key>
+	<string>Desactivar Transmision en Vivo</string>
+	<key>Disable Sensitive Content</key>
+	<string>Desactivar Contenido Sensible</string>
+	<key>Disable Survey Popups</key>
+	<string>Desactivar Encuestas Emergentes</string>
+	<key>Disable Typing Indicator</key>
+	<string>Desactivar Indicador de Escritura</string>
+	<key>Disable Warnings</key>
+	<string>Desactivar Advertencias</string>
+	<key>Dislike Comment Confirmation</key>
+	<string>Confirmacion de No Me Gusta en Comentario</string>
+	<key>Download All Photos</key>
+	<string>Descargar Todas las Fotos</string>
+	<key>Download Button</key>
+	<string>Boton de Descarga</string>
+	<key>Download HD Video</key>
+	<string>Descargar Video en HD</string>
+	<key>Download Music</key>
+	<string>Descargar Musica</string>
+	<key>Download Photo</key>
+	<string>Descargar Foto</string>
+	<key>Download Photos Menu</key>
+	<string>Menu de Descarga de Fotos</string>
+	<key>Download Video</key>
+	<string>Descargar Video</string>
+	<key>Downloading</key>
+	<string>Descargando</string>
+	<key>Downloads Menu</key>
+	<string>Menu de Descargas</string>
+	<key>ENABLE_COMMENT_PHOTO</key>
+	<string>Habilitar Fotos en Comentarios</string>
+	<key>ENABLE_COMMENT_STICKERS</key>
+	<string>Habilitar Stickers en Comentarios</string>
+	<key>Enable Comment Photos</key>
+	<string>Habilitar Fotos en Comentarios</string>
+	<key>Enable Comment Stickers</key>
+	<string>Habilitar Stickers en Comentarios</string>
+	<key>Enable Embeded Links</key>
+	<string>Habilitar Enlaces Incrustados</string>
+	<key>Enable Fake Changes</key>
+	<string>Activar Cambios Falsos</string>
+	<key>Enable Flex</key>
+	<string>Habilitar Flex</string>
+	<key>Enable Live Button Function</key>
+	<string>Habilitar Funcion del Boton en Vivo</string>
+	<key>Enable Oled Keyboard</key>
+	<string>Habilitar Oled Keyboard</string>
+	<key>Enable Persistent Playback Speed.</key>
+	<string>Habilitar Velocidad de Reproduccion Persistente.</string>
+	<key>Enable Pin Chat</key>
+	<string>Habilitar Fijar Chat</string>
+	<key>Enable Playback Speed</key>
+	<string>Habilitar Velocidad de Reproduccion</string>
+	<key>Enable Region Changing</key>
+	<string>Habilitar Cambio de Region</string>
+	<key>Enable Region Changing Functionality</key>
+	<string>Habilitar Funcion de Cambio de Region</string>
+	<key>Enable Small Emoji</key>
+	<string>Habilitar Emojis Pequenos</string>
+	<key>Enable Streaks</key>
+	<string>Habilitar Rachas</string>
+	<key>Enable Text To Reposts</key>
+	<string>Habilitar Texto para Republicar</string>
+	<key>Enable Voice Messages</key>
+	<string>Habilitar Mensajes de Voz</string>
+	<key>Enable region changing to access content from different regions</key>
+	<string>Habilitar Cambio de Region para Acceder a Contenido de Diferentes Regiones</string>
+	<key>Extended Bio</key>
+	<string>Biografia Extendida</string>
+	<key>Extended Comments</key>
+	<string>Comentarios Extendidos</string>
+	<key>FEATURE_ADD_COMMENT_POST</key>
+	<string>Agregar Comentario como Publicacion</string>
+	<key>FEATURE_ADD_COMMENT_STORY</key>
+	<string>Agregar Comentario como Historia</string>
+	<key>FEATURE_ADD_TRANSLATION</key>
+	<string>Habilita Boton de Traduccion</string>
+	<key>FEATURE_ANONYMOUS_SEEN</key>
+	<string>Ver Chats sin que la Otra Persona lo Sepa</string>
+	<key>FEATURE_APP_LOCK</key>
+	<string>Agrega la Capacidad de Bloquear TikTok con Contrasena</string>
+	<key>FEATURE_AUTO_CLEAR</key>
+	<string>Limpia Automaticamente el Historial de Busqueda Cada 60 Segundos</string>
+	<key>FEATURE_AUTO_PLAY</key>
+	<string>Habilita Reproduccion Automatica de Videos</string>
+	<key>FEATURE_AUTO_UNFOLD</key>
+	<string>Desplegar Automaticamente Textos</string>
+	<key>FEATURE_BYPASS_MEDIA_LIMIT</key>
+	<string>Omitir Limite de Medios en el Chat (Por Defecto: 9 Fotos, 1 Min Video)</string>
+	<key>FEATURE_COMMENT_REDESIGN</key>
+	<string>Redisenyo de Celda de Comentario</string>
+	<key>FEATURE_CONFIRM_COMMENT_DISLIKE</key>
+	<string>Muestra Confirmacion para Dar No Me Gusta al Comentario</string>
+	<key>FEATURE_CONFIRM_COMMENT_LIKE</key>
+	<string>Muestra Confirmacion para Dar Me Gusta al Comentario</string>
+	<key>FEATURE_CONFIRM_FOLLOW</key>
+	<string>Muestra Confirmacion para Seguir al Usuario</string>
+	<key>FEATURE_CONFIRM_LIKE</key>
+	<string>Muestra Confirmacion para Dar Me Gusta al Video</string>
+	<key>FEATURE_DISABLE_AI_REPLIES</key>
+	<string>Desactiva Respuestas Generadas por IA a Publicaciones Enviadas</string>
+	<key>FEATURE_DISABLE_COMMENT_TOOLTIP</key>
+	<string>Desactivar Tooltip de Comentarios</string>
+	<key>FEATURE_DISABLE_LIVE</key>
+	<string>Oculta Transmisiones en Vivo del Feed</string>
+	<key>FEATURE_DISABLE_SENSITIVE</key>
+	<string>Oculta Advertencia de Contenido Inapropiado</string>
+	<key>FEATURE_DISABLE_SURVEY</key>
+	<string>Desactiva Preguntas de Encuesta Molestas en el Feed</string>
+	<key>FEATURE_DISABLE_TYPING</key>
+	<string>No Envia Indicador de Escritura al Chatear</string>
+	<key>FEATURE_DISABLE_WARNINGS</key>
+	<string>Oculta Advertencias de TikTok</string>
+	<key>FEATURE_DOWNLOAD_BUTTON</key>
+	<string>Habilita Boton de Descarga para Publicaciones y Historias</string>
+	<key>FEATURE_EMBED_LINKS</key>
+	<string>Habilita Enlaces Incrustados al Copiar un Enlace</string>
+	<key>FEATURE_ENABLE_FLEX</key>
+	<string>Solo para Desarrolladores, No Tocar si No Sabes lo Que Hace</string>
+	<key>FEATURE_ENABLE_STREAKS</key>
+	<string>Habilita Rachas con Amigos</string>
+	<key>FEATURE_ENABLE_TEXT_TO_REPOSTS</key>
+	<string>Habilita Agregar Textos a Tu Republicacion</string>
+	<key>FEATURE_EXTENDED_BIO</key>
+	<string>Amplia Limite de Caracteres de la Biografia</string>
+	<key>FEATURE_EXTENDED_COMMENTS</key>
+	<string>Amplia Limite de Caracteres de los Comentarios</string>
+	<key>FEATURE_FAKE_CHANGES</key>
+	<string>Habilita Falsificacion de Datos de Perfil</string>
+	<key>FEATURE_FAKE_VERIFIED</key>
+	<string>Muestra Insignia de Verificacion Falsa</string>
+	<key>FEATURE_FOLLOWER_COUNT</key>
+	<string>Ingresa Cantidad Falsa de Seguidores</string>
+	<key>FEATURE_FOLLOWING_COUNT</key>
+	<string>Ingresa Cantidad Falsa de Seguidos</string>
+	<key>FEATURE_HIDE_ADS</key>
+	<string>Oculta Anuncios del Feed</string>
+	<key>FEATURE_HIDE_EMOJI</key>
+	<string>Ocultar Emoji-Bar</string>
+	<key>FEATURE_HIDE_FRIENDS_BADGE</key>
+	<string>Oculta Insignia de Notificacion de Amigos</string>
+	<key>FEATURE_HIDE_INBOX_BADGE</key>
+	<string>Oculta Insignia de Notificacion de Bandeja de Entrada</string>
+	<key>FEATURE_HIDE_PLAY_PAUSE</key>
+	<string>Oculta Vista de Reproducir/Pausar en el Feed</string>
+	<key>FEATURE_HIDE_PLUS_BTN</key>
+	<string>Oculta Boton de Camara</string>
+	<key>FEATURE_HIDE_STREAK_PET</key>
+	<string>Oculta Mascota de Racha</string>
+	<key>FEATURE_HIDE_TOP_ITEMS</key>
+	<string>Oculta Boton de Busqueda, LIVE y Otros (Para Ti, Siguiendo, Tienda, etc...)</string>
+	<key>FEATURE_LIKE_COUNT</key>
+	<string>Muestra Cantidad de Me Gusta en Mensajes</string>
+	<key>FEATURE_MASS_UNFOLD</key>
+	<string>Desplegar Masivamente Respuestas</string>
+	<key>FEATURE_MULTI_EMOJI</key>
+	<string>Barra Multi Emoji</string>
+	<key>FEATURE_OLED_KEYBOARD</key>
+	<string>Solo Funciona con Tema Oscuro</string>
+	<key>FEATURE_PIN_CHATS</key>
+	<string>Fija Chats Favoritos en la Parte Superior</string>
+	<key>FEATURE_POST_STATS</key>
+	<string>Muestra un Boton en el Menu de Descargas para Estadisticas de la Publicacion</string>
+	<key>FEATURE_PROFILE_COPY</key>
+	<string>Copia Informacion del Perfil</string>
+	<key>FEATURE_PROFILE_SAVE</key>
+	<string>Guarda Informacion del Perfil en el Portapapeles</string>
+	<key>FEATURE_PROGRESS_BAR</key>
+	<string>Muestra Barra de Duracion Debajo de Cada Video</string>
+	<key>FEATURE_REMOVE_WATERMARK</key>
+	<string>Elimina Marca de Agua (Logo Animado de TikTok y Nombre de Usuario) de Medios Descargados</string>
+	<key>FEATURE_SHARE_SHEET</key>
+	<string>Abre Hoja de Compartir Despues de Descargar Medios</string>
+	<key>FEATURE_SHOW_USERNAMES</key>
+	<string>Reemplaza Apodos con Etiquetas</string>
+	<key>FEATURE_SKIP_RECOMMENDED</key>
+	<string>Elimina Recomendaciones de Amigos, etc</string>
+	<key>FEATURE_SMALL_EMOJI</key>
+	<string>Habilita Envio de Emojis Pequenos</string>
+	<key>FEATURE_STOP_PLAYBACK</key>
+	<string>Detiene Reproduccion de Video al Finalizar</string>
+	<key>FEATURE_TRANSPARENT_COMMENTS</key>
+	<string>Hace la Seccion de Comentarios Transparente</string>
+	<key>FEATURE_UI_BUTTON</key>
+	<string>Muestra u Oculta Boton de UI</string>
+	<key>FEATURE_UPLOAD_DATE</key>
+	<string>Muestra Fecha de Subida</string>
+	<key>FEATURE_UPLOAD_HD</key>
+	<string>Habilita Subidas en HD</string>
+	<key>FEATURE_UPLOAD_REGION</key>
+	<string>Muestra Bandera de Region de Subida junto al Nombre de Usuario</string>
+	<key>FEATURE_USER_POST_COUNT</key>
+	<string>Muestra la Cantidad de Videos Subidos</string>
+	<key>FEATURE_VOICE_MESSAGES</key>
+	<string>Habilita el Envio de Mensajes de Voz en el Chat</string>
+	<key>Fake Verified</key>
+	<string>Verificacion Falsa</string>
+	<key>Feed</key>
+	<string>Inicio</string>
+	<key>Feed Settings</key>
+	<string>Configuracion de Inicio</string>
+	<key>Follow Confirmation</key>
+	<string>Confirmacion de Seguir</string>
+	<key>Follower</key>
+	<string>Seguidores</string>
+	<key>Following</key>
+	<string>Siguiendo</string>
+	<key>Hide Ads</key>
+	<string>Ocultar Anuncios</string>
+	<key>Hide Emoji-Bar</key>
+	<string>Ocultar Emoji-Bar</string>
+	<key>Hide Friends Badge</key>
+	<string>Ocultar Insignia de Amigos</string>
+	<key>Hide Inbox Badge</key>
+	<string>Ocultar Insignia de Bandeja de Entrada</string>
+	<key>Hide Play/Pause Button</key>
+	<string>Ocultar Boton de Reproducir/Pausar</string>
+	<key>Hide Plus Button</key>
+	<string>Ocultar Boton de Plus</string>
+	<key>Hide Streak Pet</key>
+	<string>Ocultar Mascota de Racha</string>
+	<key>Hide Top Feed items</key>
+	<string>Ocultar Elementos Superiores del Inicio</string>
+	<key>Language 🌎</key>
+	<string>Idioma 🌎</string>
+	<key>Like Comment Confirmation</key>
+	<string>Confirmacion de Me Gusta en Comentario</string>
+	<key>Like Confirmation</key>
+	<string>Confirmacion de Me Gusta</string>
+	<key>Live Actions</key>
+	<string>Acciones en Vivo</string>
+	<key>Live Button Actions</key>
+	<string>Acciones del Boton en Vivo</string>
+	<key>Live Button Function</key>
+	<string>Funcion del Boton en Vivo</string>
+	<key>Live Button Function Disabled</key>
+	<string>Funcion del Boton en Vivo Desactivada</string>
+	<key>Live Button Settings</key>
+	<string>Configuracion del Boton en Vivo</string>
+	<key>Mass Unfold Comment Replies</key>
+	<string>Desplegar Masivamente Respuestas</string>
+	<key>Modern</key>
+	<string>Moderno</string>
+	<key>Multi Emoji Comment Bar</key>
+	<string>Barra Multi Emoji</string>
+	<key>Music Link Copied</key>
+	<string>Enlace de Musica Copiado</string>
+	<key>No</key>
+	<string>No</string>
+	<key>OFF</key>
+	<string>APAGADO</string>
+	<key>ON</key>
+	<string>PRENDIDO</string>
+	<key>Other</key>
+	<string>Otro</string>
+	<key>Other Settings</key>
+	<string>Otras Opciones</string>
+	<key>Playback Speed</key>
+	<string>Velocidad de Reproduccion</string>
+	<key>Playback Speed Disabled</key>
+	<string>Velocidad de Reproduccion Desactivada</string>
+	<key>Playback Speed Settings</key>
+	<string>Configuracion de Velocidad de Reproduccion</string>
+	<key>Please enable Live Button Function first</key>
+	<string>Por Favor Habilita la Funcion del Boton en Vivo Primero</string>
+	<key>Please enable Playback Speed first</key>
+	<string>Por Favor Habilite la Velocidad de Reproduccion Primero</string>
+	<key>Please enable region changing first</key>
+	<string>Por Favor Habilite el Cambio de Region Primero</string>
+	<key>Post Info</key>
+	<string>Informacion de la Publicacion</string>
+	<key>Post Stats</key>
+	<string>Estadisticas de Publicaciones</string>
+	<key>Profile</key>
+	<string>Perfil</string>
+	<key>Profile Copy</key>
+	<string>Copiar Perfil</string>
+	<key>Profile Save</key>
+	<string>Guardar Perfil</string>
+	<key>Profile Settings</key>
+	<string>Configuracion de Perfil</string>
+	<key>Region</key>
+	<string>Region</string>
+	<key>Region Changing Disabled</key>
+	<string>Cambio de Region Desactivado</string>
+	<key>Region Settings</key>
+	<string>Configuracion de Region</string>
+	<key>Remove Watermark</key>
+	<string>Eliminar Marca de Agua</string>
+	<key>Select Action</key>
+	<string>Seleccionar Accion</string>
+	<key>Select Design</key>
+	<string>Seleccionar Diseno</string>
+	<key>Select Speed</key>
+	<string>Seleccionar Velocidad</string>
+	<key>Selected Action</key>
+	<string>Accion Seleccionada</string>
+	<key>Selected Region</key>
+	<string>Region Seleccionada</string>
+	<key>Selected Speed</key>
+	<string>Velocidad Seleccionada</string>
+	<key>Share Sheet</key>
+	<string>Hoja de Compartir</string>
+	<key>Show Progress Bar</key>
+	<string>Mostrar Barra de Progreso</string>
+	<key>Show Usernames</key>
+	<string>Mostrar Nombres de Usuario</string>
+	<key>Show/Hide UI Button</key>
+	<string>Mostrar/Ocultar Boton de UI</string>
+	<key>Skip Recommendations</key>
+	<string>Saltar Recomendaciones</string>
+	<key>Stats Menu</key>
+	<string>Menu de Estadisticas</string>
+	<key>Stop Playback</key>
+	<string>Detener Reproduccion</string>
+	<key>Tab Bar Configurations</key>
+	<string>Configuraciones de Barra de Pestanas</string>
+	<key>Tab Bar Settings</key>
+	<string>Configuracion de Barra de Pestanas</string>
+	<key>Tap to Join the Telegram</key>
+	<string>Toca para Unirte al Telegram</string>
+	<key>The video doesn't have music to download</key>
+	<string>Este Video No Tiene Musica Para Descargar</string>
+	<key>Transparent Comments</key>
+	<string>Comentarios Transparentes</string>
+	<key>Upload HD</key>
+	<string>Subir en HD</string>
+	<key>Upload Region</key>
+	<string>Region de Subida</string>
+	<key>User Post Count</key>
+	<string>Cantidad de Publicaciones del Usuario</string>
+	<key>Video Info</key>
+	<string>Informacion del Video</string>
+	<key>Video Like Count</key>
+	<string>Cantidad de Me Gusta en Video</string>
+	<key>Video Link Copied</key>
+	<string>Enlace de Video Copiado</string>
+	<key>Video Upload Date</key>
+	<string>Fecha de Subida del Video</string>
+	<key>Welcome</key>
+	<string>Bienvenido</string>
+	<key>Yes</key>
+	<string>Si</string>
+</dict>
+</plist>

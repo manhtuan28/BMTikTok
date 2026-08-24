@@ -1,0 +1,276 @@
+/* Headers */
+"Settings" = "設定";
+"Developer" = "BHTikTok開発者";
+"PlusDeveloper" = "BHTikTok Plus開発者";
+
+/* Main */
+"DownloadOptions" = "ダウンロード";
+"FeedOptions" = "フィード";
+"ProfileOptions" = "プロフィール";
+"ConfirmationOptions" = "確認";
+"RegionOptions" = "地域";
+"FakeOptions" = "フェイク";
+"ColorOptions" = "外観";
+"OtherOptions" = "その他";
+"Apply" = "適用";
+
+/* Developer */
+"TipJar" = "Tip Jar";
+"DonateViaPayPal" = "PayPalで寄付する";
+"Donate" = "開発をサポートする";
+"Telegram" = "私達のTelegramチャンネル";
+"Thanks" = "Special Thanks";
+"DonateMessage" = "BHTikTok Plus を気に入っていただけた場合、以下の便利な方法でコーヒーをご馳走いただければ幸いです。\n\nありがとうございます❤";
+"MaybeLater" = "後で";
+"ThankYou" = "ありがとうございます";
+
+/* Download Options */
+"DownloadFeedHeader" = "フィード";
+"DownloadVideos" = "動画をダウンロード";
+"DownloadVideosDesc" = "ウォーターマークなしで動画をダウンロードするボタンを追加します";
+"DownloadHDVideos" = "HD動画をダウンロード";
+"DownloadHDVideosDesc" = "HD(H.265)動画をダウンロードするオプションを追加します。ただし、一部のアプリと互換性がない場合があります";
+"DownloadWMVideos" = "ウォーターマーク付き動画をダウンロード";
+"DownloadWMVideosDesc" = "ウォーターマーク付きで動画をダウンロードするオプションを追加します";
+"DownloadMusics" = "音楽をダウンロード";
+"DownloadMusicsDesc" = "動画から音楽をダウンロードするボタンを追加します";
+"CopyVideoDescription" = "動画の説明をコピー";
+"CopyVideoDescriptionDesc" = "動画の説明をコピーするボタンを追加します";
+"CopyVideosLink" = "動画のリンクをコピー";
+"CopyVideosLinkDesc" = "動画のリンクをコピーするボタンを追加します";
+"CopyMusicsLink" = "音楽のリンクをコピー";
+"CopyMusicsLinkDesc" = "音楽のリンクをコピーするボタンを追加します";
+"GroupMenuItems" = "Group Menu Items";
+"GroupMenuItemsDesc" = "Groups menu items to Download and Copy Information submenus";
+"CompactProgress" = "Compact Progress Bar";
+"CompactProgressDesc" = "Displays a compact downloading progress bar at the bottom of the screen";
+"RemoveWatermark" = "ウォーターマークを無効にする";
+"RemoveWatermarkDesc" = "通常のTikTokメニューからウォーターマークなしで動画をダウンロードする場合に便利です";
+"DownloadProfileHeader" = "プロフィール";
+"SaveProfileImage" = "プロフィール写真を保存";
+"SaveProfileImageDesc" = "長押しでプロフィール写真をダウンロードできるようにします";
+"CopyProfileInformation" = "プロフィール情報をコピー";
+"CopyProfileInformationDesc" = "写真または@ユーザー名を長押ししてプロフィールの説明をコピーできるようにします";
+"DownloadedAction" = "読み込み後のアクション";
+"SaveToPhotos" = "写真に保存";
+"ShowShareSheet" = "共有シートを表示";
+"DownloadMenu" = "ダウンロードメニューのスタイル";
+"CompactMenu" = "コンパクト";
+"OldMenu" = "TikTok";
+
+/* Feed Options */
+"Feed" = "フィード";
+"NoAds" = "広告を無効にする";
+"NoAdsDesc" = "アプリ内の広告を削除します";
+"HideUI" = "ピュアモード";
+"HideUIDesc" = "インターフェースボタンを非表示/表示するボタンを追加します";
+"UploadRegion" = "アップロード国を表示";
+"UploadRegionDesc" = "ユーザー名の横に動画のアップロード国の旗を表示します";
+"NoPullToRefresh" = "Disable Pull To Refresh";
+"NoPullToRefreshDesc" = "Disables the gesture to refresh the feed by pulling down on the first page";
+"ShowUsername" = "ユーザー名を表示";
+"ShowUsernameDesc" = "以前のバージョンと同様にニックネームの代わりにユーザー名を表示します";
+"TransparentComms" = "半透明コメント";
+"TransparentCommsDesc" = "コメントウィンドウの背景を半透明にし、動画を視聴しながらコメントを読むことができるようにします";
+"ClearLinks" = "リンクをクリア";
+"ClearLinksDesc" = "アカウントから共有されたリンクのトラッキングを削除します";
+"NoWarnings" = "Disable Warnings";
+"NoWarningsDesc" = "Removes the warning message under the video description";
+"SkipRecs" = "おすすめをスキップ";
+"SkipLive" = "ライブ放送をスキップ";
+"ShowProgressBar" = "進行状況バーを表示";
+"PlaybackAction" = "動画再生完了後のアクション";
+"Replay" = "繰り返し";
+"Stop" = "停止";
+"SkipToNext" = "次にスキップ";
+"RegionStyle" = "地域の形式と配置";
+"CountryFlag" = "国旗";
+"CountryCode" = "国コード";
+"InNickname" = "ニックネーム";
+"TopRight" = "右上隅";
+"StartupPage" = "スタートアップページ";
+"ForYou" = "あなた向け";
+"Following" = "フォロー中";
+
+/* Profile Options */
+"FollowStatus" = "フォローの状態";
+"FollowStatusDesc" = "プロフィールにフォローの状態を表示します";
+"VideoCount" = "動画数";
+"VideoCountDesc" = "ユーザープロフィールにアップロード数を表示します";
+"TotalVideoCount" = "投稿数: %@"; // %@ は総動画数(投稿数: 25)
+"UploadDate" = "動画のアップロード日";
+"UploadDateDesc" = "プロフィールの動画サムネイルにアップロード日を表示します";
+"ProfileLikeCount" = "動画のいいね数";
+"ProfileLikeCountDesc" = "プロフィールの動画サムネイルにいいね数を表示します";
+"UnsensitiveContent" = "センシティブではないコンテンツ";
+"UnsensitiveContentDesc" = "センシティブなコンテンツの警告を削除します";
+"NoJustWatched" = "\"視聴済み\"を削除";
+"NoJustWatchedDesc" = "動画サムネイルから\"視聴済み\"を削除します";
+"ExtendBio" = "プロフィールの文字数制限を拡張";
+"ExtendBioDesc" = "プロフィールの説明の文字数制限を222文字に増やします";
+"ExtendComment" = "コメントの文字数制限を拡張";
+"ExtendCommentDesc" = "コメントの文字数制限を240文字に増やします";
+"UploadHD" = "常にHDでアップロード";
+"UploadHDDesc" = "動画を強制的にHD品質でアップロードします";
+
+/* Confirmation Options */
+"ConfirmLike" = "いいねの確認";
+"ConfirmLikeDesc" = "投稿にいいねする前に確認が必要です";
+"ConfirmCommentLike" = "コメントのいいねの確認";
+"ConfirmCommentLikeDesc" = "コメントにいいねする前に確認が必要です";
+"ConfirmCommentDislike" = "コメントのいいね解除の確認";
+"ConfirmCommentDislikeDesc" = "コメントのいいね解除する前に確認が必要です";
+"ConfirmFollow" = "フォローの確認";
+"ConfirmFollowDesc" = "ユーザーをフォローする前に確認が必要です";
+
+/* Region Options */
+"EnableChangingRegion" = "地域を変更";
+"Regions" = "地域";
+"SaudiArabia" = "サウジアラビア";
+"Taiwan" = "台湾";
+"HongKong" = "香港";
+"Macao" = "マカオ";
+"Japan" = "日本";
+"SouthKorea" = "韓国";
+"UnitedKingdom" = "イギリス";
+"UnitedStates" = "アメリカ合衆国";
+"Australia" = "オーストラリア";
+"Canada" = "カナダ";
+"Argentina" = "アルゼンチン";
+"Philippines" = "フィリピン";
+"Laos" = "ラオス";
+"Malaysia" = "マレーシア";
+"Thailand" = "タイ";
+"Singapore" = "シンガポール";
+"Indonesia" = "インドネシア";
+"Vietnam" = "ベトナム";
+"Anguilla" = "アンギラ";
+"Panama" = "パナマ";
+"Germany" = "ドイツ";
+"Russia" = "ロシア";
+"Belarus" = "ベラルーシ";
+"Ukraine" = "ウクライナ";
+"Kazakhstan" = "カザフスタン";
+"France" = "フランス";
+"Finland" = "フィンランド";
+"Italy" = "イタリア";
+"Pakistan" = "パキスタン";
+"Denmark" = "デンマーク";
+"Norway" = "ノルウェー";
+"Sudan" = "スーダン";
+"Romania" = "ルーマニア";
+"UnitedArabEmirates" = "アラブ首長国連邦";
+"Egypt" = "エジプト";
+"Lebanon" = "レバノン";
+"Mexico" = "メキシコ";
+"Brazil" = "ブラジル";
+"Turkey" = "トルコ";
+"Kuwait" = "クウェート";
+"Algeria" = "アルジェリア";
+"Senegal" = "セネガル";
+"Switzerland" = "スイス";
+"Albania" = "アルバニア";
+"Moldova" = "モルドバ";
+"Croatia" = "クロアチア";
+"Morocco" = "モロッコ";
+"Yemen" = "イエメン";
+"Turkmenistan" = "トルクメニスタン";
+"Uzbekistan" = "ウズベキスタン";
+"Azerbaijan" = "アゼルバイジャン";
+"Netherlands" = "オランダ";
+"Poland" = "ポーランド";
+"CzechRepublic" = "チェコ共和国";
+
+/* Fake Options */
+"FakeBlueMark" = "フェイクの認証バッジ";
+"EnableFakeOptions" = "フェイクのフォロワー/いいね";
+"FollowerCount" = "フォロワー数";
+"FollowingCount" = "フォロー数";
+"LikeCount" = "いいね数";
+"EnterNumber" = "数値を入力";
+"FakeDesc" = "オリジナルの値を表示するにはフィールドを空白のままにします。これらの変更はあなただけに表示されます";
+
+/* Color Options */
+"NicknameColor" = "ニックネームの色を変更";
+"NicknameColorDesc" = "フィード内のニックネームの色を変更します";
+"NicknameColorGlobal" = "すべてのニックネームに適用";
+"NicknameColorGlobalDesc" = "アプリ全体でニックネームの色を変更します。\"%@\"を有効にする必要があります"; // %@ is NicknameColor
+"CommentColor" =  "説明の色を変更";
+"CommentColorDesc" =  "動画の説明の色を変更します";
+"SelectColor" = "色を選択";
+"ProfileTextShadow" = "サムネイルに影を適用";
+"ProfileTextShadowDesc" = "プロフィールの動画サムネイルに統計情報に影を適用します";
+"NicknameTextShadow" = "ニックネームに影を適用";
+"NicknameTextShadowDesc" = "フィード内のニックネームに影を適用します";
+"NicknameGlobalShadow" = "すべてのニックネームに適用";
+"NicknameGlobalShadowDesc" = "アプリ全体でニックネームに影を適用します。\"%@\"を有効にする必要があります"; // %@ is NicknameTextShadow
+
+/* Other */
+"BHButtonPlacement" = "設定ボタンの配置";
+"InProfile" = "プロフィール内";
+"InSettings" = "設定内";
+"Padlock" = "パスコードロック";
+"PadlockDesc" = "アプリのロック解除にパスコードが必要です";
+"Cache" = "キャッシュをクリア";
+"Cleared" = "完了\n %@クリア済";
+"FixInteractions" = "Fix Interactions";
+"FixInteractionsDesc" = "Removes all data, including suspicious activity, thus restoring the ability to subscribe, like, and comment media";
+"FixInteractionsMsg" = "THIS ACTION CANNOT BE UNDONE.\n\nAll data, including: Authorization data, App settings, Tweaks settings and All existing drafts will be deleted.\n\nAre you sure you want to continue?";
+"RestartApp" = "Done.\nApp restart required";
+
+/* Special Thanks */
+"Arabic" = "アラビア語のローカライズ";
+"ChineseSimplified" = "簡体字中国語のローカライズ";
+"ChineseTraditional" = "繁体字中国語のローカライズ";
+"Spanish" = "スペイン語のローカライズ";
+"French" = "フランス語のローカライズ";
+"Vietnamese" = "ベトナム語のローカライズ";
+"Turkish" = "トルコ語のローカライズ";
+"Japanese" = "Japanese localization";
+
+/* Pop-ups And Other Stuff */
+"BHTikTokSettings" = "BHTikTok Plus";
+"AreYouSure" = "本当によろしいですか？";
+"ActionFollow" = "フォロー";
+"ActionLike" = "いいね";
+"ActionDislike" = "いいね解除";
+"ConfirmAction" = "アクションの確認";
+"Warning" = "警告";
+"ApplyDesc" = "この操作はアプリを閉じて変更を適用します。\n\n本当によろしいですか?";
+"Yes" = "はい";
+"No" = "いいえ";
+"Confirm" = "確認";
+"Cancel" = "キャンセル";
+"DownloadGroup" = "Download";
+"CopyGroup" = "Copy";
+"Downloading" = "ダウンロード中";
+"DownloadVideo" = "動画をダウンロード";
+"DownloadHDVideo" = "HD 動画をダウンロード";
+"DownloadWMVideo" = "ウォーターマーク付き動画をダウンロード";
+"DownloadMusic" = "音楽をダウンロード";
+"DownloadThisPhoto" = "この写真をダウンロード";
+"DownloadAllPhotos" = "すべての写真をダウンロード";
+"DownloadProfileImage" = "プロフィール画像をダウンロード";
+"StaticImagesOnly" = "静止画のみ";
+"CopyMusicLink" = "音楽のリンクをコピー";
+"CopyVideoLink" = "動画のリンクをコピー";
+"CopyDescription" = "説明をコピー";
+"WhatToCopy" = "アクションを選択";
+"CopySocialName" = "@ユーザー名をコピー";
+"CopyNickName" = "名前をコピー";
+"CopyBio" = "バイオをコピー";
+"CopyBioURL" = "プロフィールの URL をコピー";
+"VidNoMusic" = "動画に音楽がありません";
+"VidNoDescription" = "メディアに説明がありません";
+"Success" = "保存されました";
+"Copied" = "コピーされました";
+"Done" = "完了";
+"Share" = "Share";
+"NoFollows" = "フォローはありません";
+"FollowsYou" = "あなたをフォローしています";
+"DoesntFollowsYou" = "フォロー中";
+"Friends" = "友達";
+
+/* Passlock */
+"Authenticate" = "アクセス認証";
+"IdentifyYourself" = "アクセスする";

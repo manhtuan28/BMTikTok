@@ -1,0 +1,908 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>ALWAYS_OPEN_SAFARI</key>
+	<string>افتح دائمًا في Safari</string>
+	<key>About</key>
+	<string>حول</string>
+	<key>Actions</key>
+	<string>الإجراءات</string>
+	<key>Add Comment as Post</key>
+	<string>إضافة تعليق كمنشور</string>
+	<key>Add Comment as Story</key>
+	<string>إضافة تعليق كقصة</string>
+	<key>Add Folders To Inbox</key>
+	<string>إضافة مجلدات إلى صندوق الوارد</string>
+	<key>Add Translation Button</key>
+	<string>إضافة زر الترجمة</string>
+	<key>Adjust offline download limit</key>
+	<string>ضبط حد التنزيل دون اتصال</string>
+	<key>Adjust value between 50 and 2000</key>
+	<string>اضبط القيمة بين 50 و 2000</string>
+	<key>All TikTok data has been cleared.</key>
+	<string>تم مسح جميع بيانات TikTok.</string>
+	<key>All TikTok data has been erased.</key>
+	<string>تم مسح جميع بيانات TikTok.</string>
+	<key>All settings have been reset to default values.</key>
+	<string>تمت إعادة تعيين جميع الإعدادات إلى القيم الافتراضية.</string>
+	<key>Anonymous Seen</key>
+	<string>مشاهدة مجهولة</string>
+	<key>App Configuration</key>
+	<string>تكوين التطبيق</string>
+	<key>App Lock</key>
+	<string>قفل التطبيق</string>
+	<key>Apply</key>
+	<string>تطبيق</string>
+	<key>Are you sure you want to clear all data? This will remove:
+1- TikTok's data directory
+2-all keychains
+3- clears all NSUserDefaults
+ 
+NOTICE!
+ YOU WILL LOSE YOUR DRAFTS AND ANYTHING SAVED LOCALLY.</key>
+	<string>هل أنت متأكد أنك تريد مسح جميع البيانات؟ سيؤدي هذا إلى إزالة:
+1- دليل بيانات TikTok
+2- جميع سلاسل المفاتيح
+3- مسح جميع NSUserDefaults
+
+تنبيه!
+ستفقد مسوداتك وأي شيء محفوظ محليًا.</string>
+	<key>Are you sure you want to erase all TikTok data? This will clear all app data and cannot be undone.</key>
+	<string>هل أنت متأكد أنك تريد مسح جميع بيانات TikTok؟ سيؤدي هذا إلى مسح جميع بيانات التطبيق ولا يمكن التراجع عنه.</string>
+	<key>Are you sure you want to reset all settings to default values? This action cannot be undone.</key>
+	<string>هل أنت متأكد أنك تريد إعادة تعيين جميع الإعدادات إلى القيم الافتراضية؟ لا يمكن التراجع عن هذا الإجراء.</string>
+	<key>Are you sure?</key>
+	<string>هل أنت متأكد؟</string>
+	<key>Auto Clear History</key>
+	<string>مسح السجل تلقائيًا</string>
+	<key>Auto Play Next Video</key>
+	<string>تشغيل الفيديو التالي تلقائيًا</string>
+	<key>Auto Unfold Comment Texts</key>
+	<string>فتح تلقائي لنصوص التعليقات</string>
+	<key>BACKGROUND_PLAY</key>
+	<string>تمكين التشغيل في الخلفية</string>
+	<key>BETA!</key>
+	<string>نسخة تجريبية!</string>
+	<key>BLOCK_AI_GENERATED</key>
+	<string>حظر المنشورات المُنشأة بالذكاء الاصطناعي</string>
+	<key>BLOCK_MOVIE_TOK</key>
+	<string>حظر إعلانات الأفلام</string>
+	<key>BLOCK_POI</key>
+	<string>حظر إعلانات المواقع</string>
+	<key>BLOCK_SHOP_VIDEOS</key>
+	<string>حظر منشورات المتجر</string>
+	<key>BLOCK_TCM</key>
+	<string>حظر إعلانات التطبيقات</string>
+	<key>BMTikTok Settings</key>
+	<string>إعدادات BMTikTok</string>
+	<key>BMTikTok, Hi</key>
+	<string>مرحبًا بك في BMTikTok</string>
+	<key>BYPASS_FOLLOW_LIST_SEARCH</key>
+	<string>تجاوز حد البحث في قائمة المتابعين</string>
+	<key>Back</key>
+	<string>رجوع</string>
+	<key>Backgrounding ✌️</key>
+	<string>التشغيل في الخلفية ✌️</string>
+	<key>Block</key>
+	<string>حظر</string>
+	<key>Buy Me a Coffee</key>
+	<string>اشتر لي قهوة</string>
+	<key>Bypass Media Limit</key>
+	<string>تجاوز حد الوسائط</string>
+	<key>CONFIRM_QUICK_SHARE</key>
+	<string>تأكيد المشاركة السريعة</string>
+	<key>CONFIRM_REPOST</key>
+	<string>تأكيد إعادة النشر</string>
+	<key>Cancel</key>
+	<string>إلغاء</string>
+	<key>Cancelled</key>
+	<string>ملغي</string>
+	<key>Change Action of Live Button</key>
+	<string>تغيير إجراء زر البث المباشر</string>
+	<key>Change the behavior of the Live button</key>
+	<string>تغيير سلوك زر البث المباشر</string>
+	<key>Changes will take effect after restarting the app</key>
+	<string>سيتم تفعيل التغييرات بعد إعادة تشغيل التطبيق</string>
+	<key>Chat Features</key>
+	<string>ميزات الدردشة</string>
+	<key>Chat Settings</key>
+	<string>إعدادات الدردشة</string>
+	<key>Choose export destination:</key>
+	<string>اختر وجهة التصدير:</string>
+	<key>Choose import source:</key>
+	<string>اختر مصدر الاستيراد:</string>
+	<key>Clear</key>
+	<string>مسح</string>
+	<key>Clear Keychain</key>
+	<string>مسح سلسلة المفاتيح</string>
+	<key>Close</key>
+	<string>إغلاق</string>
+	<key>Co-Owner</key>
+	<string>المالك المشارك</string>
+	<key>Comment Cell Redesign</key>
+	<string>إعادة تصميم خلية التعليق</string>
+	<key>Comment Design</key>
+	<string>تصميم التعليقات</string>
+	<key>Comment Settings</key>
+	<string>إعدادات التعليقات</string>
+	<key>Community</key>
+	<string>المجتمع</string>
+	<key>Compact</key>
+	<string>مدمج</string>
+	<key>Configuration</key>
+	<string>الإعدادات</string>
+	<key>Configuration Management</key>
+	<string>إدارة التكوين</string>
+	<key>Configuration imported from keychain successfully.</key>
+	<string>تم استيراد الإعدادات من سلسلة المفاتيح بنجاح.</string>
+	<key>Configuration imported successfully.</key>
+	<string>تم استيراد الإعدادات بنجاح.</string>
+	<key>Configuration saved to keychain successfully.</key>
+	<string>تم حفظ الإعدادات في سلسلة المفاتيح بنجاح.</string>
+	<key>Configure Advanced Comment Settings</key>
+	<string>تكوين إعدادات التعليقات المتقدمة</string>
+	<key>Confirm</key>
+	<string>تأكيد</string>
+	<key>Confirm Clear</key>
+	<string>تأكيد المسح</string>
+	<key>Confirm Settings</key>
+	<string>تأكيد الإعدادات</string>
+	<key>Confirmation Settings</key>
+	<string>إعدادات التأكيد</string>
+	<key>Content &amp; Display</key>
+	<string>المحتوى والعرض</string>
+	<key>Content Enhancement</key>
+	<string>تحسين المحتوى</string>
+	<key>Content Filtering</key>
+	<string>تصفية المحتوى</string>
+	<key>Content Interactions</key>
+	<string>تفاعلات المحتوى</string>
+	<key>Contributor</key>
+	<string>مساهم</string>
+	<key>Control video playback speed</key>
+	<string>التحكم في سرعة تشغيل الفيديو</string>
+	<key>Copy Description</key>
+	<string>نسخ الوصف</string>
+	<key>Copy Link</key>
+	<string>نسخ الرابط</string>
+	<key>Copy Menu</key>
+	<string>قائمة النسخ</string>
+	<key>Copy Music Link</key>
+	<string>نسخ رابط الموسيقى</string>
+	<key>Copy Video link</key>
+	<string>نسخ رابط الفيديو</string>
+	<key>Copy bio</key>
+	<string>نسخ السيرة الذاتية</string>
+	<key>Could Not Copy Music</key>
+	<string>تعذر نسخ الموسيقى</string>
+	<key>Credits</key>
+	<string>الاعتمادات</string>
+	<key>DEVELOPER_SUPPORT</key>
+	<string>ادعم BMTikTok واحصل على حق الوصول إلى مجموعة الاختبار التجريبي الخاصة بنا</string>
+	<key>DEVELOPER_TELEGRAM</key>
+	<string>انضم إلى قناة Telegram الخاصة بنا للحصول على آخر التحديثات</string>
+	<key>DISABLE_ACTIVITY_STATUS_WARNING</key>
+	<string>يستغرق تعطيل أو تمكين حالة النشاط المجهول وقتًا لينعكس على خوادم TikTok. قد لا تزال تظهر متصلاً لبعض الوقت بعد تمكين هذه الميزة.</string>
+	<key>DISABLE_FEED_DOUBLE_TAP</key>
+	<string>تعطيل النقر المزدوج في الشاشة الرئيسية</string>
+	<key>DISABLE_SCREENRECORDING_DETECTION</key>
+	<string>تعطيل كشف تسجيل الشاشة</string>
+	<key>DISABLE_SCREENSHOT_DETECTION</key>
+	<string>تعطيل كشف لقطات الشاشة</string>
+	<key>DISABLE_STORY_DOUBLE_TAP</key>
+	<string>تعطيل النقر المزدوج في القصص</string>
+	<key>DISABLE_TYPING_STICKER</key>
+	<string>تعطيل ملصق الكتابة</string>
+	<key>DISABLE_VISUAL_SEARCH_TAG</key>
+	<string>تعطيل علامة البحث المرئي</string>
+	<key>DOWNLOADING_STICKER</key>
+	<string>جارٍ تنزيل الملصق...</string>
+	<key>DOWNLOAD_FAILED</key>
+	<string>فشل التنزيل</string>
+	<key>DRM Developer</key>
+	<string>مطور DRM</string>
+	<key>Data Cleared</key>
+	<string>تم مسح البيانات</string>
+	<key>Default</key>
+	<string>افتراضي</string>
+	<key>Delete</key>
+	<string>حذف</string>
+	<key>Description Link Copied</key>
+	<string>تم نسخ رابط الوصف</string>
+	<key>Deselect All</key>
+	<string>إلغاء تحديد الكل</string>
+	<key>Design Options</key>
+	<string>خيارات التصميم</string>
+	<key>Developer</key>
+	<string>المطور</string>
+	<key>Disable</key>
+	<string>تعطيل</string>
+	<key>Disable AI-Generated Replies</key>
+	<string>تعطيل الردود المُنشأة بالذكاء الاصطناعي</string>
+	<key>Disable Comment Tooltip</key>
+	<string>تعطيل تلميح التعليق</string>
+	<key>Disable Left &amp; Right Swipe</key>
+	<string>تعطيل السحب لليسار واليمين</string>
+	<key>Disable Live Streaming</key>
+	<string>تعطيل البث المباشر</string>
+	<key>Disable Sensitive Content</key>
+	<string>تعطيل المحتوى الحساس</string>
+	<key>Disable Survey Popups</key>
+	<string>تعطيل النوافذ المنبثقة للاستبيانات</string>
+	<key>Disable TikTok Rewards ADs</key>
+	<string>تعطيل إعلانات مكافآت TikTok</string>
+	<key>Disable Typing Indicator</key>
+	<string>تعطيل مؤشر الكتابة</string>
+	<key>Disable Warnings</key>
+	<string>تعطيل التحذيرات</string>
+	<key>Dislike Comment Confirmation</key>
+	<string>تأكيد عدم الإعجاب بالتعليق</string>
+	<key>Done</key>
+	<string>تم</string>
+	<key>Download All Photos</key>
+	<string>تنزيل كل الصور</string>
+	<key>Download Button</key>
+	<string>زر التنزيل</string>
+	<key>Download HD Video</key>
+	<string>تنزيل الفيديو بجودة عالية</string>
+	<key>Download Music</key>
+	<string>تنزيل الموسيقى</string>
+	<key>Download Photo</key>
+	<string>تنزيل الصورة</string>
+	<key>Download Photos Menu</key>
+	<string>قائمة تنزيل الصور</string>
+	<key>Download Video</key>
+	<string>تنزيل الفيديو</string>
+	<key>Downloading</key>
+	<string>جارٍ التنزيل</string>
+	<key>Downloads &amp; Sharing</key>
+	<string>التنزيلات والمشاركة</string>
+	<key>Downloads Menu</key>
+	<string>قائمة التنزيلات</string>
+	<key>ENABLE_COMMENT_PHOTO</key>
+	<string>يمكن الردود بالصور في التعليقات</string>
+	<key>ENABLE_COMMENT_STICKERS</key>
+	<string>يمكن الردود بالملصقات في التعليقات</string>
+	<key>ENABLE_STICKER_DOWNLOAD</key>
+	<string>انقر مرتين لتنزيل الملصق</string>
+	<key>Edit</key>
+	<string>تعديل</string>
+	<key>Emoji &amp; Interface</key>
+	<string>الإيموجي والواجهة</string>
+	<key>Enable</key>
+	<string>تمكين</string>
+	<key>Enable Comment Flags</key>
+	<string>تمكين الأعلام في التعليقات</string>
+	<key>Enable Comment Photos</key>
+	<string>تمكين الصور في التعليقات</string>
+	<key>Enable Comment Stickers</key>
+	<string>تمكين الملصقات في التعليقات</string>
+	<key>Enable Copy Without Username</key>
+	<string>تمكين النسخ بدون اسم المستخدم</string>
+	<key>Enable Egypt Stickers</key>
+	<string>تمكين ملصقات مصر</string>
+	<key>Enable Embeded Links</key>
+	<string>تمكين الروابط المدمجة</string>
+	<key>Enable Fake Changes</key>
+	<string>تمكين التغييرات المزيفة</string>
+	<key>Enable Flex</key>
+	<string>تمكين Flex</string>
+	<key>Enable Live Button Function</key>
+	<string>تفعيل وظيفة زر البث المباشر</string>
+	<key>Enable Oled Keyboard</key>
+	<string>تمكين لوحة مفاتيح OLED</string>
+	<key>Enable Persistent Playback Speed.</key>
+	<string>تمكين سرعة تشغيل ثابتة على المنشورات.</string>
+	<key>Enable Pin Chat</key>
+	<string>تمكين تثبيت الدردشة</string>
+	<key>Enable Playback Speed</key>
+	<string>تمكين سرعة التشغيل</string>
+	<key>Enable Region Changing</key>
+	<string>تمكين تغيير المنطقة</string>
+	<key>Enable Region Changing Functionality</key>
+	<string>تمكين وظيفة تغيير المنطقة</string>
+	<key>Enable Small Emoji</key>
+	<string>تمكين الرموز التعبيرية الصغيرة</string>
+	<key>Enable Streaks</key>
+	<string>تمكين الخطوط المتتالية</string>
+	<key>Enable Text To Reposts</key>
+	<string>تمكين النص في إعادة النشر</string>
+	<key>Enable Voice Messages</key>
+	<string>تمكين الرسائل الصوتية</string>
+	<key>Enable region changing to access content from different regions</key>
+	<string>تمكين تغيير المنطقة للوصول إلى محتوى من مناطق مختلفة</string>
+	<key>Enhanced Comments Features</key>
+	<string>ميزات التعليقات المحسّنة</string>
+	<key>Erase</key>
+	<string>مسح</string>
+	<key>Erase All Data</key>
+	<string>مسح جميع البيانات</string>
+	<key>Erase All TikTok Data</key>
+	<string>مسح جميع بيانات TikTok</string>
+	<key>Erase all TikTok data from the app  [Becareful!!!]</key>
+	<string>يمسح جميع بيانات TikTok من التطبيق [كن حذراً!!!]</string>
+	<key>Error</key>
+	<string>خطأ</string>
+	<key>Export Configuration</key>
+	<string>تصدير الإعدادات</string>
+	<key>Export settings to a file</key>
+	<string>تصدير الإعدادات إلى ملف</string>
+	<key>Export to File</key>
+	<string>تصدير إلى ملف</string>
+	<key>Extended Comments</key>
+	<string>تعليقات موسعة</string>
+	<key>Extracting Media URL…</key>
+	<string>جارٍ استخراج عنوان URL للوسائط…</string>
+	<key>FEATURE_ADD_COMMENT_POST</key>
+	<string>يمكن نشر ردود التعليقات كمنشور</string>
+	<key>FEATURE_ADD_COMMENT_STORY</key>
+	<string>يمكن نشر ردود التعليقات كقصة</string>
+	<key>FEATURE_ADD_FOLDERS</key>
+	<string>يضيف تنظيم المجلدات إلى رسائل صندوق الوارد</string>
+	<key>FEATURE_ADD_FOLDERS_DESC</key>
+	<string>نظم رسائل صندوق الوارد الخاصة بك في مجلدات مخصصة لإدارة أفضل</string>
+	<key>FEATURE_ADD_TRANSLATION</key>
+	<string>يضيف زر ترجمة إلى كل تعليق</string>
+	<key>FEATURE_ALWAYS_OPEN_SAFARI</key>
+	<string>يفتح الروابط دائمًا في Safari بدلاً من المتصفح المدمج</string>
+	<key>FEATURE_ANONYMOUS_SEEN</key>
+	<string>اقرأ الدردشات دون إخطار الشخص</string>
+	<key>FEATURE_ANONYMOUS_SEEN_DESC</key>
+	<string>شاهد الدردشات دون إرسال إيصالات القراءة إلى المستلم</string>
+	<key>FEATURE_APP_LOCK</key>
+	<string>يضيف قفل تطبيق عند تشغيل TikTok</string>
+	<key>FEATURE_APP_LOCK_DESC</key>
+	<string>قم بتأمين تطبيق TikTok بكلمة مرور أو مصادقة بيومترية</string>
+	<key>FEATURE_AUTO_CLEAR</key>
+	<string>يمسح سجل البحث الخاص بك كل 60 ثانية</string>
+	<key>FEATURE_AUTO_PLAY</key>
+	<string>يمكن التمرير التلقائي للفيديو</string>
+	<key>FEATURE_AUTO_UNFOLD</key>
+	<string>يفتح تلقائيًا جميع التعليقات الطويلة</string>
+	<key>FEATURE_BACKGROUND_PLAY</key>
+	<string>يمكن التشغيل الخلفي للصوت</string>
+	<key>FEATURE_BLOCK_AI_GENERATED</key>
+	<string>يحظر المنشورات التي تحتوي على 'يحتوي على وسائط مُنشأة بالذكاء الاصطناعي'</string>
+	<key>FEATURE_BLOCK_MOVIE_TOK</key>
+	<string>يحظر الفيديوهات التي تحتوي على إعلانات أفلام</string>
+	<key>FEATURE_BLOCK_POI</key>
+	<string>حظر الفيديوهات التي تحتوي على إعلانات مواقع</string>
+	<key>FEATURE_BLOCK_SHOP_ADS</key>
+	<string>حظر الفيديوهات التي تحتوي على إعلانات متجر</string>
+	<key>FEATURE_BLOCK_SHOP_VIDEOS</key>
+	<string>يزيل منشورات المتجر من الشاشة الرئيسية.</string>
+	<key>FEATURE_BLOCK_TCM</key>
+	<string>حظر الفيديوهات التي تحتوي على إعلانات تطبيقات</string>
+	<key>FEATURE_BYPASS_FOLLOW_LIST_SEARCH</key>
+	<string>يمكن البحث في قائمة المتابعين حتى إذا كان لدى المستخدم أكثر من 5000 متابع</string>
+	<key>FEATURE_BYPASS_MEDIA_LIMIT</key>
+	<string>يتجاوز حدود إرسال الوسائط في الدردشة (الافتراضي: 9 صور، فيديو دقيقة واحدة)</string>
+	<key>FEATURE_COMMENT_REDESIGN</key>
+	<string>يمكن خلايا التعليقات المعاد تصميمها</string>
+	<key>FEATURE_CONFIRM_COMMENT_DISLIKE</key>
+	<string>يطلب تأكيدًا قبل عدم الإعجاب بتعليق</string>
+	<key>FEATURE_CONFIRM_COMMENT_LIKE</key>
+	<string>يطلب تأكيدًا قبل الإعجاب بتعليق</string>
+	<key>FEATURE_CONFIRM_FOLLOW</key>
+	<string>يطلب تأكيدًا قبل متابعة مستخدم</string>
+	<key>FEATURE_CONFIRM_LIKE</key>
+	<string>يطلب تأكيدًا قبل الإعجاب بمنشور</string>
+	<key>FEATURE_CONFIRM_QUICK_SHARE</key>
+	<string>يطلب تأكيدًا قبل استخدام المشاركة السريعة</string>
+	<key>FEATURE_CONFIRM_REPOST</key>
+	<string>يطلب تأكيدًا قبل إعادة نشر فيديو</string>
+	<key>FEATURE_COPY_WITHOUT_USERNAME</key>
+	<string>ينسخ التعليقات بدون اسم المعلق</string>
+	<key>FEATURE_DISABLE_AI_REPLIES</key>
+	<string>يعطل الردود المُنشأة بالذكاء الاصطناعي على المنشورات</string>
+	<key>FEATURE_DISABLE_COMMENT_TOOLTIP</key>
+	<string>يعطل تلميحات الأدوات في قسم التعليقات</string>
+	<key>FEATURE_DISABLE_FEED_DOUBLE_TAP</key>
+	<string>يعطل النقر المزدوج للإعجاب في الشاشة الرئيسية</string>
+	<key>FEATURE_DISABLE_LIVE</key>
+	<string>يخفي البث المباشر من الشاشة الرئيسية</string>
+	<key>FEATURE_DISABLE_REWARDS_ADS</key>
+	<string>يخفي إعلانات مكافآت TikTok من الشاشة الرئيسية</string>
+	<key>FEATURE_DISABLE_SCREENRECORDING_DETECTION</key>
+	<string>يعطل كشف تسجيل الشاشة في الدردشات</string>
+	<key>FEATURE_DISABLE_SCREENSHOT_DETECTION</key>
+	<string>يعطل كشف لقطات الشاشة في الدردشات</string>
+	<key>FEATURE_DISABLE_SENSITIVE</key>
+	<string>يخفي تحذيرات 'المحتوى غير اللائق'</string>
+	<key>FEATURE_DISABLE_STORY_DOUBLE_TAP</key>
+	<string>يعطل النقر المزدوج للإعجاب في القصص</string>
+	<key>FEATURE_DISABLE_SURVEY</key>
+	<string>يعطل أسئلة الاستبيان في الشاشة الرئيسية</string>
+	<key>FEATURE_DISABLE_SWIPE</key>
+	<string>يعطل السحب لليسار واليمين في الشاشة الرئيسية</string>
+	<key>FEATURE_DISABLE_TYPING</key>
+	<string>يعطل مؤشر الكتابة</string>
+	<key>FEATURE_DISABLE_TYPING_STICKER</key>
+	<string>يعطل التوصيات التلقائية للصور المتحركة أثناء الكتابة</string>
+	<key>FEATURE_DISABLE_VISUAL_SEARCH_TAG</key>
+	<string>يعطل زر 'البحث المرئي' في الشاشة الرئيسية عند إيقاف الفيديو مؤقتًا</string>
+	<key>FEATURE_DISABLE_WARNINGS</key>
+	<string>يخفي تحذيرات TikTok</string>
+	<key>FEATURE_DOWNLOAD_BUTTON</key>
+	<string>يضيف زر تنزيل إلى المنشورات والقصص</string>
+	<key>FEATURE_EMBED_LINKS</key>
+	<string>الروابط المنسوخة ستدمج الوسائط حيثما تم إرسالها</string>
+	<key>FEATURE_ENABLE_COMMENT_FLAGS</key>
+	<string>يعرض أعلام المنطقة بجانب اسم المعلق</string>
+	<key>FEATURE_ENABLE_FLEX</key>
+	<string>للمطورين فقط، لا تلمسه إذا كنت لا تعرف ما هو FLEX!</string>
+	<key>FEATURE_ENABLE_STICKER_DOWNLOAD</key>
+	<string>يمكن تنزيل الملصقات في التعليقات</string>
+	<key>FEATURE_ENABLE_STREAKS</key>
+	<string>يمكن الخطوط المتتالية مع الأصدقاء</string>
+	<key>FEATURE_ENABLE_TEXT_TO_REPOSTS</key>
+	<string>يمكن إضافة تسميات توضيحية إلى إعادة النشر للمناطق غير المدعومة</string>
+	<key>FEATURE_EXTENDED_COMMENTS</key>
+	<string>يزيد حد أحرف التعليقات</string>
+	<key>FEATURE_FAKE_CHANGES</key>
+	<string>يمكن التغييرات المزيفة لبيانات الملف الشخصي</string>
+	<key>FEATURE_FAKE_VERIFIED</key>
+	<string>يعرض شارة توثيق مزيفة</string>
+	<key>FEATURE_FOLLOWER_COUNT</key>
+	<string>أدخل عدد متابعين وهمي</string>
+	<key>FEATURE_FOLLOWING_COUNT</key>
+	<string>أدخل عدد متابعين وهمي (يتابع)</string>
+	<key>FEATURE_FULL_REGION_MODE</key>
+	<string>قم بالتمكين فقط إذا كان الخيار الأول لا يعمل!</string>
+	<key>FEATURE_HIDE_ACTIVITY_STATUS</key>
+	<string>يخفي حالات 'آخر نشاط' و'متصل' الخاصة بك في الدردشات</string>
+	<key>FEATURE_HIDE_ADS</key>
+	<string>إخفاء الإعلانات من الظهور في الشاشة الرئيسية</string>
+	<key>FEATURE_HIDE_COMMISSION_POSTS</key>
+	<string>يخفي منشورات 'المنشئ يكسب عمولة'</string>
+	<key>FEATURE_HIDE_DANGEROUS_ACTION</key>
+	<string>يخفي التحذيرات تحت فيديوهات الرياضة (UFC، ملاكمة، إلخ)</string>
+	<key>FEATURE_HIDE_EMOJI</key>
+	<string>يخفي شريط التعليقات متعدد الإيموجي</string>
+	<key>FEATURE_HIDE_FRIENDS_BADGE</key>
+	<string>يخفي شارة إشعارات الأصدقاء</string>
+	<key>FEATURE_HIDE_INBOX_BADGE</key>
+	<string>يخفي شارة إشعارات صندوق الوارد</string>
+	<key>FEATURE_HIDE_PLAY_PAUSE</key>
+	<string>يخفي عرض التشغيل/الإيقاف المؤقت في الشاشة الرئيسية</string>
+	<key>FEATURE_HIDE_PLUS_BTN</key>
+	<string>يخفي زر الكاميرا</string>
+	<key>FEATURE_HIDE_REPORT_BUTTON</key>
+	<string>يخفي زر الإبلاغ في شريط التنقل للرسائل المباشرة.</string>
+	<key>FEATURE_HIDE_STREAK_PET</key>
+	<string>يخفي حيوان الخط المتتالي</string>
+	<key>FEATURE_HIDE_TAB_BAR_LABELS</key>
+	<string>يخفي التسميات في شريط التبويب</string>
+	<key>FEATURE_HIDE_TOP_ITEMS</key>
+	<string>يخفي الشريط العلوي (لك، أتابعه، المتجر، إلخ)</string>
+	<key>FEATURE_LIKE_COUNT</key>
+	<string>يعرض عدد الإعجابات على المنشورات</string>
+	<key>FEATURE_LOOP_STORY_VIDEOS</key>
+	<string>يكرر الفيديوهات في القصص</string>
+	<key>FEATURE_MARK_SEEN_ON_REPLY</key>
+	<string>يضع علامة على الرسائل كمقروءة عند الرد عليها</string>
+	<key>FEATURE_MASS_UNFOLD</key>
+	<string>يفتح جماعيًا جميع ردود التعليقات</string>
+	<key>FEATURE_MULTI_EMOJI</key>
+	<string>يمكن شريط التعليقات متعدد الإيموجي</string>
+	<key>FEATURE_OLED_KEYBOARD</key>
+	<string>يعمل فقط مع السمة الداكنة</string>
+	<key>FEATURE_PAD_AUTO_SCROLL</key>
+	<string>يمكن التمرير التلقائي الأصلي لمنشورات TikTok للمناطق غير المدعومة</string>
+	<key>FEATURE_PIN_CHATS</key>
+	<string>يمكن تثبيت الدردشات المفضلة في الأعلى</string>
+	<key>FEATURE_POST_STATS</key>
+	<string>يعرض قائمة فرعية في قسم التنزيل تحتوي على معلومات المنشور</string>
+	<key>FEATURE_PROFILE_COPY</key>
+	<string>ينسخ السيرة الذاتية للمستخدم بالضغط المطول</string>
+	<key>FEATURE_PROFILE_COPY_DESC</key>
+	<string>انسخ تفاصيل الملف الشخصي بما في ذلك اسم المستخدم والسيرة الذاتية والمعلومات العامة الأخرى</string>
+	<key>FEATURE_PROFILE_SAVE</key>
+	<string>يحفظ صورة ملف المستخدم الشخصي بالضغط المطول</string>
+	<key>FEATURE_PROFILE_SAVE_DESC</key>
+	<string>احفظ معلومات الملف الشخصي في حافظتك بنقرة واحدة</string>
+	<key>FEATURE_PROGRESS_BAR</key>
+	<string>يعرض مدة الوسائط أسفل كل منشور</string>
+	<key>FEATURE_PULL_TO_CAMERA</key>
+	<string>يمكن ميزة السحب إلى الكاميرا</string>
+	<key>FEATURE_REGIONS_DESC</key>
+	<string>الوصول إلى محتوى خاص بالمنطقة عن طريق تزييف موقعك الافتراضي</string>
+	<key>FEATURE_REMOVE_DRAFT_WATERMARK</key>
+	<string>يزيل العلامة المائية عند حفظ المنشورات أو المسودات</string>
+	<key>FEATURE_REMOVE_PENDANT</key>
+	<string>يزيل عرض الإعلان في أعلى اليسار في الشاشة الرئيسية</string>
+	<key>FEATURE_REMOVE_TIKTOK_AI_BUTTON</key>
+	<string>يزيل زر TikTok AI (tako) من صفحة 'لك'</string>
+	<key>FEATURE_REMOVE_WATERMARK</key>
+	<string>يزيل العلامة المائية من الوسائط التي تم تنزيلها</string>
+	<key>FEATURE_RUSSIAN_FIX</key>
+	<string>قم بتمكين هذا لجعل الشاشة الرئيسية الروسية تعمل مرة أخرى [جديد!]</string>
+	<key>FEATURE_SAVE_DM_MEDIA</key>
+	<string>يضيف زر تنزيل إلى الوسائط المرسلة في الرسائل المباشرة</string>
+	<key>FEATURE_SHARE_SHEET</key>
+	<string>يفتح ورقة المشاركة بعد اكتمال تنزيل الوسائط</string>
+	<key>FEATURE_SHOW_ALL_TABS</key>
+	<string>يعرض جميع علامات تبويب الإعدادات المخفية [نسخة تجريبية]</string>
+	<key>FEATURE_SHOW_ALL_TABS_DESC</key>
+	<string>إظهار جميع علامات تبويب الإعدادات المخفية، بما في ذلك الميزات التجريبية</string>
+	<key>FEATURE_SHOW_USERNAMES</key>
+	<string>يستبدل الألقاب بأسماء المستخدمين في الشاشة الرئيسية</string>
+	<key>FEATURE_SHOW_VIDEO_TIMESTAMP</key>
+	<string>يعرض وقت رفع المنشور في صفحة "لك"</string>
+	<key>FEATURE_SKIP_RECOMMENDED</key>
+	<string>يزيل توصيات المحتوى (توصيات الأصدقاء، إلخ)</string>
+	<key>FEATURE_SMALL_EMOJI</key>
+	<string>يمكن إرسال رموز تعبيرية صغيرة</string>
+	<key>FEATURE_START_FYP_IN_FOLLOWING</key>
+	<string>يبدأ TikTok في شاشة 'أتابعه'، بدلاً من شاشة 'لك'</string>
+	<key>FEATURE_STOP_PLAYBACK</key>
+	<string>يوقف تشغيل المنشور عند الانتهاء</string>
+	<key>FEATURE_STOP_STORY_PHOTO_ADVANCE</key>
+	<string>يمنع صور القصص من التقدم تلقائيًا</string>
+	<key>FEATURE_STORY_LIKE_CONFIRMATION</key>
+	<string>يطلب تأكيدًا قبل الإعجاب بقصة</string>
+	<key>FEATURE_STREAK_INFO</key>
+	<string>يعرض معلومات خطك المتتالي الحالي عند النقر على نار الخط</string>
+	<key>FEATURE_TRANSPARENT_COMMENTS</key>
+	<string>يجعل خلفية قسم التعليقات شفافة</string>
+	<key>FEATURE_UI_BUTTON</key>
+	<string>يعرض زر 'إخفاء الواجهة'</string>
+	<key>FEATURE_UPLOAD_DATE</key>
+	<string>يعرض تاريخ الرفع على المنشورات</string>
+	<key>FEATURE_UPLOAD_HD</key>
+	<string>يمكن الرفع بجودة عالية</string>
+	<key>FEATURE_UPLOAD_REGION</key>
+	<string>يعرض علم منطقة الرفع بجانب اسم المستخدم</string>
+	<key>FEATURE_USER_POST_COUNT</key>
+	<string>يعرض إجمالي عدد منشورات المستخدم</string>
+	<key>FEATURE_VIEW_PROFILES_ANONYMOUS</key>
+	<string>يعطل تتبع عرض الملف الشخصي</string>
+	<key>FEATURE_VOICE_MESSAGES</key>
+	<string>يمكن إرسال الرسائل الصوتية في الدردشة (فقط في بعض المناطق)</string>
+	<key>FILTERING_OPTIONS</key>
+	<string>خيارات التصفية</string>
+	<key>Failed to fetch HD video URL. Please try again.</key>
+	<string>فشل جلب عنوان URL للفيديو عالي الجودة. يرجى المحاولة مرة أخرى.</string>
+	<key>Failed to save media</key>
+	<string>فشل حفظ الوسائط</string>
+	<key>Fake Verified</key>
+	<string>توثيق مزيف</string>
+	<key>Features list</key>
+	<string>قائمة الميزات</string>
+	<key>Feed</key>
+	<string>القائمة الرئيسية</string>
+	<key>Feed Settings</key>
+	<string>إعدادات الشاشة الرئيسية</string>
+	<key>File selection was cancelled.</key>
+	<string>تم إلغاء اختيار الملف.</string>
+	<key>Follow Confirmation</key>
+	<string>تأكيد المتابعة</string>
+	<key>Follower</key>
+	<string>المتابعون</string>
+	<key>Following</key>
+	<string>يتابع</string>
+	<key>Full Region Mode</key>
+	<string>وضع المنطقة الكامل</string>
+	<key>Get the latest updates and news</key>
+	<string>احصل على آخر التحديثات والأخبار</string>
+	<key>HIDE_ACTIVITY_STATUS</key>
+	<string>إخفاء حالة النشاط</string>
+	<key>HIDE_REPORT_BUTTON</key>
+	<string>إخفاء زر الإبلاغ</string>
+	<key>Hide</key>
+	<string>إخفاء</string>
+	<key>Hide Ads</key>
+	<string>إخفاء الإعلانات</string>
+	<key>Hide Commission Posts</key>
+	<string>إخفاء المنشورات ذات العمولة</string>
+	<key>Hide Emoji-Bar</key>
+	<string>إخفاء شريط الإيموجي</string>
+	<key>Hide Friends Badge</key>
+	<string>إخفاء شارة الأصدقاء</string>
+	<key>Hide Inbox Badge</key>
+	<string>إخفاء شارة صندوق الوارد</string>
+	<key>Hide Play/Pause Button</key>
+	<string>إخفاء زر التشغيل/الإيقاف المؤقت</string>
+	<key>Hide Plus Button</key>
+	<string>إخفاء زر الإضافة</string>
+	<key>Hide Streak Pet</key>
+	<string>إخفاء حيوان الخط المتتالي</string>
+	<key>Hide Tab Bar Labels</key>
+	<string>إخفاء تسميات شريط التبويب</string>
+	<key>Hide Top Feed items</key>
+	<string>إخفاء العناصر العلوية في الشاشة الرئيسية</string>
+	<key>Hide dangerous-action Warning</key>
+	<string>إخفاء تحذير الإجراءات الخطيرة</string>
+	<key>Import Configuration</key>
+	<string>استيراد الإعدادات</string>
+	<key>Import from File</key>
+	<string>استيراد من ملف</string>
+	<key>Import from Keychain</key>
+	<string>استيراد من سلسلة المفاتيح</string>
+	<key>Import settings from a file</key>
+	<string>استيراد الإعدادات من ملف</string>
+	<key>Invalid download URL received.</key>
+	<string>تم استلام عنوان URL غير صالح للتنزيل.</string>
+	<key>Join the community discussion</key>
+	<string>انضم إلى مناقشة المجتمع</string>
+	<key>LOOP_STORY_VIDEOS</key>
+	<string>تكرار فيديوهات القصص</string>
+	<key>Language</key>
+	<string>اللغة</string>
+	<key>Language Changed</key>
+	<string>تم تغيير اللغة</string>
+	<key>Language 🌎</key>
+	<string>اللغة 🌎</string>
+	<key>Like Comment Confirmation</key>
+	<string>تأكيد الإعجاب بالتعليق</string>
+	<key>Like Confirmation</key>
+	<string>تأكيد الإعجاب</string>
+	<key>Live Actions</key>
+	<string>إجراءات مباشرة</string>
+	<key>Live Button Actions</key>
+	<string>إجراءات زر البث المباشر</string>
+	<key>Live Button Function</key>
+	<string>وظيفة زر البث المباشر</string>
+	<key>Live Button Function Disabled</key>
+	<string>وظيفة زر البث المباشر معطلة</string>
+	<key>Live Button Settings</key>
+	<string>إعدادات زر البث المباشر</string>
+	<key>Loading</key>
+	<string>جارٍ التحميل</string>
+	<key>MARK_SEEN_ON_REPLY</key>
+	<string>وضع علامة كمقروء عند الرد</string>
+	<key>Main Developer, Owner</key>
+	<string>المطور الرئيسي، المالك</string>
+	<key>Mass Unfold Comment Replies</key>
+	<string>فتح جماعي لردود التعليقات</string>
+	<key>Modern</key>
+	<string>حديث</string>
+	<key>More Options</key>
+	<string>المزيد من الخيارات</string>
+	<key>Multi Emoji Comment Bar</key>
+	<string>شريط تعليقات متعدد الإيموجي</string>
+	<key>Music Link Copied</key>
+	<string>تم نسخ رابط الموسيقى</string>
+	<key>Navigation &amp; Interaction</key>
+	<string>التنقل والتفاعل</string>
+	<key>Next</key>
+	<string>التالي</string>
+	<key>No</key>
+	<string>لا</string>
+	<key>No Backup</key>
+	<string>لا يوجد نسخة احتياطية</string>
+	<key>No backup found</key>
+	<string>لم يتم العثور على نسخة احتياطية</string>
+	<key>No internet connection</key>
+	<string>لا يوجد اتصال بالإنترنت</string>
+	<key>No settings backup found in keychain.</key>
+	<string>لم يتم العثور على نسخة احتياطية للإعدادات في سلسلة المفاتيح.</string>
+	<key>Not Selected</key>
+	<string>غير محدد</string>
+	<key>Notification Badges</key>
+	<string>شارات الإشعارات</string>
+	<key>OFF</key>
+	<string>إيقاف</string>
+	<key>OK</key>
+	<string>حسنًا</string>
+	<key>ON</key>
+	<string>تشغيل</string>
+	<key>OTHER_OPTIONS</key>
+	<string>خيارات أخرى</string>
+	<key>Organization &amp; Management</key>
+	<string>التنظيم والإدارة</string>
+	<key>Other</key>
+	<string>أخرى</string>
+	<key>Other Settings</key>
+	<string>إعدادات أخرى</string>
+	<key>PAD_AUTO_SCROLL</key>
+	<string>التمرير التلقائي الافتراضي</string>
+	<key>Photo saved successfully</key>
+	<string>تم حفظ الصورة بنجاح</string>
+	<key>Playback Controls</key>
+	<string>عناصر التحكم في التشغيل</string>
+	<key>Playback Speed</key>
+	<string>سرعة التشغيل</string>
+	<key>Playback Speed Disabled</key>
+	<string>سرعة التشغيل معطلة</string>
+	<key>Playback Speed Settings</key>
+	<string>إعدادات سرعة التشغيل</string>
+	<key>Please enable Live Button Function first</key>
+	<string>يرجى تفعيل وظيفة زر البث المباشر أولاً</string>
+	<key>Please enable Playback Speed first</key>
+	<string>يرجى تمكين سرعة التشغيل أولاً</string>
+	<key>Please enable region changing first</key>
+	<string>يرجى تمكين تغيير المنطقة أولاً</string>
+	<key>Please restart the app to apply changes, May require two app restarts!</key>
+	<string>يرجى إعادة تشغيل التطبيق لتطبيق التغييرات، قد يتطلب إعادة تشغيل مرتين!</string>
+	<key>Post Info</key>
+	<string>معلومات المنشور</string>
+	<key>Post Stats</key>
+	<string>إحصائيات المنشور</string>
+	<key>Privacy &amp; Security</key>
+	<string>الخصوصية والأمان</string>
+	<key>Processing...</key>
+	<string>جارٍ المعالجة...</string>
+	<key>Profile</key>
+	<string>الملف الشخصي</string>
+	<key>Profile Actions</key>
+	<string>إجراءات الملف الشخصي</string>
+	<key>Profile Copy</key>
+	<string>نسخ الملف الشخصي</string>
+	<key>Profile Customization</key>
+	<string>تخصيص الملف الشخصي</string>
+	<key>Profile Enhancement</key>
+	<string>تحسين الملف الشخصي</string>
+	<key>Profile Save</key>
+	<string>حفظ الملف الشخصي</string>
+	<key>Profile Settings</key>
+	<string>إعدادات الملف الشخصي</string>
+	<key>Pull To Camera</key>
+	<string>اسحب للكاميرا</string>
+	<key>REMOVE_DRAFT_WATERMARK</key>
+	<string>إزالة العلامة المائية للصور</string>
+	<key>REMOVE_TIKTOK_AI_BUTTON</key>
+	<string>إزالة زر TikTok AI</string>
+	<key>RUSSIAN_FIX</key>
+	<string>تجاوز الحظر الروسي</string>
+	<key>Really Clear All Data?</key>
+	<string>هل تريد حقًا مسح جميع البيانات؟</string>
+	<key>Region</key>
+	<string>المنطقة</string>
+	<key>Region Changing Disabled</key>
+	<string>تغيير المنطقة معطل</string>
+	<key>Region Settings</key>
+	<string>إعدادات المنطقة</string>
+	<key>Regions</key>
+	<string>المناطق</string>
+	<key>Remove Pendant View</key>
+	<string>إزالة العرض المعلق</string>
+	<key>Remove Watermark</key>
+	<string>إزالة العلامة المائية</string>
+	<key>Report</key>
+	<string>إبلاغ</string>
+	<key>Reset</key>
+	<string>إعادة تعيين</string>
+	<key>Reset All Settings</key>
+	<string>إعادة تعيين جميع الإعدادات</string>
+	<key>Reset Settings</key>
+	<string>إعادة تعيين الإعدادات</string>
+	<key>Reset all settings to default values</key>
+	<string>إعادة تعيين جميع الإعدادات إلى القيم الافتراضية</string>
+	<key>SAVE_DM_MEDIA</key>
+	<string>حفظ وسائط الرسائل المباشرة</string>
+	<key>STICKER_SAVED</key>
+	<string>تم حفظ الملصق في المعرض!</string>
+	<key>STICKER_SAVE_FAILED</key>
+	<string>فشل حفظ الملصق</string>
+	<key>STOP_STORY_PHOTO_ADVANCE</key>
+	<string>إيقاف تقدم صور القصص تلقائيًا</string>
+	<key>STORY_LIKE_CONFIRMATION</key>
+	<string>تأكيد إعجاب القصة</string>
+	<key>Save</key>
+	<string>حفظ</string>
+	<key>Save to Keychain</key>
+	<string>حفظ في سلسلة المفاتيح</string>
+	<key>Saved!</key>
+	<string>تم الحفظ!</string>
+	<key>Search</key>
+	<string>بحث</string>
+	<key>Select Action</key>
+	<string>اختر الإجراء</string>
+	<key>Select All</key>
+	<string>تحديد الكل</string>
+	<key>Select App Language</key>
+	<string>اختر لغة التطبيق</string>
+	<key>Select Design</key>
+	<string>اختر التصميم</string>
+	<key>Select Speed</key>
+	<string>اختر السرعة</string>
+	<key>Selected Action</key>
+	<string>الإجراء المحدد</string>
+	<key>Selected Region</key>
+	<string>المنطقة المحددة</string>
+	<key>Selected Speed</key>
+	<string>السرعة المحددة</string>
+	<key>Settings</key>
+	<string>الإعدادات</string>
+	<key>Settings Reset</key>
+	<string>تم إعادة تعيين الإعدادات</string>
+	<key>Share</key>
+	<string>مشاركة</string>
+	<key>Share Sheet</key>
+	<string>ورقة المشاركة</string>
+	<key>Show</key>
+	<string>إظهار</string>
+	<key>Show All Settings Tabs</key>
+	<string>عرض كل تبويبات الإعدادات</string>
+	<key>Show Progress Bar</key>
+	<string>عرض شريط التقدم</string>
+	<key>Show Usernames</key>
+	<string>إظهار أسماء المستخدمين</string>
+	<key>Show Video Upload Timestamp</key>
+	<string>عرض توقيت رفع الفيديو</string>
+	<key>Show/Hide UI Button</key>
+	<string>إظهار/إخفاء زر الواجهة</string>
+	<key>Skip Recommendations</key>
+	<string>تخطي التوصيات</string>
+	<key>Social Actions</key>
+	<string>الإجراءات الاجتماعية</string>
+	<key>Special Thanks to</key>
+	<string>شكر خاص لـ</string>
+	<key>Speeds</key>
+	<string>السرعات</string>
+	<key>Start TikTok in Following</key>
+	<string>بدء TikTok في 'أتابعه'</string>
+	<key>Stats Menu</key>
+	<string>قائمة الإحصائيات</string>
+	<key>Stop Playback</key>
+	<string>إيقاف التشغيل</string>
+	<key>Streak Info</key>
+	<string>معلومات الخط المتتالي</string>
+	<key>Success</key>
+	<string>نجاح</string>
+	<key>Support</key>
+	<string>دعم</string>
+	<key>Support the development</key>
+	<string>ادعم التطوير</string>
+	<key>System Features</key>
+	<string>ميزات النظام</string>
+	<key>Tab Bar Configurations</key>
+	<string>تكوينات شريط التبويب</string>
+	<key>Tab Bar Elements</key>
+	<string>عناصر شريط التبويب</string>
+	<key>Tab Bar Settings</key>
+	<string>إعدادات شريط التبويب</string>
+	<key>Tap to Join the Telegram</key>
+	<string>اضغط للانضمام إلى Telegram</string>
+	<key>Telegram Channel</key>
+	<string>قناة Telegram</string>
+	<key>Telegram Discussion Group</key>
+	<string>مجموعة نقاش Telegram</string>
+	<key>Text &amp; Display Options</key>
+	<string>خيارات النص والعرض</string>
+	<key>This is your final warning. This action is irreversible and will delete all local TikTok data, including drafts and settings. Are you absolutely sure?</key>
+	<string>هذا هو تحذيرك النهائي. هذا الإجراء لا رجعة فيه وسيحذف جميع بيانات TikTok المحلية، بما في ذلك المسودات والإعدادات. هل أنت متأكد تمامًا؟</string>
+	<key>Transparent Comments</key>
+	<string>تعليقات شفافة</string>
+	<key>UI Designer</key>
+	<string>مصمم واجهة المستخدم</string>
+	<key>Unfollow</key>
+	<string>إلغاء متابعة</string>
+	<key>Upload HD</key>
+	<string>رفع بجودة عالية</string>
+	<key>Upload Region</key>
+	<string>منطقة الرفع</string>
+	<key>User Post Count</key>
+	<string>عدد منشورات المستخدم</string>
+	<key>VIEW_PROFILES_ANONYMOUS</key>
+	<string>عرض الملفات الشخصية بشكل مجهول</string>
+	<key>Video Info</key>
+	<string>معلومات الفيديو</string>
+	<key>Video Information</key>
+	<string>معلومات الفيديو</string>
+	<key>Video Like Count</key>
+	<string>عدد الإعجابات على الفيديو</string>
+	<key>Video Link Copied</key>
+	<string>تم نسخ رابط الفيديو</string>
+	<key>Video Upload Date</key>
+	<string>تاريخ رفع الفيديو</string>
+	<key>Video saved successfully</key>
+	<string>تم حفظ الفيديو بنجاح</string>
+	<key>WARNING</key>
+	<string>تحذير</string>
+	<key>Waiting for TikTok…</key>
+	<string>في انتظار TikTok…</string>
+	<key>Warning</key>
+	<string>تحذير</string>
+	<key>Welcome</key>
+	<string>مرحبًا</string>
+	<key>X</key>
+	<string>إكس</string>
+	<key>Yes</key>
+	<string>نعم</string>
+	<key>the video doesn't have music to download</key>
+	<string>هذا الفيديو لا يحتوي على موسيقى لتنزيلها</string>
+</dict>
+</plist>

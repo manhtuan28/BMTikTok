@@ -1,0 +1,916 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>ALWAYS_OPEN_SAFARI</key>
+	<string>Altijd openen in Safari</string>
+	<key>About</key>
+	<string>Over deze app</string>
+	<key>Actions</key>
+	<string>Acties</string>
+	<key>Add Comment as Post</key>
+	<string>Voeg comment toe als post</string>
+	<key>Add Comment as Story</key>
+	<string>Voeg comment toe als story</string>
+	<key>Add Folders To Inbox</key>
+	<string>Mappen toevoegen aan inbox</string>
+	<key>Add Translation Button</key>
+	<string>Voeg vertaal knop toe</string>
+	<key>Adjust offline download limit</key>
+	<string>Offline downloadlimiet aanpassen</string>
+	<key>Adjust value between 50 and 2000</key>
+	<string>Stel waarde in tussen 50 en 2000</string>
+	<key>All TikTok data has been cleared.</key>
+	<string>Alle TikTok gegevens zijn gewist.</string>
+	<key>All TikTok data has been erased.</key>
+	<string>Alle TikTok gegevens zijn gewist.</string>
+	<key>All settings have been reset to default values.</key>
+	<string>Alle instellingen zijn teruggezet naar standaardwaarden.</string>
+	<key>Anonymous Seen</key>
+	<string>Anoniem bekijken</string>
+	<key>App Configuration</key>
+	<string>App configuratie</string>
+	<key>App Lock</key>
+	<string>App vergrendelen</string>
+	<key>Apply</key>
+	<string>Toepassen</string>
+	<key>Are you sure you want to clear all data? This will remove:
+1- TikTok's data directory
+2-all keychains
+3- clears all NSUserDefaults
+ 
+NOTICE!
+ YOU WILL LOSE YOUR DRAFTS AND ANYTHING SAVED LOCALLY.</key>
+	<string>Weet je zeker dat je alle gegevens wilt verwijderen? Dit verwijdert
+1- Gegevensmap van TikTok
+2- volledige keychain
+3- Alle NSUserDefaults
+
+LET OP!
+JE VERLIEST JE CONCEPTEN EN ALLES WAT LOKAAL IS OPGESLAGEN.</string>
+	<key>Are you sure you want to erase all TikTok data? This will clear all app data and cannot be undone.</key>
+	<string>Weet je zeker dat je alle TikTok-gegevens wilt wissen? Dit verwijdert alle appgegevens en kan niet ongedaan worden gemaakt.</string>
+	<key>Are you sure you want to reset all settings to default values? This action cannot be undone.</key>
+	<string>Weet je zeker dat je alle instellingen naar standaardwaarden wilt terugzetten? Deze actie kan niet ongedaan worden gemaakt.</string>
+	<key>Are you sure?</key>
+	<string>Weet je het zeker?</string>
+	<key>Auto Clear History</key>
+	<string>Auto geschiedenis wissen</string>
+	<key>Auto Play Next Video</key>
+	<string>Speel automatisch volgende video</string>
+	<key>Auto Unfold Comment Texts</key>
+	<string>Automatisch comment teksten ontvouwen</string>
+	<key>BACKGROUND_PLAY</key>
+	<string>Afspelen op achtergrond</string>
+	<key>BETA!</key>
+	<string>BETA!</string>
+	<key>BLOCK_AI_GENERATED</key>
+	<string>Blokkeer AI gegenereerde posts</string>
+	<key>BLOCK_MOVIE_TOK</key>
+	<string>Blokkeer film advertenties</string>
+	<key>BLOCK_POI</key>
+	<string>Blokkeer Locatie Advertenties</string>
+	<key>BLOCK_SHOP_VIDEOS</key>
+	<string>Blokkeer winkel posts</string>
+	<key>BLOCK_SHOP_VIDOES</key>
+	<string>Blokkeer winkel videos</string>
+	<key>BLOCK_SHOP_VIDOES_FEATURE</key>
+	<string>Verwijdert winkel videos van jouw feed.</string>
+	<key>BLOCK_TCM</key>
+	<string>Blokkeer App Advertenties</string>
+	<key>BMTikTok Settings</key>
+	<string>BMTikTok Instellingen</string>
+	<key>BMTikTok, Hi</key>
+	<string>BMTikTok, Hoi</string>
+	<key>BYPASS_FOLLOW_LIST_SEARCH</key>
+	<string>Limiet voor zoeken in volgerslijst omzeilen</string>
+	<key>Back</key>
+	<string>Terug</string>
+	<key>Backgrounding ✌️</key>
+	<string>In de achtergrond ✌️</string>
+	<key>Block</key>
+	<string>Blokkeren</string>
+	<key>Buy Me a Coffee</key>
+	<string>Buy Me a Coffee</string>
+	<key>Bypass Media Limit</key>
+	<string>Bypass media limiet</string>
+	<key>CONFIRM_QUICK_SHARE</key>
+	<string>Quick Share bevestiging</string>
+	<key>CONFIRM_REPOST</key>
+	<string>Snel herplaatsen bevestiging</string>
+	<key>Cancel</key>
+	<string>Annuleer</string>
+	<key>Cancelled</key>
+	<string>Geannuleerd</string>
+	<key>Change Action of Live Button</key>
+	<string>Verander actie van live knop</string>
+	<key>Change the behavior of the Live button</key>
+	<string>Verander het gedrag van de live knop</string>
+	<key>Changes will take effect after restarting the app</key>
+	<string>Aanpassingen zullen worden toegepast na het herstarten van de app</string>
+	<key>Chat Features</key>
+	<string>Chatfuncties</string>
+	<key>Chat Settings</key>
+	<string>Chat instellingen</string>
+	<key>Choose export destination:</key>
+	<string>Kies export locatie:</string>
+	<key>Choose import source:</key>
+	<string>Kies importbron:</string>
+	<key>Clear</key>
+	<string>Wis</string>
+	<key>Clear Keychain</key>
+	<string>Keychain leegmaken</string>
+	<key>Close</key>
+	<string>Sluit</string>
+	<key>Co-Owner</key>
+	<string>Co-Owner</string>
+	<key>Comment Cell Redesign</key>
+	<string>Herontwerp comment cell</string>
+	<key>Comment Design</key>
+	<string>Comment design</string>
+	<key>Comment Settings</key>
+	<string>Comment instellingen</string>
+	<key>Community</key>
+	<string>Community</string>
+	<key>Compact</key>
+	<string>Compact</string>
+	<key>Configuration</key>
+	<string>Configuratie</string>
+	<key>Configuration Management</key>
+	<string>Configuratiebeheer</string>
+	<key>Configuration imported from keychain successfully.</key>
+	<string>Configuratie succesvol geïmporteerd vanuit keychain.</string>
+	<key>Configuration imported successfully.</key>
+	<string>Configuratie succesvol geïmporteerd.</string>
+	<key>Configuration saved to keychain successfully.</key>
+	<string>Configuratie succesvol opgeslagen in keychain.</string>
+	<key>Configure Advanced Comment Settings</key>
+	<string>Configureer geavanceerde comment instellingen</string>
+	<key>Confirm</key>
+	<string>Bevestig</string>
+	<key>Confirm Clear</key>
+	<string>Bevestig wissen</string>
+	<key>Confirm Settings</key>
+	<string>Confirmeer instellingen</string>
+	<key>Confirmation Settings</key>
+	<string>Confirmatie instellingen</string>
+	<key>Content &amp; Display</key>
+	<string>Inhoud &amp; Weergave</string>
+	<key>Content Enhancement</key>
+	<string>Inhoud verbeteren</string>
+	<key>Content Filtering</key>
+	<string>Inhoudsfilter</string>
+	<key>Content Interactions</key>
+	<string>Inhoudinteracties</string>
+	<key>Contributor</key>
+	<string>Contributor</string>
+	<key>Control video playback speed</key>
+	<string>Controleer video afspeelsnelheid</string>
+	<key>Copy Description</key>
+	<string>Kopieer beschrijving</string>
+	<key>Copy Link</key>
+	<string>Link kopiëren</string>
+	<key>Copy Menu</key>
+	<string>Kopieer menu</string>
+	<key>Copy Music Link</key>
+	<string>Kopieer muzieklink</string>
+	<key>Copy Video link</key>
+	<string>Kopieer videolink</string>
+	<key>Copy bio</key>
+	<string>Kopieer bio</string>
+	<key>Could Not Copy Music</key>
+	<string>Kon muziek niet kopieren</string>
+	<key>Credits</key>
+	<string>Credits</string>
+	<key>DEVELOPER_SUPPORT</key>
+	<string>Support BMTikTok en krijg toegang tot de beta testing groep</string>
+	<key>DEVELOPER_TELEGRAM</key>
+	<string>Join het Telegram kanaal voor de laatste updates</string>
+	<key>DISABLE_ACTIVITY_STATUS_WARNING</key>
+	<string>Het uitschakelen of inschakelen van anonieme activiteitsstatus duurt even om door te voeren op de TikTok-servers. Je kunt nog even als online verschijnen nadat je deze functie hebt ingeschakeld</string>
+	<key>DISABLE_FEED_DOUBLE_TAP</key>
+	<string>Dubbel tikken in feed uitschakelen</string>
+	<key>DISABLE_SCREENRECORDING_DETECTION</key>
+	<string>Zet schermopnamedetectie uit</string>
+	<key>DISABLE_SCREENSHOT_DETECTION</key>
+	<string>Zet screenshotdetectie uit</string>
+	<key>DISABLE_STORY_DOUBLE_TAP</key>
+	<string>Dubbel tikken in stories uitschakelen</string>
+	<key>DISABLE_TYPING_STICKER</key>
+	<string>Sticker bij typen uitschakelen</string>
+	<key>DISABLE_VISUAL_SEARCH_TAG</key>
+	<string>Visueel zoeken-tag uitschakelen</string>
+	<key>DOWNLOADING_STICKER</key>
+	<string>Sticker downloaden...</string>
+	<key>DOWNLOAD_FAILED</key>
+	<string>Download mislukt</string>
+	<key>DRM Developer</key>
+	<string>DRM developer</string>
+	<key>Data Cleared</key>
+	<string>Gegevens gewist</string>
+	<key>Default</key>
+	<string>Standaard</string>
+	<key>Delete</key>
+	<string>Verwijderen</string>
+	<key>Description Link Copied</key>
+	<string>Descriptielink gekopieerd</string>
+	<key>Deselect All</key>
+	<string>Alles deselecteren</string>
+	<key>Design Options</key>
+	<string>Design opties</string>
+	<key>Developer</key>
+	<string>Developer</string>
+	<key>Disable</key>
+	<string>Uitschakelen</string>
+	<key>Disable AI-Generated Replies</key>
+	<string>Zet AI-gegenereerde antwoorden uit</string>
+	<key>Disable Comment Tooltip</key>
+	<string>Zet comment tooltip uit</string>
+	<key>Disable Left &amp; Right Swipe</key>
+	<string>Veeg naar links &amp; rechts uitschakelen</string>
+	<key>Disable Live Streaming</key>
+	<string>Zet live streaming uit</string>
+	<key>Disable Sensitive Content</key>
+	<string>Zet gevoelige content uit</string>
+	<key>Disable Survey Popups</key>
+	<string>Zet survey popups uit</string>
+	<key>Disable TikTok Rewards ADs</key>
+	<string>TikTok Beloningadvertenties uitschakelen</string>
+	<key>Disable Typing Indicator</key>
+	<string>Zet typing indicator uit</string>
+	<key>Disable Warnings</key>
+	<string>Zet waarschuwingen uit</string>
+	<key>Dislike Comment Confirmation</key>
+	<string>Dislike comment confirmatie</string>
+	<key>Done</key>
+	<string>Klaar</string>
+	<key>Download All Photos</key>
+	<string>Download alle fotos</string>
+	<key>Download Button</key>
+	<string>Download knop</string>
+	<key>Download HD Video</key>
+	<string>Download HD video</string>
+	<key>Download Music</key>
+	<string>Download muziek</string>
+	<key>Download Photo</key>
+	<string>Download foto</string>
+	<key>Download Photos Menu</key>
+	<string>Download fotos menu</string>
+	<key>Download Video</key>
+	<string>Download video</string>
+	<key>Downloading</key>
+	<string>Downloaden</string>
+	<key>Downloads &amp; Sharing</key>
+	<string>Downloads &amp; Delen</string>
+	<key>Downloads Menu</key>
+	<string>Download menu</string>
+	<key>ENABLE_COMMENT_PHOTO</key>
+	<string>Sta toe om fotos toe te voegen in comments</string>
+	<key>ENABLE_COMMENT_STICKERS</key>
+	<string>Sta toe om stickers toe te voegen in comments</string>
+	<key>ENABLE_STICKER_DOWNLOAD</key>
+	<string>Dubbeltik om sticker te downloaden</string>
+	<key>Edit</key>
+	<string>Bewerken</string>
+	<key>Emoji &amp; Interface</key>
+	<string>Emoji &amp; interface</string>
+	<key>Enable</key>
+	<string>Inschakelen</string>
+	<key>Enable Comment Flags</key>
+	<string>Zet comment vlaggen aan</string>
+	<key>Enable Comment Photos</key>
+	<string>Zet comment fotos aan</string>
+	<key>Enable Comment Stickers</key>
+	<string>Zet comment stickers aan</string>
+	<key>Enable Copy Without Username</key>
+	<string>Zet kopieren zonder gebruikersnaam aan</string>
+	<key>Enable Egypt Stickers</key>
+	<string>Egypte stickers inschakelen</string>
+	<key>Enable Embeded Links</key>
+	<string>Zet ingebedde links aan</string>
+	<key>Enable Fake Changes</key>
+	<string>Zet fake wijzigingen aan</string>
+	<key>Enable Flex</key>
+	<string>Zet Flex aan</string>
+	<key>Enable Live Button Function</key>
+	<string>Zet live knop functie aan</string>
+	<key>Enable Oled Keyboard</key>
+	<string>Zet OLED toetsenbord aan</string>
+	<key>Enable Persistent Playback Speed.</key>
+	<string>Zet persistente afspeelsnelheid aan.</string>
+	<key>Enable Pin Chat</key>
+	<string>Zet gepinde chats aan</string>
+	<key>Enable Playback Speed</key>
+	<string>Zet afspeelsnelheid aan</string>
+	<key>Enable Region Changing</key>
+	<string>Zet regio aanpassingen aan</string>
+	<key>Enable Region Changing Functionality</key>
+	<string>Zet regio aanpassingen functie aan</string>
+	<key>Enable Small Emoji</key>
+	<string>Zet kleine emojis aan</string>
+	<key>Enable Streaks</key>
+	<string>Zet streaks aan</string>
+	<key>Enable Text To Reposts</key>
+	<string>Zet text op reposts aan</string>
+	<key>Enable Voice Messages</key>
+	<string>Zet spraakberichten aan</string>
+	<key>Enable region changing to access content from different regions</key>
+	<string>Zet regio wijzigingen aan om content van verschillende regios te zien</string>
+	<key>Enhanced Comments Features</key>
+	<string>Verbeterde reacties</string>
+	<key>Erase</key>
+	<string>Wis</string>
+	<key>Erase All Data</key>
+	<string>Alle gegevens wissen</string>
+	<key>Erase All TikTok Data</key>
+	<string>Alle TikTok gegevens wissen</string>
+	<key>Erase all TikTok data from the app  [Becareful!!!]</key>
+	<string>Verwijder alle TikTok gegevens van de app [Wees voorzichtig!!]</string>
+	<key>Error</key>
+	<string>Error</string>
+	<key>Export Configuration</key>
+	<string>Configuratie exporteren</string>
+	<key>Export settings to a file</key>
+	<string>Instellingen exporteren naar bestand</string>
+	<key>Export to File</key>
+	<string>Exporteer naar bestand</string>
+	<key>Extended Bio</key>
+	<string>Verlengde bio</string>
+	<key>Extended Comments</key>
+	<string>Verlengde comments</string>
+	<key>Extracting Media URL…</key>
+	<string>Media URL ophalen…</string>
+	<key>FEATURE_ADD_COMMENT_POST</key>
+	<string>Zet het plaatsen van comments als posts aan</string>
+	<key>FEATURE_ADD_COMMENT_STORY</key>
+	<string>Zet het plaatsen van comments als verhaal aan</string>
+	<key>FEATURE_ADD_FOLDERS</key>
+	<string>Voegt mappen toe aan je inbox</string>
+	<key>FEATURE_ADD_FOLDERS_DESC</key>
+	<string>Organiseer je inboxberichten in mappen voor beter overzicht</string>
+	<key>FEATURE_ADD_TRANSLATION</key>
+	<string>Voeg een vertaal knop toe bij comments</string>
+	<key>FEATURE_ALWAYS_OPEN_SAFARI</key>
+	<string>Open links altijd in Safari in plaats van de ingebouwde browser</string>
+	<key>FEATURE_ANONYMOUS_SEEN</key>
+	<string>Kijk naar berichten zonder dat de andere persoon dat ziet</string>
+	<key>FEATURE_ANONYMOUS_SEEN_DESC</key>
+	<string>Bekijk chats zonder dat de ander een leesbevestiging ontvangt</string>
+	<key>FEATURE_APP_LOCK</key>
+	<string>Voegt mogelijkheid om TikTok met wachtwoord te vergrendelen</string>
+	<key>FEATURE_APP_LOCK_DESC</key>
+	<string>Beveilig de TikTok-app met een wachtwoord of biometrische verificatie</string>
+	<key>FEATURE_AUTO_CLEAR</key>
+	<string>Automatisch zoekgeschiedenis wissen elke 60 seconden</string>
+	<key>FEATURE_AUTO_PLAY</key>
+	<string>Zet automatisch video scrollen aan</string>
+	<key>FEATURE_AUTO_UNFOLD</key>
+	<string>Automatisch alle comments ontvouwen</string>
+	<key>FEATURE_BACKGROUND_PLAY</key>
+	<string>Schakelt het afspelen van geluid op de achtergrond in</string>
+	<key>FEATURE_BLOCK_AI_GENERATED</key>
+	<string>Blokkeer posts met 'Bevat AI gegenereerde media'</string>
+	<key>FEATURE_BLOCK_MOVIE_TOK</key>
+	<string>Blokkeer video's met film advertenties</string>
+	<key>FEATURE_BLOCK_POI</key>
+	<string>Blokkeer Video's met Locatie Adverenties</string>
+	<key>FEATURE_BLOCK_SHOP_ADS</key>
+	<string>Blokkeer Video's met Winkel Advertenties</string>
+	<key>FEATURE_BLOCK_SHOP_VIDEOS</key>
+	<string>Verwijder Winkel Content van je feed.</string>
+	<key>FEATURE_BLOCK_TCM</key>
+	<string>Blokkeer Video's met App Advertenties</string>
+	<key>FEATURE_BYPASS_FOLLOW_LIST_SEARCH</key>
+	<string>Stelt zoeken in de volgerslijst in, ook bij meer dan 5.000 volgers</string>
+	<key>FEATURE_BYPASS_MEDIA_LIMIT</key>
+	<string>Bypass media limiet in chat (Standaard: 9 Foto's, 1 Min Video)</string>
+	<key>FEATURE_COMMENT_REDESIGN</key>
+	<string>Zet hervormde comment cells aan</string>
+	<key>FEATURE_CONFIRM_COMMENT_DISLIKE</key>
+	<string>Laat bevestiging zien om comment te disliken</string>
+	<key>FEATURE_CONFIRM_COMMENT_LIKE</key>
+	<string>Laat bevestiging zien om comment te liken</string>
+	<key>FEATURE_CONFIRM_FOLLOW</key>
+	<string>Laat bevestiging zien om gebruiker te volgen</string>
+	<key>FEATURE_CONFIRM_LIKE</key>
+	<string>Laat bevestiging zien om video te liken</string>
+	<key>FEATURE_CONFIRM_QUICK_SHARE</key>
+	<string>Vraag bevestiging voor gebruik van Quick Share</string>
+	<key>FEATURE_CONFIRM_REPOST</key>
+	<string>Vraag bevestiging voor herplaatsen van video</string>
+	<key>FEATURE_COPY_WITHOUT_USERNAME</key>
+	<string>Kopieer comments zonder 'Gebruikersnaam: '</string>
+	<key>FEATURE_DISABLE_AI_REPLIES</key>
+	<string>Zet AI-gegenereerde antwoorden op verzonden berichten uit</string>
+	<key>FEATURE_DISABLE_COMMENT_TOOLTIP</key>
+	<string>Zet tooltips uit in comments</string>
+	<key>FEATURE_DISABLE_FEED_DOUBLE_TAP</key>
+	<string>Schakelt dubbel tikken om te liken in de feed uit</string>
+	<key>FEATURE_DISABLE_LIVE</key>
+	<string>Verbergt livestreams in de feed</string>
+	<key>FEATURE_DISABLE_REWARDS_ADS</key>
+	<string>Verberg TikTok beloningadvertenties in de feed</string>
+	<key>FEATURE_DISABLE_SCREENRECORDING_DETECTION</key>
+	<string>Schakelt schermopnamedetectie in chats uit</string>
+	<key>FEATURE_DISABLE_SCREENSHOT_DETECTION</key>
+	<string>Schakelt screenshotdetectie in chats uit</string>
+	<key>FEATURE_DISABLE_SENSITIVE</key>
+	<string>Verbergt waarschuwing voor ongepaste content</string>
+	<key>FEATURE_DISABLE_STORY_DOUBLE_TAP</key>
+	<string>Schakelt dubbel tikken om te liken in stories uit</string>
+	<key>FEATURE_DISABLE_SURVEY</key>
+	<string>Zet irritante survey vragen uit in feed</string>
+	<key>FEATURE_DISABLE_SWIPE</key>
+	<string>Schakelt 'Veeg naar links &amp; rechts' in feed uit</string>
+	<key>FEATURE_DISABLE_TYPING</key>
+	<string>Stuur geen type indicator door tijdens typen</string>
+	<key>FEATURE_DISABLE_TYPING_STICKER</key>
+	<string>Automatische GIF-suggesties uitschakelen tijdens typen</string>
+	<key>FEATURE_DISABLE_VISUAL_SEARCH_TAG</key>
+	<string>Schakelt de knop ‘Visueel zoeken’ uit in de feed bij het pauzeren van een video</string>
+	<key>FEATURE_DISABLE_WARNINGS</key>
+	<string>Verbergt TikTok waarschuwingen</string>
+	<key>FEATURE_DOWNLOAD_BUTTON</key>
+	<string>Download knop inschakelen voor posts en verhalen</string>
+	<key>FEATURE_EMBED_LINKS</key>
+	<string>Zet ingebedde links aan wanneer je een link kopieert</string>
+	<key>FEATURE_ENABLE_COMMENT_FLAGS</key>
+	<string>Laat commenters regio vlag zien</string>
+	<key>FEATURE_ENABLE_FLEX</key>
+	<string>Alleen voor ontwikkelaars, ZET NIET AAN als je niet weet wat het doet</string>
+	<key>FEATURE_ENABLE_STICKER_DOWNLOAD</key>
+	<string>Stickerdownloads in reacties inschakelen</string>
+	<key>FEATURE_ENABLE_STREAKS</key>
+	<string>Zet streaks met vrienden aan</string>
+	<key>FEATURE_ENABLE_TEXT_TO_REPOSTS</key>
+	<string>Zet toevoegen van tekst aan je reposts aan</string>
+	<key>FEATURE_EXTENDED_BIO</key>
+	<string>Verlengt bio character limiet</string>
+	<key>FEATURE_EXTENDED_COMMENTS</key>
+	<string>Verlengt comment character limiet</string>
+	<key>FEATURE_FAKE_CHANGES</key>
+	<string>Zet profiel gegevens spoofing aan</string>
+	<key>FEATURE_FAKE_VERIFIED</key>
+	<string>Laat fake verificatie badge zien</string>
+	<key>FEATURE_FOLLOWER_COUNT</key>
+	<string>Voer fake volgers aantal in</string>
+	<key>FEATURE_FOLLOWING_COUNT</key>
+	<string>Voer fake volgende aantal in</string>
+	<key>FEATURE_FULL_REGION_MODE</key>
+	<string>Schakel ALLEEN in als eerste optie NIET werkt!</string>
+	<key>FEATURE_HIDE_ACTIVITY_STATUS</key>
+	<string>Verbergt jouw 'Laatst actief' en 'Online' status in chats</string>
+	<key>FEATURE_HIDE_ADS</key>
+	<string>Verbergt ads van de feed</string>
+	<key>FEATURE_HIDE_COMMISSION_POSTS</key>
+	<string>Verwijder posts die zeggen 'Maker verdient commissie'</string>
+	<key>FEATURE_HIDE_DANGEROUS_ACTION</key>
+	<string>Verberg de annyinge waarschuwingen onder sports video</string>
+	<key>FEATURE_HIDE_EMOJI</key>
+	<string>Verberg emoji balk in comments</string>
+	<key>FEATURE_HIDE_FRIENDS_BADGE</key>
+	<string>Verbergt vriend notificatie badge</string>
+	<key>FEATURE_HIDE_INBOX_BADGE</key>
+	<string>Verbergt postvak notificatie badge</string>
+	<key>FEATURE_HIDE_PLAY_PAUSE</key>
+	<string>Verberg de speel/pauzeer weergave in de feed</string>
+	<key>FEATURE_HIDE_PLUS_BTN</key>
+	<string>Verbergt de camera knop</string>
+	<key>FEATURE_HIDE_REPORT_BUTTON</key>
+	<string>Rapporteer vlag verbergen in DM navigatie balk.</string>
+	<key>FEATURE_HIDE_STREAK_PET</key>
+	<string>Verbergt streak diertje</string>
+	<key>FEATURE_HIDE_TAB_BAR_LABELS</key>
+	<string>Verbergt labels in de tabbalk</string>
+	<key>FEATURE_HIDE_TOP_ITEMS</key>
+	<string>Veberg zoeken knop, LIVE en anderen (Voor Jou, Volgend, Shop etc...)</string>
+	<key>FEATURE_LIKE_COUNT</key>
+	<string>Laat aantal likes zien op berichten</string>
+	<key>FEATURE_LOOP_STORY_VIDEOS</key>
+	<string>Zorgt dat videos in stories opnieuw worden afgespeeld</string>
+	<key>FEATURE_MARK_SEEN_ON_REPLY</key>
+	<string>Markeert berichten als gelezen bij versturen van bericht in chat</string>
+	<key>FEATURE_MASS_UNFOLD</key>
+	<string>Ontvouw alle comments antwoorden</string>
+	<key>FEATURE_MULTI_EMOJI</key>
+	<string>Zet multi-emoji comment balk aan</string>
+	<key>FEATURE_OLED_KEYBOARD</key>
+	<string>Werkt alleen met donkere thema</string>
+	<key>FEATURE_PAD_AUTO_SCROLL</key>
+	<string>Schakelt TikTok’s native automatische scrollen in voor niet-ondersteunde regio’s</string>
+	<key>FEATURE_PIN_CHATS</key>
+	<string>Pin favoriete berichten naar de top</string>
+	<key>FEATURE_POST_STATS</key>
+	<string>Laat een menu knop zien in download sectie voor post stats</string>
+	<key>FEATURE_PROFILE_COPY</key>
+	<string>Kopieert profiel informatie</string>
+	<key>FEATURE_PROFILE_COPY_DESC</key>
+	<string>Kopieer profielgegevens, inclusief gebruikersnaam, bio en andere publieke info</string>
+	<key>FEATURE_PROFILE_SAVE</key>
+	<string>Bewaart profiel informatie naar het klipbord</string>
+	<key>FEATURE_PROFILE_SAVE_DESC</key>
+	<string>Sla profielinformatie direct op in het klembord</string>
+	<key>FEATURE_PROGRESS_BAR</key>
+	<string>Toont de duratie balk onder elke video</string>
+	<key>FEATURE_PULL_TO_CAMERA</key>
+	<string>Schakelt 'Veeg naar Camera' in</string>
+	<key>FEATURE_REGIONS_DESC</key>
+	<string>Toegang tot regiogebonden inhoud door je virtuele locatie te wijzigen</string>
+	<key>FEATURE_REMOVE_DRAFT_WATERMARK</key>
+	<string>Watermerk verwijderen bij opslaan van posts of concepten</string>
+	<key>FEATURE_REMOVE_PENDANT</key>
+	<string>Verwijdert de irritante Ad-view in de linker top van het scherm (Alleen in sommige regio's)</string>
+	<key>FEATURE_REMOVE_TIKTOK_AI_BUTTON</key>
+	<string>Verwijderd de TikTok AI (tako) knop van FYP</string>
+	<key>FEATURE_REMOVE_WATERMARK</key>
+	<string>Verwijdert watermark (geanimeerd TikTok logo en gebruikersnaam) van gedownload media</string>
+	<key>FEATURE_RUSSIAN_FIX</key>
+	<string>Schakel dit in om de Russische feed weer te laten werken [NIEUW!]</string>
+	<key>FEATURE_SAVE_DM_MEDIA</key>
+	<string>Voegt een downloadknop toe aan media die in DM's is verstuurd</string>
+	<key>FEATURE_SHARE_SHEET</key>
+	<string>Open deel menu na het downloaden van media</string>
+	<key>FEATURE_SHOW_ALL_TABS</key>
+	<string>Laat alle verborgen instellingen zien [Beta!]</string>
+	<key>FEATURE_SHOW_ALL_TABS_DESC</key>
+	<string>Toon alle verborgen instellingstabbladen, inclusief experimentele functies</string>
+	<key>FEATURE_SHOW_USERNAMES</key>
+	<string>Vervangt bijnamen met tags</string>
+	<key>FEATURE_SHOW_VIDEO_TIMESTAMP</key>
+	<string>Laat upload-tijd zien naast gebruikersnaam in fyp</string>
+	<key>FEATURE_SKIP_RECOMMENDED</key>
+	<string>Verwijdert vriend recommendaties etc</string>
+	<key>FEATURE_SMALL_EMOJI</key>
+	<string>Zet het versturen van kleine emojis aan</string>
+	<key>FEATURE_START_FYP_IN_FOLLOWING</key>
+	<string>Start TikTok in de feed Volgend, in plaats van Voor jou</string>
+	<key>FEATURE_STOP_PLAYBACK</key>
+	<string>Stopt het afspelen van video wanneer deze is beeindigt</string>
+	<key>FEATURE_STOP_STORY_PHOTO_ADVANCE</key>
+	<string>Voorkomt dat foto's in stories automatisch doorgaat naar de volgende</string>
+	<key>FEATURE_STORY_LIKE_CONFIRMATION</key>
+	<string>Vraagt om bevestiging voordat een story wordt geliket</string>
+	<key>FEATURE_STREAK_INFO</key>
+	<string>Toont jouw huidige streak-informatie bij het klikken op het streak vuur</string>
+	<key>FEATURE_TRANSPARENT_COMMENTS</key>
+	<string>Maakt de comment sectie transparant</string>
+	<key>FEATURE_UI_BUTTON</key>
+	<string>Toont of verbergt UI knop</string>
+	<key>FEATURE_UPLOAD_DATE</key>
+	<string>Laat upload datum zien</string>
+	<key>FEATURE_UPLOAD_HD</key>
+	<string>Zet HD uploads aan</string>
+	<key>FEATURE_UPLOAD_REGION</key>
+	<string>Voeg de upload regio vlag toe naast de gebruikersnaam</string>
+	<key>FEATURE_USER_POST_COUNT</key>
+	<string>Laat aantal geuploade videos zien</string>
+	<key>FEATURE_VIEW_PROFILES_ANONYMOUS</key>
+	<string>Schakelt 'Profielweergave' tracking uit</string>
+	<key>FEATURE_VOICE_MESSAGES</key>
+	<string>Zet het versturen van spraakberichten aan in chat</string>
+	<key>FILTERING_OPTIONS</key>
+	<string>Filters</string>
+	<key>Failed to fetch HD video URL. Please try again.</key>
+	<string>HD Video URL ophalen mislukt. Probeer het opnieuw.</string>
+	<key>Failed to save media</key>
+	<string>Kan media niet opslaan</string>
+	<key>Fake Verified</key>
+	<string>Neppe geverifieerd</string>
+	<key>Features list</key>
+	<string>Functielijst</string>
+	<key>Feed</key>
+	<string>Feed</string>
+	<key>Feed Settings</key>
+	<string>Feed instellingen</string>
+	<key>File selection was cancelled.</key>
+	<string>Bestandselectie geannuleerd.</string>
+	<key>Follow Confirmation</key>
+	<string>Volg confirmatie</string>
+	<key>Follower</key>
+	<string>Volgers</string>
+	<key>Following</key>
+	<string>Volgt</string>
+	<key>Full Region Mode</key>
+	<string>Volledige regiomodus</string>
+	<key>Get the latest updates and news</key>
+	<string>Krijg de laatste updates en nieuws</string>
+	<key>HIDE_ACTIVITY_STATUS</key>
+	<string>Activiteitsstatus verbergen</string>
+	<key>HIDE_REPORT_BUTTON</key>
+	<string>Verberg rapporteer knop</string>
+	<key>Hide</key>
+	<string>Verberg</string>
+	<key>Hide Ads</key>
+	<string>Verberg ads</string>
+	<key>Hide Commission Posts</key>
+	<string>Verberg commissie posts</string>
+	<key>Hide Emoji-Bar</key>
+	<string>Verberg emoji balk</string>
+	<key>Hide Friends Badge</key>
+	<string>Verberg vrienden badge</string>
+	<key>Hide Inbox Badge</key>
+	<string>Verberg postvak badge</string>
+	<key>Hide Play/Pause Button</key>
+	<string>Verberg play/pause knop</string>
+	<key>Hide Plus Button</key>
+	<string>Verberg plus knop</string>
+	<key>Hide Streak Pet</key>
+	<string>Verberg streak diertje</string>
+	<key>Hide Tab Bar Labels</key>
+	<string>Verberg Tabbalk labels</string>
+	<key>Hide Top Feed items</key>
+	<string>Verberg top feed items</string>
+	<key>Hide dangerous-action Warning</key>
+	<string>Verberg gevaarlijke actie waarschuwing</string>
+	<key>Import Configuration</key>
+	<string>Configuratie importeren</string>
+	<key>Import from File</key>
+	<string>Importeer vanaf bestand</string>
+	<key>Import from Keychain</key>
+	<string>Importeer vanaf keychain</string>
+	<key>Import settings from a file</key>
+	<string>Instellingen importeren vanuit bestand</string>
+	<key>Invalid download URL received.</key>
+	<string>Ongeldige download URL ontvangen.</string>
+	<key>Join the community discussion</key>
+	<string>Praat mee in de community</string>
+	<key>LOOP_STORY_VIDEOS</key>
+	<string>Videos in story herhalen</string>
+	<key>Language</key>
+	<string>Taal</string>
+	<key>Language Changed</key>
+	<string>Taal gewijzigd</string>
+	<key>Language 🌎</key>
+	<string>Taal 🌎</string>
+	<key>Like Comment Confirmation</key>
+	<string>Like comment confirmatie</string>
+	<key>Like Confirmation</key>
+	<string>Like confirmatie</string>
+	<key>Live Actions</key>
+	<string>Live acties</string>
+	<key>Live Button Actions</key>
+	<string>Live knop acties</string>
+	<key>Live Button Function</key>
+	<string>Live knop functie</string>
+	<key>Live Button Function Disabled</key>
+	<string>Live knop functie uitgeschakeld</string>
+	<key>Live Button Settings</key>
+	<string>Live knop instellingen</string>
+	<key>Loading</key>
+	<string>Laden</string>
+	<key>MARK_SEEN_ON_REPLY</key>
+	<string>Markeer als gelezen bij beantwoorden</string>
+	<key>Main Developer, Owner</key>
+	<string>Main Developer, Owner</string>
+	<key>Mass Unfold Comment Replies</key>
+	<string>Ontvouw alle comments antwoorden</string>
+	<key>Modern</key>
+	<string>Modern</string>
+	<key>More Options</key>
+	<string>Meer opties</string>
+	<key>Multi Emoji Comment Bar</key>
+	<string>Multi emoji balk</string>
+	<key>Music Link Copied</key>
+	<string>Muzieklink gekopieerd</string>
+	<key>Navigation &amp; Interaction</key>
+	<string>Navigatie &amp; Interactie</string>
+	<key>Next</key>
+	<string>Volgende</string>
+	<key>No</key>
+	<string>Nee</string>
+	<key>No Backup</key>
+	<string>Geen backup</string>
+	<key>No backup found</key>
+	<string>Geen backup gevonden</string>
+	<key>No internet connection</key>
+	<string>Geen internet</string>
+	<key>No settings backup found in keychain.</key>
+	<string>Geen backup instellingen gevonden in keychain.</string>
+	<key>Not Selected</key>
+	<string>Niet geselecteerd</string>
+	<key>Notification Badges</key>
+	<string>Notificatie Badges</string>
+	<key>OFF</key>
+	<string>UIT</string>
+	<key>OK</key>
+	<string>OK</string>
+	<key>ON</key>
+	<string>AAN</string>
+	<key>OTHER_OPTIONS</key>
+	<string>Andere opties</string>
+	<key>Organization &amp; Management</key>
+	<string>Organisatie &amp; beheer</string>
+	<key>Other</key>
+	<string>Andere</string>
+	<key>Other Settings</key>
+	<string>Andere instellingen</string>
+	<key>PAD_AUTO_SCROLL</key>
+	<string>Standaard automatisch scrollen</string>
+	<key>Photo saved successfully</key>
+	<string>Foto succesvol opgeslagen</string>
+	<key>Playback Controls</key>
+	<string>Afspeelbediening</string>
+	<key>Playback Speed</key>
+	<string>Afspeelsnelheid</string>
+	<key>Playback Speed Disabled</key>
+	<string>Zet afspeelsnelheid uit</string>
+	<key>Playback Speed Settings</key>
+	<string>Afspeelsnelheid instellingen</string>
+	<key>Please enable Live Button Function first</key>
+	<string>Zet live knop functie eerst aan alsjeblieft</string>
+	<key>Please enable Playback Speed first</key>
+	<string>Zet afspeelsnelheid eerst aan alsjeblieft</string>
+	<key>Please enable region changing first</key>
+	<string>Zet regio aanpassingen eerst aan alsjeblieft</string>
+	<key>Please restart the app to apply changes, May require two app restarts!</key>
+	<string>Start de app opnieuw om wijzigingen toe te passen. Soms twee keer nodig</string>
+	<key>Post Info</key>
+	<string>Post informatie</string>
+	<key>Post Stats</key>
+	<string>Post statistieken</string>
+	<key>Privacy &amp; Security</key>
+	<string>Privacy &amp; beveiliging</string>
+	<key>Processing...</key>
+	<string>Verwerken...</string>
+	<key>Profile</key>
+	<string>Profiel</string>
+	<key>Profile Actions</key>
+	<string>Profielacties</string>
+	<key>Profile Copy</key>
+	<string>Kopieer profiel</string>
+	<key>Profile Customization</key>
+	<string>Profiel aanpassen</string>
+	<key>Profile Enhancement</key>
+	<string>Profiel verbeteren</string>
+	<key>Profile Save</key>
+	<string>Profiel opslaan</string>
+	<key>Profile Settings</key>
+	<string>Profiel instellingen</string>
+	<key>Pull To Camera</key>
+	<string>Veeg naar camera</string>
+	<key>REMOVE_DRAFT_WATERMARK</key>
+	<string>Fotowatermerk verwijderen</string>
+	<key>REMOVE_TIKTOK_AI_BUTTON</key>
+	<string>Verwijder TikTok AI knop</string>
+	<key>RUSSIAN_FIX</key>
+	<string>Blokkade in Rusland omzeilen</string>
+	<key>Really Clear All Data?</key>
+	<string>Weet je zeker dat je alle gegevens wilt wissen?</string>
+	<key>Region</key>
+	<string>Regio</string>
+	<key>Region Changing Disabled</key>
+	<string>Zet regio aanpassingen uit</string>
+	<key>Region Settings</key>
+	<string>Regio instellingen</string>
+	<key>Regions</key>
+	<string>Regio's</string>
+	<key>Remove Pendant View</key>
+	<string>Verwijder hanger view</string>
+	<key>Remove Watermark</key>
+	<string>Verwijder watermark</string>
+	<key>Report</key>
+	<string>Rapporteren</string>
+	<key>Reset</key>
+	<string>Terugzetten</string>
+	<key>Reset All Settings</key>
+	<string>Alle instellingen terugzetten</string>
+	<key>Reset Settings</key>
+	<string>Instellingen resetten</string>
+	<key>Reset all settings to default values</key>
+	<string>Herstel alle instellingen naar standaardwaarden</string>
+	<key>SAVE_DM_MEDIA</key>
+	<string>DM Media opslaan</string>
+	<key>STICKER_SAVED</key>
+	<string>Sticker opgeslagen in gallerij!</string>
+	<key>STICKER_SAVE_FAILED</key>
+	<string>Sticker opslaan mislukt</string>
+	<key>STOP_STORY_PHOTO_ADVANCE</key>
+	<string>Foto's in story stoppen</string>
+	<key>STORY_LIKE_CONFIRMATION</key>
+	<string>Story like bevestigen</string>
+	<key>Save</key>
+	<string>Opslaan</string>
+	<key>Save to Keychain</key>
+	<string>Opslaan in keychain</string>
+	<key>Saved!</key>
+	<string>Opgeslagen!</string>
+	<key>Search</key>
+	<string>Zoeken</string>
+	<key>Select Action</key>
+	<string>Selecteer actie</string>
+	<key>Select All</key>
+	<string>Alles selecteren</string>
+	<key>Select App Language</key>
+	<string>Selecteer app taal</string>
+	<key>Select Design</key>
+	<string>Selecteer design</string>
+	<key>Select Speed</key>
+	<string>Selecteer snelheid</string>
+	<key>Selected Action</key>
+	<string>Geselecteerde actie</string>
+	<key>Selected Region</key>
+	<string>Geselecteerde regio</string>
+	<key>Selected Speed</key>
+	<string>Geselecteerde snelheid</string>
+	<key>Settings</key>
+	<string>Instellingen</string>
+	<key>Settings Reset</key>
+	<string>Instellingen teruggezet</string>
+	<key>Share</key>
+	<string>Delen</string>
+	<key>Share Sheet</key>
+	<string>Deel menu</string>
+	<key>Show</key>
+	<string>Tonen</string>
+	<key>Show All Settings Tabs</key>
+	<string>Laat alle instelling tabs zien</string>
+	<key>Show Progress Bar</key>
+	<string>Toon progressie balk</string>
+	<key>Show Usernames</key>
+	<string>Weergeef gebruikersnamen</string>
+	<key>Show Video Upload Timestamp</key>
+	<string>Laat video upload tijd zien</string>
+	<key>Show/Hide UI Button</key>
+	<string>Toon/verberg UI knop</string>
+	<key>Skip Recommendations</key>
+	<string>Skip recommendaties</string>
+	<key>Social Actions</key>
+	<string>Sociale acties</string>
+	<key>Special Thanks to</key>
+	<string>Speciale dank aan</string>
+	<key>Speeds</key>
+	<string>Snelheden</string>
+	<key>Start TikTok in Following</key>
+	<string>TikTok starten op Volgend</string>
+	<key>Stats Menu</key>
+	<string>Stats menu</string>
+	<key>Stop Playback</key>
+	<string>Stop afspelen</string>
+	<key>Streak Info</key>
+	<string>Streak informatie</string>
+	<key>Success</key>
+	<string>Gelukt</string>
+	<key>Support</key>
+	<string>Steun</string>
+	<key>Support the development</key>
+	<string>Ondersteun de ontwikkeling</string>
+	<key>System Features</key>
+	<string>Systeemfuncties</string>
+	<key>Tab Bar Configurations</key>
+	<string>Tabbalk configuratie</string>
+	<key>Tab Bar Elements</key>
+	<string>Tabbalk Elementen</string>
+	<key>Tab Bar Settings</key>
+	<string>Tabbalk instellingen</string>
+	<key>Tap to Join the Telegram</key>
+	<string>Klik om de Telegram te joinen</string>
+	<key>Telegram Channel</key>
+	<string>Telegram kanaal</string>
+	<key>Telegram Discussion Group</key>
+	<string>Telegram Discussie Group</string>
+	<key>Text &amp; Display Options</key>
+	<string>Tekst- &amp; weergave-opties</string>
+	<key>The video doesn't have music to download</key>
+	<string>Deze video heeft geen muziek om te downloaden</string>
+	<key>This is your final warning. This action is irreversible and will delete all local TikTok data, including drafts and settings. Are you absolutely sure?</key>
+	<string>Dit is je laatste waarschuwing. Deze actie is onomkeerbaar en verwijdert alle lokale TikTok-gegevens, inclusief concepten en instellingen. Weet je het zeker?</string>
+	<key>Transparent Comments</key>
+	<string>Transparente comments</string>
+	<key>UI Designer</key>
+	<string>UI Designer</string>
+	<key>Unfollow</key>
+	<string>Ontvolgen</string>
+	<key>Upload HD</key>
+	<string>Upload HD</string>
+	<key>Upload Region</key>
+	<string>Upload regio</string>
+	<key>User Post Count</key>
+	<string>Gebruiker post aantal</string>
+	<key>VIEW_PROFILES_ANONYMOUS</key>
+	<string>Bekijk profielen anoniem</string>
+	<key>Video Info</key>
+	<string>Video info</string>
+	<key>Video Information</key>
+	<string>Videoinformatie</string>
+	<key>Video Like Count</key>
+	<string>Video like aantal</string>
+	<key>Video Link Copied</key>
+	<string>Videolink gekopieerd</string>
+	<key>Video Upload Date</key>
+	<string>Video upload datum</string>
+	<key>Video saved successfully</key>
+	<string>Video succesvol opgeslagen</string>
+	<key>WARNING</key>
+	<string>WAARSCHUWING</string>
+	<key>Waiting for TikTok…</key>
+	<string>Wachten op TikTok…</string>
+	<key>Warning</key>
+	<string>Waarschuwing</string>
+	<key>Welcome</key>
+	<string>Welkom</string>
+	<key>X</key>
+	<string>X</string>
+	<key>Yes</key>
+	<string>Ja</string>
+</dict>
+</plist>

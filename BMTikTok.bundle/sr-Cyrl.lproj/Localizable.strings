@@ -1,0 +1,908 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>ALWAYS_OPEN_SAFARI</key>
+	<string>Увек отвори у Сафарију</string>
+	<key>About</key>
+	<string>О апликацији</string>
+	<key>Actions</key>
+	<string>Акције</string>
+	<key>Add Comment as Post</key>
+	<string>Додај коментар као објаву</string>
+	<key>Add Comment as Story</key>
+	<string>Додај коментар као причу</string>
+	<key>Add Folders To Inbox</key>
+	<string>Додај фасцикле у пријемно сандуче</string>
+	<key>Add Translation Button</key>
+	<string>Додај дугме за превод</string>
+	<key>Adjust offline download limit</key>
+	<string>Подесите ограничење за преузимање ван мреже</string>
+	<key>Adjust value between 50 and 2000</key>
+	<string>Подесите вредност између 50 и 2000</string>
+	<key>All TikTok data has been cleared.</key>
+	<string>Сви ТикТок подаци су обрисани.</string>
+	<key>All TikTok data has been erased.</key>
+	<string>Сви ТикТок подаци су обрисани.</string>
+	<key>All settings have been reset to default values.</key>
+	<string>Сва подешавања су ресетована на подразумеване вредности.</string>
+	<key>Anonymous Seen</key>
+	<string>Анонимно виђено</string>
+	<key>App Configuration</key>
+	<string>Конфигурација апликације</string>
+	<key>App Lock</key>
+	<string>Закључавање апликације</string>
+	<key>Apply</key>
+	<string>Примени</string>
+	<key>Are you sure you want to clear all data? This will remove:
+1- TikTok's data directory
+2-all keychains
+3- clears all NSUserDefaults
+ 
+NOTICE!
+ YOU WILL LOSE YOUR DRAFTS AND ANYTHING SAVED LOCALLY.</key>
+	<string>Да ли сте сигурни да желите да обришете све податке? Ово ће уклонити:
+1- директоријум података ТикТок-а
+2- све привезе кључева
+3- брише све НСУсерДефаултс
+
+ОБАВЕШТЕЊЕ!
+ ИЗГУБИЋЕТЕ СВОЈЕ НЕДОВРШЕНЕ ОБЈАВЕ И СВЕ ЛОКАЛНО САЧУВАНО.</string>
+	<key>Are you sure you want to erase all TikTok data? This will clear all app data and cannot be undone.</key>
+	<string>Да ли сте сигурни да желите да обришете све ТикТок податке? Ово ће обрисати све податке апликације и не може се поништити.</string>
+	<key>Are you sure you want to reset all settings to default values? This action cannot be undone.</key>
+	<string>Да ли сте сигурни да желите да ресетујете сва подешавања на подразумеване вредности? Ова радња се не може поништити.</string>
+	<key>Are you sure?</key>
+	<string>Да ли сте сигурни?</string>
+	<key>Auto Clear History</key>
+	<string>Аутоматско брисање историје</string>
+	<key>Auto Play Next Video</key>
+	<string>Аутоматски пусти следећи видео</string>
+	<key>Auto Unfold Comment Texts</key>
+	<string>Аутоматски отвори текстове коментара</string>
+	<key>BACKGROUND_PLAY</key>
+	<string>Омогући репродукцију у позадини</string>
+	<key>BETA!</key>
+	<string>БЕТА!</string>
+	<key>BLOCK_AI_GENERATED</key>
+	<string>Блокирај објаве генерисане вештачком интелигенцијом</string>
+	<key>BLOCK_MOVIE_TOK</key>
+	<string>Блокирај рекламе за филмове</string>
+	<key>BLOCK_POI</key>
+	<string>Блокирај рекламе за локације</string>
+	<key>BLOCK_SHOP_VIDEOS</key>
+	<string>Блокирај објаве из продавнице</string>
+	<key>BLOCK_TCM</key>
+	<string>Блокирај рекламе за апликације</string>
+	<key>BMTikTok Settings</key>
+	<string>BMTikTok Подешавања</string>
+	<key>BMTikTok, Hi</key>
+	<string>BMTikTok, Здраво</string>
+	<key>BYPASS_FOLLOW_LIST_SEARCH</key>
+	<string>Заобиђи ограничење претраге листе пратилаца</string>
+	<key>Back</key>
+	<string>Назад</string>
+	<key>Backgrounding ✌️</key>
+	<string>У позадини ✌️</string>
+	<key>Block</key>
+	<string>Блокирај</string>
+	<key>Buy Me a Coffee</key>
+	<string>Части ме кафом</string>
+	<key>Bypass Media Limit</key>
+	<string>Заобиђи ограничење медија</string>
+	<key>CONFIRM_QUICK_SHARE</key>
+	<string>Потврда брзог дељења</string>
+	<key>CONFIRM_REPOST</key>
+	<string>Потврда поновне објаве</string>
+	<key>Cancel</key>
+	<string>Откажи</string>
+	<key>Cancelled</key>
+	<string>Отказано</string>
+	<key>Change Action of Live Button</key>
+	<string>Промени акцију дугмета за уживо</string>
+	<key>Change the behavior of the Live button</key>
+	<string>Промени понашање дугмета за уживо</string>
+	<key>Changes will take effect after restarting the app</key>
+	<string>Промене ће ступити на снагу након поновног покретања апликације</string>
+	<key>Chat Features</key>
+	<string>Функције ћаскања</string>
+	<key>Chat Settings</key>
+	<string>Подешавања ћаскања</string>
+	<key>Choose export destination:</key>
+	<string>Изаберите одредиште за извоз:</string>
+	<key>Choose import source:</key>
+	<string>Изаберите извор за увоз:</string>
+	<key>Clear</key>
+	<string>Обриши</string>
+	<key>Clear Keychain</key>
+	<string>Обриши привез кључева</string>
+	<key>Close</key>
+	<string>Затвори</string>
+	<key>Co-Owner</key>
+	<string>Сувласник</string>
+	<key>Comment Cell Redesign</key>
+	<string>Редизајн ћелије коментара</string>
+	<key>Comment Design</key>
+	<string>Дизајн коментара</string>
+	<key>Comment Settings</key>
+	<string>Подешавања коментара</string>
+	<key>Community</key>
+	<string>Заједница</string>
+	<key>Compact</key>
+	<string>Компактан</string>
+	<key>Configuration</key>
+	<string>Конфигурација</string>
+	<key>Configuration Management</key>
+	<string>Управљање конфигурацијом</string>
+	<key>Configuration imported from keychain successfully.</key>
+	<string>Конфигурација је успешно увезена из привеза кључева.</string>
+	<key>Configuration imported successfully.</key>
+	<string>Конфигурација је успешно увезена.</string>
+	<key>Configuration saved to keychain successfully.</key>
+	<string>Конфигурација је успешно сачувана у привезу кључева.</string>
+	<key>Configure Advanced Comment Settings</key>
+	<string>Подеси напредна подешавања коментара</string>
+	<key>Confirm</key>
+	<string>Потврди</string>
+	<key>Confirm Clear</key>
+	<string>Потврди брисање</string>
+	<key>Confirm Settings</key>
+	<string>Потврди подешавања</string>
+	<key>Confirmation Settings</key>
+	<string>Подешавања потврде</string>
+	<key>Content &amp; Display</key>
+	<string>Садржај и приказ</string>
+	<key>Content Enhancement</key>
+	<string>Побољшање садржаја</string>
+	<key>Content Filtering</key>
+	<string>Филтрирање садржаја</string>
+	<key>Content Interactions</key>
+	<string>Интеракције са садржајем</string>
+	<key>Contributor</key>
+	<string>Сарадник</string>
+	<key>Control video playback speed</key>
+	<string>Контролиши брзину репродукције видеа</string>
+	<key>Copy Description</key>
+	<string>Копирај опис</string>
+	<key>Copy Link</key>
+	<string>Копирај линк</string>
+	<key>Copy Menu</key>
+	<string>Мени за копирање</string>
+	<key>Copy Music Link</key>
+	<string>Копирај линк за музику</string>
+	<key>Copy Video link</key>
+	<string>Копирај линк видеа</string>
+	<key>Copy bio</key>
+	<string>Копирај биографију</string>
+	<key>Could Not Copy Music</key>
+	<string>Није могуће копирати музику</string>
+	<key>Credits</key>
+	<string>Заслуге</string>
+	<key>DEVELOPER_SUPPORT</key>
+	<string>Подржите РКСТикТок и добијте приступ нашој групи за бета тестирање</string>
+	<key>DEVELOPER_TELEGRAM</key>
+	<string>Придружите се нашем Телеграм каналу за најновија ажурирања</string>
+	<key>DISABLE_ACTIVITY_STATUS_WARNING</key>
+	<string>Онемогућавање или омогућавање анонимног статуса активности захтева време да се одрази на ТикТок серверима. Можда ћете и даље бити видљиви на мрежи неко време након омогућавања ове функције.</string>
+	<key>DISABLE_FEED_DOUBLE_TAP</key>
+	<string>Онемогући двоструки додир у фиду</string>
+	<key>DISABLE_SCREENRECORDING_DETECTION</key>
+	<string>Онемогући откривање снимања екрана</string>
+	<key>DISABLE_SCREENSHOT_DETECTION</key>
+	<string>Онемогући откривање снимања екрана</string>
+	<key>DISABLE_STORY_DOUBLE_TAP</key>
+	<string>Онемогући двоструки додир у причама</string>
+	<key>DISABLE_TYPING_STICKER</key>
+	<string>Онемогући налепницу за куцање</string>
+	<key>DISABLE_VISUAL_SEARCH_TAG</key>
+	<string>Онемогући ознаку визуелне претраге</string>
+	<key>DOWNLOADING_STICKER</key>
+	<string>Преузимање налепнице...</string>
+	<key>DOWNLOAD_FAILED</key>
+	<string>Преузимање није успело</string>
+	<key>DRM Developer</key>
+	<string>ДРМ програмер</string>
+	<key>Data Cleared</key>
+	<string>Подаци обрисани</string>
+	<key>Default</key>
+	<string>Подразумевано</string>
+	<key>Delete</key>
+	<string>Избриши</string>
+	<key>Description Link Copied</key>
+	<string>Линк за опис копиран</string>
+	<key>Deselect All</key>
+	<string>Поништи избор свега</string>
+	<key>Design Options</key>
+	<string>Опције дизајна</string>
+	<key>Developer</key>
+	<string>Програмер</string>
+	<key>Disable</key>
+	<string>Онемогући</string>
+	<key>Disable AI-Generated Replies</key>
+	<string>Онемогући одговоре генерисане вештачком интелигенцијом</string>
+	<key>Disable Comment Tooltip</key>
+	<string>Онемогући објашњење за коментаре</string>
+	<key>Disable Left &amp; Right Swipe</key>
+	<string>Онемогући превлачење лево и десно</string>
+	<key>Disable Live Streaming</key>
+	<string>Онемогући пренос уживо</string>
+	<key>Disable Sensitive Content</key>
+	<string>Онемогући осетљив садржај</string>
+	<key>Disable Survey Popups</key>
+	<string>Онемогући искачуће анкете</string>
+	<key>Disable TikTok Rewards ADs</key>
+	<string>Онемогући ТикТок рекламе са наградама</string>
+	<key>Disable Typing Indicator</key>
+	<string>Онемогући индикатор куцања</string>
+	<key>Disable Warnings</key>
+	<string>Онемогући упозорења</string>
+	<key>Dislike Comment Confirmation</key>
+	<string>Потврда дислајка на коментар</string>
+	<key>Done</key>
+	<string>Готово</string>
+	<key>Download All Photos</key>
+	<string>Преузми све фотографије</string>
+	<key>Download Button</key>
+	<string>Дугме за преузимање</string>
+	<key>Download HD Video</key>
+	<string>Преузми ХД видео</string>
+	<key>Download Music</key>
+	<string>Преузми музику</string>
+	<key>Download Photo</key>
+	<string>Преузми фотографију</string>
+	<key>Download Photos Menu</key>
+	<string>Мени за преузимање фотографија</string>
+	<key>Download Video</key>
+	<string>Преузми видео</string>
+	<key>Downloading</key>
+	<string>Преузимање</string>
+	<key>Downloads &amp; Sharing</key>
+	<string>Преузимања и дељење</string>
+	<key>Downloads Menu</key>
+	<string>Мени за преузимање</string>
+	<key>ENABLE_COMMENT_PHOTO</key>
+	<string>Омогућава одговоре са фотографијама у коментарима</string>
+	<key>ENABLE_COMMENT_STICKERS</key>
+	<string>Омогућава одговоре са налепницама у коментарима</string>
+	<key>ENABLE_STICKER_DOWNLOAD</key>
+	<string>Двапут додирните за преузимање налепнице</string>
+	<key>Edit</key>
+	<string>Уреди</string>
+	<key>Emoji &amp; Interface</key>
+	<string>Емотикони и интерфејс</string>
+	<key>Enable</key>
+	<string>Омогући</string>
+	<key>Enable Comment Flags</key>
+	<string>Омогући заставице у коментарима</string>
+	<key>Enable Comment Photos</key>
+	<string>Омогући фотографије у коментарима</string>
+	<key>Enable Comment Stickers</key>
+	<string>Омогући налепнице у коментарима</string>
+	<key>Enable Copy Without Username</key>
+	<string>Омогући копирање без корисничког имена</string>
+	<key>Enable Egypt Stickers</key>
+	<string>Омогући египатске налепнице</string>
+	<key>Enable Embeded Links</key>
+	<string>Омогући уграђене линкове</string>
+	<key>Enable Fake Changes</key>
+	<string>Омогући лажне промене</string>
+	<key>Enable Flex</key>
+	<string>Омогући ФЛЕХ</string>
+	<key>Enable Live Button Function</key>
+	<string>Омогући функцију дугмета за уживо</string>
+	<key>Enable Oled Keyboard</key>
+	<string>Омогући ОЛЕД тастатуру</string>
+	<key>Enable Persistent Playback Speed.</key>
+	<string>Омогући трајну брзину репродукције на објавама</string>
+	<key>Enable Pin Chat</key>
+	<string>Омогући закачивање ћаскања</string>
+	<key>Enable Playback Speed</key>
+	<string>Омогући брзину репродукције</string>
+	<key>Enable Region Changing</key>
+	<string>Омогући промену региона</string>
+	<key>Enable Region Changing Functionality</key>
+	<string>Омогући функционалност промене региона</string>
+	<key>Enable Small Emoji</key>
+	<string>Омогући мале емотиконе</string>
+	<key>Enable Streaks</key>
+	<string>Омогући низове</string>
+	<key>Enable Text To Reposts</key>
+	<string>Омогући текст за поновне објаве</string>
+	<key>Enable Voice Messages</key>
+	<string>Омогући гласовне поруке</string>
+	<key>Enable region changing to access content from different regions</key>
+	<string>Омогући промену региона за приступ садржају из различитих региона</string>
+	<key>Enhanced Comments Features</key>
+	<string>Напредне функције коментара</string>
+	<key>Erase</key>
+	<string>Обриши</string>
+	<key>Erase All Data</key>
+	<string>Обриши све податке</string>
+	<key>Erase All TikTok Data</key>
+	<string>Обриши све ТикТок податке</string>
+	<key>Erase all TikTok data from the app  [Becareful!!!]</key>
+	<string>Брише све ТикТок податке из апликације [ПАЖЉИВО!!!]</string>
+	<key>Error</key>
+	<string>Грешка</string>
+	<key>Export Configuration</key>
+	<string>Извези конфигурацију</string>
+	<key>Export settings to a file</key>
+	<string>Извези подешавања у датотеку</string>
+	<key>Export to File</key>
+	<string>Извези у датотеку</string>
+	<key>Extended Comments</key>
+	<string>Проширени коментари</string>
+	<key>Extracting Media URL…</key>
+	<string>Издвајање УРЛ адресе медија…</string>
+	<key>FEATURE_ADD_COMMENT_POST</key>
+	<string>Омогућава објављивање одговора на коментаре као објаву</string>
+	<key>FEATURE_ADD_COMMENT_STORY</key>
+	<string>Омогућава објављивање одговора на коментаре као причу</string>
+	<key>FEATURE_ADD_FOLDERS</key>
+	<string>Додаје организацију фасцикли за поруке у пријемном сандучету</string>
+	<key>FEATURE_ADD_FOLDERS_DESC</key>
+	<string>Организујте своје поруке у пријемном сандучету у прилагођене фасцикле за боље управљање</string>
+	<key>FEATURE_ADD_TRANSLATION</key>
+	<string>Додаје дугме за превод сваком коментару</string>
+	<key>FEATURE_ALWAYS_OPEN_SAFARI</key>
+	<string>Увек отвара линкове у Сафарију уместо у уграђеном прегледачу</string>
+	<key>FEATURE_ANONYMOUS_SEEN</key>
+	<string>Читајте ћаскања без обавештавања особе</string>
+	<key>FEATURE_ANONYMOUS_SEEN_DESC</key>
+	<string>Прегледајте ћаскања без слања потврда о читању примаоцу</string>
+	<key>FEATURE_APP_LOCK</key>
+	<string>Додаје закључавање апликације када се ТикТок покрене</string>
+	<key>FEATURE_APP_LOCK_DESC</key>
+	<string>Заштитите ТикТок апликацију лозинком или биометријском аутентификацијом</string>
+	<key>FEATURE_AUTO_CLEAR</key>
+	<string>Брише вашу историју претраге сваких 60 секунди</string>
+	<key>FEATURE_AUTO_PLAY</key>
+	<string>Омогућава аутоматско померање видеа</string>
+	<key>FEATURE_AUTO_UNFOLD</key>
+	<string>Аутоматски отвара све дугачке коментаре</string>
+	<key>FEATURE_BACKGROUND_PLAY</key>
+	<string>Омогућава репродукцију звука у позадини</string>
+	<key>FEATURE_BLOCK_AI_GENERATED</key>
+	<string>Блокира објаве са ознаком 'Садржи медије генерисане вештачком интелигенцијом'</string>
+	<key>FEATURE_BLOCK_MOVIE_TOK</key>
+	<string>Блокира видео записе са рекламама за филмове</string>
+	<key>FEATURE_BLOCK_POI</key>
+	<string>Блокирај видео записе са рекламама за локације</string>
+	<key>FEATURE_BLOCK_SHOP_ADS</key>
+	<string>Блокирај видео записе са рекламама за продавницу</string>
+	<key>FEATURE_BLOCK_SHOP_VIDEOS</key>
+	<string>Уклања објаве из продавнице из фида.</string>
+	<key>FEATURE_BLOCK_TCM</key>
+	<string>Блокирај видео записе са рекламама за апликације</string>
+	<key>FEATURE_BYPASS_FOLLOW_LIST_SEARCH</key>
+	<string>Омогућава претрагу листе пратилаца чак и ако корисник има преко 5.000 пратилаца</string>
+	<key>FEATURE_BYPASS_MEDIA_LIMIT</key>
+	<string>Заобилази ограничења слања медија у ћаскању (подразумевано: 9 фотографија, 1 минут видеа)</string>
+	<key>FEATURE_COMMENT_REDESIGN</key>
+	<string>Омогућава редизајниране ћелије коментара</string>
+	<key>FEATURE_CONFIRM_COMMENT_DISLIKE</key>
+	<string>Тражи потврду пре дислајковања коментара</string>
+	<key>FEATURE_CONFIRM_COMMENT_LIKE</key>
+	<string>Тражи потврду пре лајковања коментара</string>
+	<key>FEATURE_CONFIRM_FOLLOW</key>
+	<string>Тражи потврду пре праћења корисника</string>
+	<key>FEATURE_CONFIRM_LIKE</key>
+	<string>Тражи потврду пре лајковања објаве</string>
+	<key>FEATURE_CONFIRM_QUICK_SHARE</key>
+	<string>Тражи потврду пре коришћења брзог дељења</string>
+	<key>FEATURE_CONFIRM_REPOST</key>
+	<string>Тражи потврду пре поновног објављивања видеа</string>
+	<key>FEATURE_COPY_WITHOUT_USERNAME</key>
+	<string>Копира коментаре без имена коментатора</string>
+	<key>FEATURE_DISABLE_AI_REPLIES</key>
+	<string>Онемогућава одговоре генерисане вештачком интелигенцијом на објавама</string>
+	<key>FEATURE_DISABLE_COMMENT_TOOLTIP</key>
+	<string>Онемогућава објашњења у одељку коментара</string>
+	<key>FEATURE_DISABLE_FEED_DOUBLE_TAP</key>
+	<string>Онемогућава двоструки додир за лајковање у фиду</string>
+	<key>FEATURE_DISABLE_LIVE</key>
+	<string>Сакрива преносе уживо из фида</string>
+	<key>FEATURE_DISABLE_REWARDS_ADS</key>
+	<string>Сакрива ТикТок-ове рекламе са наградама из фида</string>
+	<key>FEATURE_DISABLE_SCREENRECORDING_DETECTION</key>
+	<string>Онемогућава откривање снимања екрана у ћаскањима</string>
+	<key>FEATURE_DISABLE_SCREENSHOT_DETECTION</key>
+	<string>Онемогућава откривање снимања екрана у ћаскањима</string>
+	<key>FEATURE_DISABLE_SENSITIVE</key>
+	<string>Сакрива упозорења о 'Неприкладном садржају'</string>
+	<key>FEATURE_DISABLE_STORY_DOUBLE_TAP</key>
+	<string>Онемогућава двоструки додир за лајковање у причама</string>
+	<key>FEATURE_DISABLE_SURVEY</key>
+	<string>Онемогућава анкетна питања у фиду</string>
+	<key>FEATURE_DISABLE_SWIPE</key>
+	<string>Онемогућава превлачење лево и десно у фиду</string>
+	<key>FEATURE_DISABLE_TYPING</key>
+	<string>Онемогућава индикатор куцања</string>
+	<key>FEATURE_DISABLE_TYPING_STICKER</key>
+	<string>Онемогућава аутоматске препоруке ГИФ-ова током куцања</string>
+	<key>FEATURE_DISABLE_VISUAL_SEARCH_TAG</key>
+	<string>Онемогућава дугме 'Визуелна претрага' у фиду када се паузира видео</string>
+	<key>FEATURE_DISABLE_WARNINGS</key>
+	<string>Сакрива ТикТок упозорења</string>
+	<key>FEATURE_DOWNLOAD_BUTTON</key>
+	<string>Додаје дугме за преузимање на објаве и приче</string>
+	<key>FEATURE_EMBED_LINKS</key>
+	<string>Копирани линкови ће уградити медије тамо где су послати</string>
+	<key>FEATURE_ENABLE_COMMENT_FLAGS</key>
+	<string>Приказује заставице региона поред имена коментатора</string>
+	<key>FEATURE_ENABLE_FLEX</key>
+	<string>САМО ЗА ПРОГРАМЕРЕ, НЕ ДИРАЈТЕ АКО НЕ ЗНАТЕ ШТА ЈЕ ФЛЕХ!</string>
+	<key>FEATURE_ENABLE_STICKER_DOWNLOAD</key>
+	<string>Омогућава преузимање налепница у коментарима</string>
+	<key>FEATURE_ENABLE_STREAKS</key>
+	<string>Омогућава низове са пријатељима</string>
+	<key>FEATURE_ENABLE_TEXT_TO_REPOSTS</key>
+	<string>Омогућава додавање натписа на поновне објаве за регионе који нису подржани</string>
+	<key>FEATURE_EXTENDED_COMMENTS</key>
+	<string>Повећава ограничење броја знакова у коментарима</string>
+	<key>FEATURE_FAKE_CHANGES</key>
+	<string>Омогућава лажне измене података профила</string>
+	<key>FEATURE_FAKE_VERIFIED</key>
+	<string>Приказује лажну значку верификације</string>
+	<key>FEATURE_FOLLOWER_COUNT</key>
+	<string>Унесите лажни број пратилаца</string>
+	<key>FEATURE_FOLLOWING_COUNT</key>
+	<string>Унесите лажни број праћења</string>
+	<key>FEATURE_FULL_REGION_MODE</key>
+	<string>ОМОГУЋИТЕ САМО АКО ПРВА ОПЦИЈА НЕ РАДИ!</string>
+	<key>FEATURE_HIDE_ACTIVITY_STATUS</key>
+	<string>Сакрива ваше статусе 'Последњи пут активан' и 'На мрежи' у ћаскањима</string>
+	<key>FEATURE_HIDE_ADS</key>
+	<string>Сакрива рекламе из фида</string>
+	<key>FEATURE_HIDE_COMMISSION_POSTS</key>
+	<string>Сакрива објаве 'Креатор зарађује провизију'</string>
+	<key>FEATURE_HIDE_DANGEROUS_ACTION</key>
+	<string>Сакрива упозорења испод спортских видеа (УФЦ, бокс, итд.)</string>
+	<key>FEATURE_HIDE_EMOJI</key>
+	<string>Сакрива траку за коментаре са више емотикона</string>
+	<key>FEATURE_HIDE_FRIENDS_BADGE</key>
+	<string>Сакрива значку обавештења пријатеља</string>
+	<key>FEATURE_HIDE_INBOX_BADGE</key>
+	<string>Сакрива значку обавештења пријемног сандучета</string>
+	<key>FEATURE_HIDE_PLAY_PAUSE</key>
+	<string>Сакрива приказ репродукција/пауза у фиду</string>
+	<key>FEATURE_HIDE_PLUS_BTN</key>
+	<string>Сакрива дугме камере</string>
+	<key>FEATURE_HIDE_REPORT_BUTTON</key>
+	<string>Сакрива дугме за пријављивање у траци за навигацију директних порука.</string>
+	<key>FEATURE_HIDE_STREAK_PET</key>
+	<string>Сакрива љубимца низа</string>
+	<key>FEATURE_HIDE_TAB_BAR_LABELS</key>
+	<string>Сакрива натписе на траци картица</string>
+	<key>FEATURE_HIDE_TOP_ITEMS</key>
+	<string>Сакрива горњу траку (За тебе, Праћења, Продавница, итд.)</string>
+	<key>FEATURE_LIKE_COUNT</key>
+	<string>Приказује број лајкова на објавама</string>
+	<key>FEATURE_LOOP_STORY_VIDEOS</key>
+	<string>Понавља видео записе у причама</string>
+	<key>FEATURE_MARK_SEEN_ON_REPLY</key>
+	<string>Означава поруке као виђене приликом одговарања</string>
+	<key>FEATURE_MASS_UNFOLD</key>
+	<string>Масовно отвара све одговоре на коментаре</string>
+	<key>FEATURE_MULTI_EMOJI</key>
+	<string>Омогућава траку за коментаре са више емотикона</string>
+	<key>FEATURE_OLED_KEYBOARD</key>
+	<string>Ради само са тамном темом</string>
+	<key>FEATURE_PAD_AUTO_SCROLL</key>
+	<string>Омогућава изворно аутоматско померање објава на ТикТок-у за регионе који нису подржани</string>
+	<key>FEATURE_PIN_CHATS</key>
+	<string>Омогућава закачивање омиљених ћаскања на врх</string>
+	<key>FEATURE_POST_STATS</key>
+	<string>Приказује подмени у одељку за преузимање са информацијама о објави</string>
+	<key>FEATURE_PROFILE_COPY</key>
+	<string>Копира биографију корисника дугим притиском</string>
+	<key>FEATURE_PROFILE_COPY_DESC</key>
+	<string>Копирајте детаље профила укључујући корисничко име, биографију и друге јавне информације</string>
+	<key>FEATURE_PROFILE_SAVE</key>
+	<string>Чува профилну слику корисника дугим притиском</string>
+	<key>FEATURE_PROFILE_SAVE_DESC</key>
+	<string>Сачувајте информације о профилу у оставу једним додиром</string>
+	<key>FEATURE_PROGRESS_BAR</key>
+	<string>Приказује трајање медија испод сваке објаве</string>
+	<key>FEATURE_PULL_TO_CAMERA</key>
+	<string>Омогућава функцију 'Повуци до камере'</string>
+	<key>FEATURE_REGIONS_DESC</key>
+	<string>Приступите садржају специфичном за регион лажирањем своје виртуелне локације</string>
+	<key>FEATURE_REMOVE_DRAFT_WATERMARK</key>
+	<string>Уклања водени жиг приликом чувања објава или недовршених објава</string>
+	<key>FEATURE_REMOVE_PENDANT</key>
+	<string>Уклања приказ рекламе у горњем левом углу у фиду</string>
+	<key>FEATURE_REMOVE_TIKTOK_AI_BUTTON</key>
+	<string>Уклања дугме ТикТок вештачке интелигенције (тако) из фида 'За тебе'</string>
+	<key>FEATURE_REMOVE_WATERMARK</key>
+	<string>Уклања водени жиг са преузетих медија</string>
+	<key>FEATURE_RUSSIAN_FIX</key>
+	<string>Омогућите ово да би руски фид поново радио [НОВО!]</string>
+	<key>FEATURE_SAVE_DM_MEDIA</key>
+	<string>Додаје дугме за преузимање на медије послате у директним порукама</string>
+	<key>FEATURE_SHARE_SHEET</key>
+	<string>Отвара лист за дељење након завршетка преузимања медија</string>
+	<key>FEATURE_SHOW_ALL_TABS</key>
+	<string>Приказује све скривене картице подешавања [БЕТА]</string>
+	<key>FEATURE_SHOW_ALL_TABS_DESC</key>
+	<string>Прикажи све скривене картице подешавања, укључујући експерименталне функције</string>
+	<key>FEATURE_SHOW_USERNAMES</key>
+	<string>Замењује надимке корисника њиховим корисничким именима у фиду</string>
+	<key>FEATURE_SHOW_VIDEO_TIMESTAMP</key>
+	<string>Приказује време отпремања објаве у фиду 'За тебе'</string>
+	<key>FEATURE_SKIP_RECOMMENDED</key>
+	<string>Уклања препоруке садржаја (препоруке пријатеља, итд.)</string>
+	<key>FEATURE_SMALL_EMOJI</key>
+	<string>Омогућава слање малих емотикона</string>
+	<key>FEATURE_START_FYP_IN_FOLLOWING</key>
+	<string>Покреће ТикТок у фиду 'Праћења', уместо у фиду 'За тебе'</string>
+	<key>FEATURE_STOP_PLAYBACK</key>
+	<string>Зауставља репродукцију објаве након завршетка</string>
+	<key>FEATURE_STOP_STORY_PHOTO_ADVANCE</key>
+	<string>Зауставља аутоматско напредовање фотографија у причама</string>
+	<key>FEATURE_STORY_LIKE_CONFIRMATION</key>
+	<string>Тражи потврду пре лајковања приче</string>
+	<key>FEATURE_STREAK_INFO</key>
+	<string>Приказује информације о вашем тренутном низу када додирнете ватру низа</string>
+	<key>FEATURE_TRANSPARENT_COMMENTS</key>
+	<string>Чини позадину одељка коментара провидном</string>
+	<key>FEATURE_UI_BUTTON</key>
+	<string>Приказује дугме 'Сакриј интерфејс'</string>
+	<key>FEATURE_UPLOAD_DATE</key>
+	<string>Приказује датум отпремања на објавама</string>
+	<key>FEATURE_UPLOAD_HD</key>
+	<string>Омогућава отпремање у ХД квалитету</string>
+	<key>FEATURE_UPLOAD_REGION</key>
+	<string>Приказује заставу региона отпремања поред корисничког имена</string>
+	<key>FEATURE_USER_POST_COUNT</key>
+	<string>Приказује укупан број објава корисника</string>
+	<key>FEATURE_VIEW_PROFILES_ANONYMOUS</key>
+	<string>Онемогућава праћење прегледа профила</string>
+	<key>FEATURE_VOICE_MESSAGES</key>
+	<string>Омогућава слање гласовних порука у ћаскању (само у неким регионима)</string>
+	<key>FILTERING_OPTIONS</key>
+	<string>Опције филтрирања</string>
+	<key>Failed to fetch HD video URL. Please try again.</key>
+	<string>Није успело добављање УРЛ адресе за ХД видео. Покушајте поново.</string>
+	<key>Failed to save media</key>
+	<string>Није успело чување медија</string>
+	<key>Fake Verified</key>
+	<string>Лажно верификован</string>
+	<key>Features list</key>
+	<string>Листа функција</string>
+	<key>Feed</key>
+	<string>Фид</string>
+	<key>Feed Settings</key>
+	<string>Подешавања фида</string>
+	<key>File selection was cancelled.</key>
+	<string>Избор датотеке је отказан.</string>
+	<key>Follow Confirmation</key>
+	<string>Потврда праћења</string>
+	<key>Follower</key>
+	<string>Пратиоци</string>
+	<key>Following</key>
+	<string>Праћења</string>
+	<key>Full Region Mode</key>
+	<string>Режим пуног региона</string>
+	<key>Get the latest updates and news</key>
+	<string>Добијте најновија ажурирања и вести</string>
+	<key>HIDE_ACTIVITY_STATUS</key>
+	<string>Сакриј статус активности</string>
+	<key>HIDE_REPORT_BUTTON</key>
+	<string>Сакриј дугме за пријаву</string>
+	<key>Hide</key>
+	<string>Сакриј</string>
+	<key>Hide Ads</key>
+	<string>Сакриј рекламе</string>
+	<key>Hide Commission Posts</key>
+	<string>Сакриј објаве са провизијом</string>
+	<key>Hide Emoji-Bar</key>
+	<string>Сакриј емоји траку</string>
+	<key>Hide Friends Badge</key>
+	<string>Сакриј значку пријатеља</string>
+	<key>Hide Inbox Badge</key>
+	<string>Сакриј значку пријемног сандучета</string>
+	<key>Hide Play/Pause Button</key>
+	<string>Сакриј дугме за репродукцију/паузу</string>
+	<key>Hide Plus Button</key>
+	<string>Сакриј дугме плус</string>
+	<key>Hide Streak Pet</key>
+	<string>Сакриј љубимца низа</string>
+	<key>Hide Tab Bar Labels</key>
+	<string>Сакриј натписе на траци картица</string>
+	<key>Hide Top Feed items</key>
+	<string>Сакриј горње ставке фида</string>
+	<key>Hide dangerous-action Warning</key>
+	<string>Сакриј упозорење о опасним радњама</string>
+	<key>Import Configuration</key>
+	<string>Увези конфигурацију</string>
+	<key>Import from File</key>
+	<string>Увези из датотеке</string>
+	<key>Import from Keychain</key>
+	<string>Увези из привеза кључева</string>
+	<key>Import settings from a file</key>
+	<string>Увези подешавања из датотеке</string>
+	<key>Invalid download URL received.</key>
+	<string>Примљена је неважећа УРЛ адреса за преузимање.</string>
+	<key>Join the community discussion</key>
+	<string>Придружите се дискусији у заједници</string>
+	<key>LOOP_STORY_VIDEOS</key>
+	<string>Понављај видео записе у причама</string>
+	<key>Language</key>
+	<string>Језик</string>
+	<key>Language Changed</key>
+	<string>Језик промењен</string>
+	<key>Language 🌎</key>
+	<string>Језик 🌎</string>
+	<key>Like Comment Confirmation</key>
+	<string>Потврда лајка на коментар</string>
+	<key>Like Confirmation</key>
+	<string>Потврда лајка</string>
+	<key>Live Actions</key>
+	<string>Акције уживо</string>
+	<key>Live Button Actions</key>
+	<string>Акције дугмета за уживо</string>
+	<key>Live Button Function</key>
+	<string>Функција дугмета за уживо</string>
+	<key>Live Button Function Disabled</key>
+	<string>Функција дугмета за уживо је онемогућена</string>
+	<key>Live Button Settings</key>
+	<string>Подешавања дугмета за уживо</string>
+	<key>Loading</key>
+	<string>Учитавање</string>
+	<key>MARK_SEEN_ON_REPLY</key>
+	<string>Означи као виђено при одговору</string>
+	<key>Main Developer, Owner</key>
+	<string>Главни програмер, власник</string>
+	<key>Mass Unfold Comment Replies</key>
+	<string>Масовно отвори одговоре на коментаре</string>
+	<key>Modern</key>
+	<string>Модеран</string>
+	<key>More Options</key>
+	<string>Више опција</string>
+	<key>Multi Emoji Comment Bar</key>
+	<string>Вишеструка емоји трака за коментаре</string>
+	<key>Music Link Copied</key>
+	<string>Линк за музику копиран</string>
+	<key>Navigation &amp; Interaction</key>
+	<string>Навигација и интеракција</string>
+	<key>Next</key>
+	<string>Следеће</string>
+	<key>No</key>
+	<string>Не</string>
+	<key>No Backup</key>
+	<string>Нема резервне копије</string>
+	<key>No backup found</key>
+	<string>Није пронађена резервна копија</string>
+	<key>No internet connection</key>
+	<string>Нема интернет везе</string>
+	<key>No settings backup found in keychain.</key>
+	<string>Није пронађена резервна копија подешавања у привезу кључева.</string>
+	<key>Not Selected</key>
+	<string>Није изабрано</string>
+	<key>Notification Badges</key>
+	<string>Значке обавештења</string>
+	<key>OFF</key>
+	<string>Искључено</string>
+	<key>OK</key>
+	<string>У реду</string>
+	<key>ON</key>
+	<string>Укључено</string>
+	<key>OTHER_OPTIONS</key>
+	<string>Остале опције</string>
+	<key>Organization &amp; Management</key>
+	<string>Организација и управљање</string>
+	<key>Other</key>
+	<string>Остало</string>
+	<key>Other Settings</key>
+	<string>Остала подешавања</string>
+	<key>PAD_AUTO_SCROLL</key>
+	<string>Подразумевано аутоматско померање</string>
+	<key>Photo saved successfully</key>
+	<string>Фотографија је успешно сачувана</string>
+	<key>Playback Controls</key>
+	<string>Контроле репродукције</string>
+	<key>Playback Speed</key>
+	<string>Брзина репродукције</string>
+	<key>Playback Speed Disabled</key>
+	<string>Брзина репродукције је онемогућена</string>
+	<key>Playback Speed Settings</key>
+	<string>Подешавања брзине репродукције</string>
+	<key>Please enable Live Button Function first</key>
+	<string>Прво омогућите функцију дугмета за уживо</string>
+	<key>Please enable Playback Speed first</key>
+	<string>Прво омогућите брзину репродукције</string>
+	<key>Please enable region changing first</key>
+	<string>Прво омогућите промену региона</string>
+	<key>Please restart the app to apply changes, May require two app restarts!</key>
+	<string>Молимо поново покрените апликацију да бисте применили промене, можда ће бити потребна два поновна покретања!</string>
+	<key>Post Info</key>
+	<string>Информације о објави</string>
+	<key>Post Stats</key>
+	<string>Статистика објаве</string>
+	<key>Privacy &amp; Security</key>
+	<string>Приватност и безбедност</string>
+	<key>Processing...</key>
+	<string>Обрада...</string>
+	<key>Profile</key>
+	<string>Профил</string>
+	<key>Profile Actions</key>
+	<string>Акције профила</string>
+	<key>Profile Copy</key>
+	<string>Копирај профил</string>
+	<key>Profile Customization</key>
+	<string>Прилагођавање профила</string>
+	<key>Profile Enhancement</key>
+	<string>Побољшање профила</string>
+	<key>Profile Save</key>
+	<string>Сачувај профил</string>
+	<key>Profile Settings</key>
+	<string>Подешавања профила</string>
+	<key>Pull To Camera</key>
+	<string>Повуци до камере</string>
+	<key>REMOVE_DRAFT_WATERMARK</key>
+	<string>Уклони водени жиг са фотографија</string>
+	<key>REMOVE_TIKTOK_AI_BUTTON</key>
+	<string>Уклони ТикТок вештачке интелигенције дугме</string>
+	<key>RUSSIAN_FIX</key>
+	<string>Заобиђи забрану у Русији</string>
+	<key>Really Clear All Data?</key>
+	<string>Стварно обрисати све податке?</string>
+	<key>Region</key>
+	<string>Регион</string>
+	<key>Region Changing Disabled</key>
+	<string>Промена региона је онемогућена</string>
+	<key>Region Settings</key>
+	<string>Подешавања региона</string>
+	<key>Regions</key>
+	<string>Региони</string>
+	<key>Remove Pendant View</key>
+	<string>Уклони привезак приказ</string>
+	<key>Remove Watermark</key>
+	<string>Уклони водени жиг</string>
+	<key>Report</key>
+	<string>Пријави</string>
+	<key>Reset</key>
+	<string>Ресетуј</string>
+	<key>Reset All Settings</key>
+	<string>Ресетуј сва подешавања</string>
+	<key>Reset Settings</key>
+	<string>Ресетуј подешавања</string>
+	<key>Reset all settings to default values</key>
+	<string>Ресетуј сва подешавања на подразумеване вредности</string>
+	<key>SAVE_DM_MEDIA</key>
+	<string>Сачувај медије из директних порука</string>
+	<key>STICKER_SAVED</key>
+	<string>Налепница сачувана у галерији!</string>
+	<key>STICKER_SAVE_FAILED</key>
+	<string>Није успело чување налепнице</string>
+	<key>STOP_STORY_PHOTO_ADVANCE</key>
+	<string>Заустави аутоматско напредовање фотографија у причама</string>
+	<key>STORY_LIKE_CONFIRMATION</key>
+	<string>Потврда лајка за причу</string>
+	<key>Save</key>
+	<string>Сачувај</string>
+	<key>Save to Keychain</key>
+	<string>Сачувај у привез кључева</string>
+	<key>Saved!</key>
+	<string>Сачувано!</string>
+	<key>Search</key>
+	<string>Претрага</string>
+	<key>Select Action</key>
+	<string>Изабери акцију</string>
+	<key>Select All</key>
+	<string>Изабери све</string>
+	<key>Select App Language</key>
+	<string>Изаберите језик апликације</string>
+	<key>Select Design</key>
+	<string>Изабери дизајн</string>
+	<key>Select Speed</key>
+	<string>Изабери брзину</string>
+	<key>Selected Action</key>
+	<string>Изабрана акција</string>
+	<key>Selected Region</key>
+	<string>Изабрани регион</string>
+	<key>Selected Speed</key>
+	<string>Изабрана брзина</string>
+	<key>Settings</key>
+	<string>Подешавања</string>
+	<key>Settings Reset</key>
+	<string>Подешавања ресетована</string>
+	<key>Share</key>
+	<string>Подели</string>
+	<key>Share Sheet</key>
+	<string>Лист за дељење</string>
+	<key>Show</key>
+	<string>Прикажи</string>
+	<key>Show All Settings Tabs</key>
+	<string>Прикажи све картице подешавања</string>
+	<key>Show Progress Bar</key>
+	<string>Прикажи траку напретка</string>
+	<key>Show Usernames</key>
+	<string>Прикажи корисничка имена</string>
+	<key>Show Video Upload Timestamp</key>
+	<string>Прикажи време отпремања видеа</string>
+	<key>Show/Hide UI Button</key>
+	<string>Прикажи/Сакриј дугме интерфејса</string>
+	<key>Skip Recommendations</key>
+	<string>Прескочи препоруке</string>
+	<key>Social Actions</key>
+	<string>Друштвене акције</string>
+	<key>Special Thanks to</key>
+	<string>Посебна захвалност</string>
+	<key>Speeds</key>
+	<string>Брзине</string>
+	<key>Start TikTok in Following</key>
+	<string>Покрени ТикТок у 'Праћења'</string>
+	<key>Stats Menu</key>
+	<string>Мени статистике</string>
+	<key>Stop Playback</key>
+	<string>Заустави репродукцију</string>
+	<key>Streak Info</key>
+	<string>Информације о низу</string>
+	<key>Success</key>
+	<string>Успех</string>
+	<key>Support</key>
+	<string>Подршка</string>
+	<key>Support the development</key>
+	<string>Подржите развој</string>
+	<key>System Features</key>
+	<string>Системске функције</string>
+	<key>Tab Bar Configurations</key>
+	<string>Конфигурације траке картица</string>
+	<key>Tab Bar Elements</key>
+	<string>Елементи траке картица</string>
+	<key>Tab Bar Settings</key>
+	<string>Подешавања траке картица</string>
+	<key>Tap to Join the Telegram</key>
+	<string>Кликните да се придружите Телеграму</string>
+	<key>Telegram Channel</key>
+	<string>Телеграм канал</string>
+	<key>Telegram Discussion Group</key>
+	<string>Телеграм група за дискусију</string>
+	<key>Text &amp; Display Options</key>
+	<string>Опције текста и приказа</string>
+	<key>This is your final warning. This action is irreversible and will delete all local TikTok data, including drafts and settings. Are you absolutely sure?</key>
+	<string>Ово је ваше последње упозорење. Ова радња је неповратна и избрисаће све локалне ТикТок податке, укључујући недовршене објаве и подешавања. Јесте ли апсолутно сигурни?</string>
+	<key>Transparent Comments</key>
+	<string>Транспарентни коментари</string>
+	<key>UI Designer</key>
+	<string>УИ дизајнер</string>
+	<key>Unfollow</key>
+	<string>Престани да пратиш</string>
+	<key>Upload HD</key>
+	<string>Отпреми у ХД</string>
+	<key>Upload Region</key>
+	<string>Регион отпремања</string>
+	<key>User Post Count</key>
+	<string>Број објава корисника</string>
+	<key>VIEW_PROFILES_ANONYMOUS</key>
+	<string>Прегледај профиле анонимно</string>
+	<key>Video Info</key>
+	<string>Информације о видеу</string>
+	<key>Video Information</key>
+	<string>Информације о видеу</string>
+	<key>Video Like Count</key>
+	<string>Број лајкова на видеу</string>
+	<key>Video Link Copied</key>
+	<string>Линк за видео копиран</string>
+	<key>Video Upload Date</key>
+	<string>Датум отпремања видеа</string>
+	<key>Video saved successfully</key>
+	<string>Видео је успешно сачуван</string>
+	<key>WARNING</key>
+	<string>УПОЗОРЕЊЕ</string>
+	<key>Waiting for TikTok…</key>
+	<string>Чекање на ТикТок…</string>
+	<key>Warning</key>
+	<string>Упозорење</string>
+	<key>Welcome</key>
+	<string>Добродошли</string>
+	<key>X</key>
+	<string>Икс</string>
+	<key>Yes</key>
+	<string>Да</string>
+	<key>the video doesn't have music to download</key>
+	<string>Овај видео нема музику за преузимање</string>
+</dict>
+</plist>

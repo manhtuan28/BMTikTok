@@ -1,0 +1,10 @@
+Package: com.tuancute28.bmtiktok
+Name: BMTikTok
+Version: 1.0.0
+Architecture: iphoneos-arm
+Description: BMTikTok - Custom TikTok tweak by Tuancute28 (Bùi Mạnh Tuấn)
+Maintainer: Tuancute28 <buimanhtuan2k4@gmail.com>
+Author: Tuancute28 <buimanhtuan2k4@gmail.com>
+Homepage: https://github.com/manhtuan28/BMTikTok
+Section: Tweaks
+Depends: mobilesubstrate

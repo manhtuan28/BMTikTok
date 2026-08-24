@@ -1,0 +1,276 @@
+/* Headers */
+"Settings" = "設定";
+"Developer" = "BHTikTok 開發者";
+"PlusDeveloper" = "BHTikTok Plus 開發者";
+
+/* Main */
+"DownloadOptions" = "下載";
+"FeedOptions" = "動態";
+"ProfileOptions" = "個人資料";
+"ConfirmationOptions" = "確認提醒";
+"RegionOptions" = "國家/地區";
+"FakeOptions" = "偽裝";
+"ColorOptions" = "外觀";
+"OtherOptions" = "其它";
+"Apply" = "套用"; 
+
+/* Developer */
+"TipJar" = "贊助開發";
+"DonateViaPayPal" = "透過 PayPal 贊助";
+"Donate" = "支持開發者";
+"Telegram" = "我們的 Telegram 頻道";
+"Thanks" = "特別感謝";
+"DonateMessage" = "如果您喜歡 BHTikTok Plus 並想支持我，可以透過以下任一方式為我買杯咖啡。\n\n謝謝❤";
+"MaybeLater" = "以後再說";
+"ThankYou" = "謝謝您";
+
+/* Download Options */
+"DownloadFeedHeader" = "動態";
+"DownloadVideos" = "下載影片";
+"DownloadVideosDesc" = "新增一個下載無浮水印影片的按鈕";
+"DownloadHDVideos" = "下載高畫質影片";
+"DownloadHDVideosDesc" = "新增下載高畫質（H.265）影片的選項。注意：此格式可能與某些應用不相容";
+"DownloadWMVideos" = "下載浮水印影片";
+"DownloadWMVideosDesc" = "新增下載有浮水印影片的選項";
+"DownloadMusics" = "下載音樂";
+"DownloadMusicsDesc" = "新增一個從影片中下載音樂的按鈕";
+"CopyVideoDescription" = "複製影片描述";
+"CopyVideoDescriptionDesc" = "新增一個複製影片描述的按鈕";
+"CopyVideosLink" = "複製影片連結";
+"CopyVideosLinkDesc" = "新增一個複製影片連結的按鈕";
+"CopyMusicsLink" = "複製音樂連結";
+"CopyMusicsLinkDesc" = "新增一個複製音樂連結的按鈕";
+"GroupMenuItems" = "群組選單項目";
+"GroupMenuItemsDesc" = "將群組選單項目分為下載和複製資訊子選單";
+"CompactProgress" = "縮小進度條";
+"CompactProgressDesc" = "在螢幕底部顯示緊湊的下載進度條";
+"RemoveWatermark" = "停用浮水印";
+"RemoveWatermarkDesc" = "若您想從標準 TikTok 選單中下載無浮水印的影片，此功能非常實用";
+"DownloadProfileHeader" = "個人資料";
+"SaveProfileImage" = "儲存使用者頭像";
+"SaveProfileImageDesc" = "長按下載使用者頭像";
+"CopyProfileInformation" = "複製使用者資訊";
+"CopyProfileInformationDesc" = "長按頭像或@使用者名稱，即可複製使用者檔案描述";
+"DownloadedAction" = "下載影片完成後的動作";
+"SaveToPhotos" = "直接儲存到照片";
+"ShowShareSheet" = "顯示分享選單";
+"DownloadMenu" = "下載選單樣式";
+"CompactMenu" = "簡潔";
+"OldMenu" = "TikTok";
+
+/* Feed Options */
+"Feed" = "動態";
+"NoAds" = "刪除廣告";
+"NoAdsDesc" = "移除應用程式內的廣告";
+"HideUI" = "簡潔模式";
+"HideUIDesc" = "新增按鈕以隱藏/顯示介面按鈕";
+"UploadRegion" = "顯示上傳國家";
+"UploadRegionDesc" = "在使用者名稱旁顯示影片的上傳國家國旗";
+"NoPullToRefresh" = "停用下拉重新整理";
+"NoPullToRefreshDesc" = "禁用在第一頁向下拉動時重新整理動態";
+"ShowUsername" = "顯示使用者名稱而非暱稱";
+"ShowUsernameDesc" = "顯示用戶名而不是暱稱，就像舊版本中一樣";
+"TransparentComms" = "半透明評論";
+"TransparentCommsDesc" = "使評論視窗的背景半透明，讓您在觀看影片時能讀取評論";
+"ClearLinks" = "清除連結";
+"ClearLinksDesc" = "從你的帳號中刪除共享的連結追蹤";
+"NoWarnings" = "停用警告";
+"NoWarningsDesc" = "移除影片描述下的警告訊息";
+"SkipRecs" = "跳過推薦";
+"SkipLive" = "停用直播";
+"ShowProgressBar" = "顯示進度條";
+"PlaybackAction" = "影片播放結束後的動作";
+"Replay" = "重覆播放";
+"Stop" = "停止";
+"SkipToNext" = "跳到下一個";
+"RegionStyle" = "國家/地區格式和位置";
+"CountryFlag" = "國旗";
+"CountryCode" = "國碼";
+"InNickname" = "暱稱";
+"TopRight" = "右上角";
+"StartupPage" = "啟動頁面";
+"ForYou" = "為您推薦";
+"Following" = "關注中";
+
+/* Profile Options */
+"FollowStatus" = "追蹤狀態";
+"FollowStatusDesc" = "在使用者檔案中顯示關注狀態";
+"VideoCount" = "影片數量";
+"VideoCountDesc" = "在使用者個人資料中顯示上傳的總數量";
+"TotalVideoCount" = "影片總數量: %@"; // %@ is total video count (Posts: 25)
+"UploadDate" = "影片上傳日期";
+"UploadDateDesc" = "影片縮圖上顯示上傳日期";
+"ProfileLikeCount" = "影片按讚數量";
+"ProfileLikeCountDesc" = "影片縮圖上顯示影片點讚數";
+"UnsensitiveContent" = "不含敏感內容";
+"UnsensitiveContentDesc" = "移除敏感內容警告";
+"NoJustWatched" = "移除「剛剛看過」";
+"NoJustWatchedDesc" = "從影片縮圖中移除「剛剛看過」";
+"ExtendBio" = "增加個人簡介字數限制";
+"ExtendBioDesc" = "將個人簡介字數增加至 222";
+"ExtendComment" = "增加評論字數限制";
+"ExtendCommentDesc" = "將評論字數增加至 240";
+"UploadHD" = "總是以高畫質上傳影片";
+"UploadHDDesc" = "強制上傳高畫質影片";
+
+/* Confirmation Options */
+"ConfirmLike" = "確認喜歡";
+"ConfirmLikeDesc" = "喜歡影片前需要確認";
+"ConfirmCommentLike" = "確認喜歡評論";
+"ConfirmCommentLikeDesc" = "喜歡評論前需要確認";
+"ConfirmCommentDislike" = "確認不喜歡評論";
+"ConfirmCommentDislikeDesc" = "不喜歡評論前需要確認";
+"ConfirmFollow" = "確認關注";
+"ConfirmFollowDesc" = "關注使用者前需要確認";
+
+/* Region Options */
+"EnableChangingRegion" = "變更國家/地區";
+"Regions" = "選擇國家/地區";
+"Algeria" = "阿爾及利亞";
+"Anguilla" = "安圭拉";
+"Argentina" = "阿根廷";
+"Australia" = "澳洲";
+"Belarus" = "白俄羅斯";
+"Brazil" = "巴西";
+"Canada" = "加拿大";
+"Denmark" = "丹麥";
+"Egypt" = "埃及";
+"Finland" = "芬蘭";
+"France" = "法國";
+"Germany" = "德國";
+"HongKong" = "香港";
+"Indonesia" = "印尼";
+"Italy" = "義大利";
+"Japan" = "日本";
+"Kazakhstan" = "哈薩克";
+"Kuwait" = "科威特";
+"Laos" = "寮國";
+"Lebanon" = "黎巴嫩";
+"Macao" = "澳門";
+"Malaysia" = "馬來西亞";
+"Mexico" = "墨西哥";
+"Norway" = "挪威";
+"Pakistan" = "巴基斯坦";
+"Panama" = "巴拿馬";
+"Philippines" = "菲律賓";
+"Romania" = "羅馬尼亞";
+"Russia" = "俄羅斯";
+"SaudiArabia" = "沙烏地阿拉伯";
+"Singapore" = "新加坡";
+"SouthKorea" = "南韓";
+"Sudan" = "蘇丹";
+"Taiwan" = "臺灣";
+"Thailand" = "泰國";
+"Turkey" = "土耳其";
+"Ukraine" = "烏克蘭";
+"UnitedArabEmirates" = "阿拉伯聯合大公國";
+"UnitedKingdom" = "英國";
+"UnitedStates" = "美國";
+"Vietnam" = "越南";
+"Senegal" = "塞內加爾";
+"Switzerland" = "瑞士";
+"Albania" = "阿爾巴尼亞";
+"Moldova" = "摩爾多瓦";
+"Croatia" = "克羅地亞";
+"Morocco" = "摩洛哥";
+"Yemen" = "葉門";
+"Turkmenistan" = "土庫曼";
+"Uzbekistan" = "烏茲別克";
+"Azerbaijan" = "亞塞拜然";
+"Netherlands" = "荷蘭";
+"Poland" = "波蘭";
+"CzechRepublic" = "捷克";
+
+/* Fake Options */
+"FakeBlueMark" = "偽裝認證徽章";
+"EnableFakeOptions" = "偽裝關注中/粉絲/讚";
+"FollowerCount" = "粉絲數量";
+"FollowingCount" = "關注中數量";
+"LikeCount" = "讚數量";
+"EnterNumber" = "輸入數字";
+"FakeDesc" = "欄位留空以顯示原始數量（這些變更只對您可見）";
+
+/* Color Options */
+"NicknameColor" = "更改暱稱顏色";
+"NicknameColorDesc" = "變更動態消息中暱稱的顏色";
+"NicknameColorGlobal" = "應用於所有暱稱";
+"NicknameColorGlobalDesc" = "應用程式中的任何位置套用暱稱顏色。需要開啟 \"%@\" 選項";
+"CommentColor" =  "更改描述文字顏色";
+"CommentColorDesc" =  "變更影片描述的顏色";
+"SelectColor" = "選擇顏色";
+"ProfileTextShadow" = "縮圖套用陰影";
+"ProfileTextShadowDesc" = "在個人資料中的影片縮圖上套用陰影到統計數據";
+"NicknameTextShadow" = "暱稱套用陰影";
+"NicknameTextShadowDesc" = "在動態中的暱稱套用陰影";
+"NicknameGlobalShadow" = "套用到所有暱稱";
+"NicknameGlobalShadowDesc" = "在應用程式中的任何位置套用暱稱陰影。需要開啟 \"%@\" 選項"; // %@ is NicknameTextShadow
+
+/* Other */
+"BHButtonPlacement" = "設定 BHTikTok Plus 位置";
+"InProfile" = "在個人資料中";
+"InSettings" = "在設定中";
+"Padlock" = "密碼鎖";
+"PadlockDesc" = "需要密碼解鎖應用";
+"Cache" = "清除快取";
+"Cleared" = "完成\n已清除 %@";
+"FixInteractions" = "修復問題";
+"FixInteractionsDesc" = "移除所有資料，包括可疑活動，還原訂閱、點讚和評論媒體的功能";
+"FixInteractionsMsg" = "此動作無法還原.\n\n所有資料, 包括: 授權資料、應用程式設定、BHTikTok Plus設定和所有現有草稿將被刪除.\n\n是否確定要繼續?";
+"RestartApp" = "完成.\n應用程式需要重新啟動";
+
+/* Special Thanks */
+"Arabic" = "阿拉伯語本地化";
+"ChineseSimplified" = "簡體中文本地化";
+"ChineseTraditional" = "繁體中文本地化";
+"Spanish" = "西班牙語本地化";
+"French" = "法語本地化";
+"Vietnamese" = "越南語本地化";
+"Turkish" = "土耳其語本地化";
+"Japanese" = "日語本地化";
+
+/* Pop-ups And Other Stuff */
+"BHTikTokSettings" = "BHTikTok Plus";
+"AreYouSure" = "您確定嗎?";
+"ActionFollow" = "關注";
+"ActionLike" = "喜歡";
+"ActionDislike" = "不喜歡";
+"ConfirmAction" = "確認動作";
+"Warning" = "警告";
+"ApplyDesc" = "這個操作將會關閉應用程式以套用變更\n\n您確定嗎?";
+"Yes" = "是";
+"No" = "否";
+"Confirm" = "確認";
+"Cancel" = "取消";
+"DownloadGroup" = "下載";
+"CopyGroup" = "複製";
+"Downloading" = "下載中...";
+"DownloadVideo" = "下載影片";
+"DownloadHDVideo" = "下載高畫質影片";
+"DownloadWMVideo" = "下載浮水印影片";
+"DownloadMusic" = "下載音樂";
+"CopyMusicLink" = "複製音樂連結";
+"CopyVideoLink" = "複製影片連結";
+"DownloadThisPhoto" = "下載這張照片";
+"DownloadAllPhotos" = "下載所有照片";
+"DownloadProfileImage" = "下載個人資料照片";
+"StaticImagesOnly" = "僅限靜態圖片";
+"CopyDescription" = "複製描述";
+"WhatToCopy" = "選擇操作";
+"CopySocialName" = "複製 @使用者名稱";
+"CopyNickName" = "複製暱稱";
+"CopyBio" = "複製個人資料";
+"CopyBioURL" = "複製個人資料連結";
+"VidNoMusic" = "影片沒有音樂";
+"VidNoDescription" = "影片沒有描述";
+"Success" = "已儲存";
+"Copied" = "已複製";
+"Done" = "完成";
+"Share" = "分享";
+"NoFollows" = "尚未關注";
+"FollowsYou" = "已關注你";
+"DoesntFollowsYou" = "已關注";
+"Friends" = "朋友";
+
+/* Passlock */
+"Authenticate" = "驗證";
+"IdentifyYourself" = "輸入密碼";

@@ -1,0 +1,908 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>ALWAYS_OPEN_SAFARI</key>
+	<string>Mindig Safari megnyitása</string>
+	<key>About</key>
+	<string>Névjegy</string>
+	<key>Actions</key>
+	<string>Műveletek</string>
+	<key>Add Comment as Post</key>
+	<string>Hozzászólás hozzáadása bejegyzésként</string>
+	<key>Add Comment as Story</key>
+	<string>Hozzászólás hozzáadása történetként</string>
+	<key>Add Folders To Inbox</key>
+	<string>Mappák hozzáadása a bejövőhöz</string>
+	<key>Add Translation Button</key>
+	<string>Fordítás gomb hozzáadása</string>
+	<key>Adjust offline download limit</key>
+	<string>Offline letöltési korlát beállítása</string>
+	<key>Adjust value between 50 and 2000</key>
+	<string>Állítsa be az értéket 50 és 2000 között</string>
+	<key>All TikTok data has been cleared.</key>
+	<string>Minden TikTok adat törölve lett.</string>
+	<key>All TikTok data has been erased.</key>
+	<string>Minden TikTok adat törölve lett.</string>
+	<key>All settings have been reset to default values.</key>
+	<string>Minden beállítás visszaállítva az alapértelmezett értékekre.</string>
+	<key>Anonymous Seen</key>
+	<string>Névtelenül látott</string>
+	<key>App Configuration</key>
+	<string>Alkalmazás konfiguráció</string>
+	<key>App Lock</key>
+	<string>Alkalmazás zár</string>
+	<key>Apply</key>
+	<string>Alkalmaz</string>
+	<key>Are you sure you want to clear all data? This will remove:
+1- TikTok's data directory
+2-all keychains
+3- clears all NSUserDefaults
+ 
+NOTICE!
+ YOU WILL LOSE YOUR DRAFTS AND ANYTHING SAVED LOCALLY.</key>
+	<string>Biztosan törölni szeretné az összes adatot? Ez eltávolítja:
+1- a TikTok adatkönyvtárát
+2- az összes kulcstartót
+3- törli az összes NSUserDefaults-ot
+
+FIGYELEM!
+ ELVESZÍTI A PISZKOZATAIT ÉS MINDEN HELYILEG MENTETT DOLGOT.</string>
+	<key>Are you sure you want to erase all TikTok data? This will clear all app data and cannot be undone.</key>
+	<string>Biztosan törölni szeretné az összes TikTok adatot? Ez töröl minden alkalmazás adatot, és nem vonható vissza.</string>
+	<key>Are you sure you want to reset all settings to default values? This action cannot be undone.</key>
+	<string>Biztosan vissza szeretné állítani az összes beállítást az alapértelmezett értékekre? Ez a művelet nem vonható vissza.</string>
+	<key>Are you sure?</key>
+	<string>Biztos vagy benne?</string>
+	<key>Auto Clear History</key>
+	<string>Előzmények automatikus törlése</string>
+	<key>Auto Play Next Video</key>
+	<string>Következő videó automatikus lejátszása</string>
+	<key>Auto Unfold Comment Texts</key>
+	<string>Hozzászólás szövegek automatikus kibontása</string>
+	<key>BACKGROUND_PLAY</key>
+	<string>Háttérben lejátszás engedélyezése</string>
+	<key>BETA!</key>
+	<string>BÉTA!</string>
+	<key>BLOCK_AI_GENERATED</key>
+	<string>AI-generált bejegyzések blokkolása</string>
+	<key>BLOCK_MOVIE_TOK</key>
+	<string>Filmhirdetések blokkolása</string>
+	<key>BLOCK_POI</key>
+	<string>Hely hirdetések blokkolása</string>
+	<key>BLOCK_SHOP_VIDEOS</key>
+	<string>Shop bejegyzések blokkolása</string>
+	<key>BLOCK_TCM</key>
+	<string>Alkalmazás hirdetések blokkolása</string>
+	<key>BMTikTok Settings</key>
+	<string>BMTikTok beállítások</string>
+	<key>BMTikTok, Hi</key>
+	<string>BMTikTok, Szia</string>
+	<key>BYPASS_FOLLOW_LIST_SEARCH</key>
+	<string>Követő lista keresési korlát megkerülése</string>
+	<key>Back</key>
+	<string>Vissza</string>
+	<key>Backgrounding ✌️</key>
+	<string>Háttérben fut ✌️</string>
+	<key>Block</key>
+	<string>Letiltás</string>
+	<key>Buy Me a Coffee</key>
+	<string>Vegyél nekem egy kávét</string>
+	<key>Bypass Media Limit</key>
+	<string>Média korlát megkerülése</string>
+	<key>CONFIRM_QUICK_SHARE</key>
+	<string>Gyors megosztás megerősítése</string>
+	<key>CONFIRM_REPOST</key>
+	<string>Újraosztás megerősítése</string>
+	<key>Cancel</key>
+	<string>Mégse</string>
+	<key>Cancelled</key>
+	<string>Megszakítva</string>
+	<key>Change Action of Live Button</key>
+	<string>Élő gomb műveletének megváltoztatása</string>
+	<key>Change the behavior of the Live button</key>
+	<string>Az élő gomb viselkedésének megváltoztatása</string>
+	<key>Changes will take effect after restarting the app</key>
+	<string>A változtatások az alkalmazás újraindítása után lépnek életbe</string>
+	<key>Chat Features</key>
+	<string>Chat funkciók</string>
+	<key>Chat Settings</key>
+	<string>Chat beállítások</string>
+	<key>Choose export destination:</key>
+	<string>Válasszon exportálási célt:</string>
+	<key>Choose import source:</key>
+	<string>Válasszon importálási forrást:</string>
+	<key>Clear</key>
+	<string>Törlés</string>
+	<key>Clear Keychain</key>
+	<string>Kulcstartó törlése</string>
+	<key>Close</key>
+	<string>Bezárás</string>
+	<key>Co-Owner</key>
+	<string>Társtulajdonos</string>
+	<key>Comment Cell Redesign</key>
+	<string>Hozzászólás cella újratervezése</string>
+	<key>Comment Design</key>
+	<string>Hozzászólás dizájn</string>
+	<key>Comment Settings</key>
+	<string>Hozzászólás beállítások</string>
+	<key>Community</key>
+	<string>Közösség</string>
+	<key>Compact</key>
+	<string>Kompakt</string>
+	<key>Configuration</key>
+	<string>Konfiguráció</string>
+	<key>Configuration Management</key>
+	<string>Konfiguráció kezelés</string>
+	<key>Configuration imported from keychain successfully.</key>
+	<string>Konfiguráció sikeresen importálva a kulcstartóból.</string>
+	<key>Configuration imported successfully.</key>
+	<string>Konfiguráció sikeresen importálva.</string>
+	<key>Configuration saved to keychain successfully.</key>
+	<string>Konfiguráció sikeresen elmentve a kulcstartóba.</string>
+	<key>Configure Advanced Comment Settings</key>
+	<string>Speciális hozzászólás beállítások konfigurálása</string>
+	<key>Confirm</key>
+	<string>Megerősítés</string>
+	<key>Confirm Clear</key>
+	<string>Törlés megerősítése</string>
+	<key>Confirm Settings</key>
+	<string>Megerősítés beállítások</string>
+	<key>Confirmation Settings</key>
+	<string>Megerősítési beállítások</string>
+	<key>Content &amp; Display</key>
+	<string>Tartalom és megjelenítés</string>
+	<key>Content Enhancement</key>
+	<string>Tartalom fejlesztés</string>
+	<key>Content Filtering</key>
+	<string>Tartalom szűrés</string>
+	<key>Content Interactions</key>
+	<string>Tartalom interakciók</string>
+	<key>Contributor</key>
+	<string>Közreműködő</string>
+	<key>Control video playback speed</key>
+	<string>Videó lejátszási sebesség vezérlése</string>
+	<key>Copy Description</key>
+	<string>Leírás másolása</string>
+	<key>Copy Link</key>
+	<string>Link másolása</string>
+	<key>Copy Menu</key>
+	<string>Másolás menü</string>
+	<key>Copy Music Link</key>
+	<string>Zene link másolása</string>
+	<key>Copy Video link</key>
+	<string>Videó link másolása</string>
+	<key>Copy bio</key>
+	<string>Bio másolása</string>
+	<key>Could Not Copy Music</key>
+	<string>Nem sikerült másolni a zenét</string>
+	<key>Credits</key>
+	<string>Közreműködők</string>
+	<key>DEVELOPER_SUPPORT</key>
+	<string>Támogassa az BMTikTok-ot és szerezzen hozzáférést béta tesztelő csoportunkhoz</string>
+	<key>DEVELOPER_TELEGRAM</key>
+	<string>Csatlakozzon Telegram csatornánkhoz a legújabb frissítésekért</string>
+	<key>DISABLE_ACTIVITY_STATUS_WARNING</key>
+	<string>A névtelen tevékenységi állapot letiltása vagy engedélyezése időt vesz igénybe, amíg megjelenik a TikTok szerverein. Előfordulhat, hogy a funkció engedélyezése után még egy ideig online állapotban fog megjelenni.</string>
+	<key>DISABLE_FEED_DOUBLE_TAP</key>
+	<string>Dupla koppintás letiltása a hírfolyamban</string>
+	<key>DISABLE_SCREENRECORDING_DETECTION</key>
+	<string>Képernyőfelvétel észlelés letiltása</string>
+	<key>DISABLE_SCREENSHOT_DETECTION</key>
+	<string>Képernyőkép észlelés letiltása</string>
+	<key>DISABLE_STORY_DOUBLE_TAP</key>
+	<string>Dupla koppintás letiltása a történetekben</string>
+	<key>DISABLE_TYPING_STICKER</key>
+	<string>Gépelési matrica letiltása</string>
+	<key>DISABLE_VISUAL_SEARCH_TAG</key>
+	<string>Vizuális keresés címke letiltása</string>
+	<key>DOWNLOADING_STICKER</key>
+	<string>Matrica letöltése...</string>
+	<key>DOWNLOAD_FAILED</key>
+	<string>Letöltés sikertelen</string>
+	<key>DRM Developer</key>
+	<string>DRM fejlesztő</string>
+	<key>Data Cleared</key>
+	<string>Adatok törölve</string>
+	<key>Default</key>
+	<string>Alapértelmezett</string>
+	<key>Delete</key>
+	<string>Törlés</string>
+	<key>Description Link Copied</key>
+	<string>Leírás link másolva</string>
+	<key>Deselect All</key>
+	<string>Összes kijelölés megszüntetése</string>
+	<key>Design Options</key>
+	<string>Dizájn opciók</string>
+	<key>Developer</key>
+	<string>Fejlesztő</string>
+	<key>Disable</key>
+	<string>Letilt</string>
+	<key>Disable AI-Generated Replies</key>
+	<string>AI-generált válaszok letiltása</string>
+	<key>Disable Comment Tooltip</key>
+	<string>Hozzászólás súgó letiltása</string>
+	<key>Disable Left &amp; Right Swipe</key>
+	<string>Bal és jobbra húzás letiltása</string>
+	<key>Disable Live Streaming</key>
+	<string>Élő közvetítések letiltása</string>
+	<key>Disable Sensitive Content</key>
+	<string>Érzékeny tartalom letiltása</string>
+	<key>Disable Survey Popups</key>
+	<string>Felmérés felugró ablakok letiltása</string>
+	<key>Disable TikTok Rewards ADs</key>
+	<string>TikTok jutalom hirdetések letiltása</string>
+	<key>Disable Typing Indicator</key>
+	<string>Gépelés jelző letiltása</string>
+	<key>Disable Warnings</key>
+	<string>Figyelmeztetések letiltása</string>
+	<key>Dislike Comment Confirmation</key>
+	<string>Hozzászólás nemtetszés megerősítése</string>
+	<key>Done</key>
+	<string>Kész</string>
+	<key>Download All Photos</key>
+	<string>Összes fotó letöltése</string>
+	<key>Download Button</key>
+	<string>Letöltés gomb</string>
+	<key>Download HD Video</key>
+	<string>HD videó letöltése</string>
+	<key>Download Music</key>
+	<string>Zene letöltése</string>
+	<key>Download Photo</key>
+	<string>Fotó letöltése</string>
+	<key>Download Photos Menu</key>
+	<string>Fotók letöltése menü</string>
+	<key>Download Video</key>
+	<string>Videó letöltése</string>
+	<key>Downloading</key>
+	<string>Letöltés</string>
+	<key>Downloads &amp; Sharing</key>
+	<string>Letöltések és megosztás</string>
+	<key>Downloads Menu</key>
+	<string>Letöltések menü</string>
+	<key>ENABLE_COMMENT_PHOTO</key>
+	<string>Engedélyezi a fotó válaszokat a hozzászólásokban</string>
+	<key>ENABLE_COMMENT_STICKERS</key>
+	<string>Engedélyezi a matrica válaszokat a hozzászólásokban</string>
+	<key>ENABLE_STICKER_DOWNLOAD</key>
+	<string>Dupla koppintás a matrica letöltéséhez</string>
+	<key>Edit</key>
+	<string>Szerkesztés</string>
+	<key>Emoji &amp; Interface</key>
+	<string>Emoji és felület</string>
+	<key>Enable</key>
+	<string>Engedélyez</string>
+	<key>Enable Comment Flags</key>
+	<string>Zászlók engedélyezése a hozzászólásokban</string>
+	<key>Enable Comment Photos</key>
+	<string>Fotók engedélyezése a hozzászólásokban</string>
+	<key>Enable Comment Stickers</key>
+	<string>Matricák engedélyezése a hozzászólásokban</string>
+	<key>Enable Copy Without Username</key>
+	<string>Másolás engedélyezése felhasználónév nélkül</string>
+	<key>Enable Egypt Stickers</key>
+	<string>Egyiptomi matricák engedélyezése</string>
+	<key>Enable Embeded Links</key>
+	<string>Beágyazott linkek engedélyezése</string>
+	<key>Enable Fake Changes</key>
+	<string>Hamis változtatások engedélyezése</string>
+	<key>Enable Flex</key>
+	<string>Flex engedélyezése</string>
+	<key>Enable Live Button Function</key>
+	<string>Élő gomb funkció engedélyezése</string>
+	<key>Enable Oled Keyboard</key>
+	<string>OLED billentyűzet engedélyezése</string>
+	<key>Enable Persistent Playback Speed.</key>
+	<string>Állandó lejátszási sebesség engedélyezése a bejegyzéseken.</string>
+	<key>Enable Pin Chat</key>
+	<string>Chat rögzítés engedélyezése</string>
+	<key>Enable Playback Speed</key>
+	<string>Lejátszási sebesség engedélyezése</string>
+	<key>Enable Region Changing</key>
+	<string>Régióváltás engedélyezése</string>
+	<key>Enable Region Changing Functionality</key>
+	<string>Régióváltás funkció engedélyezése</string>
+	<key>Enable Small Emoji</key>
+	<string>Kis emoji engedélyezése</string>
+	<key>Enable Streaks</key>
+	<string>Sorozatok engedélyezése</string>
+	<key>Enable Text To Reposts</key>
+	<string>Szöveg engedélyezése az újraosztásokhoz</string>
+	<key>Enable Voice Messages</key>
+	<string>Hangüzenetek engedélyezése</string>
+	<key>Enable region changing to access content from different regions</key>
+	<string>Régióváltás engedélyezése különböző régiók tartalmának eléréséhez</string>
+	<key>Enhanced Comments Features</key>
+	<string>Továbbfejlesztett hozzászólás funkciók</string>
+	<key>Erase</key>
+	<string>Törlés</string>
+	<key>Erase All Data</key>
+	<string>Összes adat törlése</string>
+	<key>Erase All TikTok Data</key>
+	<string>Összes TikTok adat törlése</string>
+	<key>Erase all TikTok data from the app  [Becareful!!!]</key>
+	<string>Minden TikTok adat törlése az alkalmazásból [VIGYÁZAT!!!]</string>
+	<key>Error</key>
+	<string>Hiba</string>
+	<key>Export Configuration</key>
+	<string>Konfiguráció exportálása</string>
+	<key>Export settings to a file</key>
+	<string>Beállítások exportálása fájlba</string>
+	<key>Export to File</key>
+	<string>Exportálás fájlba</string>
+	<key>Extended Comments</key>
+	<string>Kibővített hozzászólások</string>
+	<key>Extracting Media URL…</key>
+	<string>Média URL kinyerése…</string>
+	<key>FEATURE_ADD_COMMENT_POST</key>
+	<string>Engedélyezi hozzászólás válaszok bejegyzésként való posztolását</string>
+	<key>FEATURE_ADD_COMMENT_STORY</key>
+	<string>Engedélyezi hozzászólás válaszok történetként való posztolását</string>
+	<key>FEATURE_ADD_FOLDERS</key>
+	<string>Mappa szervezést ad a bejövő üzenetekhez</string>
+	<key>FEATURE_ADD_FOLDERS_DESC</key>
+	<string>Rendezze bejövő üzeneteit egyedi mappákba a jobb kezelhetőség érdekében</string>
+	<key>FEATURE_ADD_TRANSLATION</key>
+	<string>Fordítás gombot ad minden hozzászóláshoz</string>
+	<key>FEATURE_ALWAYS_OPEN_SAFARI</key>
+	<string>Mindig a Safariban nyitja meg a linkeket a beépített böngésző helyett</string>
+	<key>FEATURE_ANONYMOUS_SEEN</key>
+	<string>Olvassa a chateket anélkül, hogy értesítené a személyt</string>
+	<key>FEATURE_ANONYMOUS_SEEN_DESC</key>
+	<string>Nézze meg a chateket anélkül, hogy olvasási visszaigazolást küldene a címzettnek</string>
+	<key>FEATURE_APP_LOCK</key>
+	<string>Alkalmazászárat ad hozzá, amikor a TikTok elindul</string>
+	<key>FEATURE_APP_LOCK_DESC</key>
+	<string>Védje le a TikTok alkalmazást jelszóval vagy biometrikus hitelesítéssel</string>
+	<key>FEATURE_AUTO_CLEAR</key>
+	<string>Törli a keresési előzményeidet 60 másodpercenként</string>
+	<key>FEATURE_AUTO_PLAY</key>
+	<string>Engedélyezi az automatikus videó görgetést</string>
+	<key>FEATURE_AUTO_UNFOLD</key>
+	<string>Automatikusan kibontja az összes hosszú hozzászólást</string>
+	<key>FEATURE_BACKGROUND_PLAY</key>
+	<string>Engedélyezi a hang háttérben történő lejátszását</string>
+	<key>FEATURE_BLOCK_AI_GENERATED</key>
+	<string>Blokkolja a 'AI-generált médiát tartalmaz' feliratú bejegyzéseket</string>
+	<key>FEATURE_BLOCK_MOVIE_TOK</key>
+	<string>Letiltja a filmhirdetéseket tartalmazó videókat</string>
+	<key>FEATURE_BLOCK_POI</key>
+	<string>Hely hirdetéseket tartalmazó videók blokkolása</string>
+	<key>FEATURE_BLOCK_SHOP_ADS</key>
+	<string>Shop hirdetéseket tartalmazó videók blokkolása</string>
+	<key>FEATURE_BLOCK_SHOP_VIDEOS</key>
+	<string>Eltávolítja a Shop bejegyzéseket a hírfolyamból.</string>
+	<key>FEATURE_BLOCK_TCM</key>
+	<string>Alkalmazás hirdetéseket tartalmazó videók blokkolása</string>
+	<key>FEATURE_BYPASS_FOLLOW_LIST_SEARCH</key>
+	<string>Engedélyezi a követő lista keresést akkor is, ha a felhasználónak több mint 5000 követője van</string>
+	<key>FEATURE_BYPASS_MEDIA_LIMIT</key>
+	<string>Megkerüli a média küldési korlátokat chatben (Alapértelmezett: 9 fotó, 1 perc videó)</string>
+	<key>FEATURE_COMMENT_REDESIGN</key>
+	<string>Engedélyezi az újra tervezett hozzászólás cellákat</string>
+	<key>FEATURE_CONFIRM_COMMENT_DISLIKE</key>
+	<string>Megerősítést kér egy hozzászólás nemtetszése előtt</string>
+	<key>FEATURE_CONFIRM_COMMENT_LIKE</key>
+	<string>Megerősítést kér egy hozzászólás kedvelése előtt</string>
+	<key>FEATURE_CONFIRM_FOLLOW</key>
+	<string>Megerősítést kér egy felhasználó követése előtt</string>
+	<key>FEATURE_CONFIRM_LIKE</key>
+	<string>Megerősítést kér egy bejegyzés kedvelése előtt</string>
+	<key>FEATURE_CONFIRM_QUICK_SHARE</key>
+	<string>Megerősítést kér a gyors megosztás használata előtt</string>
+	<key>FEATURE_CONFIRM_REPOST</key>
+	<string>Megerősítést kér egy videó újraosztása előtt</string>
+	<key>FEATURE_COPY_WITHOUT_USERNAME</key>
+	<string>Kimásolja a hozzászólásokat a hozzászóló neve nélkül</string>
+	<key>FEATURE_DISABLE_AI_REPLIES</key>
+	<string>Letiltja az AI-generált válaszokat a bejegyzéseken</string>
+	<key>FEATURE_DISABLE_COMMENT_TOOLTIP</key>
+	<string>Letiltja a tippeket a hozzászólás szekcióban</string>
+	<key>FEATURE_DISABLE_FEED_DOUBLE_TAP</key>
+	<string>Letiltja a dupla koppintást a kedveléshez a hírfolyamban</string>
+	<key>FEATURE_DISABLE_LIVE</key>
+	<string>Elrejti az élő közvetítéseket a hírfolyamból</string>
+	<key>FEATURE_DISABLE_REWARDS_ADS</key>
+	<string>Elrejti a TikTok jutalom hirdetéseit a hírfolyamból</string>
+	<key>FEATURE_DISABLE_SCREENRECORDING_DETECTION</key>
+	<string>Letiltja a képernyőfelvétel észlelést a chatekben</string>
+	<key>FEATURE_DISABLE_SCREENSHOT_DETECTION</key>
+	<string>Letiltja a képernyőkép észlelést a chatekben</string>
+	<key>FEATURE_DISABLE_SENSITIVE</key>
+	<string>Elrejti a 'Nem megfelelő tartalom' figyelmeztetéseket</string>
+	<key>FEATURE_DISABLE_STORY_DOUBLE_TAP</key>
+	<string>Letiltja a dupla koppintást a kedveléshez a történetekben</string>
+	<key>FEATURE_DISABLE_SURVEY</key>
+	<string>Letiltja a felmérés kérdéseket a hírfolyamban</string>
+	<key>FEATURE_DISABLE_SWIPE</key>
+	<string>Letiltja a balra és jobbra húzást a hírfolyamban</string>
+	<key>FEATURE_DISABLE_TYPING</key>
+	<string>Letiltja a gépelés jelzőt</string>
+	<key>FEATURE_DISABLE_TYPING_STICKER</key>
+	<string>Letiltja az automatikus GIF ajánlásokat gépelés közben</string>
+	<key>FEATURE_DISABLE_VISUAL_SEARCH_TAG</key>
+	<string>Letiltja a 'Vizuális keresés' gombot a hírfolyamban videó szüneteltetésekor</string>
+	<key>FEATURE_DISABLE_WARNINGS</key>
+	<string>Elrejti a TikTok figyelmeztetéseket</string>
+	<key>FEATURE_DOWNLOAD_BUTTON</key>
+	<string>Letöltés gombot ad a bejegyzésekhez és történetekhez</string>
+	<key>FEATURE_EMBED_LINKS</key>
+	<string>A másolt linkek beágyazzák a médiát, ahová küldik</string>
+	<key>FEATURE_ENABLE_COMMENT_FLAGS</key>
+	<string>Megjeleníti a régió zászlókat a hozzászóló neve mellett</string>
+	<key>FEATURE_ENABLE_FLEX</key>
+	<string>CSAK FEJLESZTŐKNEK, NE NYÚLJON HOZZÁ, HA NEM TUDJA MI AZ A FLEX!</string>
+	<key>FEATURE_ENABLE_STICKER_DOWNLOAD</key>
+	<string>Engedélyezi a matricák letöltését a hozzászólásokban</string>
+	<key>FEATURE_ENABLE_STREAKS</key>
+	<string>Engedélyezi a sorozatokat barátokkal</string>
+	<key>FEATURE_ENABLE_TEXT_TO_REPOSTS</key>
+	<string>Engedélyezi feliratok hozzáadását az újraosztásokhoz nem támogatott régiókban</string>
+	<key>FEATURE_EXTENDED_COMMENTS</key>
+	<string>Megnöveli a hozzászólások karakterszám korlátját</string>
+	<key>FEATURE_FAKE_CHANGES</key>
+	<string>Engedélyezi a hamis profil adat változtatásokat</string>
+	<key>FEATURE_FAKE_VERIFIED</key>
+	<string>Megjelenít egy hamis hitelesítési jelvényt</string>
+	<key>FEATURE_FOLLOWER_COUNT</key>
+	<string>Adjon meg hamis követő számot</string>
+	<key>FEATURE_FOLLOWING_COUNT</key>
+	<string>Adjon meg hamis követett számot</string>
+	<key>FEATURE_FULL_REGION_MODE</key>
+	<string>CSAK AKKOR ENGEDÉLYEZZE, HA AZ ELSŐ LEHETŐSÉG NEM MŰKÖDIK!</string>
+	<key>FEATURE_HIDE_ACTIVITY_STATUS</key>
+	<string>Elrejti a 'Legutóbb aktív' és 'Online' állapotokat a chatekben</string>
+	<key>FEATURE_HIDE_ADS</key>
+	<string>Elrejti a hirdetéseket a hírfolyamból</string>
+	<key>FEATURE_HIDE_COMMISSION_POSTS</key>
+	<string>Elrejti az 'Alkotó jutalékot keres' bejegyzéseket</string>
+	<key>FEATURE_HIDE_DANGEROUS_ACTION</key>
+	<string>Elrejti a figyelmeztetéseket sport videók alatt (UFC, Boksz, stb.)</string>
+	<key>FEATURE_HIDE_EMOJI</key>
+	<string>Elrejti a több emoji hozzászólás sávot</string>
+	<key>FEATURE_HIDE_FRIENDS_BADGE</key>
+	<string>Elrejti a barátok értesítési jelvényét</string>
+	<key>FEATURE_HIDE_INBOX_BADGE</key>
+	<string>Elrejti a bejövő üzenetek értesítési jelvényét</string>
+	<key>FEATURE_HIDE_PLAY_PAUSE</key>
+	<string>Elrejti a lejátszás/szünet nézetet a hírfolyamban</string>
+	<key>FEATURE_HIDE_PLUS_BTN</key>
+	<string>Elrejti a kamera gombot</string>
+	<key>FEATURE_HIDE_REPORT_BUTTON</key>
+	<string>Elrejti a jelentés gombot a közvetlen üzenetek navigációs sávjában.</string>
+	<key>FEATURE_HIDE_STREAK_PET</key>
+	<string>Elrejti a sorozat kisállatot</string>
+	<key>FEATURE_HIDE_TAB_BAR_LABELS</key>
+	<string>Elrejti a címkéket a lap sávban</string>
+	<key>FEATURE_HIDE_TOP_ITEMS</key>
+	<string>Elrejti a felső sávot (Neked, Követettek, Shop, stb.)</string>
+	<key>FEATURE_LIKE_COUNT</key>
+	<string>Megjeleníti a kedvelések számát a bejegyzéseken</string>
+	<key>FEATURE_LOOP_STORY_VIDEOS</key>
+	<string>Videók ismétlése a történetekben</string>
+	<key>FEATURE_MARK_SEEN_ON_REPLY</key>
+	<string>Megjelöli az üzeneteket látottként a válaszadáskor</string>
+	<key>FEATURE_MASS_UNFOLD</key>
+	<string>Tömegesen kibontja az összes hozzászólás választ</string>
+	<key>FEATURE_MULTI_EMOJI</key>
+	<string>Engedélyezi a több emoji hozzászólás sávot</string>
+	<key>FEATURE_OLED_KEYBOARD</key>
+	<string>Csak sötét témával működik</string>
+	<key>FEATURE_PAD_AUTO_SCROLL</key>
+	<string>Engedélyezi a TikTok natív bejegyzés automatikus görgetését nem támogatott régiókban</string>
+	<key>FEATURE_PIN_CHATS</key>
+	<string>Engedélyezi a kedvenc chatek rögzítését a tetejére</string>
+	<key>FEATURE_POST_STATS</key>
+	<string>Megjelenít egy almenüt a Letöltés szekcióban bejegyzés információkkal</string>
+	<key>FEATURE_PROFILE_COPY</key>
+	<string>Eltárolja egy felhasználó bióját hosszú megnyomással</string>
+	<key>FEATURE_PROFILE_COPY_DESC</key>
+	<string>Másolja ki a profil részleteit, beleértve a felhasználónevet, biót és egyéb nyilvános információkat</string>
+	<key>FEATURE_PROFILE_SAVE</key>
+	<string>Eltárolja egy felhasználó profiladatát hosszú megnyomással</string>
+	<key>FEATURE_PROFILE_SAVE_DESC</key>
+	<string>Mentse a profil információkat a vágólapra egyetlen érintéssel</string>
+	<key>FEATURE_PROGRESS_BAR</key>
+	<string>Megjeleníti a média hosszát minden bejegyzés alatt</string>
+	<key>FEATURE_PULL_TO_CAMERA</key>
+	<string>Engedélyezi a 'Húzás a kamerához' funkciót</string>
+	<key>FEATURE_REGIONS_DESC</key>
+	<string>Férjen hozzá régió-specifikus tartalomhoz a virtuális helyének meghamisításával</string>
+	<key>FEATURE_REMOVE_DRAFT_WATERMARK</key>
+	<string>Eltávolítja a vízjelet bejegyzések vagy piszkozatok mentésekor</string>
+	<key>FEATURE_REMOVE_PENDANT</key>
+	<string>Eltávolítja a bal-felső hirdetés nézetet a hírfolyamból</string>
+	<key>FEATURE_REMOVE_TIKTOK_AI_BUTTON</key>
+	<string>Eltávolítja a TikTok AI (tako) gombot a FYP-ből</string>
+	<key>FEATURE_REMOVE_WATERMARK</key>
+	<string>Eltávolítja a vízjelet a letöltött médiáról</string>
+	<key>FEATURE_RUSSIAN_FIX</key>
+	<string>Engedélyezze ezt, hogy az orosz hírfolyam újra működjön [ÚJ!]</string>
+	<key>FEATURE_SAVE_DM_MEDIA</key>
+	<string>Letöltés gombot ad a DM-ben küldött médiához</string>
+	<key>FEATURE_SHARE_SHEET</key>
+	<string>Megnyitja a megosztási lapot a média letöltése után</string>
+	<key>FEATURE_SHOW_ALL_TABS</key>
+	<string>Megjeleníti az összes rejtett beállítás fület [BÉTA]</string>
+	<key>FEATURE_SHOW_ALL_TABS_DESC</key>
+	<string>Mutasd az összes rejtett beállítás fület, beleértve a kísérleti funkciókat is</string>
+	<key>FEATURE_SHOW_USERNAMES</key>
+	<string>Lecseréli a felhasználók beceneveit a felhasználónevükre a hírfolyamban</string>
+	<key>FEATURE_SHOW_VIDEO_TIMESTAMP</key>
+	<string>Megjeleníti a bejegyzés feltöltési idejét a FYP-ben</string>
+	<key>FEATURE_SKIP_RECOMMENDED</key>
+	<string>Eltávolítja a tartalom ajánlásokat (barát ajánlások, stb.)</string>
+	<key>FEATURE_SMALL_EMOJI</key>
+	<string>Engedélyezi kis emojik küldését</string>
+	<key>FEATURE_START_FYP_IN_FOLLOWING</key>
+	<string>A TikTok-ot a 'Követettek' hírfolyamban indítja, a 'Neked' hírfolyam helyett</string>
+	<key>FEATURE_STOP_PLAYBACK</key>
+	<string>Leállítja a bejegyzés lejátszását a végén</string>
+	<key>FEATURE_STOP_STORY_PHOTO_ADVANCE</key>
+	<string>Megakadályozza a történet fotók automatikus továbblépését</string>
+	<key>FEATURE_STORY_LIKE_CONFIRMATION</key>
+	<string>Megerősítést kér egy történet kedvelése előtt</string>
+	<key>FEATURE_STREAK_INFO</key>
+	<string>Megjeleníti az aktuális sorozat információit a sorozat tűzre koppintva</string>
+	<key>FEATURE_TRANSPARENT_COMMENTS</key>
+	<string>Átlátszóvá teszi a hozzászólás szekció hátterét</string>
+	<key>FEATURE_UI_BUTTON</key>
+	<string>Megjeleníti a 'UI elrejtése' gombot</string>
+	<key>FEATURE_UPLOAD_DATE</key>
+	<string>Megjeleníti a feltöltési dátumot a bejegyzéseken</string>
+	<key>FEATURE_UPLOAD_HD</key>
+	<string>Engedélyezi a HD feltöltéseket</string>
+	<key>FEATURE_UPLOAD_REGION</key>
+	<string>Megjeleníti a feltöltési régió zászlaját a felhasználónév mellett</string>
+	<key>FEATURE_USER_POST_COUNT</key>
+	<string>Megjeleníti egy felhasználó teljes bejegyzés számát</string>
+	<key>FEATURE_VIEW_PROFILES_ANONYMOUS</key>
+	<string>Letiltja a profil megtekintés követését</string>
+	<key>FEATURE_VOICE_MESSAGES</key>
+	<string>Engedélyezi hangüzenetek küldését chatben (Csak néhány régióban)</string>
+	<key>FILTERING_OPTIONS</key>
+	<string>Szűrési lehetőségek</string>
+	<key>Failed to fetch HD video URL. Please try again.</key>
+	<string>Nem sikerült lekérni a HD videó URL-t. Kérjük, próbálja újra.</string>
+	<key>Failed to save media</key>
+	<string>Nem sikerült menteni a médiát</string>
+	<key>Fake Verified</key>
+	<string>Hamis hitelesítés</string>
+	<key>Features list</key>
+	<string>Funkciók listája</string>
+	<key>Feed</key>
+	<string>Hírfolyam</string>
+	<key>Feed Settings</key>
+	<string>Hírfolyam beállítások</string>
+	<key>File selection was cancelled.</key>
+	<string>Fájl kiválasztás megszakítva.</string>
+	<key>Follow Confirmation</key>
+	<string>Követés megerősítése</string>
+	<key>Follower</key>
+	<string>Követők</string>
+	<key>Following</key>
+	<string>Követettek</string>
+	<key>Full Region Mode</key>
+	<string>Teljes régió mód</string>
+	<key>Get the latest updates and news</key>
+	<string>Szerezze meg a legújabb frissítéseket és híreket</string>
+	<key>HIDE_ACTIVITY_STATUS</key>
+	<string>Tevékenység állapot elrejtése</string>
+	<key>HIDE_REPORT_BUTTON</key>
+	<string>Jelentés gomb elrejtése</string>
+	<key>Hide</key>
+	<string>Elrejtés</string>
+	<key>Hide Ads</key>
+	<string>Hirdetések elrejtése</string>
+	<key>Hide Commission Posts</key>
+	<string>Jutalékos bejegyzések elrejtése</string>
+	<key>Hide Emoji-Bar</key>
+	<string>Emoji sáv elrejtése</string>
+	<key>Hide Friends Badge</key>
+	<string>Barátok jelvény elrejtése</string>
+	<key>Hide Inbox Badge</key>
+	<string>Bejövő jelvény elrejtése</string>
+	<key>Hide Play/Pause Button</key>
+	<string>Lejátszás/szünet gomb elrejtése</string>
+	<key>Hide Plus Button</key>
+	<string>Plusz gomb elrejtése</string>
+	<key>Hide Streak Pet</key>
+	<string>Sorozat kisállat elrejtése</string>
+	<key>Hide Tab Bar Labels</key>
+	<string>Lap sáv címkék elrejtése</string>
+	<key>Hide Top Feed items</key>
+	<string>Felső hírfolyam elemek elrejtése</string>
+	<key>Hide dangerous-action Warning</key>
+	<string>Veszélyes művelet figyelmeztetés elrejtése</string>
+	<key>Import Configuration</key>
+	<string>Konfiguráció importálása</string>
+	<key>Import from File</key>
+	<string>Importálás fájlból</string>
+	<key>Import from Keychain</key>
+	<string>Importálás kulcstartóból</string>
+	<key>Import settings from a file</key>
+	<string>Beállítások importálása fájlból</string>
+	<key>Invalid download URL received.</key>
+	<string>Érvénytelen letöltési URL érkezett.</string>
+	<key>Join the community discussion</key>
+	<string>Csatlakozzon a közösségi beszélgetéshez</string>
+	<key>LOOP_STORY_VIDEOS</key>
+	<string>Történet videók ismétlése</string>
+	<key>Language</key>
+	<string>Nyelv</string>
+	<key>Language Changed</key>
+	<string>Nyelv megváltoztatva</string>
+	<key>Language 🌎</key>
+	<string>Nyelv 🌎</string>
+	<key>Like Comment Confirmation</key>
+	<string>Hozzászólás kedvelés megerősítése</string>
+	<key>Like Confirmation</key>
+	<string>Kedvelés megerősítése</string>
+	<key>Live Actions</key>
+	<string>Élő műveletek</string>
+	<key>Live Button Actions</key>
+	<string>Élő gomb műveletek</string>
+	<key>Live Button Function</key>
+	<string>Élő gomb funkció</string>
+	<key>Live Button Function Disabled</key>
+	<string>Élő gomb funkció letiltva</string>
+	<key>Live Button Settings</key>
+	<string>Élő gomb beállítások</string>
+	<key>Loading</key>
+	<string>Betöltés</string>
+	<key>MARK_SEEN_ON_REPLY</key>
+	<string>Megjelölés látottként válaszra</string>
+	<key>Main Developer, Owner</key>
+	<string>Fő fejlesztő, Tulajdonos</string>
+	<key>Mass Unfold Comment Replies</key>
+	<string>Hozzászólás válaszok tömeges kibontása</string>
+	<key>Modern</key>
+	<string>Modern</string>
+	<key>More Options</key>
+	<string>További lehetőségek</string>
+	<key>Multi Emoji Comment Bar</key>
+	<string>Több emoji hozzászólás sáv</string>
+	<key>Music Link Copied</key>
+	<string>Zene link másolva</string>
+	<key>Navigation &amp; Interaction</key>
+	<string>Navigáció és interakció</string>
+	<key>Next</key>
+	<string>Következő</string>
+	<key>No</key>
+	<string>Nem</string>
+	<key>No Backup</key>
+	<string>Nincs biztonsági másolat</string>
+	<key>No backup found</key>
+	<string>Nem található biztonsági másolat</string>
+	<key>No internet connection</key>
+	<string>Nincs internetkapcsolat</string>
+	<key>No settings backup found in keychain.</key>
+	<string>Nem található beállítások biztonsági másolat a kulcstartóban.</string>
+	<key>Not Selected</key>
+	<string>Nincs kiválasztva</string>
+	<key>Notification Badges</key>
+	<string>Értesítési jelvények</string>
+	<key>OFF</key>
+	<string>Ki</string>
+	<key>OK</key>
+	<string>OK</string>
+	<key>ON</key>
+	<string>Be</string>
+	<key>OTHER_OPTIONS</key>
+	<string>Egyéb lehetőségek</string>
+	<key>Organization &amp; Management</key>
+	<string>Szervezés és kezelés</string>
+	<key>Other</key>
+	<string>Egyéb</string>
+	<key>Other Settings</key>
+	<string>Egyéb beállítások</string>
+	<key>PAD_AUTO_SCROLL</key>
+	<string>Alapértelmezett automatikus görgetés</string>
+	<key>Photo saved successfully</key>
+	<string>Fotó sikeresen mentve</string>
+	<key>Playback Controls</key>
+	<string>Lejátszás vezérlők</string>
+	<key>Playback Speed</key>
+	<string>Lejátszási sebesség</string>
+	<key>Playback Speed Disabled</key>
+	<string>Lejátszási sebesség letiltva</string>
+	<key>Playback Speed Settings</key>
+	<string>Lejátszási sebesség beállítások</string>
+	<key>Please enable Live Button Function first</key>
+	<string>Először engedélyezze az élő gomb funkciót</string>
+	<key>Please enable Playback Speed first</key>
+	<string>Először engedélyezze a lejátszási sebességet</string>
+	<key>Please enable region changing first</key>
+	<string>Először engedélyezze a régióváltást</string>
+	<key>Please restart the app to apply changes, May require two app restarts!</key>
+	<string>Kérjük, indítsa újra az alkalmazást a változtatások alkalmazásához, lehet, hogy két újraindítás szükséges!</string>
+	<key>Post Info</key>
+	<string>Bejegyzés információ</string>
+	<key>Post Stats</key>
+	<string>Bejegyzés statisztikák</string>
+	<key>Privacy &amp; Security</key>
+	<string>Adatvédelem és biztonság</string>
+	<key>Processing...</key>
+	<string>Feldolgozás...</string>
+	<key>Profile</key>
+	<string>Profil</string>
+	<key>Profile Actions</key>
+	<string>Profil műveletek</string>
+	<key>Profile Copy</key>
+	<string>Profil másolása</string>
+	<key>Profile Customization</key>
+	<string>Profil testreszabás</string>
+	<key>Profile Enhancement</key>
+	<string>Profil fejlesztés</string>
+	<key>Profile Save</key>
+	<string>Profil mentése</string>
+	<key>Profile Settings</key>
+	<string>Profil beállítások</string>
+	<key>Pull To Camera</key>
+	<string>Húzás a kamerához</string>
+	<key>REMOVE_DRAFT_WATERMARK</key>
+	<string>Fotó vízjel eltávolítása</string>
+	<key>REMOVE_TIKTOK_AI_BUTTON</key>
+	<string>TikTok AI gomb eltávolítása</string>
+	<key>RUSSIAN_FIX</key>
+	<string>Orosz tiltás megkerülése</string>
+	<key>Really Clear All Data?</key>
+	<string>Tényleg törli az összes adatot?</string>
+	<key>Region</key>
+	<string>Régió</string>
+	<key>Region Changing Disabled</key>
+	<string>Régióváltás letiltva</string>
+	<key>Region Settings</key>
+	<string>Régió beállítások</string>
+	<key>Regions</key>
+	<string>Régiók</string>
+	<key>Remove Pendant View</key>
+	<string>Függő nézet eltávolítása</string>
+	<key>Remove Watermark</key>
+	<string>Vízjel eltávolítása</string>
+	<key>Report</key>
+	<string>Jelentés</string>
+	<key>Reset</key>
+	<string>Visszaállítás</string>
+	<key>Reset All Settings</key>
+	<string>Összes beállítás visszaállítása</string>
+	<key>Reset Settings</key>
+	<string>Beállítások visszaállítása</string>
+	<key>Reset all settings to default values</key>
+	<string>Összes beállítás visszaállítása az alapértelmezett értékekre</string>
+	<key>SAVE_DM_MEDIA</key>
+	<string>DM média mentése</string>
+	<key>STICKER_SAVED</key>
+	<string>Matrica elmentve a galériába!</string>
+	<key>STICKER_SAVE_FAILED</key>
+	<string>Nem sikerült elmenteni a matricát</string>
+	<key>STOP_STORY_PHOTO_ADVANCE</key>
+	<string>Történet fotó automatikus továbblépés leállítása</string>
+	<key>STORY_LIKE_CONFIRMATION</key>
+	<string>Történet kedvelés megerősítése</string>
+	<key>Save</key>
+	<string>Mentés</string>
+	<key>Save to Keychain</key>
+	<string>Mentés kulcstartóba</string>
+	<key>Saved!</key>
+	<string>Mentve!</string>
+	<key>Search</key>
+	<string>Keresés</string>
+	<key>Select Action</key>
+	<string>Művelet kiválasztása</string>
+	<key>Select All</key>
+	<string>Összes kijelölése</string>
+	<key>Select App Language</key>
+	<string>Válasszon alkalmazás nyelvet</string>
+	<key>Select Design</key>
+	<string>Dizájn kiválasztása</string>
+	<key>Select Speed</key>
+	<string>Sebesség kiválasztása</string>
+	<key>Selected Action</key>
+	<string>Kiválasztott művelet</string>
+	<key>Selected Region</key>
+	<string>Kiválasztott régió</string>
+	<key>Selected Speed</key>
+	<string>Kiválasztott sebesség</string>
+	<key>Settings</key>
+	<string>Beállítások</string>
+	<key>Settings Reset</key>
+	<string>Beállítások visszaállítva</string>
+	<key>Share</key>
+	<string>Megosztás</string>
+	<key>Share Sheet</key>
+	<string>Megosztási lap</string>
+	<key>Show</key>
+	<string>Mutat</string>
+	<key>Show All Settings Tabs</key>
+	<string>Összes beállításfül megjelenítése</string>
+	<key>Show Progress Bar</key>
+	<string>Folyamatjelző sáv megjelenítése</string>
+	<key>Show Usernames</key>
+	<string>Felhasználónevek megjelenítése</string>
+	<key>Show Video Upload Timestamp</key>
+	<string>Videó feltöltési időbélyegének megjelenítése</string>
+	<key>Show/Hide UI Button</key>
+	<string>UI gomb megjelenítése/elrejtése</string>
+	<key>Skip Recommendations</key>
+	<string>Ajánlások kihagyása</string>
+	<key>Social Actions</key>
+	<string>Közösségi műveletek</string>
+	<key>Special Thanks to</key>
+	<string>Külön köszönet</string>
+	<key>Speeds</key>
+	<string>Sebességek</string>
+	<key>Start TikTok in Following</key>
+	<string>TikTok indítása a Követettekben</string>
+	<key>Stats Menu</key>
+	<string>Statisztikák menü</string>
+	<key>Stop Playback</key>
+	<string>Lejátszás leállítása</string>
+	<key>Streak Info</key>
+	<string>Sorozat információ</string>
+	<key>Success</key>
+	<string>Siker</string>
+	<key>Support</key>
+	<string>Támogatás</string>
+	<key>Support the development</key>
+	<string>Támogasd a fejlesztést</string>
+	<key>System Features</key>
+	<string>Rendszer funkciók</string>
+	<key>Tab Bar Configurations</key>
+	<string>Lap sáv konfigurációk</string>
+	<key>Tab Bar Elements</key>
+	<string>Lap sáv elemek</string>
+	<key>Tab Bar Settings</key>
+	<string>Lap sáv beállítások</string>
+	<key>Tap to Join the Telegram</key>
+	<string>Koppints a Telegram csatornához való csatlakozáshoz</string>
+	<key>Telegram Channel</key>
+	<string>Telegram csatorna</string>
+	<key>Telegram Discussion Group</key>
+	<string>Telegram beszélgető csoport</string>
+	<key>Text &amp; Display Options</key>
+	<string>Szöveg és megjelenítési lehetőségek</string>
+	<key>This is your final warning. This action is irreversible and will delete all local TikTok data, including drafts and settings. Are you absolutely sure?</key>
+	<string>Ez az utolsó figyelmeztetés. Ez a művelet visszafordíthatatlan, és töröl minden helyi TikTok adatot, beleértve a piszkozatokat és beállításokat. Teljesen biztos?</string>
+	<key>Transparent Comments</key>
+	<string>Átlátszó hozzászólások</string>
+	<key>UI Designer</key>
+	<string>UI tervező</string>
+	<key>Unfollow</key>
+	<string>Követés megszüntetése</string>
+	<key>Upload HD</key>
+	<string>Feltöltés HD-ben</string>
+	<key>Upload Region</key>
+	<string>Feltöltési régió</string>
+	<key>User Post Count</key>
+	<string>Felhasználó bejegyzéseinek száma</string>
+	<key>VIEW_PROFILES_ANONYMOUS</key>
+	<string>Profilok névtelen megtekintése</string>
+	<key>Video Info</key>
+	<string>Videó információ</string>
+	<key>Video Information</key>
+	<string>Videó információ</string>
+	<key>Video Like Count</key>
+	<string>Videó kedvelések száma</string>
+	<key>Video Link Copied</key>
+	<string>Videó link másolva</string>
+	<key>Video Upload Date</key>
+	<string>Videó feltöltési dátuma</string>
+	<key>Video saved successfully</key>
+	<string>Videó sikeresen mentve</string>
+	<key>WARNING</key>
+	<string>FIGYELMEZTETÉS</string>
+	<key>Waiting for TikTok…</key>
+	<string>Várakozás a TikTok-ra…</string>
+	<key>Warning</key>
+	<string>Figyelmeztetés</string>
+	<key>Welcome</key>
+	<string>Üdvözlünk</string>
+	<key>X</key>
+	<string>X</string>
+	<key>Yes</key>
+	<string>Igen</string>
+	<key>the video doesn't have music to download</key>
+	<string>Ennek a videónak nincs letölthető zenéje</string>
+</dict>
+</plist>

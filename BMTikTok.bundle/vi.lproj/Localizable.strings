@@ -1,0 +1,918 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>ALWAYS_OPEN_SAFARI</key>
+	<string>Luôn mở Safari</string>
+	<key>About</key>
+	<string>Giới thiệu</string>
+	<key>Actions</key>
+	<string>Hành động</string>
+	<key>Add Comment as Post</key>
+	<string>Thêm bình luận dưới dạng bài đăng</string>
+	<key>Add Comment as Story</key>
+	<string>Thêm bình luận dưới dạng story</string>
+	<key>Add Folders To Inbox</key>
+	<string>Thêm thư mục vào hộp thư đến</string>
+	<key>Add Translation Button</key>
+	<string>Thêm nút dịch</string>
+	<key>Adjust offline download limit</key>
+	<string>Điều chỉnh giới hạn tải xuống ngoại tuyến</string>
+	<key>Adjust value between 50 and 2000</key>
+	<string>Điều chỉnh giá trị trong khoảng 50 đến 2000</string>
+	<key>All TikTok data has been cleared.</key>
+	<string>Tất cả dữ liệu TikTok đã được xóa.</string>
+	<key>All TikTok data has been erased.</key>
+	<string>Tất cả dữ liệu TikTok đã được xóa.</string>
+	<key>All settings have been reset to default values.</key>
+	<string>Tất cả cài đặt đã được đặt lại về giá trị mặc định.</string>
+	<key>Anonymous Seen</key>
+	<string>Xem ẩn danh</string>
+	<key>App Configuration</key>
+	<string>Cấu hình ứng dụng</string>
+	<key>App Lock</key>
+	<string>Khóa ứng dụng</string>
+	<key>Apply</key>
+	<string>Áp dụng</string>
+	<key>Are you sure you want to clear all data? This will remove:
+1- TikTok's data directory
+2-all keychains
+3- clears all NSUserDefaults
+ 
+NOTICE!
+ YOU WILL LOSE YOUR DRAFTS AND ANYTHING SAVED LOCALLY.</key>
+	<string>Bạn có chắc chắn muốn xóa tất cả dữ liệu không? Điều này sẽ xóa:
+1- thư mục dữ liệu TikTok
+2- tất cả chuỗi khóa
+3- xóa tất cả NSUserDefaults
+
+LƯU Ý!
+ BẠN SẼ MẤT CÁC BẢN NHÁP VÀ MỌI THỨ ĐƯỢC LƯU CỤC BỘ.</string>
+	<key>Are you sure you want to erase all TikTok data? This will clear all app data and cannot be undone.</key>
+	<string>Bạn có chắc chắn muốn xóa tất cả dữ liệu TikTok không? Điều này sẽ xóa tất cả dữ liệu ứng dụng và không thể hoàn tác.</string>
+	<key>Are you sure you want to reset all settings to default values? This action cannot be undone.</key>
+	<string>Bạn có chắc chắn muốn đặt lại tất cả cài đặt về giá trị mặc định không? Hành động này không thể hoàn tác.</string>
+	<key>Are you sure?</key>
+	<string>Bạn có chắc không?</string>
+	<key>Auto Clear History</key>
+	<string>Tự động xóa lịch sử</string>
+	<key>Auto Play Next Video</key>
+	<string>Tự động phát video tiếp theo</string>
+	<key>Auto Unfold Comment Texts</key>
+	<string>Tự động mở văn bản bình luận</string>
+	<key>BACKGROUND_PLAY</key>
+	<string>Bật phát nền</string>
+	<key>BETA!</key>
+	<string>BETA!</string>
+	<key>BLOCK_AI_GENERATED</key>
+	<string>Chặn bài đăng do AI tạo</string>
+	<key>BLOCK_MOVIE_TOK</key>
+	<string>Chặn quảng cáo phim</string>
+	<key>BLOCK_POI</key>
+	<string>Chặn quảng cáo địa điểm</string>
+	<key>BLOCK_SHOP_VIDEOS</key>
+	<string>Chặn bài đăng cửa hàng</string>
+	<key>BLOCK_TCM</key>
+	<string>Chặn quảng cáo ứng dụng</string>
+	<key>BMTikTok Settings</key>
+	<string>Cài đặt BMTikTok</string>
+	<key>BMTikTok, Hi</key>
+	<string>BMTikTok, Xin chào</string>
+	<key>BYPASS_FOLLOW_LIST_SEARCH</key>
+	<string>Bỏ qua giới hạn tìm kiếm danh sách người theo dõi</string>
+	<key>Back</key>
+	<string>Quay lại</string>
+	<key>Backgrounding ✌️</key>
+	<string>Chạy nền ✌️</string>
+	<key>Block</key>
+	<string>Chặn</string>
+	<key>Buy Me a Coffee</key>
+	<string>Mua cho tôi một ly cà phê</string>
+	<key>Bypass Media Limit</key>
+	<string>Bỏ qua giới hạn phương tiện</string>
+	<key>CONFIRM_QUICK_SHARE</key>
+	<string>Xác nhận chia sẻ nhanh</string>
+	<key>CONFIRM_REPOST</key>
+	<string>Xác nhận chia sẻ lại</string>
+	<key>Cancel</key>
+	<string>Hủy</string>
+	<key>Cancelled</key>
+	<string>Đã hủy</string>
+	<key>Change Action of Live Button</key>
+	<string>Thay đổi hành động của nút trực tiếp</string>
+	<key>Change the behavior of the Live button</key>
+	<string>Thay đổi hành vi của nút trực tiếp</string>
+	<key>Changes will take effect after restarting the app</key>
+	<string>Các thay đổi sẽ có hiệu lực sau khi khởi động lại ứng dụng</string>
+	<key>Chat Features</key>
+	<string>Tính năng trò chuyện</string>
+	<key>Chat Settings</key>
+	<string>Cài đặt trò chuyện</string>
+	<key>Choose export destination:</key>
+	<string>Chọn đích xuất:</string>
+	<key>Choose import source:</key>
+	<string>Chọn nguồn nhập:</string>
+	<key>Clear</key>
+	<string>Xóa</string>
+	<key>Clear Keychain</key>
+	<string>Xóa chuỗi khóa</string>
+	<key>Close</key>
+	<string>Đóng</string>
+	<key>Co-Owner</key>
+	<string>Đồng sở hữu</string>
+	<key>Comment Cell Redesign</key>
+	<string>Thiết kế lại ô bình luận</string>
+	<key>Comment Design</key>
+	<string>Thiết kế bình luận</string>
+	<key>Comment Settings</key>
+	<string>Cài đặt bình luận</string>
+	<key>Community</key>
+	<string>Cộng đồng</string>
+	<key>Compact</key>
+	<string>Gọn nhẹ</string>
+	<key>Configuration</key>
+	<string>Cấu hình</string>
+	<key>Configuration Management</key>
+	<string>Quản lý cấu hình</string>
+	<key>Configuration imported from keychain successfully.</key>
+	<string>Đã nhập cấu hình từ chuỗi khóa thành công.</string>
+	<key>Configuration imported successfully.</key>
+	<string>Đã nhập cấu hình thành công.</string>
+	<key>Configuration saved to keychain successfully.</key>
+	<string>Đã lưu cấu hình vào chuỗi khóa thành công.</string>
+	<key>Configure Advanced Comment Settings</key>
+	<string>Cấu hình cài đặt bình luận nâng cao</string>
+	<key>Confirm</key>
+	<string>Xác nhận</string>
+	<key>Confirm Clear</key>
+	<string>Xác nhận xóa</string>
+	<key>Confirm Settings</key>
+	<string>Xác nhận cài đặt</string>
+	<key>Confirmation Settings</key>
+	<string>Cài đặt xác nhận</string>
+	<key>Content &amp; Display</key>
+	<string>Nội dung &amp; Hiển thị</string>
+	<key>Content Enhancement</key>
+	<string>Cải tiến nội dung</string>
+	<key>Content Filtering</key>
+	<string>Lọc nội dung</string>
+	<key>Content Interactions</key>
+	<string>Tương tác nội dung</string>
+	<key>Contributor</key>
+	<string>Người đóng góp</string>
+	<key>Control video playback speed</key>
+	<string>Điều khiển tốc độ phát lại video</string>
+	<key>Copy Description</key>
+	<string>Sao chép mô tả</string>
+	<key>Copy Link</key>
+	<string>Sao chép liên kết</string>
+	<key>Copy Menu</key>
+	<string>Menu sao chép</string>
+	<key>Copy Music Link</key>
+	<string>Sao chép liên kết nhạc</string>
+	<key>Copy Video link</key>
+	<string>Sao chép liên kết video</string>
+	<key>Copy bio</key>
+	<string>Sao chép tiểu sử</string>
+	<key>Could Not Copy Music</key>
+	<string>Không thể sao chép nhạc</string>
+	<key>Credits</key>
+	<string>Ghi nhận</string>
+	<key>DEVELOPER_SUPPORT</key>
+	<string>Hỗ trợ BMTikTok và nhận quyền truy cập vào nhóm thử nghiệm beta của chúng tôi</string>
+	<key>DEVELOPER_TELEGRAM</key>
+	<string>Tham gia kênh Telegram của chúng tôi để cập nhật mới nhất</string>
+	<key>DISABLE_ACTIVITY_STATUS_WARNING</key>
+	<string>Việc tắt hoặc bật trạng thái hoạt động ẩn danh cần có thời gian để phản ánh trên máy chủ TikTok. Bạn vẫn có thể xuất hiện trực tuyến một thời gian sau khi bật tính năng này.</string>
+	<key>DISABLE_FEED_DOUBLE_TAP</key>
+	<string>Tắt chạm hai lần trong bảng tin</string>
+	<key>DISABLE_SCREENRECORDING_DETECTION</key>
+	<string>Tắt phát hiện quay màn hình</string>
+	<key>DISABLE_SCREENSHOT_DETECTION</key>
+	<string>Tắt phát hiện chụp màn hình</string>
+	<key>DISABLE_STORY_DOUBLE_TAP</key>
+	<string>Tắt chạm hai lần trong story</string>
+	<key>DISABLE_TYPING_STICKER</key>
+	<string>Tắt nhãn dán khi gõ</string>
+	<key>DISABLE_VISUAL_SEARCH_TAG</key>
+	<string>Tắt thẻ tìm kiếm trực quan</string>
+	<key>DOWNLOADING_STICKER</key>
+	<string>Đang tải nhãn dán...</string>
+	<key>DOWNLOAD_FAILED</key>
+	<string>Tải xuống không thành công</string>
+	<key>DRM Developer</key>
+	<string>Nhà phát triển DRM</string>
+	<key>Data Cleared</key>
+	<string>Đã xóa dữ liệu</string>
+	<key>Default</key>
+	<string>Mặc định</string>
+	<key>Delete</key>
+	<string>Xóa</string>
+	<key>Description Link Copied</key>
+	<string>Đã sao chép liên kết mô tả</string>
+	<key>Deselect All</key>
+	<string>Bỏ chọn tất cả</string>
+	<key>Design Options</key>
+	<string>Tùy chọn thiết kế</string>
+	<key>Developer</key>
+	<string>Nhà phát triển</string>
+	<key>Disable</key>
+	<string>Tắt</string>
+	<key>Disable AI-Generated Replies</key>
+	<string>Tắt phản hồi do AI tạo</string>
+	<key>Disable Comment Tooltip</key>
+	<string>Tắt chú giải công cụ bình luận</string>
+	<key>Disable Left &amp; Right Swipe</key>
+	<string>Tắt vuốt trái và phải</string>
+	<key>Disable Live Streaming</key>
+	<string>Tắt phát trực tiếp</string>
+	<key>Disable Sensitive Content</key>
+	<string>Tắt nội dung nhạy cảm</string>
+	<key>Disable Survey Popups</key>
+	<string>Tắt cửa sổ bật lên khảo sát</string>
+	<key>Disable TikTok Rewards ADs</key>
+	<string>Tắt quảng cáo có thưởng của TikTok</string>
+	<key>Disable Typing Indicator</key>
+	<string>Tắt chỉ báo đang gõ</string>
+	<key>Disable Warnings</key>
+	<string>Tắt cảnh báo</string>
+	<key>Dislike Comment Confirmation</key>
+	<string>Xác nhận không thích bình luận</string>
+	<key>Done</key>
+	<string>Xong</string>
+	<key>Download All Photos</key>
+	<string>Tải tất cả ảnh</string>
+	<key>Download Button</key>
+	<string>Nút tải xuống</string>
+	<key>Download HD Video</key>
+	<string>Tải video HD</string>
+	<key>Download Music</key>
+	<string>Tải nhạc</string>
+	<key>Download Photo</key>
+	<string>Tải ảnh</string>
+	<key>Download Photos Menu</key>
+	<string>Menu tải ảnh</string>
+	<key>Download Video</key>
+	<string>Tải video xuống</string>
+	<key>Downloading</key>
+	<string>Đang tải xuống</string>
+	<key>Downloads &amp; Sharing</key>
+	<string>Tải xuống &amp; Chia sẻ</string>
+	<key>Downloads Menu</key>
+	<string>Menu tải xuống</string>
+	<key>ENABLE_COMMENT_PHOTO</key>
+	<string>Bật phản hồi bằng ảnh trong bình luận</string>
+	<key>ENABLE_COMMENT_STICKERS</key>
+	<string>Bật phản hồi bằng nhãn dán trong bình luận</string>
+	<key>ENABLE_STICKER_DOWNLOAD</key>
+	<string>Chạm hai lần để tải nhãn dán</string>
+	<key>Edit</key>
+	<string>Chỉnh sửa</string>
+	<key>Emoji &amp; Interface</key>
+	<string>Biểu tượng cảm xúc &amp; Giao diện</string>
+	<key>Enable</key>
+	<string>Bật</string>
+	<key>Enable Comment Flags</key>
+	<string>Bật cờ trong bình luận</string>
+	<key>Enable Comment Photos</key>
+	<string>Bật ảnh trong bình luận</string>
+	<key>Enable Comment Stickers</key>
+	<string>Bật nhãn dán trong bình luận</string>
+	<key>Enable Copy Without Username</key>
+	<string>Sao chép không kèm tên người dùng</string>
+	<key>Enable Egypt Stickers</key>
+	<string>Bật nhãn dán Ai Cập</string>
+	<key>Enable Embeded Links</key>
+	<string>Bật liên kết nhúng</string>
+	<key>Enable Fake Changes</key>
+	<string>Bật thay đổi giả</string>
+	<key>Enable Flex</key>
+	<string>Bật Flex</string>
+	<key>Enable Live Button Function</key>
+	<string>Bật chức năng nút trực tiếp</string>
+	<key>Enable Oled Keyboard</key>
+	<string>Bật bàn phím OLED</string>
+	<key>Enable Persistent Playback Speed.</key>
+	<string>Bật tốc độ phát lại liên tục trên các bài đăng</string>
+	<key>Enable Pin Chat</key>
+	<string>Bật ghim trò chuyện</string>
+	<key>Enable Playback Speed</key>
+	<string>Bật tốc độ phát lại</string>
+	<key>Enable Region Changing</key>
+	<string>Bật thay đổi khu vực</string>
+	<key>Enable Region Changing Functionality</key>
+	<string>Bật chức năng thay đổi khu vực</string>
+	<key>Enable Small Emoji</key>
+	<string>Bật biểu tượng cảm xúc nhỏ</string>
+	<key>Enable Streaks</key>
+	<string>Bật chuỗi tương tác</string>
+	<key>Enable Text To Reposts</key>
+	<string>Bật văn bản cho chia sẻ lại</string>
+	<key>Enable Voice Messages</key>
+	<string>Bật tin nhắn thoại</string>
+	<key>Enable region changing to access content from different regions</key>
+	<string>Bật thay đổi khu vực để truy cập nội dung từ các khu vực khác nhau</string>
+	<key>Enhanced Comments Features</key>
+	<string>Tính năng bình luận nâng cao</string>
+	<key>Erase</key>
+	<string>Xóa</string>
+	<key>Erase All Data</key>
+	<string>Xóa tất cả dữ liệu</string>
+	<key>Erase All TikTok Data</key>
+	<string>Xóa tất cả dữ liệu TikTok</string>
+	<key>Erase all TikTok data from the app  [Becareful!!!]</key>
+	<string>Xóa tất cả dữ liệu TikTok khỏi ứng dụng [CẨN THẬN!!!]</string>
+	<key>Error</key>
+	<string>Lỗi</string>
+	<key>Export Configuration</key>
+	<string>Xuất cấu hình</string>
+	<key>Export settings to a file</key>
+	<string>Xuất cài đặt ra tệp</string>
+	<key>Export to File</key>
+	<string>Xuất ra tệp</string>
+	<key>Extended Comments</key>
+	<string>Bình luận mở rộng</string>
+	<key>Extracting Media URL…</key>
+	<string>Đang trích xuất URL phương tiện…</string>
+	<key>FEATURE_ADD_COMMENT_POST</key>
+	<string>Bật đăng phản hồi bình luận dưới dạng bài đăng</string>
+	<key>FEATURE_ADD_COMMENT_STORY</key>
+	<string>Bật đăng phản hồi bình luận dưới dạng story</string>
+	<key>FEATURE_ADD_FOLDERS</key>
+	<string>Thêm tổ chức thư mục vào tin nhắn hộp thư đến</string>
+	<key>FEATURE_ADD_FOLDERS_DESC</key>
+	<string>Sắp xếp tin nhắn hộp thư đến của bạn thành các thư mục tùy chỉnh để quản lý tốt hơn</string>
+	<key>FEATURE_ADD_TRANSLATION</key>
+	<string>Thêm nút dịch vào mỗi bình luận</string>
+	<key>FEATURE_ALWAYS_OPEN_SAFARI</key>
+	<string>Luôn mở liên kết trong Safari thay vì trình duyệt trong ứng dụng</string>
+	<key>FEATURE_ANONYMOUS_SEEN</key>
+	<string>Đọc trò chuyện mà không thông báo cho người kia</string>
+	<key>FEATURE_ANONYMOUS_SEEN_DESC</key>
+	<string>Xem trò chuyện mà không gửi xác nhận đã đọc cho người nhận</string>
+	<key>FEATURE_APP_LOCK</key>
+	<string>Thêm khóa ứng dụng khi TikTok được khởi chạy</string>
+	<key>FEATURE_APP_LOCK_DESC</key>
+	<string>Bảo mật ứng dụng TikTok của bạn bằng mật khẩu hoặc xác thực sinh trắc học</string>
+	<key>FEATURE_AUTO_CLEAR</key>
+	<string>Xóa lịch sử tìm kiếm của bạn sau mỗi 60 giây</string>
+	<key>FEATURE_AUTO_PLAY</key>
+	<string>Bật tự động cuộn video</string>
+	<key>FEATURE_AUTO_UNFOLD</key>
+	<string>Tự động mở tất cả bình luận dài</string>
+	<key>FEATURE_BACKGROUND_PLAY</key>
+	<string>Bật phát âm thanh nền</string>
+	<key>FEATURE_BLOCK_AI_GENERATED</key>
+	<string>Chặn bài đăng có 'Chứa phương tiện do AI tạo'</string>
+	<key>FEATURE_BLOCK_MOVIE_TOK</key>
+	<string>Chặn video có quảng cáo phim</string>
+	<key>FEATURE_BLOCK_POI</key>
+	<string>Chặn video có quảng cáo địa điểm</string>
+	<key>FEATURE_BLOCK_SHOP_ADS</key>
+	<string>Chặn video có quảng cáo cửa hàng</string>
+	<key>FEATURE_BLOCK_SHOP_VIDEOS</key>
+	<string>Xóa bài đăng cửa hàng khỏi bảng tin.</string>
+	<key>FEATURE_BLOCK_TCM</key>
+	<string>Chặn video có quảng cáo ứng dụng</string>
+	<key>FEATURE_BYPASS_FOLLOW_LIST_SEARCH</key>
+	<string>Bật tìm kiếm danh sách người theo dõi ngay cả khi người dùng có hơn 5.000 người theo dõi</string>
+	<key>FEATURE_BYPASS_MEDIA_LIMIT</key>
+	<string>Bỏ qua giới hạn gửi phương tiện trong trò chuyện (mặc định: 9 ảnh, 1 phút video)</string>
+	<key>FEATURE_COMMENT_REDESIGN</key>
+	<string>Bật các ô bình luận được thiết kế lại</string>
+	<key>FEATURE_CONFIRM_COMMENT_DISLIKE</key>
+	<string>Yêu cầu xác nhận trước khi không thích bình luận</string>
+	<key>FEATURE_CONFIRM_COMMENT_LIKE</key>
+	<string>Yêu cầu xác nhận trước khi thích bình luận</string>
+	<key>FEATURE_CONFIRM_FOLLOW</key>
+	<string>Yêu cầu xác nhận trước khi theo dõi người dùng</string>
+	<key>FEATURE_CONFIRM_LIKE</key>
+	<string>Yêu cầu xác nhận trước khi thích bài đăng</string>
+	<key>FEATURE_CONFIRM_QUICK_SHARE</key>
+	<string>Yêu cầu xác nhận trước khi sử dụng chia sẻ nhanh</string>
+	<key>FEATURE_CONFIRM_REPOST</key>
+	<string>Yêu cầu xác nhận trước khi chia sẻ lại video</string>
+	<key>FEATURE_COPY_WITHOUT_USERNAME</key>
+	<string>Sao chép bình luận không kèm tên người bình luận</string>
+	<key>FEATURE_DISABLE_AI_REPLIES</key>
+	<string>Tắt phản hồi do AI tạo trên bài đăng</string>
+	<key>FEATURE_DISABLE_COMMENT_TOOLTIP</key>
+	<string>Tắt chú giải công cụ trong phần bình luận</string>
+	<key>FEATURE_DISABLE_FEED_DOUBLE_TAP</key>
+	<string>Tắt chạm hai lần để thích trong bảng tin</string>
+	<key>FEATURE_DISABLE_LIVE</key>
+	<string>Ẩn phát trực tiếp khỏi bảng tin</string>
+	<key>FEATURE_DISABLE_REWARDS_ADS</key>
+	<string>Ẩn quảng cáo có thưởng của TikTok khỏi bảng tin</string>
+	<key>FEATURE_DISABLE_SCREENRECORDING_DETECTION</key>
+	<string>Tắt phát hiện quay màn hình trong trò chuyện</string>
+	<key>FEATURE_DISABLE_SCREENSHOT_DETECTION</key>
+	<string>Tắt phát hiện chụp màn hình trong trò chuyện</string>
+	<key>FEATURE_DISABLE_SENSITIVE</key>
+	<string>Ẩn cảnh báo 'Nội dung không phù hợp'</string>
+	<key>FEATURE_DISABLE_STORY_DOUBLE_TAP</key>
+	<string>Tắt chạm hai lần để thích trong story</string>
+	<key>FEATURE_DISABLE_SURVEY</key>
+	<string>Tắt câu hỏi khảo sát trong bảng tin</string>
+	<key>FEATURE_DISABLE_SWIPE</key>
+	<string>Tắt vuốt trái và phải trong bảng tin</string>
+	<key>FEATURE_DISABLE_TYPING</key>
+	<string>Tắt chỉ báo đang gõ</string>
+	<key>FEATURE_DISABLE_TYPING_STICKER</key>
+	<string>Tắt đề xuất GIF tự động khi gõ</string>
+	<key>FEATURE_DISABLE_VISUAL_SEARCH_TAG</key>
+	<string>Tắt nút 'Tìm kiếm trực quan' trong bảng tin khi tạm dừng video</string>
+	<key>FEATURE_DISABLE_WARNINGS</key>
+	<string>Ẩn cảnh báo TikTok</string>
+	<key>FEATURE_DOWNLOAD_BUTTON</key>
+	<string>Thêm nút tải xuống cho bài đăng và story</string>
+	<key>FEATURE_EMBED_LINKS</key>
+	<string>Các liên kết đã sao chép sẽ nhúng phương tiện vào nơi chúng được gửi</string>
+	<key>FEATURE_ENABLE_COMMENT_FLAGS</key>
+	<string>Hiển thị cờ khu vực bên cạnh tên người bình luận</string>
+	<key>FEATURE_ENABLE_FLEX</key>
+	<string>CHỈ DÀNH CHO NHÀ PHÁT TRIỂN, ĐỪNG CHẠM VÀO NẾU BẠN KHÔNG BIẾT FLEX LÀ GÌ!</string>
+	<key>FEATURE_ENABLE_STICKER_DOWNLOAD</key>
+	<string>Bật tải xuống nhãn dán trong bình luận</string>
+	<key>FEATURE_ENABLE_STREAKS</key>
+	<string>Bật chuỗi tương tác với bạn bè</string>
+	<key>FEATURE_ENABLE_TEXT_TO_REPOSTS</key>
+	<string>Bật thêm chú thích vào chia sẻ lại cho các khu vực không được hỗ trợ</string>
+	<key>FEATURE_EXTENDED_COMMENTS</key>
+	<string>Tăng giới hạn ký tự bình luận</string>
+	<key>FEATURE_FAKE_CHANGES</key>
+	<string>Bật thay đổi dữ liệu hồ sơ giả</string>
+	<key>FEATURE_FAKE_VERIFIED</key>
+	<string>Hiển thị huy hiệu xác minh giả</string>
+	<key>FEATURE_FOLLOWER_COUNT</key>
+	<string>Nhập số lượng người theo dõi giả</string>
+	<key>FEATURE_FOLLOWING_COUNT</key>
+	<string>Nhập số lượng đang theo dõi giả</string>
+	<key>FEATURE_FULL_REGION_MODE</key>
+	<string>CHỈ BẬT NẾU TÙY CHỌN ĐẦU TIÊN KHÔNG HOẠT ĐỘNG!</string>
+	<key>FEATURE_HIDE_ACTIVITY_STATUS</key>
+	<string>Ẩn trạng thái 'Hoạt động lần cuối' và 'Trực tuyến' của bạn trong trò chuyện</string>
+	<key>FEATURE_HIDE_ADS</key>
+	<string>Ẩn quảng cáo khỏi bảng tin</string>
+	<key>FEATURE_HIDE_BM_UI</key>
+	<string>Ẩn toàn bộ giao diện BMTikTok khi chụp màn hình</string>
+	<key>FEATURE_HIDE_COMMISSION_POSTS</key>
+	<string>Ẩn bài đăng 'Người sáng tạo kiếm được hoa hồng'</string>
+	<key>FEATURE_HIDE_DANGEROUS_ACTION</key>
+	<string>Ẩn cảnh báo dưới video thể thao (UFC, Quyền anh, v.v.)</string>
+	<key>FEATURE_HIDE_EMOJI</key>
+	<string>Ẩn thanh bình luận đa biểu tượng cảm xúc</string>
+	<key>FEATURE_HIDE_FRIENDS_BADGE</key>
+	<string>Ẩn huy hiệu thông báo bạn bè</string>
+	<key>FEATURE_HIDE_INBOX_BADGE</key>
+	<string>Ẩn huy hiệu thông báo hộp thư đến</string>
+	<key>FEATURE_HIDE_PLAY_PAUSE</key>
+	<string>Ẩn chế độ xem phát/tạm dừng trong bảng tin</string>
+	<key>FEATURE_HIDE_PLUS_BTN</key>
+	<string>Ẩn nút máy ảnh</string>
+	<key>FEATURE_HIDE_REPORT_BUTTON</key>
+	<string>Ẩn nút cờ trong thanh điều hướng tin nhắn trực tiếp.</string>
+	<key>FEATURE_HIDE_RX_UI</key>
+	<string>Ẩn toàn bộ giao diện BMTikTok khi chụp màn hình</string>
+	<key>FEATURE_HIDE_STREAK_PET</key>
+	<string>Ẩn thú cưng chuỗi tương tác</string>
+	<key>FEATURE_HIDE_TAB_BAR_LABELS</key>
+	<string>Ẩn nhãn trong thanh tab</string>
+	<key>FEATURE_HIDE_TOP_ITEMS</key>
+	<string>Ẩn thanh trên cùng (Dành cho bạn, Đang theo dõi, Cửa hàng, v.v.)</string>
+	<key>FEATURE_LIKE_COUNT</key>
+	<string>Hiển thị số lượt thích trên bài đăng</string>
+	<key>FEATURE_LOOP_STORY_VIDEOS</key>
+	<string>Lặp lại video trong story</string>
+	<key>FEATURE_MARK_SEEN_ON_REPLY</key>
+	<string>Đánh dấu tin nhắn là đã xem khi trả lời</string>
+	<key>FEATURE_MASS_UNFOLD</key>
+	<string>Mở hàng loạt tất cả các câu trả lời bình luận</string>
+	<key>FEATURE_MULTI_EMOJI</key>
+	<string>Bật thanh bình luận đa biểu tượng cảm xúc</string>
+	<key>FEATURE_OLED_KEYBOARD</key>
+	<string>Chỉ hoạt động với chủ đề tối</string>
+	<key>FEATURE_PAD_AUTO_SCROLL</key>
+	<string>Bật tính năng tự động cuộn bài đăng gốc của TikTok cho các khu vực không được hỗ trợ</string>
+	<key>FEATURE_PIN_CHATS</key>
+	<string>Bật ghim trò chuyện yêu thích lên đầu</string>
+	<key>FEATURE_POST_STATS</key>
+	<string>Hiển thị menu con trong phần Tải xuống với thông tin bài đăng</string>
+	<key>FEATURE_PROFILE_COPY</key>
+	<string>Sao chép tiểu sử của người dùng bằng cách nhấn giữ</string>
+	<key>FEATURE_PROFILE_COPY_DESC</key>
+	<string>Sao chép chi tiết hồ sơ bao gồm tên người dùng, tiểu sử và thông tin công khai khác</string>
+	<key>FEATURE_PROFILE_SAVE</key>
+	<string>Lưu ảnh hồ sơ của người dùng bằng cách nhấn giữ</string>
+	<key>FEATURE_PROFILE_SAVE_DESC</key>
+	<string>Lưu thông tin hồ sơ vào bộ nhớ tạm của bạn bằng một lần chạm</string>
+	<key>FEATURE_PROGRESS_BAR</key>
+	<string>Hiển thị thời lượng phương tiện bên dưới mỗi bài đăng</string>
+	<key>FEATURE_PULL_TO_CAMERA</key>
+	<string>Bật tính năng kéo để mở máy ảnh</string>
+	<key>FEATURE_REGIONS_DESC</key>
+	<string>Truy cập nội dung dành riêng cho khu vực bằng cách giả mạo vị trí ảo của bạn</string>
+	<key>FEATURE_REMOVE_DRAFT_WATERMARK</key>
+	<string>Xóa hình mờ khi lưu bài đăng hoặc bản nháp</string>
+	<key>FEATURE_REMOVE_PENDANT</key>
+	<string>Xóa chế độ xem quảng cáo ở góc trên bên trái trong bảng tin</string>
+	<key>FEATURE_REMOVE_TIKTOK_AI_BUTTON</key>
+	<string>Xóa nút TikTok AI (tako) khỏi Dành cho bạn</string>
+	<key>FEATURE_REMOVE_WATERMARK</key>
+	<string>Xóa hình mờ khỏi phương tiện đã tải xuống</string>
+	<key>FEATURE_RUSSIAN_FIX</key>
+	<string>Bật tính năng này để làm cho bảng tin Nga hoạt động trở lại [MỚI!]</string>
+	<key>FEATURE_SAVE_DM_MEDIA</key>
+	<string>Thêm nút tải xuống cho phương tiện được gửi trong tin nhắn trực tiếp</string>
+	<key>FEATURE_SHARE_SHEET</key>
+	<string>Mở trang chia sẻ sau khi tải phương tiện xuống</string>
+	<key>FEATURE_SHOW_ALL_TABS</key>
+	<string>Hiển thị tất cả các tab cài đặt ẩn [BETA]</string>
+	<key>FEATURE_SHOW_ALL_TABS_DESC</key>
+	<string>Hiển thị tất cả các tab cài đặt ẩn, bao gồm cả tính năng thử nghiệm</string>
+	<key>FEATURE_SHOW_USERNAMES</key>
+	<string>Thay thế biệt hiệu của người dùng bằng tên người dùng của họ trong bảng tin</string>
+	<key>FEATURE_SHOW_VIDEO_TIMESTAMP</key>
+	<string>Hiển thị thời gian tải lên của bài đăng trong Dành cho bạn</string>
+	<key>FEATURE_SKIP_RECOMMENDED</key>
+	<string>Xóa đề xuất nội dung (đề xuất bạn bè, v.v.)</string>
+	<key>FEATURE_SMALL_EMOJI</key>
+	<string>Bật gửi biểu tượng cảm xúc nhỏ</string>
+	<key>FEATURE_START_FYP_IN_FOLLOWING</key>
+	<string>Bắt đầu TikTok ở bảng tin 'Đang theo dõi', thay vì bảng tin 'Dành cho bạn'</string>
+	<key>FEATURE_STOP_PLAYBACK</key>
+	<string>Dừng phát lại bài đăng khi kết thúc</string>
+	<key>FEATURE_STOP_STORY_PHOTO_ADVANCE</key>
+	<string>Ngăn ảnh story tự động chuyển tiếp</string>
+	<key>FEATURE_STORY_LIKE_CONFIRMATION</key>
+	<string>Yêu cầu xác nhận trước khi thích story</string>
+	<key>FEATURE_STREAK_INFO</key>
+	<string>Hiển thị thông tin chuỗi hiện tại của bạn khi chạm vào lửa chuỗi</string>
+	<key>FEATURE_TRANSPARENT_COMMENTS</key>
+	<string>Làm cho nền phần bình luận trong suốt</string>
+	<key>FEATURE_UI_BUTTON</key>
+	<string>Hiển thị nút 'Ẩn giao diện'</string>
+	<key>FEATURE_UPLOAD_DATE</key>
+	<string>Hiển thị ngày tải lên trên bài đăng</string>
+	<key>FEATURE_UPLOAD_HD</key>
+	<string>Bật tải lên HD</string>
+	<key>FEATURE_UPLOAD_REGION</key>
+	<string>Hiển thị cờ khu vực tải lên bên cạnh tên người dùng</string>
+	<key>FEATURE_USER_POST_COUNT</key>
+	<string>Hiển thị tổng số bài đăng của người dùng</string>
+	<key>FEATURE_VIEW_PROFILES_ANONYMOUS</key>
+	<string>Tắt theo dõi lượt xem hồ sơ</string>
+	<key>FEATURE_VOICE_MESSAGES</key>
+	<string>Bật gửi tin nhắn thoại trong trò chuyện (chỉ ở một số khu vực)</string>
+	<key>FILTERING_OPTIONS</key>
+	<string>Tùy chọn lọc</string>
+	<key>Failed to fetch HD video URL. Please try again.</key>
+	<string>Không tìm nạp được URL video HD. Vui lòng thử lại.</string>
+	<key>Failed to save media</key>
+	<string>Không lưu được phương tiện</string>
+	<key>Fake Verified</key>
+	<string>Tích xanh giả</string>
+	<key>Features list</key>
+	<string>Danh sách tính năng</string>
+	<key>Feed</key>
+	<string>Bảng tin</string>
+	<key>Feed Settings</key>
+	<string>Cài đặt bảng tin</string>
+	<key>File selection was cancelled.</key>
+	<string>Đã hủy chọn tệp.</string>
+	<key>Follow Confirmation</key>
+	<string>Xác nhận theo dõi</string>
+	<key>Follower</key>
+	<string>Người theo dõi</string>
+	<key>Following</key>
+	<string>Đang theo dõi</string>
+	<key>Full Region Mode</key>
+	<string>Chế độ khu vực đầy đủ</string>
+	<key>Get the latest updates and news</key>
+	<string>Nhận các bản cập nhật và tin tức mới nhất</string>
+	<key>HIDE_ACTIVITY_STATUS</key>
+	<string>Ẩn trạng thái hoạt động</string>
+	<key>HIDE_BM_UI</key>
+	<string>Ẩn giao diện BMTikTok</string>
+	<key>HIDE_REPORT_BUTTON</key>
+	<string>Ẩn nút báo cáo</string>
+	<key>HIDE_RX_UI</key>
+	<string>Ẩn giao diện BMTikTok</string>
+	<key>Hide</key>
+	<string>Ẩn</string>
+	<key>Hide Ads</key>
+	<string>Ẩn quảng cáo</string>
+	<key>Hide Commission Posts</key>
+	<string>Ẩn bài đăng hoa hồng</string>
+	<key>Hide Emoji-Bar</key>
+	<string>Ẩn thanh biểu tượng cảm xúc</string>
+	<key>Hide Friends Badge</key>
+	<string>Ẩn huy hiệu bạn bè</string>
+	<key>Hide Inbox Badge</key>
+	<string>Ẩn huy hiệu hộp thư đến</string>
+	<key>Hide Play/Pause Button</key>
+	<string>Ẩn nút phát/tạm dừng</string>
+	<key>Hide Plus Button</key>
+	<string>Ẩn nút cộng</string>
+	<key>Hide Streak Pet</key>
+	<string>Ẩn thú cưng chuỗi tương tác</string>
+	<key>Hide Tab Bar Labels</key>
+	<string>Ẩn nhãn thanh tab</string>
+	<key>Hide Top Feed items</key>
+	<string>Ẩn mục đầu trang của bảng tin</string>
+	<key>Hide dangerous-action Warning</key>
+	<string>Ẩn cảnh báo hành động nguy hiểm</string>
+	<key>Import Configuration</key>
+	<string>Nhập cấu hình</string>
+	<key>Import from File</key>
+	<string>Nhập từ tệp</string>
+	<key>Import from Keychain</key>
+	<string>Nhập từ chuỗi khóa</string>
+	<key>Import settings from a file</key>
+	<string>Nhập cài đặt từ tệp</string>
+	<key>Invalid download URL received.</key>
+	<string>Đã nhận được URL tải xuống không hợp lệ.</string>
+	<key>Join the community discussion</key>
+	<string>Tham gia thảo luận cộng đồng</string>
+	<key>LOOP_STORY_VIDEOS</key>
+	<string>Lặp lại video trong story</string>
+	<key>Language</key>
+	<string>Ngôn ngữ</string>
+	<key>Language Changed</key>
+	<string>Đã thay đổi ngôn ngữ</string>
+	<key>Language 🌎</key>
+	<string>Ngôn ngữ 🌎</string>
+	<key>Like Comment Confirmation</key>
+	<string>Xác nhận thích bình luận</string>
+	<key>Like Confirmation</key>
+	<string>Xác nhận thích</string>
+	<key>Live Actions</key>
+	<string>Hành động trực tiếp</string>
+	<key>Live Button Actions</key>
+	<string>Hành động nút trực tiếp</string>
+	<key>Live Button Function</key>
+	<string>Chức năng nút trực tiếp</string>
+	<key>Live Button Function Disabled</key>
+	<string>Chức năng nút trực tiếp đã tắt</string>
+	<key>Live Button Settings</key>
+	<string>Cài đặt nút trực tiếp</string>
+	<key>Loading</key>
+	<string>Đang tải</string>
+	<key>MARK_SEEN_ON_REPLY</key>
+	<string>Đánh dấu đã xem khi trả lời</string>
+	<key>Main Developer, Owner</key>
+	<string>Nhà phát triển chính, Chủ sở hữu</string>
+	<key>Mass Unfold Comment Replies</key>
+	<string>Mở hàng loạt câu trả lời bình luận</string>
+	<key>Modern</key>
+	<string>Hiện đại</string>
+	<key>More Options</key>
+	<string>Tùy chọn khác</string>
+	<key>Multi Emoji Comment Bar</key>
+	<string>Thanh biểu tượng cảm xúc đa dạng</string>
+	<key>Music Link Copied</key>
+	<string>Đã sao chép liên kết nhạc</string>
+	<key>Navigation &amp; Interaction</key>
+	<string>Điều hướng &amp; Tương tác</string>
+	<key>Next</key>
+	<string>Tiếp theo</string>
+	<key>No</key>
+	<string>Không</string>
+	<key>No Backup</key>
+	<string>Không có bản sao lưu</string>
+	<key>No backup found</key>
+	<string>Không tìm thấy bản sao lưu</string>
+	<key>No internet connection</key>
+	<string>Không có kết nối internet</string>
+	<key>No settings backup found in keychain.</key>
+	<string>Không tìm thấy bản sao lưu cài đặt trong chuỗi khóa.</string>
+	<key>Not Selected</key>
+	<string>Chưa chọn</string>
+	<key>Notification Badges</key>
+	<string>Huy hiệu thông báo</string>
+	<key>OFF</key>
+	<string>TẮT</string>
+	<key>OK</key>
+	<string>OK</string>
+	<key>ON</key>
+	<string>BẬT</string>
+	<key>OTHER_OPTIONS</key>
+	<string>Tùy chọn khác</string>
+	<key>Organization &amp; Management</key>
+	<string>Tổ chức &amp; Quản lý</string>
+	<key>Other</key>
+	<string>Khác</string>
+	<key>Other Settings</key>
+	<string>Cài đặt khác</string>
+	<key>PAD_AUTO_SCROLL</key>
+	<string>Tự động cuộn mặc định</string>
+	<key>PLAY_IN_NATIVE_PLAYER</key>
+	<string>Phát bằng trình phát gốc</string>
+	<key>Photo saved successfully</key>
+	<string>Đã lưu ảnh thành công</string>
+	<key>Playback Controls</key>
+	<string>Điều khiển phát lại</string>
+	<key>Playback Speed</key>
+	<string>Tốc độ phát lại</string>
+	<key>Playback Speed Disabled</key>
+	<string>Tốc độ phát lại đã tắt</string>
+	<key>Playback Speed Settings</key>
+	<string>Cài đặt tốc độ phát lại</string>
+	<key>Please enable Live Button Function first</key>
+	<string>Vui lòng bật chức năng nút trực tiếp trước</string>
+	<key>Please enable Playback Speed first</key>
+	<string>Vui lòng bật tốc độ phát lại trước</string>
+	<key>Please enable region changing first</key>
+	<string>Vui lòng bật thay đổi khu vực trước</string>
+	<key>Please restart the app to apply changes, May require two app restarts!</key>
+	<string>Vui lòng khởi động lại ứng dụng để áp dụng các thay đổi, có thể cần khởi động lại hai lần!</string>
+	<key>Post Info</key>
+	<string>Thông tin bài đăng</string>
+	<key>Post Stats</key>
+	<string>Thống kê bài đăng</string>
+	<key>Privacy &amp; Security</key>
+	<string>Quyền riêng tư &amp; Bảo mật</string>
+	<key>Processing...</key>
+	<string>Đang xử lý...</string>
+	<key>Profile</key>
+	<string>Hồ sơ</string>
+	<key>Profile Actions</key>
+	<string>Hành động hồ sơ</string>
+	<key>Profile Copy</key>
+	<string>Sao chép hồ sơ</string>
+	<key>Profile Customization</key>
+	<string>Tùy chỉnh hồ sơ</string>
+	<key>Profile Enhancement</key>
+	<string>Cải tiến hồ sơ</string>
+	<key>Profile Save</key>
+	<string>Lưu hồ sơ</string>
+	<key>Profile Settings</key>
+	<string>Cài đặt hồ sơ</string>
+	<key>Pull To Camera</key>
+	<string>Kéo để mở máy ảnh</string>
+	<key>REMOVE_DRAFT_WATERMARK</key>
+	<string>Xóa hình mờ ảnh</string>
+	<key>REMOVE_TIKTOK_AI_BUTTON</key>
+	<string>Xóa nút TikTok AI</string>
+	<key>RUSSIAN_FIX</key>
+	<string>Bỏ qua lệnh cấm của Nga</string>
+	<key>Really Clear All Data?</key>
+	<string>Thực sự xóa tất cả dữ liệu?</string>
+	<key>Region</key>
+	<string>Khu vực</string>
+	<key>Region Changing Disabled</key>
+	<string>Thay đổi khu vực đã tắt</string>
+	<key>Region Settings</key>
+	<string>Cài đặt khu vực</string>
+	<key>Regions</key>
+	<string>Khu vực</string>
+	<key>Remove Pendant View</key>
+	<string>Xóa chế độ xem mặt dây chuyền</string>
+	<key>Remove Watermark</key>
+	<string>Xóa hình mờ</string>
+	<key>Report</key>
+	<string>Báo cáo</string>
+	<key>Reset</key>
+	<string>Đặt lại</string>
+	<key>Reset All Settings</key>
+	<string>Đặt lại tất cả cài đặt</string>
+	<key>Reset Settings</key>
+	<string>Đặt lại cài đặt</string>
+	<key>Reset all settings to default values</key>
+	<string>Đặt lại tất cả cài đặt về giá trị mặc định</string>
+	<key>SAVE_DM_MEDIA</key>
+	<string>Lưu phương tiện trong tin nhắn trực tiếp</string>
+	<key>STICKER_SAVED</key>
+	<string>Đã lưu nhãn dán vào thư viện!</string>
+	<key>STICKER_SAVE_FAILED</key>
+	<string>Không lưu được nhãn dán</string>
+	<key>STOP_STORY_PHOTO_ADVANCE</key>
+	<string>Dừng tự động chuyển ảnh trong story</string>
+	<key>STORY_LIKE_CONFIRMATION</key>
+	<string>Xác nhận thích story</string>
+	<key>Save</key>
+	<string>Lưu</string>
+	<key>Save to Keychain</key>
+	<string>Lưu vào chuỗi khóa</string>
+	<key>Saved!</key>
+	<string>Đã lưu!</string>
+	<key>Search</key>
+	<string>Tìm kiếm</string>
+	<key>Select Action</key>
+	<string>Chọn hành động</string>
+	<key>Select All</key>
+	<string>Chọn tất cả</string>
+	<key>Select App Language</key>
+	<string>Chọn ngôn ngữ ứng dụng</string>
+	<key>Select Design</key>
+	<string>Chọn thiết kế</string>
+	<key>Select Speed</key>
+	<string>Chọn tốc độ</string>
+	<key>Selected Action</key>
+	<string>Hành động đã chọn</string>
+	<key>Selected Region</key>
+	<string>Khu vực đã chọn</string>
+	<key>Selected Speed</key>
+	<string>Tốc độ đã chọn</string>
+	<key>Settings</key>
+	<string>Cài đặt</string>
+	<key>Settings Reset</key>
+	<string>Đã đặt lại cài đặt</string>
+	<key>Share</key>
+	<string>Chia sẻ</string>
+	<key>Share Sheet</key>
+	<string>Trang chia sẻ</string>
+	<key>Show</key>
+	<string>Hiển thị</string>
+	<key>Show All Settings Tabs</key>
+	<string>Hiển thị tất cả tab cài đặt</string>
+	<key>Show Progress Bar</key>
+	<string>Hiển thị thanh tiến trình</string>
+	<key>Show Usernames</key>
+	<string>Hiển thị tên người dùng</string>
+	<key>Show Video Upload Timestamp</key>
+	<string>Hiển thị thời gian tải video lên</string>
+	<key>Show/Hide UI Button</key>
+	<string>Hiện/Ẩn nút giao diện</string>
+	<key>Skip Recommendations</key>
+	<string>Bỏ qua đề xuất</string>
+	<key>Social Actions</key>
+	<string>Hành động xã hội</string>
+	<key>Special Thanks to</key>
+	<string>Cảm ơn đặc biệt đến</string>
+	<key>Speeds</key>
+	<string>Tốc độ</string>
+	<key>Start TikTok in Following</key>
+	<string>Bắt đầu TikTok ở tab Đang theo dõi</string>
+	<key>Stats Menu</key>
+	<string>Menu thống kê</string>
+	<key>Stop Playback</key>
+	<string>Dừng phát lại</string>
+	<key>Streak Info</key>
+	<string>Thông tin chuỗi</string>
+	<key>Success</key>
+	<string>Thành công</string>
+	<key>Support</key>
+	<string>Hỗ trợ</string>
+	<key>Support the development</key>
+	<string>Hỗ trợ phát triển</string>
+	<key>System Features</key>
+	<string>Tính năng hệ thống</string>
+	<key>Tab Bar Configurations</key>
+	<string>Cấu hình thanh tab</string>
+	<key>Tab Bar Elements</key>
+	<string>Thành phần thanh tab</string>
+	<key>Tab Bar Settings</key>
+	<string>Cài đặt thanh tab</string>
+	<key>Tap to Join the Telegram</key>
+	<string>Nhấn để tham gia Telegram</string>
+	<key>Telegram Channel</key>
+	<string>Kênh Telegram</string>
+	<key>Telegram Discussion Group</key>
+	<string>Nhóm thảo luận Telegram</string>
+	<key>Text &amp; Display Options</key>
+	<string>Tùy chọn văn bản &amp; hiển thị</string>
+	<key>This is your final warning. This action is irreversible and will delete all local TikTok data, including drafts and settings. Are you absolutely sure?</key>
+	<string>Đây là cảnh báo cuối cùng của bạn. Hành động này không thể hoàn tác và sẽ xóa tất cả dữ liệu TikTok cục bộ, bao gồm bản nháp và cài đặt. Bạn có chắc chắn tuyệt đối không?</string>
+	<key>Transparent Comments</key>
+	<string>Bình luận trong suốt</string>
+	<key>UI Designer</key>
+	<string>Nhà thiết kế giao diện</string>
+	<key>Unfollow</key>
+	<string>Bỏ theo dõi</string>
+	<key>Upload HD</key>
+	<string>Tải lên HD</string>
+	<key>Upload Region</key>
+	<string>Khu vực tải lên</string>
+	<key>User Post Count</key>
+	<string>Số bài đăng của người dùng</string>
+	<key>VIEW_PROFILES_ANONYMOUS</key>
+	<string>Xem hồ sơ ẩn danh</string>
+	<key>Video Info</key>
+	<string>Thông tin video</string>
+	<key>Video Information</key>
+	<string>Thông tin video</string>
+	<key>Video Like Count</key>
+	<string>Số lượt thích video</string>
+	<key>Video Link Copied</key>
+	<string>Đã sao chép liên kết video</string>
+	<key>Video Upload Date</key>
+	<string>Ngày tải video lên</string>
+	<key>Video saved successfully</key>
+	<string>Đã lưu video thành công</string>
+	<key>WARNING</key>
+	<string>CẢNH BÁO</string>
+	<key>Waiting for TikTok…</key>
+	<string>Đang chờ TikTok…</string>
+	<key>Warning</key>
+	<string>Cảnh báo</string>
+	<key>Welcome</key>
+	<string>Chào mừng</string>
+	<key>X</key>
+	<string>X</string>
+	<key>Yes</key>
+	<string>Có</string>
+	<key>the video doesn't have music to download</key>
+	<string>Video này không có nhạc để tải xuống</string>
+</dict>
+</plist>

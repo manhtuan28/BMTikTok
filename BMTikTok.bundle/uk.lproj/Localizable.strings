@@ -1,0 +1,908 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>ALWAYS_OPEN_SAFARI</key>
+	<string>Завжди відкривати в Safari</string>
+	<key>About</key>
+	<string>Про додаток</string>
+	<key>Actions</key>
+	<string>Дії</string>
+	<key>Add Comment as Post</key>
+	<string>Додати коментар як пост</string>
+	<key>Add Comment as Story</key>
+	<string>Додати коментар як історію</string>
+	<key>Add Folders To Inbox</key>
+	<string>Додати папки до 'Вхідних'</string>
+	<key>Add Translation Button</key>
+	<string>Додати кнопку перекладу</string>
+	<key>Adjust offline download limit</key>
+	<string>Налаштувати ліміт завантажень офлайн</string>
+	<key>Adjust value between 50 and 2000</key>
+	<string>Встановіть значення від 50 до 2000</string>
+	<key>All TikTok data has been cleared.</key>
+	<string>Усі дані TikTok очищено.</string>
+	<key>All TikTok data has been erased.</key>
+	<string>Усі дані TikTok стерто.</string>
+	<key>All settings have been reset to default values.</key>
+	<string>Усі налаштування скинуто до значень за замовчуванням.</string>
+	<key>Anonymous Seen</key>
+	<string>Анонімний перегляд</string>
+	<key>App Configuration</key>
+	<string>Конфігурація додатку</string>
+	<key>App Lock</key>
+	<string>Блокування додатку</string>
+	<key>Apply</key>
+	<string>Застосувати</string>
+	<key>Are you sure you want to clear all data? This will remove:
+1- TikTok's data directory
+2-all keychains
+3- clears all NSUserDefaults
+ 
+NOTICE!
+ YOU WILL LOSE YOUR DRAFTS AND ANYTHING SAVED LOCALLY.</key>
+	<string>Ви впевнені, що хочете очистити всі дані? Це призведе до видалення:
+1- каталогу даних TikTok
+2- всього вмісту зв'язки ключів (keychain)
+3- очищення всіх NSUserDefaults
+
+ЗАУВАЖТЕ!
+ ВИ ВТРАТИТЕ СВОЇ ЧЕРНЕТКИ ТА ВСЕ, ЩО ЗБЕРІГАЄТЬСЯ ЛОКАЛЬНО.</string>
+	<key>Are you sure you want to erase all TikTok data? This will clear all app data and cannot be undone.</key>
+	<string>Ви впевнені, що хочете стерти всі дані TikTok? Це очистить всі дані додатку і не підлягає скасуванню.</string>
+	<key>Are you sure you want to reset all settings to default values? This action cannot be undone.</key>
+	<string>Ви впевнені, що хочете скинути всі налаштування до значень за замовчуванням? Цю дію не можна скасувати.</string>
+	<key>Are you sure?</key>
+	<string>Ви впевнені?</string>
+	<key>Auto Clear History</key>
+	<string>Автоочищення історії</string>
+	<key>Auto Play Next Video</key>
+	<string>Автопрокрутка відео</string>
+	<key>Auto Unfold Comment Texts</key>
+	<string>Автоматично розгортати текст</string>
+	<key>BACKGROUND_PLAY</key>
+	<string>Увімкнути фонове відтворення</string>
+	<key>BETA!</key>
+	<string>БЕТА!</string>
+	<key>BLOCK_AI_GENERATED</key>
+	<string>Блокувати пости, створені ШІ</string>
+	<key>BLOCK_MOVIE_TOK</key>
+	<string>Блокувати рекламу фільмів</string>
+	<key>BLOCK_POI</key>
+	<string>Блокувати рекламу місць</string>
+	<key>BLOCK_SHOP_VIDEOS</key>
+	<string>Блокувати пости магазину</string>
+	<key>BLOCK_TCM</key>
+	<string>Блокувати рекламу додатків</string>
+	<key>BMTikTok Settings</key>
+	<string>Налаштування BMTikTok</string>
+	<key>BMTikTok, Hi</key>
+	<string>BMTikTok, Привіт</string>
+	<key>BYPASS_FOLLOW_LIST_SEARCH</key>
+	<string>Обійти ліміт пошуку в списку підписників</string>
+	<key>Back</key>
+	<string>Назад</string>
+	<key>Backgrounding ✌️</key>
+	<string>Згортання ✌️</string>
+	<key>Block</key>
+	<string>Заблокувати</string>
+	<key>Buy Me a Coffee</key>
+	<string>Пригостити кавою</string>
+	<key>Bypass Media Limit</key>
+	<string>Обійти ліміт медіа</string>
+	<key>CONFIRM_QUICK_SHARE</key>
+	<string>Підтвердження швидкого поширення</string>
+	<key>CONFIRM_REPOST</key>
+	<string>Підтвердження репосту</string>
+	<key>Cancel</key>
+	<string>Скасувати</string>
+	<key>Cancelled</key>
+	<string>Скасовано</string>
+	<key>Change Action of Live Button</key>
+	<string>Змінити дію кнопки LIVE</string>
+	<key>Change the behavior of the Live button</key>
+	<string>Змінити поведінку кнопки LIVE</string>
+	<key>Changes will take effect after restarting the app</key>
+	<string>Зміни набудуть чинності після перезапуску додатку</string>
+	<key>Chat Features</key>
+	<string>Функції чату</string>
+	<key>Chat Settings</key>
+	<string>Налаштування чату</string>
+	<key>Choose export destination:</key>
+	<string>Виберіть місце експорту:</string>
+	<key>Choose import source:</key>
+	<string>Виберіть джерело імпорту:</string>
+	<key>Clear</key>
+	<string>Очистити</string>
+	<key>Clear Keychain</key>
+	<string>Очистити зв'язку ключів (Keychain)</string>
+	<key>Close</key>
+	<string>Закрити</string>
+	<key>Co-Owner</key>
+	<string>Співвласник</string>
+	<key>Comment Cell Redesign</key>
+	<string>Редизайн коментарів</string>
+	<key>Comment Design</key>
+	<string>Дизайн коментарів</string>
+	<key>Comment Settings</key>
+	<string>Налаштування коментарів</string>
+	<key>Community</key>
+	<string>Спільнота</string>
+	<key>Compact</key>
+	<string>Компактний</string>
+	<key>Configuration</key>
+	<string>Конфігурація</string>
+	<key>Configuration Management</key>
+	<string>Керування конфігурацією</string>
+	<key>Configuration imported from keychain successfully.</key>
+	<string>Конфігурацію успішно імпортовано зі зв'язки ключів.</string>
+	<key>Configuration imported successfully.</key>
+	<string>Конфігурацію успішно імпортовано.</string>
+	<key>Configuration saved to keychain successfully.</key>
+	<string>Конфігурацію успішно збережено у зв'язці ключів.</string>
+	<key>Configure Advanced Comment Settings</key>
+	<string>Налаштувати розширені параметри коментарів</string>
+	<key>Confirm</key>
+	<string>Підтвердити</string>
+	<key>Confirm Clear</key>
+	<string>Підтвердити очищення</string>
+	<key>Confirm Settings</key>
+	<string>Налаштування підтверджень</string>
+	<key>Confirmation Settings</key>
+	<string>Налаштування підтверджень</string>
+	<key>Content &amp; Display</key>
+	<string>Контент та відображення</string>
+	<key>Content Enhancement</key>
+	<string>Покращення контенту</string>
+	<key>Content Filtering</key>
+	<string>Фільтрація контенту</string>
+	<key>Content Interactions</key>
+	<string>Взаємодія з контентом</string>
+	<key>Contributor</key>
+	<string>Учасник</string>
+	<key>Control video playback speed</key>
+	<string>Керувати швидкістю відтворення відео</string>
+	<key>Copy Description</key>
+	<string>Скопіювати опис</string>
+	<key>Copy Link</key>
+	<string>Копіювати посилання</string>
+	<key>Copy Menu</key>
+	<string>Меню копіювання</string>
+	<key>Copy Music Link</key>
+	<string>Скопіювати посилання на музику</string>
+	<key>Copy Video link</key>
+	<string>Скопіювати посилання на відео</string>
+	<key>Copy bio</key>
+	<string>Скопіювати біо</string>
+	<key>Could Not Copy Music</key>
+	<string>Не вдалося скопіювати музику</string>
+	<key>Credits</key>
+	<string>Автори</string>
+	<key>DEVELOPER_SUPPORT</key>
+	<string>Підтримайте BMTikTok та отримайте доступ до нашої групи бета-тестування</string>
+	<key>DEVELOPER_TELEGRAM</key>
+	<string>Приєднуйтесь до нашого Telegram-каналу для останніх оновлень</string>
+	<key>DISABLE_ACTIVITY_STATUS_WARNING</key>
+	<string>Вимкнення або ввімкнення анонімного статусу активності потребує часу, щоб відобразитися на серверах TikTok. Ви все ще можете деякий час з'являтися в мережі після ввімкнення цієї функції.</string>
+	<key>DISABLE_FEED_DOUBLE_TAP</key>
+	<string>Вимкнути подвійний дотик у стрічці</string>
+	<key>DISABLE_SCREENRECORDING_DETECTION</key>
+	<string>Вимкнути виявлення запису екрану</string>
+	<key>DISABLE_SCREENSHOT_DETECTION</key>
+	<string>Вимкнути виявлення скріншотів</string>
+	<key>DISABLE_STORY_DOUBLE_TAP</key>
+	<string>Вимкнути подвійний дотик в історіях</string>
+	<key>DISABLE_TYPING_STICKER</key>
+	<string>Вимкнути стікери під час набору</string>
+	<key>DISABLE_VISUAL_SEARCH_TAG</key>
+	<string>Вимкнути тег візуального пошуку</string>
+	<key>DOWNLOADING_STICKER</key>
+	<string>Завантаження стікера...</string>
+	<key>DOWNLOAD_FAILED</key>
+	<string>Завантаження не вдалося</string>
+	<key>DRM Developer</key>
+	<string>Розробник DRM</string>
+	<key>Data Cleared</key>
+	<string>Дані очищено</string>
+	<key>Default</key>
+	<string>Звичайний</string>
+	<key>Delete</key>
+	<string>Видалити</string>
+	<key>Description Link Copied</key>
+	<string>Посилання на опис скопійовано</string>
+	<key>Deselect All</key>
+	<string>Зняти всі вибір</string>
+	<key>Design Options</key>
+	<string>Параметри дизайну</string>
+	<key>Developer</key>
+	<string>Розробник</string>
+	<key>Disable</key>
+	<string>Вимкнути</string>
+	<key>Disable AI-Generated Replies</key>
+	<string>Вимкнути відповіді, згенеровані ШІ</string>
+	<key>Disable Comment Tooltip</key>
+	<string>Вимкнути підказки в коментарях</string>
+	<key>Disable Left &amp; Right Swipe</key>
+	<string>Вимкнути гортання ліворуч і праворуч</string>
+	<key>Disable Live Streaming</key>
+	<string>Вимкнути прямі ефіри</string>
+	<key>Disable Sensitive Content</key>
+	<string>Вимкнути чутливий контент</string>
+	<key>Disable Survey Popups</key>
+	<string>Вимкнути спливаючі опитування</string>
+	<key>Disable TikTok Rewards ADs</key>
+	<string>Вимкнути рекламу з винагородами TikTok</string>
+	<key>Disable Typing Indicator</key>
+	<string>Вимкнути індикатор набору тексту</string>
+	<key>Disable Warnings</key>
+	<string>Вимкнути попередження</string>
+	<key>Dislike Comment Confirmation</key>
+	<string>Підтвердження дизлайка коментаря</string>
+	<key>Done</key>
+	<string>Готово</string>
+	<key>Download All Photos</key>
+	<string>Завантажити всі фото</string>
+	<key>Download Button</key>
+	<string>Кнопка завантаження</string>
+	<key>Download HD Video</key>
+	<string>Завантажити HD відео</string>
+	<key>Download Music</key>
+	<string>Завантажити музику</string>
+	<key>Download Photo</key>
+	<string>Завантажити фото</string>
+	<key>Download Photos Menu</key>
+	<string>Меню завантаження фото</string>
+	<key>Download Video</key>
+	<string>Завантажити відео</string>
+	<key>Downloading</key>
+	<string>Завантаження</string>
+	<key>Downloads &amp; Sharing</key>
+	<string>Завантаження та поширення</string>
+	<key>Downloads Menu</key>
+	<string>Меню завантажень</string>
+	<key>ENABLE_COMMENT_PHOTO</key>
+	<string>Увімкнути відповіді з фото в коментарях</string>
+	<key>ENABLE_COMMENT_STICKERS</key>
+	<string>Увімкнути відповіді зі стікерами в коментарях</string>
+	<key>ENABLE_STICKER_DOWNLOAD</key>
+	<string>Подвійний дотик для завантаження стікера</string>
+	<key>Edit</key>
+	<string>Редагувати</string>
+	<key>Emoji &amp; Interface</key>
+	<string>Емодзі та інтерфейс</string>
+	<key>Enable</key>
+	<string>Увімкнути</string>
+	<key>Enable Comment Flags</key>
+	<string>Показувати прапорці біля коментарів</string>
+	<key>Enable Comment Photos</key>
+	<string>Увімкнути фото в коментарях</string>
+	<key>Enable Comment Stickers</key>
+	<string>Увімкнути стікери в коментарях</string>
+	<key>Enable Copy Without Username</key>
+	<string>Копіювати без імені користувача</string>
+	<key>Enable Egypt Stickers</key>
+	<string>Увімкнути єгипетські стікери</string>
+	<key>Enable Embeded Links</key>
+	<string>Увімкнути вбудовані посилання</string>
+	<key>Enable Fake Changes</key>
+	<string>Увімкнути фейкові зміни</string>
+	<key>Enable Flex</key>
+	<string>Увімкнути FLEX</string>
+	<key>Enable Live Button Function</key>
+	<string>Увімкнути функцію кнопки LIVE</string>
+	<key>Enable Oled Keyboard</key>
+	<string>Увімкнути OLED-клавіатуру</string>
+	<key>Enable Persistent Playback Speed.</key>
+	<string>Постійна швидкість відтворення для всіх постів</string>
+	<key>Enable Pin Chat</key>
+	<string>Увімкнути закріплення чатів</string>
+	<key>Enable Playback Speed</key>
+	<string>Увімкнути швидкість відтворення</string>
+	<key>Enable Region Changing</key>
+	<string>Увімкнути зміну регіону</string>
+	<key>Enable Region Changing Functionality</key>
+	<string>Увімкнути функцію зміни регіону</string>
+	<key>Enable Small Emoji</key>
+	<string>Увімкнути маленькі емодзі</string>
+	<key>Enable Streaks</key>
+	<string>Увімкнути стріки</string>
+	<key>Enable Text To Reposts</key>
+	<string>Додавати текст до репостів</string>
+	<key>Enable Voice Messages</key>
+	<string>Увімкнути голосові повідомлення</string>
+	<key>Enable region changing to access content from different regions</key>
+	<string>Увімкнути зміну регіону для доступу до контенту з різних країн</string>
+	<key>Enhanced Comments Features</key>
+	<string>Розширені функції коментарів</string>
+	<key>Erase</key>
+	<string>Стерти</string>
+	<key>Erase All Data</key>
+	<string>Стерти всі дані</string>
+	<key>Erase All TikTok Data</key>
+	<string>Стерти всі дані TikTok</string>
+	<key>Erase all TikTok data from the app  [Becareful!!!]</key>
+	<string>Стирає всі дані TikTok з додатку [ОБЕРЕЖНО!!!]</string>
+	<key>Error</key>
+	<string>Помилка</string>
+	<key>Export Configuration</key>
+	<string>Експортувати конфігурацію</string>
+	<key>Export settings to a file</key>
+	<string>Експортувати налаштування у файл</string>
+	<key>Export to File</key>
+	<string>Експортувати у файл</string>
+	<key>Extended Comments</key>
+	<string>Розширені коментарі</string>
+	<key>Extracting Media URL…</key>
+	<string>Витяг URL медіа…</string>
+	<key>FEATURE_ADD_COMMENT_POST</key>
+	<string>Увімкнути публікацію відповідей на коментарі як окремий пост</string>
+	<key>FEATURE_ADD_COMMENT_STORY</key>
+	<string>Увімкнути публікацію відповідей на коментарі як історію</string>
+	<key>FEATURE_ADD_FOLDERS</key>
+	<string>Додає організацію папок до повідомлень у 'Вхідних'</string>
+	<key>FEATURE_ADD_FOLDERS_DESC</key>
+	<string>Організуйте повідомлення у 'Вхідних' за допомогою спеціальних папок для кращого керування</string>
+	<key>FEATURE_ADD_TRANSLATION</key>
+	<string>Додає кнопку перекладу до кожного коментаря</string>
+	<key>FEATURE_ALWAYS_OPEN_SAFARI</key>
+	<string>Завжди відкривати посилання в Safari замість вбудованого браузера</string>
+	<key>FEATURE_ANONYMOUS_SEEN</key>
+	<string>Читайте чати, не повідомляючи співрозмовника</string>
+	<key>FEATURE_ANONYMOUS_SEEN_DESC</key>
+	<string>Переглядайте чати, не надсилаючи сповіщень про прочитання отримувачу</string>
+	<key>FEATURE_APP_LOCK</key>
+	<string>Додає блокування додатку при запуску TikTok</string>
+	<key>FEATURE_APP_LOCK_DESC</key>
+	<string>Захистіть додаток TikTok паролем або біометрією</string>
+	<key>FEATURE_AUTO_CLEAR</key>
+	<string>Очищає вашу історію пошуку кожні 60 секунд</string>
+	<key>FEATURE_AUTO_PLAY</key>
+	<string>Увімкнути автоматичне прокручування відео</string>
+	<key>FEATURE_AUTO_UNFOLD</key>
+	<string>Автоматично розгортати всі довгі коментарі</string>
+	<key>FEATURE_BACKGROUND_PLAY</key>
+	<string>Увімкнути фонове відтворення аудіо</string>
+	<key>FEATURE_BLOCK_AI_GENERATED</key>
+	<string>Блокує пости з позначкою 'Містить медіа, згенероване ШІ'</string>
+	<key>FEATURE_BLOCK_MOVIE_TOK</key>
+	<string>Блокує відео з рекламою фільмів</string>
+	<key>FEATURE_BLOCK_POI</key>
+	<string>Блокувати відео з рекламою місць</string>
+	<key>FEATURE_BLOCK_SHOP_ADS</key>
+	<string>Блокувати відео з рекламою магазину</string>
+	<key>FEATURE_BLOCK_SHOP_VIDEOS</key>
+	<string>Видаляє пости магазину зі стрічки.</string>
+	<key>FEATURE_BLOCK_TCM</key>
+	<string>Блокувати відео з рекламою додатків</string>
+	<key>FEATURE_BYPASS_FOLLOW_LIST_SEARCH</key>
+	<string>Увімкнути пошук у списку підписників, навіть якщо у користувача більше 5000 підписників</string>
+	<key>FEATURE_BYPASS_MEDIA_LIMIT</key>
+	<string>Обходить ліміти надсилання медіа в чаті (за замовчуванням: 9 фото, 1 хв відео)</string>
+	<key>FEATURE_COMMENT_REDESIGN</key>
+	<string>Увімкнути оновлений дизайн коментарів</string>
+	<key>FEATURE_CONFIRM_COMMENT_DISLIKE</key>
+	<string>Запитує підтвердження перед дизлайком коментаря</string>
+	<key>FEATURE_CONFIRM_COMMENT_LIKE</key>
+	<string>Запитує підтвердження перед вподобанням коментаря</string>
+	<key>FEATURE_CONFIRM_FOLLOW</key>
+	<string>Запитує підтвердження перед підпискою на користувача</string>
+	<key>FEATURE_CONFIRM_LIKE</key>
+	<string>Запитує підтвердження перед вподобанням посту</string>
+	<key>FEATURE_CONFIRM_QUICK_SHARE</key>
+	<string>Запитувати підтвердження перед використанням швидкого поширення</string>
+	<key>FEATURE_CONFIRM_REPOST</key>
+	<string>Запитувати підтвердження перед репостом відео</string>
+	<key>FEATURE_COPY_WITHOUT_USERNAME</key>
+	<string>Копіювати коментарі без імені автора</string>
+	<key>FEATURE_DISABLE_AI_REPLIES</key>
+	<string>Вимкнути відповіді, згенеровані ШІ, на постах</string>
+	<key>FEATURE_DISABLE_COMMENT_TOOLTIP</key>
+	<string>Вимкнути підказки в розділі коментарів</string>
+	<key>FEATURE_DISABLE_FEED_DOUBLE_TAP</key>
+	<string>Вимикає подвійний дотик для вподобання в стрічці</string>
+	<key>FEATURE_DISABLE_LIVE</key>
+	<string>Приховує прямі ефіри зі стрічки</string>
+	<key>FEATURE_DISABLE_REWARDS_ADS</key>
+	<string>Приховує рекламу з винагородами TikTok зі стрічки</string>
+	<key>FEATURE_DISABLE_SCREENRECORDING_DETECTION</key>
+	<string>Вимикає виявлення запису екрану в чатах</string>
+	<key>FEATURE_DISABLE_SCREENSHOT_DETECTION</key>
+	<string>Вимикає виявлення скріншотів у чатах</string>
+	<key>FEATURE_DISABLE_SENSITIVE</key>
+	<string>Приховує попередження про 'Неприйнятний контент'</string>
+	<key>FEATURE_DISABLE_STORY_DOUBLE_TAP</key>
+	<string>Вимикає подвійний дотик для вподобання в історіях</string>
+	<key>FEATURE_DISABLE_SURVEY</key>
+	<string>Вимикає опитування в стрічці</string>
+	<key>FEATURE_DISABLE_SWIPE</key>
+	<string>Вимикає гортання ліворуч і праворуч у стрічці</string>
+	<key>FEATURE_DISABLE_TYPING</key>
+	<string>Вимкнути індикатор набору тексту</string>
+	<key>FEATURE_DISABLE_TYPING_STICKER</key>
+	<string>Вимкнути автоматичні рекомендації GIF під час набору тексту</string>
+	<key>FEATURE_DISABLE_VISUAL_SEARCH_TAG</key>
+	<string>Вимикає кнопку 'Візуальний пошук' у стрічці при паузі відео</string>
+	<key>FEATURE_DISABLE_WARNINGS</key>
+	<string>Приховує попередження TikTok</string>
+	<key>FEATURE_DOWNLOAD_BUTTON</key>
+	<string>Додає кнопку завантаження до постів та історій</string>
+	<key>FEATURE_EMBED_LINKS</key>
+	<string>Скопійовані посилання будуть вбудовувати медіа туди, куди їх надіслали</string>
+	<key>FEATURE_ENABLE_COMMENT_FLAGS</key>
+	<string>Показувати прапорці регіонів біля імені автора коментаря</string>
+	<key>FEATURE_ENABLE_FLEX</key>
+	<string>ТІЛЬКИ ДЛЯ РОЗРОБНИКІВ, НЕ ЧІПАЙТЕ, ЯКЩО НЕ ЗНАЄТЕ, ЩО ТАКЕ FLEX!</string>
+	<key>FEATURE_ENABLE_STICKER_DOWNLOAD</key>
+	<string>Увімкнути завантаження стікерів у коментарях</string>
+	<key>FEATURE_ENABLE_STREAKS</key>
+	<string>Увімкнути стріки з друзями</string>
+	<key>FEATURE_ENABLE_TEXT_TO_REPOSTS</key>
+	<string>Додає можливість додавати підписи до репостів для непідтримуваних регіонів</string>
+	<key>FEATURE_EXTENDED_COMMENTS</key>
+	<string>Збільшує ліміт символів у коментарях</string>
+	<key>FEATURE_FAKE_CHANGES</key>
+	<string>Увімкнути фейкові зміни даних профілю</string>
+	<key>FEATURE_FAKE_VERIFIED</key>
+	<string>Показує фейковий значок верифікації</string>
+	<key>FEATURE_FOLLOWER_COUNT</key>
+	<string>Введіть фейкову кількість підписників</string>
+	<key>FEATURE_FOLLOWING_COUNT</key>
+	<string>Введіть фейкову кількість підписок</string>
+	<key>FEATURE_FULL_REGION_MODE</key>
+	<string>УВІМКНІТЬ ТІЛЬКИ, ЯКЩО ПЕРШИЙ ВАРІАНТ НЕ ПРАЦЮЄ!</string>
+	<key>FEATURE_HIDE_ACTIVITY_STATUS</key>
+	<string>Приховує ваш статус 'Останній раз' та 'В мережі' у чатах</string>
+	<key>FEATURE_HIDE_ADS</key>
+	<string>Приховує рекламу у вашій стрічці</string>
+	<key>FEATURE_HIDE_COMMISSION_POSTS</key>
+	<string>Приховати пости 'Автор отримує комісію'</string>
+	<key>FEATURE_HIDE_DANGEROUS_ACTION</key>
+	<string>Приховує попередження під спортивними відео (UFC, бокс тощо)</string>
+	<key>FEATURE_HIDE_EMOJI</key>
+	<string>Приховати розширену панель емодзі для коментарів</string>
+	<key>FEATURE_HIDE_FRIENDS_BADGE</key>
+	<string>Приховує значок сповіщень друзів</string>
+	<key>FEATURE_HIDE_INBOX_BADGE</key>
+	<string>Приховує значок сповіщень вхідних</string>
+	<key>FEATURE_HIDE_PLAY_PAUSE</key>
+	<string>Приховує кнопки відтворення/паузи в стрічці</string>
+	<key>FEATURE_HIDE_PLUS_BTN</key>
+	<string>Приховує кнопку камери</string>
+	<key>FEATURE_HIDE_REPORT_BUTTON</key>
+	<string>Приховати кнопку скарги в панелі навігації особистих повідомлень.</string>
+	<key>FEATURE_HIDE_STREAK_PET</key>
+	<string>Приховати улюбленця стріків</string>
+	<key>FEATURE_HIDE_TAB_BAR_LABELS</key>
+	<string>Приховує підписи на панелі вкладок</string>
+	<key>FEATURE_HIDE_TOP_ITEMS</key>
+	<string>Приховує верхню панель (Для вас, Підписки, Магазин тощо)</string>
+	<key>FEATURE_LIKE_COUNT</key>
+	<string>Показує кількість вподобань на постах</string>
+	<key>FEATURE_LOOP_STORY_VIDEOS</key>
+	<string>Зациклює відео в історіях</string>
+	<key>FEATURE_MARK_SEEN_ON_REPLY</key>
+	<string>Позначає повідомлення як прочитані після відповіді на них</string>
+	<key>FEATURE_MASS_UNFOLD</key>
+	<string>Масово розгорнути всі відповіді на коментарі</string>
+	<key>FEATURE_MULTI_EMOJI</key>
+	<string>Увімкнути розширену панель емодзі для коментарів</string>
+	<key>FEATURE_OLED_KEYBOARD</key>
+	<string>Працює тільки з темною темою</string>
+	<key>FEATURE_PAD_AUTO_SCROLL</key>
+	<string>Увімкнути нативне автогортання постів TikTok для непідтримуваних регіонів</string>
+	<key>FEATURE_PIN_CHATS</key>
+	<string>Увімкнути закріплення улюблених чатів угорі</string>
+	<key>FEATURE_POST_STATS</key>
+	<string>Показує підменю в розділі завантажень з інформацією про пост</string>
+	<key>FEATURE_PROFILE_COPY</key>
+	<string>Копіює біо користувача за довгим натисканням</string>
+	<key>FEATURE_PROFILE_COPY_DESC</key>
+	<string>Копіюйте деталі профілю, включаючи ім'я користувача, біо та іншу загальнодоступну інформацію</string>
+	<key>FEATURE_PROFILE_SAVE</key>
+	<string>Зберігає фото профілю користувача за довгим натисканням</string>
+	<key>FEATURE_PROFILE_SAVE_DESC</key>
+	<string>Зберігайте інформацію профілю в буфер обміну одним дотиком</string>
+	<key>FEATURE_PROGRESS_BAR</key>
+	<string>Показує тривалість медіа під кожним постом</string>
+	<key>FEATURE_PULL_TO_CAMERA</key>
+	<string>Увімкнути функцію 'Потягнути до камери'</string>
+	<key>FEATURE_REGIONS_DESC</key>
+	<string>Отримуйте доступ до контенту для конкретного регіону, підміняючи своє віртуальне місцезнаходження</string>
+	<key>FEATURE_REMOVE_DRAFT_WATERMARK</key>
+	<string>Видаляє водяний знак при збереженні постів або чернеток</string>
+	<key>FEATURE_REMOVE_PENDANT</key>
+	<string>Прибирає рекламний куточок у стрічці</string>
+	<key>FEATURE_REMOVE_TIKTOK_AI_BUTTON</key>
+	<string>Прибирає кнопку TikTok AI (tako) зі стрічки 'Для вас'</string>
+	<key>FEATURE_REMOVE_WATERMARK</key>
+	<string>Видаляє водяний знак із завантаженого медіа</string>
+	<key>FEATURE_RUSSIAN_FIX</key>
+	<string>Увімкніть це, щоб знову запрацювала російська стрічка [НОВИНКА!]</string>
+	<key>FEATURE_SAVE_DM_MEDIA</key>
+	<string>Додає кнопку завантаження до медіа, надісланих в особистих повідомленнях</string>
+	<key>FEATURE_SHARE_SHEET</key>
+	<string>Відкриває меню 'Поділитися' після завершення завантаження медіа</string>
+	<key>FEATURE_SHOW_ALL_TABS</key>
+	<string>Показує всі приховані вкладки налаштувань [BETA]</string>
+	<key>FEATURE_SHOW_ALL_TABS_DESC</key>
+	<string>Показати всі приховані вкладки налаштувань, включаючи експериментальні функції</string>
+	<key>FEATURE_SHOW_USERNAMES</key>
+	<string>Замінює імена користувачів на їхні юзернейми в стрічці</string>
+	<key>FEATURE_SHOW_VIDEO_TIMESTAMP</key>
+	<string>Показує час завантаження посту в стрічці 'Для вас'</string>
+	<key>FEATURE_SKIP_RECOMMENDED</key>
+	<string>Видаляє рекомендації контенту (рекомендації друзів тощо)</string>
+	<key>FEATURE_SMALL_EMOJI</key>
+	<string>Увімкнути надсилання маленьких емодзі</string>
+	<key>FEATURE_START_FYP_IN_FOLLOWING</key>
+	<string>Запускає TikTok у стрічці 'Підписки' замість стрічки 'Для вас'</string>
+	<key>FEATURE_STOP_PLAYBACK</key>
+	<string>Зупиняє відтворення посту після завершення</string>
+	<key>FEATURE_STOP_STORY_PHOTO_ADVANCE</key>
+	<string>Зупиняє автоматичне перегортання фотографій в історіях</string>
+	<key>FEATURE_STORY_LIKE_CONFIRMATION</key>
+	<string>Запитувати підтвердження перед вподобанням історії</string>
+	<key>FEATURE_STREAK_INFO</key>
+	<string>Показує інформацію про ваш поточний стрік при натисканні на вогник стріку</string>
+	<key>FEATURE_TRANSPARENT_COMMENTS</key>
+	<string>Робить фон секції коментарів прозорим</string>
+	<key>FEATURE_UI_BUTTON</key>
+	<string>Показує кнопку 'Приховати інтерфейс'</string>
+	<key>FEATURE_UPLOAD_DATE</key>
+	<string>Показує дату завантаження постів</string>
+	<key>FEATURE_UPLOAD_HD</key>
+	<string>Увімкнути завантаження в HD</string>
+	<key>FEATURE_UPLOAD_REGION</key>
+	<string>Показує прапорець регіону завантаження біля імені користувача</string>
+	<key>FEATURE_USER_POST_COUNT</key>
+	<string>Показує загальну кількість постів користувача</string>
+	<key>FEATURE_VIEW_PROFILES_ANONYMOUS</key>
+	<string>Вимикає відстеження переглядів профілю</string>
+	<key>FEATURE_VOICE_MESSAGES</key>
+	<string>Увімкнути надсилання голосових повідомлень у чаті (тільки в деяких регіонах)</string>
+	<key>FILTERING_OPTIONS</key>
+	<string>Параметри фільтрації</string>
+	<key>Failed to fetch HD video URL. Please try again.</key>
+	<string>Не вдалося отримати URL для HD-відео. Будь ласка, спробуйте ще раз.</string>
+	<key>Failed to save media</key>
+	<string>Не вдалося зберегти медіа</string>
+	<key>Fake Verified</key>
+	<string>Фейкова верифікація</string>
+	<key>Features list</key>
+	<string>Список функцій</string>
+	<key>Feed</key>
+	<string>Стрічка</string>
+	<key>Feed Settings</key>
+	<string>Налаштування стрічки</string>
+	<key>File selection was cancelled.</key>
+	<string>Вибір файлу було скасовано.</string>
+	<key>Follow Confirmation</key>
+	<string>Підтвердження підписки</string>
+	<key>Follower</key>
+	<string>Підписники</string>
+	<key>Following</key>
+	<string>Підписки</string>
+	<key>Full Region Mode</key>
+	<string>Повний режим регіону</string>
+	<key>Get the latest updates and news</key>
+	<string>Отримуйте останні оновлення та новини</string>
+	<key>HIDE_ACTIVITY_STATUS</key>
+	<string>Приховати статус активності</string>
+	<key>HIDE_REPORT_BUTTON</key>
+	<string>Приховати кнопку скарги</string>
+	<key>Hide</key>
+	<string>Приховати</string>
+	<key>Hide Ads</key>
+	<string>Приховати рекламу</string>
+	<key>Hide Commission Posts</key>
+	<string>Приховати пости з комісійними</string>
+	<key>Hide Emoji-Bar</key>
+	<string>Приховати панель емодзі</string>
+	<key>Hide Friends Badge</key>
+	<string>Приховати значок друзів</string>
+	<key>Hide Inbox Badge</key>
+	<string>Приховати значок вхідних</string>
+	<key>Hide Play/Pause Button</key>
+	<string>Приховати кнопку відтворення/паузи</string>
+	<key>Hide Plus Button</key>
+	<string>Приховати кнопку '+'</string>
+	<key>Hide Streak Pet</key>
+	<string>Приховати улюбленця стріків</string>
+	<key>Hide Tab Bar Labels</key>
+	<string>Приховати підписи на панелі вкладок</string>
+	<key>Hide Top Feed items</key>
+	<string>Приховати верхні елементи стрічки</string>
+	<key>Hide dangerous-action Warning</key>
+	<string>Приховати попередження про небезпечні дії</string>
+	<key>Import Configuration</key>
+	<string>Імпортувати конфігурацію</string>
+	<key>Import from File</key>
+	<string>Імпортувати з файлу</string>
+	<key>Import from Keychain</key>
+	<string>Імпортувати зі зв'язки ключів (Keychain)</string>
+	<key>Import settings from a file</key>
+	<string>Імпортувати налаштування з файлу</string>
+	<key>Invalid download URL received.</key>
+	<string>Отримано недійсну URL-адресу для завантаження.</string>
+	<key>Join the community discussion</key>
+	<string>Приєднуйтесь до обговорення в спільноті</string>
+	<key>LOOP_STORY_VIDEOS</key>
+	<string>Зациклити відео в історіях</string>
+	<key>Language</key>
+	<string>Мова</string>
+	<key>Language Changed</key>
+	<string>Мову змінено</string>
+	<key>Language 🌎</key>
+	<string>Мова 🌎</string>
+	<key>Like Comment Confirmation</key>
+	<string>Підтвердження вподобання коментаря</string>
+	<key>Like Confirmation</key>
+	<string>Підтвердження вподобань</string>
+	<key>Live Actions</key>
+	<string>Дії для LIVE</string>
+	<key>Live Button Actions</key>
+	<string>Дії кнопки LIVE</string>
+	<key>Live Button Function</key>
+	<string>Функція кнопки LIVE</string>
+	<key>Live Button Function Disabled</key>
+	<string>Функцію кнопки LIVE вимкнено</string>
+	<key>Live Button Settings</key>
+	<string>Налаштування кнопки LIVE</string>
+	<key>Loading</key>
+	<string>Завантаження</string>
+	<key>MARK_SEEN_ON_REPLY</key>
+	<string>Позначати як прочитане при відповіді</string>
+	<key>Main Developer, Owner</key>
+	<string>Головний розробник, Власник</string>
+	<key>Mass Unfold Comment Replies</key>
+	<string>Масово розгорнути відповіді</string>
+	<key>Modern</key>
+	<string>Сучасний</string>
+	<key>More Options</key>
+	<string>Більше опцій</string>
+	<key>Multi Emoji Comment Bar</key>
+	<string>Розширена панель емодзі</string>
+	<key>Music Link Copied</key>
+	<string>Посилання на музику скопійовано</string>
+	<key>Navigation &amp; Interaction</key>
+	<string>Навігація та взаємодія</string>
+	<key>Next</key>
+	<string>Далі</string>
+	<key>No</key>
+	<string>Ні</string>
+	<key>No Backup</key>
+	<string>Немає резервної копії</string>
+	<key>No backup found</key>
+	<string>Резервну копію не знайдено</string>
+	<key>No internet connection</key>
+	<string>Немає підключення до Інтернету</string>
+	<key>No settings backup found in keychain.</key>
+	<string>Резервну копію налаштувань у зв'язці ключів не знайдено.</string>
+	<key>Not Selected</key>
+	<string>Не вибрано</string>
+	<key>Notification Badges</key>
+	<string>Значки сповіщень</string>
+	<key>OFF</key>
+	<string>ВИМК.</string>
+	<key>OK</key>
+	<string>Гаразд</string>
+	<key>ON</key>
+	<string>УВІМК.</string>
+	<key>OTHER_OPTIONS</key>
+	<string>Інші опції</string>
+	<key>Organization &amp; Management</key>
+	<string>Організація та керування</string>
+	<key>Other</key>
+	<string>Інше</string>
+	<key>Other Settings</key>
+	<string>Інші налаштування</string>
+	<key>PAD_AUTO_SCROLL</key>
+	<string>Стандартне автогортання</string>
+	<key>Photo saved successfully</key>
+	<string>Фото успішно збережено</string>
+	<key>Playback Controls</key>
+	<string>Елементи керування відтворенням</string>
+	<key>Playback Speed</key>
+	<string>Швидкість відтворення</string>
+	<key>Playback Speed Disabled</key>
+	<string>Швидкість відтворення вимкнена</string>
+	<key>Playback Speed Settings</key>
+	<string>Налаштування швидкості відтворення</string>
+	<key>Please enable Live Button Function first</key>
+	<string>Спочатку увімкніть функцію кнопки LIVE</string>
+	<key>Please enable Playback Speed first</key>
+	<string>Спочатку увімкніть швидкість відтворення</string>
+	<key>Please enable region changing first</key>
+	<string>Спочатку увімкніть зміну регіону</string>
+	<key>Please restart the app to apply changes, May require two app restarts!</key>
+	<string>Будь ласка, перезапустіть додаток, щоб застосувати зміни. Може знадобитися два перезапуски!</string>
+	<key>Post Info</key>
+	<string>Інформація про пост</string>
+	<key>Post Stats</key>
+	<string>Статистика посту</string>
+	<key>Privacy &amp; Security</key>
+	<string>Приватність та безпека</string>
+	<key>Processing...</key>
+	<string>Обробка...</string>
+	<key>Profile</key>
+	<string>Профіль</string>
+	<key>Profile Actions</key>
+	<string>Дії з профілем</string>
+	<key>Profile Copy</key>
+	<string>Скопіювати біо</string>
+	<key>Profile Customization</key>
+	<string>Налаштування профілю</string>
+	<key>Profile Enhancement</key>
+	<string>Покращення профілю</string>
+	<key>Profile Save</key>
+	<string>Зберегти фото профілю</string>
+	<key>Profile Settings</key>
+	<string>Налаштування профілю</string>
+	<key>Pull To Camera</key>
+	<string>Потягнути до камери</string>
+	<key>REMOVE_DRAFT_WATERMARK</key>
+	<string>Видалити водяний знак із фото</string>
+	<key>REMOVE_TIKTOK_AI_BUTTON</key>
+	<string>Прибрати кнопку TikTok AI</string>
+	<key>RUSSIAN_FIX</key>
+	<string>Обхід блокування в Росії</string>
+	<key>Really Clear All Data?</key>
+	<string>Справді очистити всі дані?</string>
+	<key>Region</key>
+	<string>Регіон</string>
+	<key>Region Changing Disabled</key>
+	<string>Зміну регіону вимкнено</string>
+	<key>Region Settings</key>
+	<string>Налаштування регіону</string>
+	<key>Regions</key>
+	<string>Регіони</string>
+	<key>Remove Pendant View</key>
+	<string>Прибрати куточок з рекламою</string>
+	<key>Remove Watermark</key>
+	<string>Прибрати водяний знак</string>
+	<key>Report</key>
+	<string>Поскаржитися</string>
+	<key>Reset</key>
+	<string>Скинути</string>
+	<key>Reset All Settings</key>
+	<string>Скинути всі налаштування</string>
+	<key>Reset Settings</key>
+	<string>Скинути налаштування</string>
+	<key>Reset all settings to default values</key>
+	<string>Скинути всі налаштування до значень за замовчуванням</string>
+	<key>SAVE_DM_MEDIA</key>
+	<string>Зберігати медіа з особистих повідомлень</string>
+	<key>STICKER_SAVED</key>
+	<string>Стікер збережено в галерею!</string>
+	<key>STICKER_SAVE_FAILED</key>
+	<string>Не вдалося зберегти стікер</string>
+	<key>STOP_STORY_PHOTO_ADVANCE</key>
+	<string>Зупинити автоперегортання фото в історіях</string>
+	<key>STORY_LIKE_CONFIRMATION</key>
+	<string>Підтвердження вподобання історій</string>
+	<key>Save</key>
+	<string>Зберегти</string>
+	<key>Save to Keychain</key>
+	<string>Зберегти у зв'язку ключів (Keychain)</string>
+	<key>Saved!</key>
+	<string>Збережено!</string>
+	<key>Search</key>
+	<string>Пошук</string>
+	<key>Select Action</key>
+	<string>Вибрати дію</string>
+	<key>Select All</key>
+	<string>Вибрати все</string>
+	<key>Select App Language</key>
+	<string>Виберіть мову додатку</string>
+	<key>Select Design</key>
+	<string>Вибрати дизайн</string>
+	<key>Select Speed</key>
+	<string>Вибрати швидкість</string>
+	<key>Selected Action</key>
+	<string>Вибрана дія</string>
+	<key>Selected Region</key>
+	<string>Вибраний регіон</string>
+	<key>Selected Speed</key>
+	<string>Вибрана швидкість</string>
+	<key>Settings</key>
+	<string>Налаштування</string>
+	<key>Settings Reset</key>
+	<string>Налаштування скинуто</string>
+	<key>Share</key>
+	<string>Поділитися</string>
+	<key>Share Sheet</key>
+	<string>Меню 'Поділитися'</string>
+	<key>Show</key>
+	<string>Показати</string>
+	<key>Show All Settings Tabs</key>
+	<string>Показати всі вкладки налаштувань</string>
+	<key>Show Progress Bar</key>
+	<string>Показувати смугу прогресу</string>
+	<key>Show Usernames</key>
+	<string>Показувати юзернейми</string>
+	<key>Show Video Upload Timestamp</key>
+	<string>Показувати час завантаження відео</string>
+	<key>Show/Hide UI Button</key>
+	<string>Кнопка 'Приховати інтерфейс'</string>
+	<key>Skip Recommendations</key>
+	<string>Пропускати рекомендації</string>
+	<key>Social Actions</key>
+	<string>Соціальні дії</string>
+	<key>Special Thanks to</key>
+	<string>Особлива подяка</string>
+	<key>Speeds</key>
+	<string>Швидкості</string>
+	<key>Start TikTok in Following</key>
+	<string>Запускати TikTok у стрічці 'Підписки'</string>
+	<key>Stats Menu</key>
+	<string>Меню статистики</string>
+	<key>Stop Playback</key>
+	<string>Зупиняти відтворення</string>
+	<key>Streak Info</key>
+	<string>Інформація про стрік</string>
+	<key>Success</key>
+	<string>Успіх</string>
+	<key>Support</key>
+	<string>Підтримка</string>
+	<key>Support the development</key>
+	<string>Підтримати розробку</string>
+	<key>System Features</key>
+	<string>Системні функції</string>
+	<key>Tab Bar Configurations</key>
+	<string>Конфігурація панелі вкладок</string>
+	<key>Tab Bar Elements</key>
+	<string>Елементи панелі вкладок</string>
+	<key>Tab Bar Settings</key>
+	<string>Налаштування панелі вкладок</string>
+	<key>Tap to Join the Telegram</key>
+	<string>Натисніть, щоб приєднатися до Telegram</string>
+	<key>Telegram Channel</key>
+	<string>Telegram-канал</string>
+	<key>Telegram Discussion Group</key>
+	<string>Дискусійна група в Telegram</string>
+	<key>Text &amp; Display Options</key>
+	<string>Параметри тексту та відображення</string>
+	<key>This is your final warning. This action is irreversible and will delete all local TikTok data, including drafts and settings. Are you absolutely sure?</key>
+	<string>Це ваше останнє попередження. Ця дія незворотна і видалить всі локальні дані TikTok, включаючи чернетки та налаштування. Ви абсолютно впевнені?</string>
+	<key>Transparent Comments</key>
+	<string>Прозорі коментарі</string>
+	<key>UI Designer</key>
+	<string>UI-дизайнер</string>
+	<key>Unfollow</key>
+	<string>Відписатися</string>
+	<key>Upload HD</key>
+	<string>Завантажувати в HD</string>
+	<key>Upload Region</key>
+	<string>Регіон завантаження</string>
+	<key>User Post Count</key>
+	<string>Кількість постів користувача</string>
+	<key>VIEW_PROFILES_ANONYMOUS</key>
+	<string>Переглядати профілі анонімно</string>
+	<key>Video Info</key>
+	<string>Інформація про пост</string>
+	<key>Video Information</key>
+	<string>Інформація про відео</string>
+	<key>Video Like Count</key>
+	<string>Кількість вподобань відео</string>
+	<key>Video Link Copied</key>
+	<string>Посилання на відео скопійовано</string>
+	<key>Video Upload Date</key>
+	<string>Дата завантаження відео</string>
+	<key>Video saved successfully</key>
+	<string>Відео успішно збережено</string>
+	<key>WARNING</key>
+	<string>ПОПЕРЕДЖЕННЯ</string>
+	<key>Waiting for TikTok…</key>
+	<string>Очікування TikTok…</string>
+	<key>Warning</key>
+	<string>Попередження</string>
+	<key>Welcome</key>
+	<string>Ласкаво просимо</string>
+	<key>X</key>
+	<string>X</string>
+	<key>Yes</key>
+	<string>Так</string>
+	<key>the video doesn't have music to download</key>
+	<string>У цього відео немає музики для завантаження</string>
+</dict>
+</plist>

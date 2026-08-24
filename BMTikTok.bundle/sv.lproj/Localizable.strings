@@ -1,0 +1,908 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>ALWAYS_OPEN_SAFARI</key>
+	<string>Öppna alltid i Safari</string>
+	<key>About</key>
+	<string>Om</string>
+	<key>Actions</key>
+	<string>Åtgärder</string>
+	<key>Add Comment as Post</key>
+	<string>Lägg till kommentar som inlägg</string>
+	<key>Add Comment as Story</key>
+	<string>Lägg till kommentar som story</string>
+	<key>Add Folders To Inbox</key>
+	<string>Lägg till mappar i inkorgen</string>
+	<key>Add Translation Button</key>
+	<string>Lägg till översättningsknapp</string>
+	<key>Adjust offline download limit</key>
+	<string>Justera offline-nedladdningsgräns</string>
+	<key>Adjust value between 50 and 2000</key>
+	<string>Justera värdet mellan 50 och 2000</string>
+	<key>All TikTok data has been cleared.</key>
+	<string>Alla TikTok-data har rensats.</string>
+	<key>All TikTok data has been erased.</key>
+	<string>Alla TikTok-data har raderats.</string>
+	<key>All settings have been reset to default values.</key>
+	<string>Alla inställningar har återställts till standardvärden.</string>
+	<key>Anonymous Seen</key>
+	<string>Anonym visning</string>
+	<key>App Configuration</key>
+	<string>Appkonfiguration</string>
+	<key>App Lock</key>
+	<string>Applås</string>
+	<key>Apply</key>
+	<string>Tillämpa</string>
+	<key>Are you sure you want to clear all data? This will remove:
+1- TikTok's data directory
+2-all keychains
+3- clears all NSUserDefaults
+ 
+NOTICE!
+ YOU WILL LOSE YOUR DRAFTS AND ANYTHING SAVED LOCALLY.</key>
+	<string>Är du säker på att du vill rensa alla data? Detta kommer att ta bort:
+1- TikToks datakatalog
+2- alla nyckelringar
+3- rensar alla NSUserDefaults
+
+OBS!
+DU KOMMER FÖRLORA DINA UTKAST OCH ALLT SOM SPARATS LOKALT.</string>
+	<key>Are you sure you want to erase all TikTok data? This will clear all app data and cannot be undone.</key>
+	<string>Är du säker på att du vill radera alla TikTok-data? Detta kommer att rensa alla appdata och kan inte ångras.</string>
+	<key>Are you sure you want to reset all settings to default values? This action cannot be undone.</key>
+	<string>Är du säker på att du vill återställa alla inställningar till standardvärden? Denna åtgärd kan inte ångras.</string>
+	<key>Are you sure?</key>
+	<string>Är du säker?</string>
+	<key>Auto Clear History</key>
+	<string>Auto rensa historik</string>
+	<key>Auto Play Next Video</key>
+	<string>Spela nästa video automatiskt</string>
+	<key>Auto Unfold Comment Texts</key>
+	<string>Automatisk utfällning av kommentarstexter</string>
+	<key>BACKGROUND_PLAY</key>
+	<string>Aktivera bakgrundsuppspelning</string>
+	<key>BETA!</key>
+	<string>BETA!</string>
+	<key>BLOCK_AI_GENERATED</key>
+	<string>Blockera AI-genererade inlägg</string>
+	<key>BLOCK_MOVIE_TOK</key>
+	<string>Blockera filmannonser</string>
+	<key>BLOCK_POI</key>
+	<string>Blockera platsannonser</string>
+	<key>BLOCK_SHOP_VIDEOS</key>
+	<string>Blockera butiksinlägg</string>
+	<key>BLOCK_TCM</key>
+	<string>Blockera appannonser</string>
+	<key>BMTikTok Settings</key>
+	<string>BMTikTok Inställningar</string>
+	<key>BMTikTok, Hi</key>
+	<string>BMTikTok, Hej</string>
+	<key>BYPASS_FOLLOW_LIST_SEARCH</key>
+	<string>Kringgå sökbegränsning i följarlista</string>
+	<key>Back</key>
+	<string>Tillbaka</string>
+	<key>Backgrounding ✌️</key>
+	<string>Bakgrund ✌️</string>
+	<key>Block</key>
+	<string>Blockera</string>
+	<key>Buy Me a Coffee</key>
+	<string>Köp en kaffe till mig</string>
+	<key>Bypass Media Limit</key>
+	<string>Kringgå mediegräns</string>
+	<key>CONFIRM_QUICK_SHARE</key>
+	<string>Bekräftelse av snabbdelning</string>
+	<key>CONFIRM_REPOST</key>
+	<string>Bekräftelse av omdelning</string>
+	<key>Cancel</key>
+	<string>Avbryt</string>
+	<key>Cancelled</key>
+	<string>Avbruten</string>
+	<key>Change Action of Live Button</key>
+	<string>Ändra åtgärd för Live-knappen</string>
+	<key>Change the behavior of the Live button</key>
+	<string>Ändra beteendet för Live-knappen</string>
+	<key>Changes will take effect after restarting the app</key>
+	<string>Ändringar träder i kraft efter omstart av appen</string>
+	<key>Chat Features</key>
+	<string>Chattfunktioner</string>
+	<key>Chat Settings</key>
+	<string>Chattinställningar</string>
+	<key>Choose export destination:</key>
+	<string>Välj exportdestination:</string>
+	<key>Choose import source:</key>
+	<string>Välj importkälla:</string>
+	<key>Clear</key>
+	<string>Rensa</string>
+	<key>Clear Keychain</key>
+	<string>Rensa nyckelring</string>
+	<key>Close</key>
+	<string>Stäng</string>
+	<key>Co-Owner</key>
+	<string>Delägare</string>
+	<key>Comment Cell Redesign</key>
+	<string>Omdesign av kommentarceller</string>
+	<key>Comment Design</key>
+	<string>Kommentarsdesign</string>
+	<key>Comment Settings</key>
+	<string>Kommentarsinställningar</string>
+	<key>Community</key>
+	<string>Community</string>
+	<key>Compact</key>
+	<string>Kompakt</string>
+	<key>Configuration</key>
+	<string>Konfiguration</string>
+	<key>Configuration Management</key>
+	<string>Konfigurationshantering</string>
+	<key>Configuration imported from keychain successfully.</key>
+	<string>Konfiguration importerad från nyckelring framgångsrikt.</string>
+	<key>Configuration imported successfully.</key>
+	<string>Konfiguration importerades framgångsrikt.</string>
+	<key>Configuration saved to keychain successfully.</key>
+	<string>Konfiguration sparad i nyckelring framgångsrikt.</string>
+	<key>Configure Advanced Comment Settings</key>
+	<string>Konfigurera avancerade kommentarsinställningar</string>
+	<key>Confirm</key>
+	<string>Bekräfta</string>
+	<key>Confirm Clear</key>
+	<string>Bekräfta rensning</string>
+	<key>Confirm Settings</key>
+	<string>Bekräfta inställningar</string>
+	<key>Confirmation Settings</key>
+	<string>Bekräftelseinställningar</string>
+	<key>Content &amp; Display</key>
+	<string>Innehåll och visning</string>
+	<key>Content Enhancement</key>
+	<string>Innehållsförbättring</string>
+	<key>Content Filtering</key>
+	<string>Innehållsfiltrering</string>
+	<key>Content Interactions</key>
+	<string>Innehållsinteraktioner</string>
+	<key>Contributor</key>
+	<string>Bidragsgivare</string>
+	<key>Control video playback speed</key>
+	<string>Kontrollera videouppspelningshastighet</string>
+	<key>Copy Description</key>
+	<string>Kopiera beskrivning</string>
+	<key>Copy Link</key>
+	<string>Kopiera länk</string>
+	<key>Copy Menu</key>
+	<string>Kopieringsmeny</string>
+	<key>Copy Music Link</key>
+	<string>Kopiera musiklänk</string>
+	<key>Copy Video link</key>
+	<string>Kopiera videolänk</string>
+	<key>Copy bio</key>
+	<string>Kopiera bio</string>
+	<key>Could Not Copy Music</key>
+	<string>Kunde inte kopiera musik</string>
+	<key>Credits</key>
+	<string>Krediter</string>
+	<key>DEVELOPER_SUPPORT</key>
+	<string>Stöd BMTikTok och få tillgång till vår betatestningsgrupp</string>
+	<key>DEVELOPER_TELEGRAM</key>
+	<string>Gå med i vår Telegram-kanal för de senaste uppdateringarna</string>
+	<key>DISABLE_ACTIVITY_STATUS_WARNING</key>
+	<string>Att inaktivera eller aktivera anonym aktivitetsstatus tar tid att spegla på TikToks servrar. Du kan fortfarande synas online ett tag efter att du aktiverat den här funktionen.</string>
+	<key>DISABLE_FEED_DOUBLE_TAP</key>
+	<string>Inaktivera dubbeltryck i flödet</string>
+	<key>DISABLE_SCREENRECORDING_DETECTION</key>
+	<string>Inaktivera skärminspelningsdetektering</string>
+	<key>DISABLE_SCREENSHOT_DETECTION</key>
+	<string>Inaktivera skärmbildsdetektering</string>
+	<key>DISABLE_STORY_DOUBLE_TAP</key>
+	<string>Inaktivera dubbeltryck i stories</string>
+	<key>DISABLE_TYPING_STICKER</key>
+	<string>Inaktivera skrivklistermärke</string>
+	<key>DISABLE_VISUAL_SEARCH_TAG</key>
+	<string>Inaktivera visuell sökningstagg</string>
+	<key>DOWNLOADING_STICKER</key>
+	<string>Laddar ner klistermärke...</string>
+	<key>DOWNLOAD_FAILED</key>
+	<string>Nedladdning misslyckades</string>
+	<key>DRM Developer</key>
+	<string>DRM-utvecklare</string>
+	<key>Data Cleared</key>
+	<string>Data rensad</string>
+	<key>Default</key>
+	<string>Standard</string>
+	<key>Delete</key>
+	<string>Radera</string>
+	<key>Description Link Copied</key>
+	<string>Beskrivningslänk kopierad</string>
+	<key>Deselect All</key>
+	<string>Avmarkera alla</string>
+	<key>Design Options</key>
+	<string>Designalternativ</string>
+	<key>Developer</key>
+	<string>Utvecklare</string>
+	<key>Disable</key>
+	<string>Inaktivera</string>
+	<key>Disable AI-Generated Replies</key>
+	<string>Inaktivera AI-genererade svar</string>
+	<key>Disable Comment Tooltip</key>
+	<string>Inaktivera kommentarverktygstips</string>
+	<key>Disable Left &amp; Right Swipe</key>
+	<string>Inaktivera svep åt vänster och höger</string>
+	<key>Disable Live Streaming</key>
+	<string>Inaktivera livesändningar</string>
+	<key>Disable Sensitive Content</key>
+	<string>Inaktivera känsligt innehåll</string>
+	<key>Disable Survey Popups</key>
+	<string>Inaktivera enkätpopupfönster</string>
+	<key>Disable TikTok Rewards ADs</key>
+	<string>Inaktivera TikTok-belöningsannonser</string>
+	<key>Disable Typing Indicator</key>
+	<string>Inaktivera skrivindikator</string>
+	<key>Disable Warnings</key>
+	<string>Inaktivera varningar</string>
+	<key>Dislike Comment Confirmation</key>
+	<string>Ogilla kommentar-bekräftelse</string>
+	<key>Done</key>
+	<string>Klar</string>
+	<key>Download All Photos</key>
+	<string>Ladda ner alla foton</string>
+	<key>Download Button</key>
+	<string>Ladda ner-knapp</string>
+	<key>Download HD Video</key>
+	<string>Ladda ner HD-video</string>
+	<key>Download Music</key>
+	<string>Ladda ner musik</string>
+	<key>Download Photo</key>
+	<string>Ladda ner foto</string>
+	<key>Download Photos Menu</key>
+	<string>Ladda ner fotomeny</string>
+	<key>Download Video</key>
+	<string>Ladda ner video</string>
+	<key>Downloading</key>
+	<string>Laddar ner</string>
+	<key>Downloads &amp; Sharing</key>
+	<string>Nedladdningar och delning</string>
+	<key>Downloads Menu</key>
+	<string>Nedladdningsmeny</string>
+	<key>ENABLE_COMMENT_PHOTO</key>
+	<string>Aktiverar fotosvar i kommentarer</string>
+	<key>ENABLE_COMMENT_STICKERS</key>
+	<string>Aktiverar stickersvar i kommentarer</string>
+	<key>ENABLE_STICKER_DOWNLOAD</key>
+	<string>Dubbeltryck för att ladda ner klistermärke</string>
+	<key>Edit</key>
+	<string>Redigera</string>
+	<key>Emoji &amp; Interface</key>
+	<string>Emoji och gränssnitt</string>
+	<key>Enable</key>
+	<string>Aktivera</string>
+	<key>Enable Comment Flags</key>
+	<string>Aktivera flaggor i kommentarer</string>
+	<key>Enable Comment Photos</key>
+	<string>Aktivera foton i kommentarer</string>
+	<key>Enable Comment Stickers</key>
+	<string>Aktivera klistermärken i kommentarer</string>
+	<key>Enable Copy Without Username</key>
+	<string>Kopiera utan användarnamn</string>
+	<key>Enable Egypt Stickers</key>
+	<string>Aktivera Egypten-klistermärken</string>
+	<key>Enable Embeded Links</key>
+	<string>Aktivera inbäddade länkar</string>
+	<key>Enable Fake Changes</key>
+	<string>Aktivera fejkändringar</string>
+	<key>Enable Flex</key>
+	<string>Aktivera Flex</string>
+	<key>Enable Live Button Function</key>
+	<string>Aktivera Live-knappens funktion</string>
+	<key>Enable Oled Keyboard</key>
+	<string>Aktivera OLED-tangentbord</string>
+	<key>Enable Persistent Playback Speed.</key>
+	<string>Ha beständig uppspelningshastighet på inlägg</string>
+	<key>Enable Pin Chat</key>
+	<string>Aktivera fäst chatt</string>
+	<key>Enable Playback Speed</key>
+	<string>Aktivera uppspelningshastighet</string>
+	<key>Enable Region Changing</key>
+	<string>Aktivera regionbyte</string>
+	<key>Enable Region Changing Functionality</key>
+	<string>Aktivera funktionalitet för regionbyte</string>
+	<key>Enable Small Emoji</key>
+	<string>Aktivera små emojis</string>
+	<key>Enable Streaks</key>
+	<string>Aktivera streaks</string>
+	<key>Enable Text To Reposts</key>
+	<string>Aktivera text till ompubliceringar</string>
+	<key>Enable Voice Messages</key>
+	<string>Aktivera röstmeddelanden</string>
+	<key>Enable region changing to access content from different regions</key>
+	<string>Aktivera regionbyte för att komma åt innehåll från olika regioner</string>
+	<key>Enhanced Comments Features</key>
+	<string>Förbättrade kommentarsfunktioner</string>
+	<key>Erase</key>
+	<string>Radera</string>
+	<key>Erase All Data</key>
+	<string>Radera alla data</string>
+	<key>Erase All TikTok Data</key>
+	<string>Radera alla TikTok-data</string>
+	<key>Erase all TikTok data from the app  [Becareful!!!]</key>
+	<string>Raderar alla TikTok-data från appen [VAR FÖRSIKTIG!!!]</string>
+	<key>Error</key>
+	<string>Fel</string>
+	<key>Export Configuration</key>
+	<string>Exportera konfiguration</string>
+	<key>Export settings to a file</key>
+	<string>Exportera inställningar till en fil</string>
+	<key>Export to File</key>
+	<string>Exportera till fil</string>
+	<key>Extended Comments</key>
+	<string>Utökade kommentarer</string>
+	<key>Extracting Media URL…</key>
+	<string>Extraherar media-URL…</string>
+	<key>FEATURE_ADD_COMMENT_POST</key>
+	<string>Aktiverar publicering av kommentarssvar som ett inlägg</string>
+	<key>FEATURE_ADD_COMMENT_STORY</key>
+	<string>Aktiverar publicering av kommentarssvar som en story</string>
+	<key>FEATURE_ADD_FOLDERS</key>
+	<string>Lägger till mapporganisation till inkorgsmeddelanden</string>
+	<key>FEATURE_ADD_FOLDERS_DESC</key>
+	<string>Organisera dina inkorgsmeddelanden i anpassade mappar för bättre hantering</string>
+	<key>FEATURE_ADD_TRANSLATION</key>
+	<string>Lägger till en översättningsknapp till varje kommentar</string>
+	<key>FEATURE_ALWAYS_OPEN_SAFARI</key>
+	<string>Öppnar alltid länkar i Safari istället för i appens inbyggda webbläsare</string>
+	<key>FEATURE_ANONYMOUS_SEEN</key>
+	<string>Läs chattar utan att meddela personen</string>
+	<key>FEATURE_ANONYMOUS_SEEN_DESC</key>
+	<string>Visa chattar utan att skicka läskvitton till mottagaren</string>
+	<key>FEATURE_APP_LOCK</key>
+	<string>Lägger till ett applås när TikTok startas</string>
+	<key>FEATURE_APP_LOCK_DESC</key>
+	<string>Säkra TikTok-appen med ett lösenord eller biometrisk autentisering</string>
+	<key>FEATURE_AUTO_CLEAR</key>
+	<string>Rensar din sökhistorik var 60:e sekund</string>
+	<key>FEATURE_AUTO_PLAY</key>
+	<string>Aktiverar automatisk videorullning</string>
+	<key>FEATURE_AUTO_UNFOLD</key>
+	<string>Fäller automatiskt ut alla långa kommentarer</string>
+	<key>FEATURE_BACKGROUND_PLAY</key>
+	<string>Aktiverar bakgrundsuppspelning av ljud</string>
+	<key>FEATURE_BLOCK_AI_GENERATED</key>
+	<string>Blockera inlägg med 'Innehåller AI-genererad media'</string>
+	<key>FEATURE_BLOCK_MOVIE_TOK</key>
+	<string>Blockera videor med filmannonser</string>
+	<key>FEATURE_BLOCK_POI</key>
+	<string>Blockera videor med platsannonser</string>
+	<key>FEATURE_BLOCK_SHOP_ADS</key>
+	<string>Blockera videor med butiksannonser</string>
+	<key>FEATURE_BLOCK_SHOP_VIDEOS</key>
+	<string>Tar bort butiksinlägg från flödet.</string>
+	<key>FEATURE_BLOCK_TCM</key>
+	<string>Blockera videor med appannonser</string>
+	<key>FEATURE_BYPASS_FOLLOW_LIST_SEARCH</key>
+	<string>Aktiverar sökning i följarlistan även om användaren har över 5 000 följare</string>
+	<key>FEATURE_BYPASS_MEDIA_LIMIT</key>
+	<string>Kringgår gränser för mediesändning i chatt (standard: 9 foton, 1 min video)</string>
+	<key>FEATURE_COMMENT_REDESIGN</key>
+	<string>Aktiverar omdesignade kommentarceller</string>
+	<key>FEATURE_CONFIRM_COMMENT_DISLIKE</key>
+	<string>Frågar efter bekräftelse innan du ogillar en kommentar</string>
+	<key>FEATURE_CONFIRM_COMMENT_LIKE</key>
+	<string>Frågar efter bekräftelse innan du gillar en kommentar</string>
+	<key>FEATURE_CONFIRM_FOLLOW</key>
+	<string>Frågar efter bekräftelse innan du följer en användare</string>
+	<key>FEATURE_CONFIRM_LIKE</key>
+	<string>Frågar efter bekräftelse innan du gillar ett inlägg</string>
+	<key>FEATURE_CONFIRM_QUICK_SHARE</key>
+	<string>Frågar efter bekräftelse innan snabbdelning används</string>
+	<key>FEATURE_CONFIRM_REPOST</key>
+	<string>Frågar efter bekräftelse innan en video delas om</string>
+	<key>FEATURE_COPY_WITHOUT_USERNAME</key>
+	<string>Kopierar kommentarer utan kommentatorns namn</string>
+	<key>FEATURE_DISABLE_AI_REPLIES</key>
+	<string>Inaktiverar AI-genererade svar på inlägg</string>
+	<key>FEATURE_DISABLE_COMMENT_TOOLTIP</key>
+	<string>Inaktiverar verktygstips i kommentarssektionen</string>
+	<key>FEATURE_DISABLE_FEED_DOUBLE_TAP</key>
+	<string>Inaktiverar dubbeltryck för att gilla i flödet</string>
+	<key>FEATURE_DISABLE_LIVE</key>
+	<string>Döljer livesändningar från flödet</string>
+	<key>FEATURE_DISABLE_REWARDS_ADS</key>
+	<string>Döljer TikToks belöningsannonser från flödet</string>
+	<key>FEATURE_DISABLE_SCREENRECORDING_DETECTION</key>
+	<string>Inaktiverar skärminspelningsdetektering i chattar</string>
+	<key>FEATURE_DISABLE_SCREENSHOT_DETECTION</key>
+	<string>Inaktiverar skärmbildsdetektering i chattar</string>
+	<key>FEATURE_DISABLE_SENSITIVE</key>
+	<string>Döljer varningar för 'Olämpligt innehåll'</string>
+	<key>FEATURE_DISABLE_STORY_DOUBLE_TAP</key>
+	<string>Inaktiverar dubbeltryck för att gilla i stories</string>
+	<key>FEATURE_DISABLE_SURVEY</key>
+	<string>Inaktiverar enkätfrågor i flödet</string>
+	<key>FEATURE_DISABLE_SWIPE</key>
+	<string>Inaktiverar svepning åt vänster och höger i flödet</string>
+	<key>FEATURE_DISABLE_TYPING</key>
+	<string>Inaktiverar skrivindikatorn</string>
+	<key>FEATURE_DISABLE_TYPING_STICKER</key>
+	<string>Inaktivera automatiska GIF-rekommendationer när du skriver</string>
+	<key>FEATURE_DISABLE_VISUAL_SEARCH_TAG</key>
+	<string>Inaktiverar knappen 'Visuell sökning' i flödet när du pausar en video</string>
+	<key>FEATURE_DISABLE_WARNINGS</key>
+	<string>Döljer TikTok-varningar</string>
+	<key>FEATURE_DOWNLOAD_BUTTON</key>
+	<string>Lägger till en nedladdningsknapp till inlägg och stories</string>
+	<key>FEATURE_EMBED_LINKS</key>
+	<string>Kopierade länkar kommer att bädda in media där de skickas</string>
+	<key>FEATURE_ENABLE_COMMENT_FLAGS</key>
+	<string>Visar regionsflaggor bredvid kommentatorns namn</string>
+	<key>FEATURE_ENABLE_FLEX</key>
+	<string>ENDAST FÖR UTVECKLARE, RÖR INTE OM DU INTE VET VAD FLEX ÄR!</string>
+	<key>FEATURE_ENABLE_STICKER_DOWNLOAD</key>
+	<string>Aktiverar nedladdning av klistermärken i kommentarer</string>
+	<key>FEATURE_ENABLE_STREAKS</key>
+	<string>Aktiverar streaks med vänner</string>
+	<key>FEATURE_ENABLE_TEXT_TO_REPOSTS</key>
+	<string>Aktiverar möjligheten att lägga till bildtexter till ompubliceringar för regioner som inte stöds</string>
+	<key>FEATURE_EXTENDED_COMMENTS</key>
+	<string>Ökar teckengränsen för kommentarer</string>
+	<key>FEATURE_FAKE_CHANGES</key>
+	<string>Aktiverar fejkade profildataändringar</string>
+	<key>FEATURE_FAKE_VERIFIED</key>
+	<string>Visar ett fejkat verifieringsmärke</string>
+	<key>FEATURE_FOLLOWER_COUNT</key>
+	<string>Ange fejkat antal följare</string>
+	<key>FEATURE_FOLLOWING_COUNT</key>
+	<string>Ange fejkat antal följda</string>
+	<key>FEATURE_FULL_REGION_MODE</key>
+	<string>AKTIVERA ENDAST OM FÖRSTA ALTERNATIVET INTE FUNGERAR!</string>
+	<key>FEATURE_HIDE_ACTIVITY_STATUS</key>
+	<string>Döljer dina 'Senast aktiv' och 'Online'-statusar i chattar</string>
+	<key>FEATURE_HIDE_ADS</key>
+	<string>Döljer annonser från att visas i ditt flöde</string>
+	<key>FEATURE_HIDE_COMMISSION_POSTS</key>
+	<string>Döljer inlägg om 'Skaparen tjänar provision'</string>
+	<key>FEATURE_HIDE_DANGEROUS_ACTION</key>
+	<string>Döljer varningar under sportvideor (UFC, boxning, etc.)</string>
+	<key>FEATURE_HIDE_EMOJI</key>
+	<string>Döljer multi-emojifältet för kommentarer</string>
+	<key>FEATURE_HIDE_FRIENDS_BADGE</key>
+	<string>Döljer vännotifikationsmärket</string>
+	<key>FEATURE_HIDE_INBOX_BADGE</key>
+	<string>Döljer inkorgsnotifikationsmärket</string>
+	<key>FEATURE_HIDE_PLAY_PAUSE</key>
+	<string>Döljer play/pause-vyn i flödet</string>
+	<key>FEATURE_HIDE_PLUS_BTN</key>
+	<string>Döljer kameraknappen</string>
+	<key>FEATURE_HIDE_REPORT_BUTTON</key>
+	<string>Dölj flaggknapp i navigeringsfältet för direktmeddelanden.</string>
+	<key>FEATURE_HIDE_STREAK_PET</key>
+	<string>Döljer streakdjuret</string>
+	<key>FEATURE_HIDE_TAB_BAR_LABELS</key>
+	<string>Döljer etiketter i flikfältet</string>
+	<key>FEATURE_HIDE_TOP_ITEMS</key>
+	<string>Döljer det övre fältet (För dig, Följer, Shop, etc.)</string>
+	<key>FEATURE_LIKE_COUNT</key>
+	<string>Visar antalet gilla-markeringar på inlägg</string>
+	<key>FEATURE_LOOP_STORY_VIDEOS</key>
+	<string>Loopar videor i stories</string>
+	<key>FEATURE_MARK_SEEN_ON_REPLY</key>
+	<string>Markerar meddelanden som sedda vid svar</string>
+	<key>FEATURE_MASS_UNFOLD</key>
+	<string>Fäller ut alla kommentarssvar massvis</string>
+	<key>FEATURE_MULTI_EMOJI</key>
+	<string>Aktiverar multi-emojifältet för kommentarer</string>
+	<key>FEATURE_OLED_KEYBOARD</key>
+	<string>Fungerar endast med mörkt tema</string>
+	<key>FEATURE_PAD_AUTO_SCROLL</key>
+	<string>Aktiverar TikToks inbyggda automatiska inläggsrullning för regioner som inte stöds</string>
+	<key>FEATURE_PIN_CHATS</key>
+	<string>Aktiverar fästning av favoritchattar överst</string>
+	<key>FEATURE_POST_STATS</key>
+	<string>Visar en undermeny i nedladdningssektionen med inläggsinformation</string>
+	<key>FEATURE_PROFILE_COPY</key>
+	<string>Kopierar en användares bio via lång tryckning</string>
+	<key>FEATURE_PROFILE_COPY_DESC</key>
+	<string>Kopiera profildetaljer inklusive användarnamn, bio och annan offentlig information</string>
+	<key>FEATURE_PROFILE_SAVE</key>
+	<string>Sparar en användares profilbild via lång tryckning</string>
+	<key>FEATURE_PROFILE_SAVE_DESC</key>
+	<string>Spara profilinformation till ditt urklipp med en tryckning</string>
+	<key>FEATURE_PROGRESS_BAR</key>
+	<string>Visar mediets längd under varje inlägg</string>
+	<key>FEATURE_PULL_TO_CAMERA</key>
+	<string>Aktiverar funktionen 'Dra till kamera'</string>
+	<key>FEATURE_REGIONS_DESC</key>
+	<string>Få tillgång till regionspecifikt innehåll genom att förfalska din virtuella plats</string>
+	<key>FEATURE_REMOVE_DRAFT_WATERMARK</key>
+	<string>Tar bort vattenstämpel när du sparar inlägg eller utkast</string>
+	<key>FEATURE_REMOVE_PENDANT</key>
+	<string>Tar bort den övre vänstra annonsvyn i flödet</string>
+	<key>FEATURE_REMOVE_TIKTOK_AI_BUTTON</key>
+	<string>Tar bort TikTok AI-knappen (tako) från FYP</string>
+	<key>FEATURE_REMOVE_WATERMARK</key>
+	<string>Tar bort vattenstämpeln från nedladdad media</string>
+	<key>FEATURE_RUSSIAN_FIX</key>
+	<string>Aktivera detta för att få ryska flödet att fungera igen [NYTT!]</string>
+	<key>FEATURE_SAVE_DM_MEDIA</key>
+	<string>Lägger till en nedladdningsknapp till media som skickats i DM</string>
+	<key>FEATURE_SHARE_SHEET</key>
+	<string>Öppnar delningsarket efter att media har laddats ner</string>
+	<key>FEATURE_SHOW_ALL_TABS</key>
+	<string>Visar alla dolda inställningsflikar [BETA]</string>
+	<key>FEATURE_SHOW_ALL_TABS_DESC</key>
+	<string>Visa alla dolda inställningsflikar, inklusive experimentella funktioner</string>
+	<key>FEATURE_SHOW_USERNAMES</key>
+	<string>Ersätter användares smeknamn med deras användarnamn i flödet</string>
+	<key>FEATURE_SHOW_VIDEO_TIMESTAMP</key>
+	<string>Visar inläggets uppladdningstid i FYP</string>
+	<key>FEATURE_SKIP_RECOMMENDED</key>
+	<string>Tar bort innehållsrekommendationer (vänrekommendationer, etc.)</string>
+	<key>FEATURE_SMALL_EMOJI</key>
+	<string>Aktiverar sändning av små emojis</string>
+	<key>FEATURE_START_FYP_IN_FOLLOWING</key>
+	<string>Startar TikTok i flödet 'Följer', istället för flödet 'För dig'</string>
+	<key>FEATURE_STOP_PLAYBACK</key>
+	<string>Stoppar uppspelningen av inlägget vid slut</string>
+	<key>FEATURE_STOP_STORY_PHOTO_ADVANCE</key>
+	<string>Stoppar storyfoton från att avancera automatiskt</string>
+	<key>FEATURE_STORY_LIKE_CONFIRMATION</key>
+	<string>Frågar efter bekräftelse innan du gillar en story</string>
+	<key>FEATURE_STREAK_INFO</key>
+	<string>Visar din aktuella streakinformation när du trycker på streak-elden</string>
+	<key>FEATURE_TRANSPARENT_COMMENTS</key>
+	<string>Gör kommentarssektionens bakgrund transparent</string>
+	<key>FEATURE_UI_BUTTON</key>
+	<string>Visar 'Dölj UI'-knappen</string>
+	<key>FEATURE_UPLOAD_DATE</key>
+	<string>Visar uppladdningsdatum på inlägg</string>
+	<key>FEATURE_UPLOAD_HD</key>
+	<string>Aktiverar HD-uppladdningar</string>
+	<key>FEATURE_UPLOAD_REGION</key>
+	<string>Visar uppladdningsregionens flagga bredvid användarnamnet</string>
+	<key>FEATURE_USER_POST_COUNT</key>
+	<string>Visar en användares totala inläggsantal</string>
+	<key>FEATURE_VIEW_PROFILES_ANONYMOUS</key>
+	<string>Inaktiverar profils visningsspårning</string>
+	<key>FEATURE_VOICE_MESSAGES</key>
+	<string>Aktiverar sändning av röstmeddelanden i chatt (endast i vissa regioner)</string>
+	<key>FILTERING_OPTIONS</key>
+	<string>Filtreringsalternativ</string>
+	<key>Failed to fetch HD video URL. Please try again.</key>
+	<string>Misslyckades med att hämta HD-video-URL. Försök igen.</string>
+	<key>Failed to save media</key>
+	<string>Misslyckades med att spara media</string>
+	<key>Fake Verified</key>
+	<string>Fejkverifierad</string>
+	<key>Features list</key>
+	<string>Funktionslista</string>
+	<key>Feed</key>
+	<string>Flöde</string>
+	<key>Feed Settings</key>
+	<string>Flödesinställningar</string>
+	<key>File selection was cancelled.</key>
+	<string>Filval avbröts.</string>
+	<key>Follow Confirmation</key>
+	<string>Följ-bekräftelse</string>
+	<key>Follower</key>
+	<string>Följare</string>
+	<key>Following</key>
+	<string>Följer</string>
+	<key>Full Region Mode</key>
+	<string>Fullt regionläge</string>
+	<key>Get the latest updates and news</key>
+	<string>Få de senaste uppdateringarna och nyheterna</string>
+	<key>HIDE_ACTIVITY_STATUS</key>
+	<string>Dölj aktivitetsstatus</string>
+	<key>HIDE_REPORT_BUTTON</key>
+	<string>Dölj rapporteringsknapp</string>
+	<key>Hide</key>
+	<string>Dölj</string>
+	<key>Hide Ads</key>
+	<string>Dölj annonser</string>
+	<key>Hide Commission Posts</key>
+	<string>Dölj provisionsinlägg</string>
+	<key>Hide Emoji-Bar</key>
+	<string>Dölj emojifält</string>
+	<key>Hide Friends Badge</key>
+	<string>Dölj vänmärke</string>
+	<key>Hide Inbox Badge</key>
+	<string>Dölj inkorgsmärke</string>
+	<key>Hide Play/Pause Button</key>
+	<string>Dölj spela/pausa-knapp</string>
+	<key>Hide Plus Button</key>
+	<string>Dölj plus-knapp</string>
+	<key>Hide Streak Pet</key>
+	<string>Dölj streakdjur</string>
+	<key>Hide Tab Bar Labels</key>
+	<string>Dölj flikfältsetiketter</string>
+	<key>Hide Top Feed items</key>
+	<string>Dölj toppelement i flödet</string>
+	<key>Hide dangerous-action Warning</key>
+	<string>Dölj varning för farlig handling</string>
+	<key>Import Configuration</key>
+	<string>Importera konfiguration</string>
+	<key>Import from File</key>
+	<string>Importera från fil</string>
+	<key>Import from Keychain</key>
+	<string>Importera från nyckelring</string>
+	<key>Import settings from a file</key>
+	<string>Importera inställningar från en fil</string>
+	<key>Invalid download URL received.</key>
+	<string>Ogiltig nedladdnings-URL mottagen.</string>
+	<key>Join the community discussion</key>
+	<string>Gå med i communitydiskussionen</string>
+	<key>LOOP_STORY_VIDEOS</key>
+	<string>Loopa storyvideor</string>
+	<key>Language</key>
+	<string>Språk</string>
+	<key>Language Changed</key>
+	<string>Språk ändrat</string>
+	<key>Language 🌎</key>
+	<string>Språk 🌎</string>
+	<key>Like Comment Confirmation</key>
+	<string>Gilla kommentar-bekräftelse</string>
+	<key>Like Confirmation</key>
+	<string>Gilla-bekräftelse</string>
+	<key>Live Actions</key>
+	<string>Live-åtgärder</string>
+	<key>Live Button Actions</key>
+	<string>Live-knappens åtgärder</string>
+	<key>Live Button Function</key>
+	<string>Live-knappens funktion</string>
+	<key>Live Button Function Disabled</key>
+	<string>Live-knappens funktion inaktiverad</string>
+	<key>Live Button Settings</key>
+	<string>Live-knappens inställningar</string>
+	<key>Loading</key>
+	<string>Laddar</string>
+	<key>MARK_SEEN_ON_REPLY</key>
+	<string>Markera som sedd vid svar</string>
+	<key>Main Developer, Owner</key>
+	<string>Huvudutvecklare, Ägare</string>
+	<key>Mass Unfold Comment Replies</key>
+	<string>Massvis utfällning av kommentarssvar</string>
+	<key>Modern</key>
+	<string>Modern</string>
+	<key>More Options</key>
+	<string>Fler alternativ</string>
+	<key>Multi Emoji Comment Bar</key>
+	<string>Multi-emojifält för kommentarer</string>
+	<key>Music Link Copied</key>
+	<string>Musiklänk kopierad</string>
+	<key>Navigation &amp; Interaction</key>
+	<string>Navigering och interaktion</string>
+	<key>Next</key>
+	<string>Nästa</string>
+	<key>No</key>
+	<string>Nej</string>
+	<key>No Backup</key>
+	<string>Ingen säkerhetskopia</string>
+	<key>No backup found</key>
+	<string>Ingen säkerhetskopia hittades</string>
+	<key>No internet connection</key>
+	<string>Ingen internetanslutning</string>
+	<key>No settings backup found in keychain.</key>
+	<string>Ingen säkerhetskopia av inställningar hittades i nyckelringen.</string>
+	<key>Not Selected</key>
+	<string>Inte vald</string>
+	<key>Notification Badges</key>
+	<string>Notifikationsmärken</string>
+	<key>OFF</key>
+	<string>AV</string>
+	<key>OK</key>
+	<string>OK</string>
+	<key>ON</key>
+	<string>PÅ</string>
+	<key>OTHER_OPTIONS</key>
+	<string>Andra alternativ</string>
+	<key>Organization &amp; Management</key>
+	<string>Organisation och hantering</string>
+	<key>Other</key>
+	<string>Andra</string>
+	<key>Other Settings</key>
+	<string>Andra inställningar</string>
+	<key>PAD_AUTO_SCROLL</key>
+	<string>Standard automatisk rullning</string>
+	<key>Photo saved successfully</key>
+	<string>Foto sparades framgångsrikt</string>
+	<key>Playback Controls</key>
+	<string>Uppspelningskontroller</string>
+	<key>Playback Speed</key>
+	<string>Uppspelningshastighet</string>
+	<key>Playback Speed Disabled</key>
+	<string>Uppspelningshastighet inaktiverad</string>
+	<key>Playback Speed Settings</key>
+	<string>Inställningar för uppspelningshastighet</string>
+	<key>Please enable Live Button Function first</key>
+	<string>Aktivera Live-knappens funktion först</string>
+	<key>Please enable Playback Speed first</key>
+	<string>Aktivera uppspelningshastighet först</string>
+	<key>Please enable region changing first</key>
+	<string>Aktivera regionbyte först</string>
+	<key>Please restart the app to apply changes, May require two app restarts!</key>
+	<string>Starta om appen för att tillämpa ändringar, kan kräva två omstarter!</string>
+	<key>Post Info</key>
+	<string>Inläggsinformation</string>
+	<key>Post Stats</key>
+	<string>Inläggsstatistik</string>
+	<key>Privacy &amp; Security</key>
+	<string>Integritet och säkerhet</string>
+	<key>Processing...</key>
+	<string>Bearbetar...</string>
+	<key>Profile</key>
+	<string>Profil</string>
+	<key>Profile Actions</key>
+	<string>Profilåtgärder</string>
+	<key>Profile Copy</key>
+	<string>Kopiera profil</string>
+	<key>Profile Customization</key>
+	<string>Profilanpassning</string>
+	<key>Profile Enhancement</key>
+	<string>Profilförbättring</string>
+	<key>Profile Save</key>
+	<string>Spara profil</string>
+	<key>Profile Settings</key>
+	<string>Profilinställningar</string>
+	<key>Pull To Camera</key>
+	<string>Dra till kamera</string>
+	<key>REMOVE_DRAFT_WATERMARK</key>
+	<string>Ta bort fotovattenstämpel</string>
+	<key>REMOVE_TIKTOK_AI_BUTTON</key>
+	<string>Ta bort TikTok AI-knapp</string>
+	<key>RUSSIAN_FIX</key>
+	<string>Kringgå Rysslandsförbud</string>
+	<key>Really Clear All Data?</key>
+	<string>Verkligen rensa alla data?</string>
+	<key>Region</key>
+	<string>Region</string>
+	<key>Region Changing Disabled</key>
+	<string>Regionbyte inaktiverat</string>
+	<key>Region Settings</key>
+	<string>Regioninställningar</string>
+	<key>Regions</key>
+	<string>Regioner</string>
+	<key>Remove Pendant View</key>
+	<string>Ta bort hängande vy</string>
+	<key>Remove Watermark</key>
+	<string>Ta bort vattenstämpel</string>
+	<key>Report</key>
+	<string>Rapportera</string>
+	<key>Reset</key>
+	<string>Återställ</string>
+	<key>Reset All Settings</key>
+	<string>Återställ alla inställningar</string>
+	<key>Reset Settings</key>
+	<string>Återställ inställningar</string>
+	<key>Reset all settings to default values</key>
+	<string>Återställ alla inställningar till standardvärden</string>
+	<key>SAVE_DM_MEDIA</key>
+	<string>Spara DM-media</string>
+	<key>STICKER_SAVED</key>
+	<string>Klistermärke sparat i galleriet!</string>
+	<key>STICKER_SAVE_FAILED</key>
+	<string>Misslyckades med att spara klistermärke</string>
+	<key>STOP_STORY_PHOTO_ADVANCE</key>
+	<string>Stoppa automatiskt fotoavancemang i stories</string>
+	<key>STORY_LIKE_CONFIRMATION</key>
+	<string>Story-gillabekräftelse</string>
+	<key>Save</key>
+	<string>Spara</string>
+	<key>Save to Keychain</key>
+	<string>Spara till nyckelring</string>
+	<key>Saved!</key>
+	<string>Sparad!</string>
+	<key>Search</key>
+	<string>Sök</string>
+	<key>Select Action</key>
+	<string>Välj åtgärd</string>
+	<key>Select All</key>
+	<string>Välj alla</string>
+	<key>Select App Language</key>
+	<string>Välj appspråk</string>
+	<key>Select Design</key>
+	<string>Välj design</string>
+	<key>Select Speed</key>
+	<string>Välj hastighet</string>
+	<key>Selected Action</key>
+	<string>Vald åtgärd</string>
+	<key>Selected Region</key>
+	<string>Vald region</string>
+	<key>Selected Speed</key>
+	<string>Vald hastighet</string>
+	<key>Settings</key>
+	<string>Inställningar</string>
+	<key>Settings Reset</key>
+	<string>Inställningar återställda</string>
+	<key>Share</key>
+	<string>Dela</string>
+	<key>Share Sheet</key>
+	<string>Delningsark</string>
+	<key>Show</key>
+	<string>Visa</string>
+	<key>Show All Settings Tabs</key>
+	<string>Visa alla inställningsflikar</string>
+	<key>Show Progress Bar</key>
+	<string>Visa förloppsindikator</string>
+	<key>Show Usernames</key>
+	<string>Visa användarnamn</string>
+	<key>Show Video Upload Timestamp</key>
+	<string>Visa tidsstämpel för videouppladdning</string>
+	<key>Show/Hide UI Button</key>
+	<string>Visa/dölj UI-knapp</string>
+	<key>Skip Recommendations</key>
+	<string>Hoppa över rekommendationer</string>
+	<key>Social Actions</key>
+	<string>Sociala åtgärder</string>
+	<key>Special Thanks to</key>
+	<string>Särskilt tack till</string>
+	<key>Speeds</key>
+	<string>Hastigheter</string>
+	<key>Start TikTok in Following</key>
+	<string>Starta TikTok i Följer</string>
+	<key>Stats Menu</key>
+	<string>Statistikmeny</string>
+	<key>Stop Playback</key>
+	<string>Stoppa uppspelning</string>
+	<key>Streak Info</key>
+	<string>Streakinformation</string>
+	<key>Success</key>
+	<string>Framgång</string>
+	<key>Support</key>
+	<string>Support</string>
+	<key>Support the development</key>
+	<string>Stöd utvecklingen</string>
+	<key>System Features</key>
+	<string>Systemfunktioner</string>
+	<key>Tab Bar Configurations</key>
+	<string>Flikfältskonfigurationer</string>
+	<key>Tab Bar Elements</key>
+	<string>Flikfältselement</string>
+	<key>Tab Bar Settings</key>
+	<string>Flikfältsinställningar</string>
+	<key>Tap to Join the Telegram</key>
+	<string>Tryck för att gå med i Telegram</string>
+	<key>Telegram Channel</key>
+	<string>Telegramkanal</string>
+	<key>Telegram Discussion Group</key>
+	<string>Telegramdiskussionsgrupp</string>
+	<key>Text &amp; Display Options</key>
+	<string>Text- och visningsalternativ</string>
+	<key>This is your final warning. This action is irreversible and will delete all local TikTok data, including drafts and settings. Are you absolutely sure?</key>
+	<string>Detta är din sista varning. Denna åtgärd är oåterkallelig och kommer att radera alla lokala TikTok-data, inklusive utkast och inställningar. Är du absolut säker?</string>
+	<key>Transparent Comments</key>
+	<string>Transparenta kommentarer</string>
+	<key>UI Designer</key>
+	<string>UI-designer</string>
+	<key>Unfollow</key>
+	<string>Sluta följ</string>
+	<key>Upload HD</key>
+	<string>Ladda upp i HD</string>
+	<key>Upload Region</key>
+	<string>Uppladdningsregion</string>
+	<key>User Post Count</key>
+	<string>Användarens inläggsantal</string>
+	<key>VIEW_PROFILES_ANONYMOUS</key>
+	<string>Visa profiler anonymt</string>
+	<key>Video Info</key>
+	<string>Videoinformation</string>
+	<key>Video Information</key>
+	<string>Videoinformation</string>
+	<key>Video Like Count</key>
+	<string>Antal gilla-markeringar på video</string>
+	<key>Video Link Copied</key>
+	<string>Videolänk kopierad</string>
+	<key>Video Upload Date</key>
+	<string>Uppladdningsdatum för video</string>
+	<key>Video saved successfully</key>
+	<string>Video sparades framgångsrikt</string>
+	<key>WARNING</key>
+	<string>VARNING</string>
+	<key>Waiting for TikTok…</key>
+	<string>Väntar på TikTok…</string>
+	<key>Warning</key>
+	<string>Varning</string>
+	<key>Welcome</key>
+	<string>Välkommen</string>
+	<key>X</key>
+	<string>X</string>
+	<key>Yes</key>
+	<string>Ja</string>
+	<key>the video doesn't have music to download</key>
+	<string>Den här videon har ingen musik att ladda ner</string>
+</dict>
+</plist>

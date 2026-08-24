@@ -1,0 +1,276 @@
+/* Headers */
+"Settings" = "Ayarlar";
+"Developer" = "BHTikTok geliştiricisi";
+"PlusDeveloper" = "BHTikTok Plus geliştiricisi";
+
+/* Main */
+"DownloadOptions" = "İndirme Seçenekleri";
+"FeedOptions" = "Besleme Seçenekleri";
+"ProfileOptions" = "Profil Seçenekleri";
+"ConfirmationOptions" = "Onaylama Seçenekleri";
+"RegionOptions" = "Bölge Seçenekleri";
+"FakeOptions" = "Sahte Seçenekleri";
+"ColorOptions" = "Renk Seçenekleri";
+"OtherOptions" = "Diğer Seçenekler";
+"Apply" = "Ayarları Uygula";
+
+/* Developer */
+"TipJar" = "İpucu Kavanozu";
+"DonateViaPayPal" = "PayPal aracılığıyla bağış yapın";
+"Donate" = "Gelişime destek olun";
+"Telegram" = "Telegram Kanalımız";
+"Thanks" = "Özel Teşekkürler";
+"DonateMessage" = "BHTikTok Plus'ı beğendiyseniz ve bana destek olmak istiyorsanız, aşağıdaki uygun yollardan herhangi birini kullanarak bana bir kahve satın alabilirsiniz.\n\nTeşekkürler❤";
+"MaybeLater" = "Belki sonra";
+"ThankYou" = "Teşekkürler";
+
+/* Download Options */
+"DownloadFeedHeader" = "Besleme";
+"DownloadVideos" = "Video indir";
+"DownloadVideosDesc" = "Filigransız videoları indirmek için bir düğme ekler";
+"DownloadHDVideos" = "HD Videoları İndirin";
+"DownloadHDVideosDesc" = "HD (H.265) videoları indirme seçeneği ekler. Not: Bu format bazı uygulamalarla uyumlu olmayabilir";
+"DownloadWMVideos" = "Filigranlı Video İndir";
+"DownloadWMVideosDesc" = "Filigranlı videoları indirme seçeneği ekler";
+"DownloadMusics" = "Müzik indir";
+"DownloadMusicsDesc" = "Videolardan müzik indirmek için bir düğme ekler";
+"CopyVideoDescription" = "Video Açıklamasını Kopyala";
+"CopyVideoDescriptionDesc" = "Video açıklamalarını kopyalamak için bir düğme ekler";
+"CopyVideosLink" = "Video Bağlantısını Kopyala";
+"CopyVideosLinkDesc" = "Video bağlantılarını kopyalamak için bir düğme ekler";
+"CopyMusicsLink" = "Müzik Bağlantısını Kopyala";
+"CopyMusicsLinkDesc" = "Müzik bağlantılarını kopyalamak için bir düğme ekler";
+"GroupMenuItems" = "Menü Öğeleri Grupla";
+"GroupMenuItemsDesc" = "Menü öğelerini İndir ve Kopyala alt menülere gruplandırır";
+"CompactProgress" = "Compact Progress Bar";
+"CompactProgressDesc" = "Displays a compact downloading progress bar at the bottom of the screen";
+"RemoveWatermark" = "Filigranları Devre Dışı Bırak ";
+"RemoveWatermarkDesc" = "Standart TikTok menüsünden filigransız videolar indirmek istiyorsanız kullanışlıdır ";
+"DownloadProfileHeader" = "Profil";
+"SaveProfileImage" = "Profil Fotoğraflarını Kaydet";
+"SaveProfileImageDesc" = "Uzun basıldığında profil fotoğraflarının indirilmesine izin verir";
+"CopyProfileInformation" = "Profil Bilgilerini Kopyala";
+"CopyProfileInformationDesc" = "Bir fotoğrafa veya @kullanıcı adına uzun basıldığında profil açıklamalarının kopyalanmasına olanak tanır";
+"DownloadedAction" = "Yükleme Sonrası Eylem";
+"SaveToPhotos" = "Fotoğraflara Kaydet";
+"ShowShareSheet" = "Paylaşım Sayfasını Göster";
+"DownloadMenu" = "Bağlam Menü Stili";
+"CompactMenu" = "Kompakt";
+"OldMenu" = "TikTok";
+
+/* Feed Options */
+"Feed" = "Besleme";
+"NoAds" = "Reklamları devre dışı bırak";
+"NoAdsDesc" = "Uygulama içi reklamları kaldırır";
+"HideUI" = "Saf Mod";
+"HideUIDesc" = "Arayüz düğmelerini gizlemek/göstermek için bir düğme ekler";
+"UploadRegion" = "Yükleme Ülkesini Görüntüle";
+"UploadRegionDesc" = "Kullanıcı adının yanında videonun yüklendiği ülke bayrağını gösterir";
+"NoPullToRefresh" = "Yenilemeyi Devre Dışı Bırak";
+"NoPullToRefreshDesc" = "İlk sayfayı aşağı çekerek beslemeyi yenileme hareketini devre dışı bırakır";
+"ShowUsername" = "Kullanıcı Adını Göster";
+"ShowUsernameDesc" = "Eski sürümlerde olduğu gibi takma ad yerine kullanıcı adını gösterir";
+"TransparentComms" = "Yarı şeffaf Yorumlar";
+"TransparentCommsDesc" = "Yorum penceresinin arka planını yarı saydam hale getirerek video izlerken yorumları okumanızı sağlar";
+"ClearLinks" = "Bağlantıları Temizle";
+"ClearLinksDesc" = "Hesabınızdan paylaşılan bağlantıların takibini kaldırır";
+"NoWarnings" = "Uyarıları Devre Dışı Bırak";
+"NoWarningsDesc" = "Video açıklamasının altındaki uyarı mesajını kaldırır";
+"SkipRecs" = "Önerileri Atla";
+"SkipLive" = "Yayınları Devre Dışı Bırak";
+"ShowProgressBar" = "İlerleme Çubuğunu Göster";
+"PlaybackAction" = "Video Oynatma Tamamlandıktan Sonra Yapılacak İşlem";
+"Replay" = "Tekrarla";
+"Stop" = "Dur";
+"SkipToNext" = "Sonrakine Geç";
+"RegionStyle" = "Bölge Formatı ve Yerleşimi";
+"CountryFlag" = "Ülke bayrağı";
+"CountryCode" = "Ülke kodu";
+"InNickname" = "Takma ad";
+"TopRight" = "Sağ Üst Köşe";
+"StartupPage" = "Başlangıç Sayfası";
+"ForYou" = "Senin için";
+"Following" = "Takip";
+
+/* Profile Options */
+"FollowStatus" = "Takip Edilme Durumu";
+"FollowStatusDesc" = "Kullanıcı profillerinde abonelik durumunu görüntüler";
+"VideoCount" = "Video Sayısı";
+"VideoCountDesc" = "Kullanıcı profillerindeki toplam yükleme sayısını görüntüler";
+"TotalVideoCount" = "Gönderiler: %@";
+"UploadDate" = "Video Yükleme Tarihi";
+"UploadDateDesc" = "Kullanıcı profillerindeki video küçük resimlerinde yükleme tarihini görüntüler";
+"ProfileLikeCount" = "Video Beğeni Sayısı";
+"ProfileLikeCountDesc" = "Kullanıcı profillerindeki video küçük resimlerinin sayısı gibi görüntüler";
+"UnsensitiveContent" = "Hassas Olmayan İçerikler";
+"UnsensitiveContentDesc" = "Hassas içerik uyarısını kaldırır";
+"NoJustWatched" = "\"Şimdi İzlendi\"yi Kaldır";
+"NoJustWatchedDesc" = "Video küçük resimlerinden \"Şimdi İzlendi\" maskesini kaldırır";
+"ExtendBio" = "Biyo Sınırını Uzat";
+"ExtendBioDesc" = "Profil açıklamaları için karakter sınırını 222'ye çıkarır";
+"ExtendComment" = "Yorum Sınırını Uzat";
+"ExtendCommentDesc" = "Yorumlar için karakter sınırını 240'a çıkarır";
+"UploadHD" = "Her zaman HD olarak yükle";
+"UploadHDDesc" = "HD kalitesinde videoları zorla yükler";
+
+/* Confirmation Options */
+"ConfirmLike" = "Beğenmeyi Onayla";
+"ConfirmLikeDesc" = "Bir gönderiyi beğenmeden önce onay gerektirir";
+"ConfirmCommentLike" = "Yorumu Beğenmeyi Onaylayın";
+"ConfirmCommentLikeDesc" = "Bir yorumu beğenmeden önce onay gerektirir";
+"ConfirmCommentDislike" = "Onayla Yorum Beğenme";
+"ConfirmCommentDislikeDesc" = "Bir yorumu beğenmeden önce onay gerektirir";
+"ConfirmFollow" = "Takip Etmeyi Onayla";
+"ConfirmFollowDesc" = "Bir kullanıcıyı takip etmeden önce onay gerektirir";
+
+/* Region Options */
+"EnableChangingRegion" = "Bölge değiştir";
+"Regions" = "Bölgeler";
+"Albania" = "Arnavutluk";
+"Algeria" = "Cezayir";
+"Anguilla" = "Anguilla";
+"Argentina" = "Arjantin";
+"Australia" = "Avustralya";
+"Azerbaijan" = "Azerbaycan";
+"Belarus" = "Belarus";
+"Brazil" = "Brezilya";
+"Canada" = "Kanada";
+"Croatia" = "Hırvatistan";
+"Denmark" = "Danimarka";
+"Egypt" = "Mısır";
+"Finland" = "Finlandiya";
+"France" = "Fransa";
+"Germany" = "Almanya";
+"HongKong" = "Hong Kong";
+"Indonesia" = "Endonezya";
+"Italy" = "İtalya";
+"Japan" = "Japonya";
+"Kazakhstan" = "Kazakistan";
+"Kuwait" = "Kuveyt";
+"Laos" = "Laos";
+"Lebanon" = "Lübnan";
+"Macao" = "Makao";
+"Malaysia" = "Malezya";
+"Mexico" = "Meksika";
+"Moldova" = "Moldova";
+"Morocco" = "Fas";
+"Netherlands" = "Hollanda";
+"Norway" = "Norveç";
+"Pakistan" = "Pakistan";
+"Panama" = "Panama";
+"Philippines" = "Filipinler";
+"Romania" = "Romanya";
+"Russia" = "Rusya";
+"SaudiArabia" = "Suudi Arabistan";
+"Senegal" = "Senegal";
+"Singapore" = "Singapur";
+"SouthKorea" = "Güney Kore";
+"Sudan" = "Sudan";
+"Switzerland" = "İsviçre";
+"Taiwan" = "Tayvan";
+"Thailand" = "Tayland";
+"Turkey" = "Türkiye";
+"Turkmenistan" = "Türkmenistan";
+"Ukraine" = "Ukrayna";
+"UnitedArabEmirates" = "Birleşik Arap Emirlikleri";
+"UnitedKingdom" = "Birleşik Krallık";
+"UnitedStates" = "Amerika Birleşik Devletleri";
+"Uzbekistan" = "Özbekistan";
+"Vietnam" = "Vietnam";
+"Yemen" = "Yemen";
+"Poland" = "Polonya";
+"CzechRepublic" = "Çekya";
+
+/* Fake Options */
+"FakeBlueMark" = "Sahte Doğrulama Rozeti";
+"EnableFakeOptions" = "Sahte Abonelikler/Beğeniler";
+"FollowerCount" = "Takipçi Sayısı";
+"FollowingCount" = "Takip Sayısı";
+"LikeCount" = "Beğen Sayısı";
+"EnterNumber" = "Bir Numara Girin";
+"FakeDesc" = "Orijinal değerleri göstermek için alanları boş bırakın. Bu değişiklikleri yalnızca siz görebilirsiniz";
+
+/* Color Options */
+"NicknameColor" = "Takma Ad Rengini Değiştir";
+"NicknameColorDesc" = "Akıştaki takma adların rengini değiştirir";
+"NicknameColorGlobal" = "Tüm Takma Adlara Uygula";
+"NicknameColorGlobalDesc" = "Uygulama boyunca takma adların rengini değiştirir. \"%@\" seçeneğinin etkinleştirilmesi gerekiyor";
+"CommentColor" =  "Açıklamaların Rengini Değiştir";
+"CommentColorDesc" =  "Video açıklamalarının renklerini değiştirir";
+"SelectColor" = "Renk seç";
+"ProfileTextShadow" = "Küçük Resimlere Gölge Uygula";
+"ProfileTextShadowDesc" = "Profillerdeki video küçük resimlerindeki istatistiklere gölge uygular";
+"NicknameTextShadow" = "Takma Adlara Gölge Uygula";
+"NicknameTextShadowDesc" = "Akıştaki takma adlara gölge uygular";
+"NicknameGlobalShadow" = "Tüm Takma Adlara Uygula";
+"NicknameGlobalShadowDesc" = "Uygulama genelinde takma adlara gölge uygular. \"%@\" seçeneğinin etkinleştirilmesi gerekiyor";
+
+/* Other */
+"BHButtonPlacement" = "Ayarlar Düğmesi Yerleşimi";
+"InProfile" = "Profil Bilgileri";
+"InSettings" = "Ayarlar içinde";
+"Padlock" = "Parola Kilidi";
+"PadlockDesc" = "Uygulamanın kilidini açmak için şifre gerekir";
+"Cache" = "Önbelleği Temizle";
+"Cleared" = "Bitti.\nTemizlendi %@";
+"FixInteractions" = "Etkileşimleri Düzelt";
+"FixInteractionsDesc" = "Şüpheli etkinlik dahil tüm verileri kaldırarak abone olma, beğenme ve yorum yapma gibi yetenekleri geri getirir";
+"FixInteractionsMsg" = "BU İŞLEM GERİ ALINAMAZ.\n\nDahil olmak üzere tüm veriler: Yetkilendirme verileri, Uygulama ayarları, Tweaks ayarları ve mevcut tüm taslaklar silinecektir.\n\nDevam etmek istediğine emin misin?";
+"RestartApp" = "Bitti.\nUygulama yeniden başlatılması gerekiyor";
+
+/* Special Thanks */
+"Arabic" = "Arapça yerelleştirmesi";
+"ChineseSimplified" = "Basitleştirilmiş Çince yerelleştirmesi";
+"ChineseTraditional" = "Geleneksel Çince yerelleştirmesi";
+"İspanyol" = "İspanyol yerelleştirmesi";
+"Fransız" = "Fransız yerelleştirmesi";
+"Vietnamca" = "Vietnamca yerelleştirmesi";
+"Turkish" = "Türkçe yerelleştirmesi";
+"Japanese" = "Japonca yerelleştirmesi";
+
+/* Pop-ups And Other Stuff */
+"BHTikTokSettings" = "BHTikTok Plus";
+"AreYouSure" = "Emin misin?";
+"ActionFollow" = "Takip Et";
+"ActionLike" = "Beğen";
+"ActionDislike" = "Beğenme";
+"ConfirmAction" = "Eylemi Onayla";
+"Warning" = "Uyarı";
+"ApplyDesc" = "Bu eylem, değişikliklerin uygulanması için uygulamayı kapatacak. Devam etmek istediğine emin misin?";
+"Yes" = "Evet";
+"No" = "Hayır";
+"Confirm" = "Onayla";
+"Cancel" = "İptal et";
+"DownloadGroup" = "İndir";
+"CopyGroup" = "Kopyala";
+"Downloading" = "İndiriliyor";
+"DownloadVideo" = "Video indir";
+"DownloadHDVideo" = "HD Videoyu İndir";
+"DownloadWMVideo" = "Filigranlı İndir";
+"DownloadMusic" = "Müzik indir";
+"DownloadThisPhoto" = "Bu Fotoğrafı İndir";
+"DownloadAllPhotos" = "Tüm Fotoğrafları İndir";
+"DownloadProfileImage" = "Profil Fotoğrafını İndir";
+"StaticImagesOnly" = "Sabit Görüntüyü İndirir";
+"CopyMusicLink" = "Müzik Bağlantısını Kopyala";
+"CopyVideoLink" = "Video Bağlantısını Kopyala";
+"CopyDescription" = "Açıklamayı Kopyala";
+"WhatToCopy" = "Bir Eylem Seçin";
+"CopySocialName" = "@kullanıcı adını kopyala";
+"CopyNickName" = "Adı Kopyala";
+"CopyBio" = "Biyografiyi Kopyala";
+"CopyBioURL" = "Profil URL'sini kopyala";
+"VidNoMusic" = "Videoda müzik yok";
+"VidNoDescription" = "Açıklama bulunamadı";
+"Success" = "Kaydedildi";
+"Copied" = "Kopyalandı";
+"Done" = "Bitti";
+"Share" = "Paylaş";
+"NoFollows" = "Hayır takip etmiyor";
+"FollowsYou" = "Seni takip ediyor";
+"DoesntFollowsYou" = "Takip";
+"Friends" = "Arkadaşlar";
+
+/* Passlock */
+"Authenticate" = "Kimlik doğrula";
+"IdentifyYourself" = "Kendini tanıt!";
