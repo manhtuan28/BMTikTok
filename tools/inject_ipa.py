@@ -5,7 +5,8 @@ BMTikTok IPA Injector Tool
 Created by Tuancute28 (Bùi Mạnh Tuấn)
 
 Tự động giải nén IPA TikTok gốc, chèn BMTikTok.dylib, BMTikTok.bundle,
-CydiaSubstrate và đóng gói thành phẩm BMTikTok IPA hoàn chỉnh.
+loại bỏ các PlugIns/Extensions/Watch để tối ưu chỉ cần 1 App ID khi Sideload (Sideloadly / AltStore),
+và đóng gói thành phẩm BMTikTok IPA hoàn chỉnh.
 """
 
 import sys
@@ -94,12 +95,34 @@ def repackage_ipa(input_ipa, dylib_path, bundle_path, output_ipa):
     
     print(f"[*] Mục tiêu ứng dụng: {app_path}")
     
-    # 1. Copy BMTikTok.dylib vào Frameworks
+    # 1. Loại bỏ các PlugIns, Extensions, Watch để Sideloadly / AltStore chỉ cần duy nhất 1 App ID
+    strip_folders = ["PlugIns", "Watch", "Extensions", "AppExtensions"]
+    for folder in strip_folders:
+        folder_path = os.path.join(app_path, folder)
+        if os.path.exists(folder_path):
+            print(f"[*] Đang loại bỏ {folder}/ để giảm số lượng App ID...")
+            shutil.rmtree(folder_path)
+            
+    # 2. Xóa các chứng chỉ và profile ký cũ
+    code_sign_dir = os.path.join(app_path, "_CodeSignature")
+    if os.path.exists(code_sign_dir):
+        shutil.rmtree(code_sign_dir)
+        
+    provision_profile = os.path.join(app_path, "embedded.mobileprovision")
+    if os.path.exists(provision_profile):
+        os.remove(provision_profile)
+        
+    # Xóa _CodeSignature trong các Frameworks
+    for root, dirs, files in os.walk(frameworks_dir):
+        if "_CodeSignature" in dirs:
+            shutil.rmtree(os.path.join(root, "_CodeSignature"))
+    
+    # 3. Copy BMTikTok.dylib vào Frameworks
     dest_dylib = os.path.join(frameworks_dir, "BMTikTok.dylib")
     shutil.copy(dylib_path, dest_dylib)
     print(f"[+] Đã sao chép BMTikTok.dylib -> {dest_dylib}")
     
-    # 2. Copy BMTikTok.bundle vào thư mục ứng dụng
+    # 4. Copy BMTikTok.bundle vào thư mục ứng dụng
     if os.path.exists(bundle_path):
         dest_bundle = os.path.join(app_path, "BMTikTok.bundle")
         if os.path.exists(dest_bundle):
@@ -107,22 +130,17 @@ def repackage_ipa(input_ipa, dylib_path, bundle_path, output_ipa):
         shutil.copytree(bundle_path, dest_bundle)
         print(f"[+] Đã sao chép BMTikTok.bundle -> {dest_bundle}")
         
-    # 3. Patch LC_LOAD_DYLIB vào file thực thi
+    # 5. Patch LC_LOAD_DYLIB vào file thực thi
     print(f"[*] Đang chèn load dylib vào file thực thi: {main_executable}")
     inject_load_dylib(main_executable, "@rpath/BMTikTok.dylib")
     
-    # 4. Kiểm tra MusicallyCore.framework nếu có
+    # 6. Kiểm tra MusicallyCore.framework nếu có
     musically_core = os.path.join(frameworks_dir, "MusicallyCore.framework", "MusicallyCore")
     if os.path.exists(musically_core):
         print(f"[*] Phát hiện MusicallyCore.framework, đang chèn load dylib...")
         inject_load_dylib(musically_core, "@rpath/BMTikTok.dylib")
         
-    # 5. Xóa thư mục code signature cũ
-    code_sign_dir = os.path.join(app_path, "_CodeSignature")
-    if os.path.exists(code_sign_dir):
-        shutil.rmtree(code_sign_dir)
-        
-    # 6. Đóng gói lại thành file IPA mới
+    # 7. Đóng gói lại thành file IPA mới
     print(f"[*] Đang nén thành phẩm IPA: {output_ipa}")
     with zipfile.ZipFile(output_ipa, 'w', zipfile.ZIP_DEFLATED) as zip_out:
         for root, dirs, files in os.walk(work_dir):
