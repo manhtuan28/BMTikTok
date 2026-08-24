@@ -1,3 +1,10 @@
+//
+//  Tweak.x
+//  BMTikTok
+//
+//  Tác giả & Phát triển: Tuancute28 (Bùi Mạnh Tuấn)
+//
+
 #import "TikTokHeaders.h"
 #import "BMConfigManager.h"
 
@@ -16,9 +23,14 @@
 NSArray *jailbreakPaths;
 
 static void showConfirmation(void (^okHandler)(void)) {
-  [%c(AWEUIAlertView) showAlertWithTitle:@"Xác nhận BMTikTok" description:@"Bạn có chắc chắn muốn thực hiện thao tác này không?" image:nil actionButtonTitle:@"Đồng ý" cancelButtonTitle:@"Hủy" actionBlock:^{
-    okHandler();
-  } cancelBlock:nil];
+    [%c(AWEUIAlertView) showAlertWithTitle:@"Xác nhận BMTikTok"
+                               description:@"Bạn có chắc chắn muốn thực hiện thao tác này không?"
+                                     image:nil
+                         actionButtonTitle:@"Đồng ý"
+                         cancelButtonTitle:@"Hủy"
+                               actionBlock:^{
+        okHandler();
+    } cancelBlock:nil];
 }
 
 
@@ -33,15 +45,15 @@ static void showConfirmation(void (^okHandler)(void)) {
         [[%c(FLEXManager) performSelector:@selector(sharedManager)] performSelector:@selector(showExplorer)];
     }
     if (![[NSUserDefaults standardUserDefaults] objectForKey:@"BMTikTokFirstRun"]) {
-        // Thử khôi phục cài đặt từ Keychain trước (nếu người dùng cài lại IPA hoặc nâng cấp)
+        // Khôi phục cài đặt từ Keychain trước (nếu người dùng cài lại IPA hoặc nâng cấp)
         if (![BMConfigManager restoreSettingsFromKeychain]) {
             [[NSUserDefaults standardUserDefaults] setValue:@"BMTikTokFirstRun" forKey:@"BMTikTokFirstRun"];
             [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"hide_ads"];
             [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"download_button"];
             [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"remove_elements_button"];
-            [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"show_porgress_bar"];
-            [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"save_profile"];
-            [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"copy_profile_information"];
+            [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"progress_bar"];
+            [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"download_profile_avatar"];
+            [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"copy_profile_bio"];
             [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"extended_bio"];
             [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"extendedComment"];
             [BMConfigManager saveSettingsToKeychain];
@@ -53,19 +65,19 @@ static void showConfirmation(void (^okHandler)(void)) {
 
 static BOOL isAuthenticationShowed = FALSE;
 - (void)applicationDidBecomeActive:(id)arg1 {
-  %orig;
-  if ([BMIManager appLock] && !isAuthenticationShowed) {
-    UIViewController *rootController = [[self window] rootViewController];
-    SecurityViewController *securityViewController = [SecurityViewController new];
-    securityViewController.modalPresentationStyle = UIModalPresentationOverFullScreen;
-    [rootController presentViewController:securityViewController animated:YES completion:nil];
-    isAuthenticationShowed = TRUE;
-  }
+    %orig;
+    if ([BMIManager appLock] && !isAuthenticationShowed) {
+        UIViewController *rootController = [[self window] rootViewController];
+        SecurityViewController *securityViewController = [SecurityViewController new];
+        securityViewController.modalPresentationStyle = UIModalPresentationOverFullScreen;
+        [rootController presentViewController:securityViewController animated:YES completion:nil];
+        isAuthenticationShowed = TRUE;
+    }
 }
 
 - (void)applicationWillEnterForeground:(id)arg1 {
-  %orig;
-  isAuthenticationShowed = FALSE;
+    %orig;
+    isAuthenticationShowed = FALSE;
 }
 %end
 
@@ -87,8 +99,8 @@ static BOOL isAuthenticationShowed = FALSE;
         TTKSettingsBaseCellPlugin *BMTikTokSettingsPluginCell = [[%c(TTKSettingsBaseCellPlugin) alloc] initWithPluginContext:self.context];
 
         AWESettingItemModel *BMTikTokSettingsItemModel = [[%c(AWESettingItemModel) alloc] initWithIdentifier:@"bmtiktok_settings"];
-        [BMTikTokSettingsItemModel setTitle:@"BMTikTok++ settings"];
-        [BMTikTokSettingsItemModel setDetail:@"BMTikTok++ settings"];
+        [BMTikTokSettingsItemModel setTitle:@"BMTikTok VIP Mod 🇻🇳"];
+        [BMTikTokSettingsItemModel setDetail:@"BMTikTok VIP Mod 🇻🇳"];
         [BMTikTokSettingsItemModel setIconImage:[UIImage systemImageNamed:@"gear"]];
         [BMTikTokSettingsItemModel setType:99];
 
@@ -101,15 +113,10 @@ static BOOL isAuthenticationShowed = FALSE;
 
 // ═══════════════════════════════════════════════════════════════
 // MARK: - 2. Feed & Ads
-// Gộp 2 `%hook AWEAwemeModel` thành 1 block duy nhất để tránh
-// xung đột Logos gây lỗi video không load.
 // ═══════════════════════════════════════════════════════════════
 
 %hook AWEAwemeModel
 // --- Lọc quảng cáo an toàn ---
-// KHÔNG dùng `return nil` trong `init` / `initWithDictionary:` vì nó phá vỡ
-// video model của TikTok gây lỗi không load được video. Thay vào đó, đánh dấu
-// model là ads/commerce để TikTok tự ẩn chúng khỏi feed.
 - (BOOL)isAds {
     if ([BMIManager hideAds]) return YES;
     return %orig;
@@ -120,10 +127,6 @@ static BOOL isAuthenticationShowed = FALSE;
 }
 - (BOOL)isCommerce {
     if ([BMIManager hideCommissionPosts]) return YES;
-    return %orig;
-}
-- (BOOL)isCommerceAd {
-    if ([BMIManager hideCommissionPosts] || [BMIManager hideAds]) return YES;
     return %orig;
 }
 
@@ -219,7 +222,7 @@ static BOOL isAuthenticationShowed = FALSE;
 }
 %end
 
-%hook AWEPlayVideoPauseView
+%hook AWEAwemePlayVideoPauseIcon
 - (void)didMoveToSuperview {
     %orig;
     if ([BMIManager hidePlayPause]) {
@@ -231,7 +234,6 @@ static BOOL isAuthenticationShowed = FALSE;
 
 // ═══════════════════════════════════════════════════════════════
 // MARK: - 3. Video Playback
-// Gộp 2 `%hook AWEPlayVideoPlayerController` thành 1 block duy nhất.
 // ═══════════════════════════════════════════════════════════════
 
 %hook AWEPlayVideoPlayerController
@@ -291,12 +293,12 @@ static BOOL isAuthenticationShowed = FALSE;
 
 %hook AWEFeedViewTemplateCell
 %property (nonatomic, strong) JGProgressHUD *hud;
-%property(nonatomic, assign) BOOL elementsHidden;
+%property (nonatomic, assign) BOOL elementsHidden;
 %property (nonatomic, retain) NSString *fileextension;
 %property (nonatomic, retain) UIProgressView *progressView;
+
 - (void)configWithModel:(id)model {
     %orig;
-    // Reset Pure Mode khi vuốt sang video mới
     self.elementsHidden = false;
     [self resetPureModeState];
     if ([BMIManager downloadButton]){
@@ -306,9 +308,9 @@ static BOOL isAuthenticationShowed = FALSE;
         [self addHideElementButton];
     }
 }
+
 - (void)configureWithModel:(id)model {
     %orig;
-    // Reset Pure Mode khi vuốt sang video mới
     self.elementsHidden = false;
     [self resetPureModeState];
     if ([BMIManager downloadButton]){
@@ -318,6 +320,7 @@ static BOOL isAuthenticationShowed = FALSE;
         [self addHideElementButton];
     }
 }
+
 %new - (void)addDownloadButton {
     UIButton *downloadButton = [UIButton buttonWithType:UIButtonTypeSystem];
     [downloadButton setTag:998];
@@ -336,6 +339,7 @@ static BOOL isAuthenticationShowed = FALSE;
         ]];
     }
 }
+
 %new - (void)downloadHDVideo:(AWEAwemeBaseViewController *)rootVC {
     NSString *as = rootVC.model.itemID;
     NSURL *downloadableURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://tikwm.com/video/media/hdplay/%@.mp4", as]];
@@ -349,6 +353,7 @@ static BOOL isAuthenticationShowed = FALSE;
         [self.hud showInView:topMostController().view];
     }
 }
+
 %new - (void)downloadVideo:(AWEAwemeBaseViewController *)rootVC {
     NSString *as = rootVC.model.itemID;
     NSURL *downloadableURL = [rootVC.model.video.playURL bestURLtoDownload];
@@ -362,49 +367,44 @@ static BOOL isAuthenticationShowed = FALSE;
         [self.hud showInView:topMostController().view];
     }
 }
-%new - (void)downloadPhotos:(TTKPhotoAlbumDetailCellController *)rootVC photoIndex:(unsigned long)index {
-    AWEPlayPhotoAlbumViewController *photoAlbumController = [rootVC valueForKey:@"_photoAlbumController"];
-            NSArray <AWEPhotoAlbumPhoto *> *photos = rootVC.model.photoAlbum.photos;
-            AWEPhotoAlbumPhoto *currentPhoto = [photos objectAtIndex:index];
 
-                NSURL *downloadableURL = [currentPhoto.originPhotoURL bestURLtoDownload];
-                self.fileextension = [currentPhoto.originPhotoURL bestURLtoDownloadFormat];
-                if (downloadableURL) {
-                    BMDownload *dwManager = [[BMDownload alloc] init];
-                    [dwManager downloadFileWithURL:downloadableURL];
-                    [dwManager setDelegate:self];
-                    self.hud = [JGProgressHUD progressHUDWithStyle:JGProgressHUDStyleDark];
-                    self.hud.textLabel.text = @"Downloading";
-                     [self.hud showInView:topMostController().view];
-                }
-            
+%new - (void)downloadPhotos:(TTKPhotoAlbumDetailCellController *)rootVC photoIndex:(unsigned long)index {
+    NSArray <AWEPhotoAlbumPhoto *> *photos = rootVC.model.photoAlbum.photos;
+    AWEPhotoAlbumPhoto *currentPhoto = [photos objectAtIndex:index];
+
+    NSURL *downloadableURL = [currentPhoto.originPhotoURL bestURLtoDownload];
+    self.fileextension = [currentPhoto.originPhotoURL bestURLtoDownloadFormat];
+    if (downloadableURL) {
+        BMDownload *dwManager = [[BMDownload alloc] init];
+        [dwManager downloadFileWithURL:downloadableURL];
+        [dwManager setDelegate:self];
+        self.hud = [JGProgressHUD progressHUDWithStyle:JGProgressHUDStyleDark];
+        self.hud.textLabel.text = @"Downloading";
+        [self.hud showInView:topMostController().view];
     }
+}
 
 %new - (void)downloadPhotos:(TTKPhotoAlbumDetailCellController *)rootVC {
-    NSString *video_description = rootVC.model.music_songName;
-    AWEPlayPhotoAlbumViewController *photoAlbumController = [rootVC valueForKey:@"_photoAlbumController"];
+    NSArray <AWEPhotoAlbumPhoto *> *photos = rootVC.model.photoAlbum.photos;
+    NSMutableArray<NSURL *> *fileURLs = [NSMutableArray array];
 
-            NSArray <AWEPhotoAlbumPhoto *> *photos = rootVC.model.photoAlbum.photos;
-            NSMutableArray<NSURL *> *fileURLs = [NSMutableArray array];
+    for (AWEPhotoAlbumPhoto *currentPhoto in photos) {
+        NSURL *downloadableURL = [currentPhoto.originPhotoURL bestURLtoDownload];
+        self.fileextension = [currentPhoto.originPhotoURL bestURLtoDownloadFormat];
+        if (downloadableURL) {
+            [fileURLs addObject:downloadableURL];
+        }
+    }
 
-            for (AWEPhotoAlbumPhoto *currentPhoto in photos) {
-                NSURL *downloadableURL = [currentPhoto.originPhotoURL bestURLtoDownload];
-                self.fileextension = [currentPhoto.originPhotoURL bestURLtoDownloadFormat];
-                if (downloadableURL) {
-                    [fileURLs addObject:downloadableURL];
-                }
-            }
-
-            BMMultipleDownload *dwManager = [[BMMultipleDownload alloc] init];
-            [dwManager setDelegate:self];
-            [dwManager downloadFiles:fileURLs];
-            self.hud = [JGProgressHUD progressHUDWithStyle:JGProgressHUDStyleDark];
-            self.hud.textLabel.text = @"Downloading";
-            [self.hud showInView:topMostController().view];
-
+    BMMultipleDownload *dwManager = [[BMMultipleDownload alloc] init];
+    [dwManager setDelegate:self];
+    [dwManager downloadFiles:fileURLs];
+    self.hud = [JGProgressHUD progressHUDWithStyle:JGProgressHUDStyleDark];
+    self.hud.textLabel.text = @"Downloading";
+    [self.hud showInView:topMostController().view];
 }
+
 %new - (void)downloadMusic:(AWEAwemeBaseViewController *)rootVC {
-    NSString *as = rootVC.model.itemID;
     NSURL *downloadableURL = [rootVC.model.video.playURL bestURLtoDownload];
     self.fileextension = @"mp3";
     if (downloadableURL) {
@@ -416,6 +416,7 @@ static BOOL isAuthenticationShowed = FALSE;
         [self.hud showInView:topMostController().view];
     }
 }
+
 %new - (void)copyMusic:(AWEAwemeBaseViewController *)rootVC {
     NSURL *downloadableURL = [((AWEMusicModel *)rootVC.model.music).playURL bestURLtoDownload];
     if (downloadableURL) {
@@ -425,6 +426,7 @@ static BOOL isAuthenticationShowed = FALSE;
         [%c(AWEUIAlertView) showAlertWithTitle:@"BMTikTok" description:@"Không thể sao chép liên kết âm thanh." image:nil actionButtonTitle:@"OK" cancelButtonTitle:nil actionBlock:nil cancelBlock:nil];
     }
 }
+
 %new - (void)copyVideo:(AWEAwemeBaseViewController *)rootVC {
     NSURL *downloadableURL = [rootVC.model.video.playURL bestURLtoDownload];
     if (downloadableURL) {
@@ -434,6 +436,7 @@ static BOOL isAuthenticationShowed = FALSE;
         [%c(AWEUIAlertView) showAlertWithTitle:@"BMTikTok" description:@"Không thể sao chép liên kết video." image:nil actionButtonTitle:@"OK" cancelButtonTitle:nil actionBlock:nil cancelBlock:nil];
     }
 }
+
 %new - (void)copyDecription:(AWEAwemeBaseViewController *)rootVC {
     NSString *video_description = rootVC.model.music_songName;
     if (video_description) {
@@ -443,175 +446,163 @@ static BOOL isAuthenticationShowed = FALSE;
         [%c(AWEUIAlertView) showAlertWithTitle:@"BMTikTok" description:@"Không có mô tả để sao chép." image:nil actionButtonTitle:@"OK" cancelButtonTitle:nil actionBlock:nil cancelBlock:nil];
     }
 }
-%new - (void) downloadButtonHandler:(UIButton *)sender {
+
+%new - (void)downloadButtonHandler:(UIButton *)sender {
     AWEAwemeBaseViewController *rootVC = self.viewController;
     if ([rootVC isKindOfClass:%c(AWEFeedCellViewController)]) {
-
-         UIAction *action1 = [UIAction actionWithTitle:@"Download Video"
-                                            image:[UIImage systemImageNamed:@"film"]
-                                       identifier:nil
-                                          handler:^(__kindof UIAction * _Nonnull action) {
-                                            [self downloadVideo:rootVC];
-    }];
+        UIAction *action1 = [UIAction actionWithTitle:@"Download Video"
+                                                image:[UIImage systemImageNamed:@"film"]
+                                           identifier:nil
+                                              handler:^(__kindof UIAction * _Nonnull action) {
+            [self downloadVideo:rootVC];
+        }];
         UIAction *action0 = [UIAction actionWithTitle:@"Download HD Video"
-                                            image:[UIImage systemImageNamed:@"film"]
-                                       identifier:nil
-                                          handler:^(__kindof UIAction * _Nonnull action) {
-                                            [self downloadHDVideo:rootVC];
-    }];
-    UIAction *action2 = [UIAction actionWithTitle:@"Download Music"
-                                            image:[UIImage systemImageNamed:@"music.note"]
-                                       identifier:nil
-                                          handler:^(__kindof UIAction * _Nonnull action) {
-                                            [self downloadMusic:rootVC];
-    }];
-    UIAction *action3 = [UIAction actionWithTitle:@"Copy Music link"
-                                            image:[UIImage systemImageNamed:@"link"]
-                                       identifier:nil
-                                          handler:^(__kindof UIAction * _Nonnull action) {
-                                            [self copyMusic:rootVC];
-    }];
-    UIAction *action4 = [UIAction actionWithTitle:@"Copy Video link"
-                                            image:[UIImage systemImageNamed:@"link"]
-                                       identifier:nil
-                                          handler:^(__kindof UIAction * _Nonnull action) {
-                                            [self copyVideo:rootVC];
-    }];
-    UIAction *action5 = [UIAction actionWithTitle:@"Copy Decription"
-                                            image:[UIImage systemImageNamed:@"note.text"]
-                                       identifier:nil
-                                          handler:^(__kindof UIAction * _Nonnull action) {
-                                            [self copyDecription:rootVC];
-    }];
-    UIMenu *downloadMenu = [UIMenu menuWithTitle:@"Downloads Menu"
-                                        children:@[action1, action0,action2]];
-    UIMenu *copyMenu = [UIMenu menuWithTitle:@"Copy Menu"
-                                        children:@[action3, action4, action5]];
-    UIMenu *mainMenu = [UIMenu menuWithTitle:@"" children:@[downloadMenu, copyMenu]];
-    [sender setMenu:mainMenu];
-    sender.showsMenuAsPrimaryAction = YES;
+                                                image:[UIImage systemImageNamed:@"film"]
+                                           identifier:nil
+                                              handler:^(__kindof UIAction * _Nonnull action) {
+            [self downloadHDVideo:rootVC];
+        }];
+        UIAction *action2 = [UIAction actionWithTitle:@"Download Music"
+                                                image:[UIImage systemImageNamed:@"music.note"]
+                                           identifier:nil
+                                              handler:^(__kindof UIAction * _Nonnull action) {
+            [self downloadMusic:rootVC];
+        }];
+        UIAction *action3 = [UIAction actionWithTitle:@"Copy Music link"
+                                                image:[UIImage systemImageNamed:@"link"]
+                                           identifier:nil
+                                              handler:^(__kindof UIAction * _Nonnull action) {
+            [self copyMusic:rootVC];
+        }];
+        UIAction *action4 = [UIAction actionWithTitle:@"Copy Video link"
+                                                image:[UIImage systemImageNamed:@"link"]
+                                           identifier:nil
+                                              handler:^(__kindof UIAction * _Nonnull action) {
+            [self copyVideo:rootVC];
+        }];
+        UIAction *action5 = [UIAction actionWithTitle:@"Copy Decription"
+                                                image:[UIImage systemImageNamed:@"note.text"]
+                                           identifier:nil
+                                              handler:^(__kindof UIAction * _Nonnull action) {
+            [self copyDecription:rootVC];
+        }];
+        UIMenu *downloadMenu = [UIMenu menuWithTitle:@"Downloads Menu" children:@[action1, action0, action2]];
+        UIMenu *copyMenu = [UIMenu menuWithTitle:@"Copy Menu" children:@[action3, action4, action5]];
+        UIMenu *mainMenu = [UIMenu menuWithTitle:@"" children:@[downloadMenu, copyMenu]];
+        [sender setMenu:mainMenu];
+        sender.showsMenuAsPrimaryAction = YES;
     } else if ([self.viewController isKindOfClass:%c(TTKPhotoAlbumDetailCellController)]) {
         TTKPhotoAlbumDetailCellController *rootVC = self.viewController;
-        AWEPlayPhotoAlbumViewController *photoAlbumController = [rootVC valueForKey:@"_photoAlbumController"];
         NSArray <AWEPhotoAlbumPhoto *> *photos = rootVC.model.photoAlbum.photos;
         unsigned long photosCount = [photos count];
         NSMutableArray <UIAction *> *photosActions = [NSMutableArray array];
-            for (int i = 0; i < photosCount; i++) {
-        NSString *title = [NSString stringWithFormat:@"Download Photo %d", i+1];
-        UIAction *action = [UIAction actionWithTitle:title
-                                               image:[UIImage systemImageNamed:@"photo.fill"]
-                                          identifier:nil
-                                             handler:^(__kindof UIAction * _Nonnull action) {
-                                                [self downloadPhotos:rootVC photoIndex:i];
+        for (int i = 0; i < photosCount; i++) {
+            NSString *title = [NSString stringWithFormat:@"Download Photo %d", i+1];
+            UIAction *action = [UIAction actionWithTitle:title
+                                                   image:[UIImage systemImageNamed:@"photo.fill"]
+                                              identifier:nil
+                                                 handler:^(__kindof UIAction * _Nonnull action) {
+                [self downloadPhotos:rootVC photoIndex:i];
+            }];
+            [photosActions addObject:action];
+        }
+        UIAction *allPhotosAction = [UIAction actionWithTitle:@"Download All Photos"
+                                                        image:[UIImage systemImageNamed:@"photo.fill"]
+                                                   identifier:nil
+                                                      handler:^(__kindof UIAction * _Nonnull action) {
+            [self downloadPhotos:rootVC];
         }];
-        [photosActions addObject:action];
-
-    }
-    UIAction *allPhotosAction = [UIAction actionWithTitle:@"Download All Photos"
-                                            image:[UIImage systemImageNamed:@"photo.fill"]
-                                       identifier:nil
-                                          handler:^(__kindof UIAction * _Nonnull action) {
-                                            [self downloadPhotos:rootVC];
-    }];
-    [photosActions addObject:allPhotosAction];
-    UIAction *action2 = [UIAction actionWithTitle:@"Download Music"
-                                            image:[UIImage systemImageNamed:@"music.note"]
-                                       identifier:nil
-                                          handler:^(__kindof UIAction * _Nonnull action) {
-                                            [self downloadMusic:rootVC];
-    }];
-    UIAction *action3 = [UIAction actionWithTitle:@"Copy Music link"
-                                            image:[UIImage systemImageNamed:@"link"]
-                                       identifier:nil
-                                          handler:^(__kindof UIAction * _Nonnull action) {
-                                            [self copyMusic:rootVC];
-    }];
-    UIAction *action4 = [UIAction actionWithTitle:@"Copy Video link"
-                                            image:[UIImage systemImageNamed:@"link"]
-                                       identifier:nil
-                                          handler:^(__kindof UIAction * _Nonnull action) {
-                                            [self copyVideo:rootVC];
-    }];
-    UIAction *action5 = [UIAction actionWithTitle:@"Copy Decription"
-                                            image:[UIImage systemImageNamed:@"note.text"]
-                                       identifier:nil
-                                          handler:^(__kindof UIAction * _Nonnull action) {
-                                            [self copyDecription:rootVC];
-    }];
-    UIMenu *PhotosMenu = [UIMenu menuWithTitle:@"Download Photos Menu"
-                                        children:photosActions];
-    UIMenu *downloadMenu = [UIMenu menuWithTitle:@"Downloads Menu"
-                                        children:@[action2]];
-    UIMenu *copyMenu = [UIMenu menuWithTitle:@"Copy Menu"
-                                        children:@[action3, action4, action5]];
-    UIMenu *mainMenu = [UIMenu menuWithTitle:@"" children:@[PhotosMenu, downloadMenu, copyMenu]];
-    [sender setMenu:mainMenu];
-    sender.showsMenuAsPrimaryAction = YES;
-    }else if ([self.viewController isKindOfClass:%c(TTKPhotoAlbumFeedCellController)]) {
+        [photosActions addObject:allPhotosAction];
+        UIAction *action2 = [UIAction actionWithTitle:@"Download Music"
+                                                image:[UIImage systemImageNamed:@"music.note"]
+                                           identifier:nil
+                                              handler:^(__kindof UIAction * _Nonnull action) {
+            [self downloadMusic:rootVC];
+        }];
+        UIAction *action3 = [UIAction actionWithTitle:@"Copy Music link"
+                                                image:[UIImage systemImageNamed:@"link"]
+                                           identifier:nil
+                                              handler:^(__kindof UIAction * _Nonnull action) {
+            [self copyMusic:rootVC];
+        }];
+        UIAction *action4 = [UIAction actionWithTitle:@"Copy Video link"
+                                                image:[UIImage systemImageNamed:@"link"]
+                                           identifier:nil
+                                              handler:^(__kindof UIAction * _Nonnull action) {
+            [self copyVideo:rootVC];
+        }];
+        UIAction *action5 = [UIAction actionWithTitle:@"Copy Decription"
+                                                image:[UIImage systemImageNamed:@"note.text"]
+                                           identifier:nil
+                                              handler:^(__kindof UIAction * _Nonnull action) {
+            [self copyDecription:rootVC];
+        }];
+        UIMenu *photosMenu = [UIMenu menuWithTitle:@"Download Photos Menu" children:photosActions];
+        UIMenu *downloadMenu = [UIMenu menuWithTitle:@"Downloads Menu" children:@[action2]];
+        UIMenu *copyMenu = [UIMenu menuWithTitle:@"Copy Menu" children:@[action3, action4, action5]];
+        UIMenu *mainMenu = [UIMenu menuWithTitle:@"" children:@[photosMenu, downloadMenu, copyMenu]];
+        [sender setMenu:mainMenu];
+        sender.showsMenuAsPrimaryAction = YES;
+    } else if ([self.viewController isKindOfClass:%c(TTKPhotoAlbumFeedCellController)]) {
         TTKPhotoAlbumFeedCellController *rootVC = self.viewController;
-        AWEPlayPhotoAlbumViewController *photoAlbumController = [rootVC valueForKey:@"_photoAlbumController"];
         NSArray <AWEPhotoAlbumPhoto *> *photos = rootVC.model.photoAlbum.photos;
         unsigned long photosCount = [photos count];
         NSMutableArray <UIAction *> *photosActions = [NSMutableArray array];
-            for (int i = 0; i < photosCount; i++) {
-        NSString *title = [NSString stringWithFormat:@"Download Photo %d", i+1];
-        UIAction *action = [UIAction actionWithTitle:title
-                                               image:[UIImage systemImageNamed:@"photo.fill"]
-                                          identifier:nil
-                                             handler:^(__kindof UIAction * _Nonnull action) {
-                                                [self downloadPhotos:rootVC photoIndex:i];
-        }];
-        [photosActions addObject:action];
-
-    }
+        for (int i = 0; i < photosCount; i++) {
+            NSString *title = [NSString stringWithFormat:@"Download Photo %d", i+1];
+            UIAction *action = [UIAction actionWithTitle:title
+                                                   image:[UIImage systemImageNamed:@"photo.fill"]
+                                              identifier:nil
+                                                 handler:^(__kindof UIAction * _Nonnull action) {
+                [self downloadPhotos:rootVC photoIndex:i];
+            }];
+            [photosActions addObject:action];
+        }
         UIAction *allPhotosAction = [UIAction actionWithTitle:@"Download Photos"
-                                            image:[UIImage systemImageNamed:@"photo.fill"]
-                                       identifier:nil
-                                          handler:^(__kindof UIAction * _Nonnull action) {
-                                            [self downloadPhotos:rootVC];
-    }];
-    [photosActions addObject:allPhotosAction];
-    UIAction *action2 = [UIAction actionWithTitle:@"Download Music"
-                                            image:[UIImage systemImageNamed:@"music.note"]
-                                       identifier:nil
-                                          handler:^(__kindof UIAction * _Nonnull action) {
-                                            [self downloadMusic:rootVC];
-    }];
-    UIAction *action3 = [UIAction actionWithTitle:@"Copy Music link"
-                                            image:[UIImage systemImageNamed:@"link"]
-                                       identifier:nil
-                                          handler:^(__kindof UIAction * _Nonnull action) {
-                                            [self copyMusic:rootVC];
-    }];
-    UIAction *action4 = [UIAction actionWithTitle:@"Copy Video link"
-                                            image:[UIImage systemImageNamed:@"link"]
-                                       identifier:nil
-                                          handler:^(__kindof UIAction * _Nonnull action) {
-                                            [self copyVideo:rootVC];
-    }];
-    UIAction *action5 = [UIAction actionWithTitle:@"Copy Decription"
-                                            image:[UIImage systemImageNamed:@"note.text"]
-                                       identifier:nil
-                                          handler:^(__kindof UIAction * _Nonnull action) {
-                                            [self copyDecription:rootVC];
-    }];
-    UIMenu *PhotosMenu = [UIMenu menuWithTitle:@"Download Photos Menu"
-                                        children:photosActions];
-    UIMenu *downloadMenu = [UIMenu menuWithTitle:@"Downloads Menu"
-                                        children:@[action2]];
-    UIMenu *copyMenu = [UIMenu menuWithTitle:@"Copy Menu"
-                                        children:@[action3, action4, action5]];
-    UIMenu *mainMenu = [UIMenu menuWithTitle:@"" children:@[PhotosMenu, downloadMenu, copyMenu]];
-    [sender setMenu:mainMenu];
-    sender.showsMenuAsPrimaryAction = YES;
+                                                        image:[UIImage systemImageNamed:@"photo.fill"]
+                                                   identifier:nil
+                                                      handler:^(__kindof UIAction * _Nonnull action) {
+            [self downloadPhotos:rootVC];
+        }];
+        [photosActions addObject:allPhotosAction];
+        UIAction *action2 = [UIAction actionWithTitle:@"Download Music"
+                                                image:[UIImage systemImageNamed:@"music.note"]
+                                           identifier:nil
+                                              handler:^(__kindof UIAction * _Nonnull action) {
+            [self downloadMusic:rootVC];
+        }];
+        UIAction *action3 = [UIAction actionWithTitle:@"Copy Music link"
+                                                image:[UIImage systemImageNamed:@"link"]
+                                           identifier:nil
+                                              handler:^(__kindof UIAction * _Nonnull action) {
+            [self copyMusic:rootVC];
+        }];
+        UIAction *action4 = [UIAction actionWithTitle:@"Copy Video link"
+                                                image:[UIImage systemImageNamed:@"link"]
+                                           identifier:nil
+                                              handler:^(__kindof UIAction * _Nonnull action) {
+            [self copyVideo:rootVC];
+        }];
+        UIAction *action5 = [UIAction actionWithTitle:@"Copy Decription"
+                                                image:[UIImage systemImageNamed:@"note.text"]
+                                           identifier:nil
+                                              handler:^(__kindof UIAction * _Nonnull action) {
+            [self copyDecription:rootVC];
+        }];
+        UIMenu *photosMenu = [UIMenu menuWithTitle:@"Download Photos Menu" children:photosActions];
+        UIMenu *downloadMenu = [UIMenu menuWithTitle:@"Downloads Menu" children:@[action2]];
+        UIMenu *copyMenu = [UIMenu menuWithTitle:@"Copy Menu" children:@[action3, action4, action5]];
+        UIMenu *mainMenu = [UIMenu menuWithTitle:@"" children:@[photosMenu, downloadMenu, copyMenu]];
+        [sender setMenu:mainMenu];
+        sender.showsMenuAsPrimaryAction = YES;
     }
 }
+
 %new - (void)addHideElementButton {
     UIButton *hideElementButton = [UIButton buttonWithType:UIButtonTypeSystem];
     [hideElementButton setTag:999];
     [hideElementButton setTranslatesAutoresizingMaskIntoConstraints:false];
     [hideElementButton addTarget:self action:@selector(hideElementButtonHandler:) forControlEvents:UIControlEventTouchUpInside];
-    // Luôn hiển thị icon eye.slash vì `elementsHidden` đã reset về false trong `configWithModel:`
     [hideElementButton setImage:[UIImage systemImageNamed:@"eye.slash"] forState:UIControlStateNormal];
 
     if (![self viewWithTag:999]) {
@@ -625,12 +616,11 @@ static BOOL isAuthenticationShowed = FALSE;
             [hideElementButton.heightAnchor constraintEqualToConstant:30],
         ]];
     } else {
-        // Nếu nút đã tồn tại, chỉ reset icon
         UIButton *existingButton = (UIButton *)[self viewWithTag:999];
         [existingButton setImage:[UIImage systemImageNamed:@"eye.slash"] forState:UIControlStateNormal];
     }
 }
-// Reset Pure Mode khi vuốt sang video mới (gọi từ `configWithModel:`)
+
 %new - (void)resetPureModeState {
     id rootVC = nil;
     if ([self respondsToSelector:@selector(viewController)]) {
@@ -664,6 +654,7 @@ static BOOL isAuthenticationShowed = FALSE;
         }
     }
 }
+
 %new - (void)hideElementButtonHandler:(UIButton *)sender {
     id rootVC = nil;
     if ([self respondsToSelector:@selector(viewController)]) {
@@ -717,17 +708,18 @@ static BOOL isAuthenticationShowed = FALSE;
 %new - (void)downloaderProgress:(float)progress {
     self.hud.detailTextLabel.text = [BMIManager getDownloadingPersent:progress];
 }
+
 %new - (void)downloaderDidFinishDownloadingAllFiles:(NSMutableArray<NSURL *> *)downloadedFilePaths {
     [self.hud dismiss];
     if ([BMIManager shareSheet]) {
         [BMIManager showSaveVC:downloadedFilePaths];
-    }
-    else {
+    } else {
         for (NSURL *url in downloadedFilePaths) {
             [BMIManager saveMedia:url fileExtension:self.fileextension];
         }
     }
 }
+
 %new - (void)downloaderDidFailureWithError:(NSError *)error {
     if (error) {
         [self.hud dismiss];
@@ -742,20 +734,21 @@ static BOOL isAuthenticationShowed = FALSE;
         [self.hud dismissAfterDelay:0.4];
     };
 }
+
 %new - (void)downloadDidFinish:(NSURL *)filePath Filename:(NSString *)fileName {
-    NSString *DocPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, true).firstObject;
+    NSString *docPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, true).firstObject;
     NSFileManager *manager = [NSFileManager defaultManager];
-    NSURL *newFilePath = [[NSURL fileURLWithPath:DocPath] URLByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", NSUUID.UUID.UUIDString, self.fileextension]];
+    NSURL *newFilePath = [[NSURL fileURLWithPath:docPath] URLByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", NSUUID.UUID.UUIDString, self.fileextension]];
     [manager moveItemAtURL:filePath toURL:newFilePath error:nil];
     [self.hud dismiss];
     NSArray *audioExtensions = @[@"mp3", @"aac", @"wav", @"m4a", @"ogg", @"flac", @"aiff", @"wma"];
     if ([BMIManager shareSheet] || [audioExtensions containsObject:self.fileextension]) {
         [BMIManager showSaveVC:@[newFilePath]];
-    }
-    else {
+    } else {
         [BMIManager saveMedia:newFilePath fileExtension:self.fileextension];
     }
 }
+
 %new - (void)downloadDidFailureWithError:(NSError *)error {
     if (error) {
         [self.hud dismiss];
@@ -765,9 +758,10 @@ static BOOL isAuthenticationShowed = FALSE;
 
 %hook AWEAwemeDetailTableViewCell
 %property (nonatomic, strong) JGProgressHUD *hud;
-%property(nonatomic, assign) BOOL elementsHidden;
+%property (nonatomic, assign) BOOL elementsHidden;
 %property (nonatomic, retain) UIProgressView *progressView;
 %property (nonatomic, retain) NSString *fileextension;
+
 - (void)configWithModel:(id)model {
     %orig;
     self.elementsHidden = false;
@@ -779,6 +773,7 @@ static BOOL isAuthenticationShowed = FALSE;
         [self addHideElementButton];
     }
 }
+
 - (void)configureWithModel:(id)model {
     %orig;
     self.elementsHidden = false;
@@ -790,6 +785,7 @@ static BOOL isAuthenticationShowed = FALSE;
         [self addHideElementButton];
     }
 }
+
 %new - (void)addDownloadButton {
     UIButton *downloadButton = [UIButton buttonWithType:UIButtonTypeSystem];
     [downloadButton setTag:998];
@@ -808,6 +804,7 @@ static BOOL isAuthenticationShowed = FALSE;
         ]];
     }
 }
+
 %new - (void)downloadHDVideo:(AWEAwemeBaseViewController *)rootVC {
     NSString *as = rootVC.model.itemID;
     NSURL *downloadableURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://tikwm.com/video/media/hdplay/%@.mp4", as]];
@@ -821,8 +818,8 @@ static BOOL isAuthenticationShowed = FALSE;
         [self.hud showInView:topMostController().view];
     }
 }
+
 %new - (void)downloadVideo:(AWEAwemeBaseViewController *)rootVC {
-    NSString *as = rootVC.model.itemID;
     NSURL *downloadableURL = [rootVC.model.video.playURL bestURLtoDownload];
     self.fileextension = [rootVC.model.video.playURL bestURLtoDownloadFormat];
     if (downloadableURL) {
@@ -834,8 +831,8 @@ static BOOL isAuthenticationShowed = FALSE;
         [self.hud showInView:topMostController().view];
     }
 }
+
 %new - (void)downloadMusic:(AWEAwemeBaseViewController *)rootVC {
-    NSString *as = rootVC.model.itemID;
     NSURL *downloadableURL = [rootVC.model.video.playURL bestURLtoDownload];
     self.fileextension = @"mp3";
     if (downloadableURL) {
@@ -847,6 +844,7 @@ static BOOL isAuthenticationShowed = FALSE;
         [self.hud showInView:topMostController().view];
     }
 }
+
 %new - (void)copyMusic:(AWEAwemeBaseViewController *)rootVC {
     NSURL *downloadableURL = [((AWEMusicModel *)rootVC.model.music).playURL bestURLtoDownload];
     if (downloadableURL) {
@@ -856,6 +854,7 @@ static BOOL isAuthenticationShowed = FALSE;
         [%c(AWEUIAlertView) showAlertWithTitle:@"BMTikTok" description:@"Không thể sao chép liên kết âm thanh." image:nil actionButtonTitle:@"OK" cancelButtonTitle:nil actionBlock:nil cancelBlock:nil];
     }
 }
+
 %new - (void)copyVideo:(AWEAwemeBaseViewController *)rootVC {
     NSURL *downloadableURL = [rootVC.model.video.playURL bestURLtoDownload];
     if (downloadableURL) {
@@ -865,6 +864,7 @@ static BOOL isAuthenticationShowed = FALSE;
         [%c(AWEUIAlertView) showAlertWithTitle:@"BMTikTok" description:@"Không thể sao chép liên kết video." image:nil actionButtonTitle:@"OK" cancelButtonTitle:nil actionBlock:nil cancelBlock:nil];
     }
 }
+
 %new - (void)copyDecription:(AWEAwemeBaseViewController *)rootVC {
     NSString *video_description = rootVC.model.music_songName;
     if (video_description) {
@@ -874,57 +874,54 @@ static BOOL isAuthenticationShowed = FALSE;
         [%c(AWEUIAlertView) showAlertWithTitle:@"BMTikTok" description:@"Không có mô tả để sao chép." image:nil actionButtonTitle:@"OK" cancelButtonTitle:nil actionBlock:nil cancelBlock:nil];
     }
 }
-// Đã sửa: bỏ check cứng `isKindOfClass:TTKFeedInteractionLegacyMainContainerElement`
-// để download menu hoạt động trên tất cả loại video detail cell.
-%new - (void) downloadButtonHandler:(UIButton *)sender {
+
+%new - (void)downloadButtonHandler:(UIButton *)sender {
     AWEAwemeBaseViewController *rootVC = self.viewController;
     if (rootVC) {
-
-     UIAction *action1 = [UIAction actionWithTitle:@"Download Video"
-                                            image:[UIImage systemImageNamed:@"film"]
-                                       identifier:nil
-                                          handler:^(__kindof UIAction * _Nonnull action) {
-                                            [self downloadVideo:rootVC];
-    }];
-    UIAction *action0 = [UIAction actionWithTitle:@"Download HD Video"
-                                            image:[UIImage systemImageNamed:@"film"]
-                                       identifier:nil
-                                          handler:^(__kindof UIAction * _Nonnull action) {
-                                            [self downloadHDVideo:rootVC];
-    }];
-    UIAction *action2 = [UIAction actionWithTitle:@"Download Music"
-                                            image:[UIImage systemImageNamed:@"music.note"]
-                                       identifier:nil
-                                          handler:^(__kindof UIAction * _Nonnull action) {
-                                            [self downloadMusic:rootVC];
-    }];
-    UIAction *action3 = [UIAction actionWithTitle:@"Copy Music link"
-                                            image:[UIImage systemImageNamed:@"link"]
-                                       identifier:nil
-                                          handler:^(__kindof UIAction * _Nonnull action) {
-                                            [self copyMusic:rootVC];
-    }];
-    UIAction *action4 = [UIAction actionWithTitle:@"Copy Video link"
-                                            image:[UIImage systemImageNamed:@"link"]
-                                       identifier:nil
-                                          handler:^(__kindof UIAction * _Nonnull action) {
-                                            [self copyVideo:rootVC];
-    }];
-    UIAction *action5 = [UIAction actionWithTitle:@"Copy Decription"
-                                            image:[UIImage systemImageNamed:@"note.text"]
-                                       identifier:nil
-                                          handler:^(__kindof UIAction * _Nonnull action) {
-                                            [self copyDecription:rootVC];
-    }];
-    UIMenu *downloadMenu = [UIMenu menuWithTitle:@"Downloads Menu"
-                                        children:@[action1, action0,action2]];
-    UIMenu *copyMenu = [UIMenu menuWithTitle:@"Copy Menu"
-                                        children:@[action3, action4, action5]];
-    UIMenu *mainMenu = [UIMenu menuWithTitle:@"" children:@[downloadMenu, copyMenu]];
-    [sender setMenu:mainMenu];
-    sender.showsMenuAsPrimaryAction = YES;
+        UIAction *action1 = [UIAction actionWithTitle:@"Download Video"
+                                                image:[UIImage systemImageNamed:@"film"]
+                                           identifier:nil
+                                              handler:^(__kindof UIAction * _Nonnull action) {
+            [self downloadVideo:rootVC];
+        }];
+        UIAction *action0 = [UIAction actionWithTitle:@"Download HD Video"
+                                                image:[UIImage systemImageNamed:@"film"]
+                                           identifier:nil
+                                              handler:^(__kindof UIAction * _Nonnull action) {
+            [self downloadHDVideo:rootVC];
+        }];
+        UIAction *action2 = [UIAction actionWithTitle:@"Download Music"
+                                                image:[UIImage systemImageNamed:@"music.note"]
+                                           identifier:nil
+                                              handler:^(__kindof UIAction * _Nonnull action) {
+            [self downloadMusic:rootVC];
+        }];
+        UIAction *action3 = [UIAction actionWithTitle:@"Copy Music link"
+                                                image:[UIImage systemImageNamed:@"link"]
+                                           identifier:nil
+                                              handler:^(__kindof UIAction * _Nonnull action) {
+            [self copyMusic:rootVC];
+        }];
+        UIAction *action4 = [UIAction actionWithTitle:@"Copy Video link"
+                                                image:[UIImage systemImageNamed:@"link"]
+                                           identifier:nil
+                                              handler:^(__kindof UIAction * _Nonnull action) {
+            [self copyVideo:rootVC];
+        }];
+        UIAction *action5 = [UIAction actionWithTitle:@"Copy Decription"
+                                                image:[UIImage systemImageNamed:@"note.text"]
+                                           identifier:nil
+                                              handler:^(__kindof UIAction * _Nonnull action) {
+            [self copyDecription:rootVC];
+        }];
+        UIMenu *downloadMenu = [UIMenu menuWithTitle:@"Downloads Menu" children:@[action1, action0, action2]];
+        UIMenu *copyMenu = [UIMenu menuWithTitle:@"Copy Menu" children:@[action3, action4, action5]];
+        UIMenu *mainMenu = [UIMenu menuWithTitle:@"" children:@[downloadMenu, copyMenu]];
+        [sender setMenu:mainMenu];
+        sender.showsMenuAsPrimaryAction = YES;
     }
 }
+
 %new - (void)addHideElementButton {
     UIButton *hideElementButton = [UIButton buttonWithType:UIButtonTypeSystem];
     [hideElementButton setTag:999];
@@ -947,6 +944,7 @@ static BOOL isAuthenticationShowed = FALSE;
         [existingButton setImage:[UIImage systemImageNamed:@"eye.slash"] forState:UIControlStateNormal];
     }
 }
+
 %new - (void)resetPureModeState {
     id rootVC = nil;
     if ([self respondsToSelector:@selector(viewController)]) {
@@ -980,6 +978,7 @@ static BOOL isAuthenticationShowed = FALSE;
         }
     }
 }
+
 %new - (void)hideElementButtonHandler:(UIButton *)sender {
     id rootVC = nil;
     if ([self respondsToSelector:@selector(viewController)]) {
@@ -1029,39 +1028,11 @@ static BOOL isAuthenticationShowed = FALSE;
         }
     }
 }
-
-%new - (void)downloadProgress:(float)progress {
-        self.hud.tapOutsideBlock = ^(JGProgressHUD * _Nonnull HUD) {
-        self.hud.textLabel.text = @"Backgrounding ✌️";
-        [self.hud dismissAfterDelay:0.4];
-    };
-    self.progressView.progress = progress;
-    self.hud.detailTextLabel.text = [BMIManager getDownloadingPersent:progress];
-}
-%new - (void)downloadDidFinish:(NSURL *)filePath Filename:(NSString *)fileName {
-    NSString *DocPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, true).firstObject;
-    NSFileManager *manager = [NSFileManager defaultManager];
-    NSURL *newFilePath = [[NSURL fileURLWithPath:DocPath] URLByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", NSUUID.UUID.UUIDString, self.fileextension]];
-    [manager moveItemAtURL:filePath toURL:newFilePath error:nil];
-    [self.hud dismiss];
-    NSArray *audioExtensions = @[@"mp3", @"aac", @"wav", @"m4a", @"ogg", @"flac", @"aiff", @"wma"];
-    if ([BMIManager shareSheet] || [audioExtensions containsObject:self.fileextension]) {
-        [BMIManager showSaveVC:@[newFilePath]];
-    }
-    else {
-        [BMIManager saveMedia:newFilePath fileExtension:self.fileextension];
-    }
-}
-%new - (void)downloadDidFailureWithError:(NSError *)error {
-    if (error) {
-        [self.hud dismiss];
-    }
-}
 %end
 
 %hook AWEURLModel
 %new - (NSString *)bestURLtoDownloadFormat {
-    NSURL *bestURLFormat;
+    NSString *bestURLFormat = nil;
     for (NSString *url in self.originURLList) {
         if ([url containsString:@"video_mp4"]) {
             bestURLFormat = @"mp4";
@@ -1076,23 +1047,21 @@ static BOOL isAuthenticationShowed = FALSE;
         }
     }
     if (bestURLFormat == nil) {
-        bestURLFormat = @"m4a";
+        bestURLFormat = @"mp4";
     }
-
     return bestURLFormat;
 }
+
 %new - (NSURL *)bestURLtoDownload {
-    NSURL *bestURL;
+    NSURL *bestURL = nil;
     for (NSString *url in self.originURLList) {
         if ([url containsString:@"video_mp4"] || [url containsString:@".jpeg"] || [url containsString:@".mp3"]) {
             bestURL = [NSURL URLWithString:url];
         }
     }
-
     if (bestURL == nil) {
         bestURL = [NSURL URLWithString:[self.originURLList firstObject]];
     }
-
     return bestURL;
 }
 %end
@@ -1105,44 +1074,40 @@ static BOOL isAuthenticationShowed = FALSE;
 %hook CTCarrier
 - (NSString *)mobileCountryCode {
     if ([BMIManager regionChangingEnabled]) {
-        if ([BMIManager selectedRegion]) {
-            NSDictionary *selectedRegion = [BMIManager selectedRegion];
+        NSDictionary *selectedRegion = [BMIManager selectedRegion];
+        if (selectedRegion && selectedRegion[@"mcc"]) {
             return selectedRegion[@"mcc"];
         }
-        return %orig;
     }
     return %orig;
 }
 
 - (void)setIsoCountryCode:(NSString *)arg1 {
     if ([BMIManager regionChangingEnabled]) {
-        if ([BMIManager selectedRegion]) {
-            NSDictionary *selectedRegion = [BMIManager selectedRegion];
+        NSDictionary *selectedRegion = [BMIManager selectedRegion];
+        if (selectedRegion && selectedRegion[@"code"]) {
             return %orig(selectedRegion[@"code"]);
         }
-        return %orig(arg1);
     }
-    return %orig(arg1);
+    %orig(arg1);
 }
 
 - (NSString *)isoCountryCode {
     if ([BMIManager regionChangingEnabled]) {
-        if ([BMIManager selectedRegion]) {
-            NSDictionary *selectedRegion = [BMIManager selectedRegion];
+        NSDictionary *selectedRegion = [BMIManager selectedRegion];
+        if (selectedRegion && selectedRegion[@"code"]) {
             return selectedRegion[@"code"];
         }
-        return %orig;
     }
     return %orig;
 }
 
 - (NSString *)mobileNetworkCode {
     if ([BMIManager regionChangingEnabled]) {
-        if ([BMIManager selectedRegion]) {
-            NSDictionary *selectedRegion = [BMIManager selectedRegion];
+        NSDictionary *selectedRegion = [BMIManager selectedRegion];
+        if (selectedRegion && selectedRegion[@"mnc"]) {
             return selectedRegion[@"mnc"];
         }
-        return %orig;
     }
     return %orig;
 }
@@ -1151,94 +1116,85 @@ static BOOL isAuthenticationShowed = FALSE;
 %hook TTKStoreRegionService
 - (id)storeRegion {
     if ([BMIManager regionChangingEnabled]) {
-        if ([BMIManager selectedRegion]) {
-            NSDictionary *selectedRegion = [BMIManager selectedRegion];
+        NSDictionary *selectedRegion = [BMIManager selectedRegion];
+        if (selectedRegion && selectedRegion[@"code"]) {
             return [selectedRegion[@"code"] lowercaseString];
         }
-        return %orig;
     }
     return %orig;
 }
 - (id)getStoreRegion {
     if ([BMIManager regionChangingEnabled]) {
-        if ([BMIManager selectedRegion]) {
-            NSDictionary *selectedRegion = [BMIManager selectedRegion];
+        NSDictionary *selectedRegion = [BMIManager selectedRegion];
+        if (selectedRegion && selectedRegion[@"code"]) {
             return [selectedRegion[@"code"] lowercaseString];
         }
-        return %orig;
     }
     return %orig;
 }
 - (void)setStoreRegion:(id)arg1 {
     if ([BMIManager regionChangingEnabled]) {
-        if ([BMIManager selectedRegion]) {
-            NSDictionary *selectedRegion = [BMIManager selectedRegion];
+        NSDictionary *selectedRegion = [BMIManager selectedRegion];
+        if (selectedRegion && selectedRegion[@"code"]) {
             return %orig([selectedRegion[@"code"] lowercaseString]);
         }
-        return %orig(arg1);
     }
-    return %orig(arg1);
+    %orig(arg1);
 }
 %end
 
 %hook TIKTOKRegionManager
 + (NSString *)systemRegion {
     if ([BMIManager regionChangingEnabled]) {
-        if ([BMIManager selectedRegion]) {
-            NSDictionary *selectedRegion = [BMIManager selectedRegion];
+        NSDictionary *selectedRegion = [BMIManager selectedRegion];
+        if (selectedRegion && selectedRegion[@"code"]) {
             return selectedRegion[@"code"];
         }
-        return %orig;
     }
     return %orig;
 }
 + (id)region {
     if ([BMIManager regionChangingEnabled]) {
-        if ([BMIManager selectedRegion]) {
-            NSDictionary *selectedRegion = [BMIManager selectedRegion];
+        NSDictionary *selectedRegion = [BMIManager selectedRegion];
+        if (selectedRegion && selectedRegion[@"code"]) {
             return selectedRegion[@"code"];
         }
-        return %orig;
     }
     return %orig;
 }
 + (id)mccmnc {
     if ([BMIManager regionChangingEnabled]) {
-        if ([BMIManager selectedRegion]) {
-            NSDictionary *selectedRegion = [BMIManager selectedRegion];
+        NSDictionary *selectedRegion = [BMIManager selectedRegion];
+        if (selectedRegion && selectedRegion[@"mcc"] && selectedRegion[@"mnc"]) {
             return [NSString stringWithFormat:@"%@%@", selectedRegion[@"mcc"], selectedRegion[@"mnc"]];
         }
-        return %orig;
     }
     return %orig;
 }
 + (id)storeRegion {
     if ([BMIManager regionChangingEnabled]) {
-        if ([BMIManager selectedRegion]) {
-            NSDictionary *selectedRegion = [BMIManager selectedRegion];
+        NSDictionary *selectedRegion = [BMIManager selectedRegion];
+        if (selectedRegion && selectedRegion[@"code"]) {
             return selectedRegion[@"code"];
         }
-        return %orig;
     }
     return %orig;
 }
 + (id)currentRegionV2 {
     if ([BMIManager regionChangingEnabled]) {
-        if ([BMIManager selectedRegion]) {
-            NSDictionary *selectedRegion = [BMIManager selectedRegion];
+        NSDictionary *selectedRegion = [BMIManager selectedRegion];
+        if (selectedRegion && selectedRegion[@"code"]) {
             return selectedRegion[@"code"];
         }
-        return %orig;
     }
     return %orig;
 }
 + (id)localRegion {
     if ([BMIManager regionChangingEnabled]) {
-        if ([BMIManager selectedRegion]) {
-            NSDictionary *selectedRegion = [BMIManager selectedRegion];
+        NSDictionary *selectedRegion = [BMIManager selectedRegion];
+        if (selectedRegion && selectedRegion[@"code"]) {
             return selectedRegion[@"code"];
         }
-        return %orig;
     }
     return %orig;
 }
@@ -1249,13 +1205,6 @@ static BOOL isAuthenticationShowed = FALSE;
 // MARK: - 6. Privacy & Ghost Mode
 // ═══════════════════════════════════════════════════════════════
 
-%hook TIMMessageService
-- (void)markMessageAsRead:(id)arg1 conversationId:(id)arg2 {
-    if ([BMIManager anonymousSeen]) return;
-    %orig(arg1, arg2);
-}
-%end
-
 %hook AWEIMMessage
 - (void)markAsRead {
     if ([BMIManager anonymousSeen]) return;
@@ -1263,39 +1212,11 @@ static BOOL isAuthenticationShowed = FALSE;
 }
 %end
 
-%hook AWEIMTypingStatusSender
-- (void)sendTypingStatus:(id)arg1 {
-    if ([BMIManager disableTyping]) return;
-    %orig(arg1);
-}
-%end
-
-%hook AWEProfileVisitorRecordService
-- (void)reportVisitWithSecUid:(id)arg1 {
-    if ([BMIManager viewProfilesAnonymous]) return;
-    %orig(arg1);
-}
-%end
-
-%hook AWEProfileTracker
-- (void)trackProfileVisitWithSecUid:(id)arg1 {
-    if ([BMIManager viewProfilesAnonymous]) return;
-    %orig(arg1);
-}
-%end
-
-%hook INSPrivacyManager
+%hook AWEScreenShotTracker
 - (void)userDidTakeScreenshot:(id)arg1 {
     if ([BMIManager disableScreenshotDetection]) return;
     %orig(arg1);
 }
-- (void)userDidScreenRecord:(id)arg1 {
-    if ([BMIManager disableScreenrecordingDetection]) return;
-    %orig(arg1);
-}
-%end
-
-%hook AWEScreenShotTracker
 - (void)trackScreenShotWithParam:(id)arg1 {
     if ([BMIManager disableScreenshotDetection]) return;
     %orig(arg1);
@@ -1311,12 +1232,8 @@ static BOOL isAuthenticationShowed = FALSE;
 - (void)configWithModel:(id)arg1 isMine:(BOOL)arg2 {
     %orig;
     if ([BMIManager videoLikeCount] || [BMIManager videoUploadDate]) {
-        for (int i = 0; i < [[self.contentView subviews] count]; i ++) {
-            UIView *j = [[self.contentView subviews] objectAtIndex:i];
-            if (j.tag == 1001) {
-                [j removeFromSuperview];
-            } 
-            else if (j.tag == 1002) {
+        for (UIView *j in self.contentView.subviews) {
+            if (j.tag == 1001 || j.tag == 1002) {
                 [j removeFromSuperview];
             }
         }
@@ -1351,27 +1268,17 @@ static BOOL isAuthenticationShowed = FALSE;
         clockImage.image = [UIImage systemImageNamed:@"clock"];
         clockImage.tintColor = [UIColor whiteColor];
         [clockImage setTranslatesAutoresizingMaskIntoConstraints:false];
-        
 
-        for (int i = 0; i < [[self.contentView subviews] count]; i ++) {
-            UIView *j = [[self.contentView subviews] objectAtIndex:i];
-            if (j.tag == 1001) {
-                [j removeFromSuperview];
-            } 
-            else if (j.tag == 1002) {
-                [j removeFromSuperview];
-            }
-        }
         if ([BMIManager videoLikeCount]) {
-        [self.contentView addSubview:heartImage];
-        [NSLayoutConstraint activateConstraints:@[
+            [self.contentView addSubview:heartImage];
+            [NSLayoutConstraint activateConstraints:@[
                 [heartImage.topAnchor constraintEqualToAnchor:self.safeAreaLayoutGuide.topAnchor constant:110],
                 [heartImage.leadingAnchor constraintEqualToAnchor:self.safeAreaLayoutGuide.leadingAnchor constant:4],
                 [heartImage.widthAnchor constraintEqualToConstant:16],
                 [heartImage.heightAnchor constraintEqualToConstant:16],
             ]];
-        [self.contentView addSubview:likeCountLabel];
-        [NSLayoutConstraint activateConstraints:@[
+            [self.contentView addSubview:likeCountLabel];
+            [NSLayoutConstraint activateConstraints:@[
                 [likeCountLabel.topAnchor constraintEqualToAnchor:self.safeAreaLayoutGuide.topAnchor constant:109],
                 [likeCountLabel.leadingAnchor constraintEqualToAnchor:self.safeAreaLayoutGuide.leadingAnchor constant:23],
                 [likeCountLabel.widthAnchor constraintEqualToConstant:200],
@@ -1379,15 +1286,15 @@ static BOOL isAuthenticationShowed = FALSE;
             ]];
         }
         if ([BMIManager videoUploadDate]) {
-        [self.contentView addSubview:clockImage];
-        [NSLayoutConstraint activateConstraints:@[
+            [self.contentView addSubview:clockImage];
+            [NSLayoutConstraint activateConstraints:@[
                 [clockImage.topAnchor constraintEqualToAnchor:self.safeAreaLayoutGuide.topAnchor constant:128],
                 [clockImage.leadingAnchor constraintEqualToAnchor:self.safeAreaLayoutGuide.leadingAnchor constant:4],
                 [clockImage.widthAnchor constraintEqualToConstant:16],
                 [clockImage.heightAnchor constraintEqualToConstant:16],
             ]];
-        [self.contentView addSubview:uploadDateLabel];
-        [NSLayoutConstraint activateConstraints:@[
+            [self.contentView addSubview:uploadDateLabel];
+            [NSLayoutConstraint activateConstraints:@[
                 [uploadDateLabel.topAnchor constraintEqualToAnchor:self.safeAreaLayoutGuide.topAnchor constant:127],
                 [uploadDateLabel.leadingAnchor constraintEqualToAnchor:self.safeAreaLayoutGuide.leadingAnchor constant:23],
                 [uploadDateLabel.widthAnchor constraintEqualToConstant:200],
@@ -1396,6 +1303,7 @@ static BOOL isAuthenticationShowed = FALSE;
         }
     }
 }
+
 %new - (NSString *)formattedNumber:(NSInteger)number {
     if (number >= 1000000) {
         return [NSString stringWithFormat:@"%.1fm", number / 1000000.0];
@@ -1405,6 +1313,7 @@ static BOOL isAuthenticationShowed = FALSE;
         return [NSString stringWithFormat:@"%ld", (long)number];
     }
 }
+
 %new - (NSString *)formattedDateStringFromTimestamp:(NSTimeInterval)timestamp {
     NSDate *date = [NSDate dateWithTimeIntervalSince1970:timestamp];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -1446,14 +1355,14 @@ static BOOL isAuthenticationShowed = FALSE;
     if (sender.state == UIGestureRecognizerStateBegan) {
         [%c(AWEUIAlertView) showAlertWithTitle:@"Tải ảnh đại diện" description:@"Bạn có muốn lưu ảnh đại diện gốc này về máy không?" image:nil actionButtonTitle:@"Lưu ảnh" cancelButtonTitle:@"Hủy" actionBlock:^{
             UIImageWriteToSavedPhotosAlbum([self bd_baseImage], self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
-  } cancelBlock:nil];
+        } cancelBlock:nil];
     }
 }
 %new - (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo {
     if (error) {
-        NSLog(@"Error saving image: %@", error.localizedDescription);
+        NSLog(@"[BMTikTok] Error saving image: %@", error.localizedDescription);
     } else {
-        NSLog(@"Image successfully saved to Photos app");
+        NSLog(@"[BMTikTok] Image successfully saved to Photos app");
     }
 }
 %end
@@ -1483,48 +1392,52 @@ static BOOL isAuthenticationShowed = FALSE;
     if (sender.state == UIGestureRecognizerStateBegan) {
         NSString *profileDescription = [self text];
         [%c(AWEUIAlertView) showAlertWithTitle:@"Sao chép tiểu sử" description:@"Bạn có muốn sao chép tiểu sử này vào bộ nhớ tạm không?" image:nil actionButtonTitle:@"Sao chép" cancelButtonTitle:@"Hủy" actionBlock:^{
-             if (profileDescription) {
-                                                                    UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
-                                                                    pasteboard.string = profileDescription;
-                                                                }
-  } cancelBlock:nil];
+            if (profileDescription) {
+                UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+                pasteboard.string = profileDescription;
+            }
+        } cancelBlock:nil];
     }
 }
 %end
 
 %hook TTKProfileBaseComponentModel
 - (NSDictionary *)bizData {
-	if ([BMIManager fakeChangesEnabled]) {
-		NSDictionary *originalData = %orig;
-		NSMutableDictionary *modifiedData = [originalData mutableCopy];
-		
-		NSNumber *fakeFollowingCount = [self numberFromUserDefaultsForKey:@"following_count"];
-		NSNumber *fakeFollowersCount = [self numberFromUserDefaultsForKey:@"follower_count"];
-		
-		if ([self.componentID isEqualToString:@"relation_info_follower"]) {
-			modifiedData[@"follower_count"] = fakeFollowersCount ?: @0; 
-		} else if ([self.componentID isEqualToString:@"relation_info_following"]) {
-			modifiedData[@"following_count"] = fakeFollowingCount ?: @0; 
-			modifiedData[@"formatted_number"] = [self formattedStringFromNumber:fakeFollowingCount ?: @0];
-		} 
-		return [modifiedData copy];
-	}
-	return %orig;
+    if ([BMIManager fakeChangesEnabled]) {
+        NSDictionary *originalData = %orig;
+        NSMutableDictionary *modifiedData = [originalData mutableCopy];
+        
+        NSNumber *fakeFollowingCount = [self numberFromUserDefaultsForKey:@"fake_following_count"];
+        NSNumber *fakeFollowersCount = [self numberFromUserDefaultsForKey:@"fake_follower_count"];
+        
+        if ([self.componentID isEqualToString:@"relation_info_follower"]) {
+            if (fakeFollowersCount && [fakeFollowersCount doubleValue] > 0) {
+                modifiedData[@"follower_count"] = fakeFollowersCount;
+            }
+        } else if ([self.componentID isEqualToString:@"relation_info_following"]) {
+            if (fakeFollowingCount && [fakeFollowingCount doubleValue] > 0) {
+                modifiedData[@"following_count"] = fakeFollowingCount;
+                modifiedData[@"formatted_number"] = [self formattedStringFromNumber:fakeFollowingCount];
+            }
+        } 
+        return [modifiedData copy];
+    }
+    return %orig;
 }
 
 - (NSArray *)components {
-	if ([BMIManager fakeVerified]) {
-		NSArray *originalComponents = %orig;
-		if ([self.componentID isEqualToString:@"user_account_base_info"] && originalComponents.count == 1) {
-			NSMutableArray *modifiedComponents = [originalComponents mutableCopy];
-			TTKProfileBaseComponentModel *fakeVerify = [%c(TTKProfileBaseComponentModel) new];
-			fakeVerify.componentID = @"user_account_verify";
-			fakeVerify.name = @"user_account_verify";
-			[modifiedComponents addObject:fakeVerify];
-			return [modifiedComponents copy];
-		}
-	}
-	return %orig;
+    if ([BMIManager fakeVerified]) {
+        NSArray *originalComponents = %orig;
+        if ([self.componentID isEqualToString:@"user_account_base_info"] && originalComponents.count == 1) {
+            NSMutableArray *modifiedComponents = [originalComponents mutableCopy];
+            TTKProfileBaseComponentModel *fakeVerify = [%c(TTKProfileBaseComponentModel) new];
+            fakeVerify.componentID = @"user_account_verify";
+            fakeVerify.name = @"user_account_verify";
+            [modifiedComponents addObject:fakeVerify];
+            return [modifiedComponents copy];
+        }
+    }
+    return %orig;
 }
 
 %new - (NSNumber *)numberFromUserDefaultsForKey:(NSString *)key {
@@ -1534,7 +1447,6 @@ static BOOL isAuthenticationShowed = FALSE;
 
 %new - (NSString *)formattedStringFromNumber:(NSNumber *)number {
     if (!number) return @"0"; 
-
     double value = [number doubleValue];
     if (value == 0) return @"0"; 
 
@@ -1548,7 +1460,6 @@ static BOOL isAuthenticationShowed = FALSE;
     } else {
         formattedString = [NSString stringWithFormat:@"%.0f", value];
     }
-
     return formattedString;
 }
 %end
@@ -1556,23 +1467,19 @@ static BOOL isAuthenticationShowed = FALSE;
 %hook AWEUserModel
 - (NSNumber *)followerCount {
     if ([BMIManager fakeChangesEnabled]) {
-        NSString *fakeCountString = [[NSUserDefaults standardUserDefaults] stringForKey:@"follower_count"];
-        if (!(fakeCountString.length == 0)) {
-            NSInteger fakeCount = [fakeCountString integerValue];
-            return [NSNumber numberWithInt:fakeCount];
+        NSString *fakeCountString = [[NSUserDefaults standardUserDefaults] stringForKey:@"fake_follower_count"];
+        if (fakeCountString.length > 0) {
+            return @([fakeCountString integerValue]);
         }
-        return %orig;
     }
     return %orig;
 }
 - (NSNumber *)followingCount {
     if ([BMIManager fakeChangesEnabled]) {
-        NSString *fakeCountString = [[NSUserDefaults standardUserDefaults] stringForKey:@"following_count"];
-        if (!(fakeCountString.length == 0)) {
-            NSInteger fakeCount = [fakeCountString integerValue];
-            return [NSNumber numberWithInt:fakeCount];
+        NSString *fakeCountString = [[NSUserDefaults standardUserDefaults] stringForKey:@"fake_following_count"];
+        if (fakeCountString.length > 0) {
+            return @([fakeCountString integerValue]);
         }
-        return %orig;
     }
     return %orig;
 }
@@ -1585,15 +1492,14 @@ static BOOL isAuthenticationShowed = FALSE;
             AWEFeedCellViewController *rootVC = [[[self superview] superview] yy_viewController];
             AWEAwemeModel *model = rootVC.model;
             AWEUserModel *authorModel = model.author;
-            NSString *nickname = authorModel.nickname;
             NSString *username = authorModel.socialName;
-            %orig(username);
-        }else {
-            %orig;
+            if (username.length > 0) {
+                %orig(username);
+                return;
+            }
         }
-    }else {
-        %orig;
     }
+    %orig;
 }
 %end
 
@@ -1619,7 +1525,7 @@ static BOOL isAuthenticationShowed = FALSE;
                 CGRect frame = [j frame];
                 frame.origin.x = 39.5; 
                 [j setFrame:frame];
-            }else {
+            } else {
                 [[self viewWithTag:666] removeFromSuperview];
             }
         }
@@ -1629,7 +1535,7 @@ static BOOL isAuthenticationShowed = FALSE;
         NSString *countryID = model.region;
         UILabel *uploadLabel = [[UILabel alloc]initWithFrame:CGRectMake(0,2,39.5,20.5)];
         NSString *countryEmoji = [self emojiForCountryCode:countryID];
-        uploadLabel.text = [NSString stringWithFormat:@"%@ •",countryEmoji];
+        uploadLabel.text = [NSString stringWithFormat:@"%@ •", countryEmoji ?: @""];
         uploadLabel.tag = 666;
         [uploadLabel setTextColor: [UIColor whiteColor]];
         [uploadLabel sizeToFit];
@@ -1775,7 +1681,7 @@ static BOOL isAuthenticationShowed = FALSE;
 
 %hook SparkViewController
 - (void)viewWillAppear:(BOOL)animated {
-    if (![BMIManager alwaysOpenSafari]) {
+    if (![BMIManager disableSafariRedirect]) {
         return %orig;
     }
     
@@ -1806,8 +1712,7 @@ static BOOL isAuthenticationShowed = FALSE;
     } else if ([BMIManager liveActionEnabled] && [[BMIManager selectedLiveAction] intValue] == 1) {
         UINavigationController *BMTikTokSettings = [[UINavigationController alloc] initWithRootViewController:[[ViewController alloc] init]];
         [topMostController() presentViewController:BMTikTokSettings animated:true completion:nil];
-    } 
-    else {
+    } else {
         %orig;
     }
 }
@@ -1896,86 +1801,78 @@ static BOOL isAuthenticationShowed = FALSE;
 
 // ═══════════════════════════════════════════════════════════════
 // MARK: - 11. Anti-Jailbreak Detection
-// Đã XOÁ `AWEAPMManager signInfo` trả về `@"AppStore"` vì gây
-// lỗi *"Phương thức đăng nhập không xác định"* trên server TikTok.
 // ═══════════════════════════════════════════════════════════════
 
 %hook NSFileManager
 -(BOOL)fileExistsAtPath:(id)arg1 {
-	for (NSString *file in jailbreakPaths) {
-		if ([arg1 isEqualToString:file]) {
-			return NO;
-		}
-	}
-	return %orig;
+    for (NSString *file in jailbreakPaths) {
+        if ([arg1 isEqualToString:file]) {
+            return NO;
+        }
+    }
+    return %orig;
 }
 -(BOOL)fileExistsAtPath:(id)arg1 isDirectory:(BOOL*)arg2 {
-	for (NSString *file in jailbreakPaths) {
-		if ([arg1 isEqualToString:file]) {
-			return NO;
-		}
-	}
-	return %orig;
+    for (NSString *file in jailbreakPaths) {
+        if ([arg1 isEqualToString:file]) {
+            return NO;
+        }
+    }
+    return %orig;
 }
 %end
 
 %hook BDADeviceHelper
 +(bool)isJailBroken {
-	return NO;
+    return NO;
 }
 %end
 
 %hook UIDevice
 +(bool)btd_isJailBroken {
-	return NO;
+    return NO;
 }
 %end
 
 %hook TTInstallUtil
 +(bool)isJailBroken {
-	return NO;
+    return NO;
 }
 %end
 
 %hook AppsFlyerUtils
 +(bool)isJailbrokenWithSkipAdvancedJailbreakValidation:(bool)arg2 {
-	return NO;
-}
-%end
-
-%hook PIPOIAPStoreManager
--(bool)_pipo_isJailBrokenDeviceWithProductID:(id)arg2 orderID:(id)arg3 {
-	return NO;
+    return NO;
 }
 %end
 
 %hook IESLiveDeviceInfo
 +(bool)isJailBroken {
-	return NO;
+    return NO;
 }
 %end
 
 %hook PIPOStoreKitHelper
 -(bool)isJailBroken {
-	return NO;
+    return NO;
 }
 %end
 
 %hook BDInstallNetworkUtility
 +(bool)isJailBroken {
-	return NO;
+    return NO;
 }
 %end
 
 %hook TTAdSplashDeviceHelper
 +(bool)isJailBroken {
-	return NO;
+    return NO;
 }
 %end
 
 %hook FBSDKAppEventsUtility
 +(bool)isDebugBuild {
-	return NO;
+    return NO;
 }
 %end
 

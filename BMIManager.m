@@ -1,9 +1,28 @@
+//
+//  BMIManager.m
+//  BMTikTok
+//
+//  Tác giả & Phát triển: Tuancute28 (Bùi Mạnh Tuấn)
+//
+
 #import "BMIManager.h"
 #import "TikTokHeaders.h"
 
 @implementation BMIManager
 
-// MARK: - Feed & Ads
+// Helper: lấy boolean từ key chính, nếu chưa có thì thử key cũ (hỗ trợ nâng cấp không mất cấu hình)
+static BOOL boolForKeys(NSString *primaryKey, NSString *fallbackKey) {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    if ([defaults objectForKey:primaryKey] != nil) {
+        return [defaults boolForKey:primaryKey];
+    }
+    if (fallbackKey && [defaults objectForKey:fallbackKey] != nil) {
+        return [defaults boolForKey:fallbackKey];
+    }
+    return NO;
+}
+
+// MARK: - 1. Feed & Ads
 + (BOOL)hideAds {
     return [[NSUserDefaults standardUserDefaults] boolForKey:@"hide_ads"];
 }
@@ -31,6 +50,9 @@
 + (BOOL)disablePullToRefresh {
     return [[NSUserDefaults standardUserDefaults] boolForKey:@"pull_to_refresh"];
 }
++ (BOOL)autoScrollFeed {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"auto_scroll_feed"];
+}
 + (BOOL)disableUnsensitive {
     return [[NSUserDefaults standardUserDefaults] boolForKey:@"disable_unsensitive"];
 }
@@ -40,20 +62,8 @@
 + (BOOL)disableLive {
     return [[NSUserDefaults standardUserDefaults] boolForKey:@"disable_live"];
 }
-+ (BOOL)skipRecommendations {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:@"skip_recommnedations"];
-}
-+ (BOOL)disableSurvey {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:@"disable_survey"];
-}
-+ (BOOL)hideDangerousAction {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:@"ufc_warnings"];
-}
 + (BOOL)blockMovieTok {
     return [[NSUserDefaults standardUserDefaults] boolForKey:@"block_movie_tok"];
-}
-+ (BOOL)blockTCM {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:@"block_tcm"];
 }
 + (BOOL)blockPOI {
     return [[NSUserDefaults standardUserDefaults] boolForKey:@"block_poi"];
@@ -61,16 +71,13 @@
 + (BOOL)blockAIGenerated {
     return [[NSUserDefaults standardUserDefaults] boolForKey:@"block_ai_generated"];
 }
++ (BOOL)skipRecommendations {
+    return boolForKeys(@"skip_recommendations", @"skip_recommnedations");
+}
 
-// MARK: - Download & Media
+// MARK: - 2. Download & Media
 + (BOOL)downloadButton {
     return [[NSUserDefaults standardUserDefaults] boolForKey:@"download_button"];
-}
-+ (BOOL)downloadMusic {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:@"download_music"];
-}
-+ (BOOL)shareSheet {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:@"share_sheet"];
 }
 + (BOOL)removeWatermark {
     return [[NSUserDefaults standardUserDefaults] boolForKey:@"remove_watermark"];
@@ -78,34 +85,37 @@
 + (BOOL)removeDraftWatermark {
     return [[NSUserDefaults standardUserDefaults] boolForKey:@"remove_photo_watermark"];
 }
++ (BOOL)downloadMusic {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"download_music"];
+}
++ (BOOL)shareSheet {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"share_sheet"];
+}
 + (BOOL)saveDMMedia {
     return [[NSUserDefaults standardUserDefaults] boolForKey:@"save_dm_media"];
 }
 + (BOOL)enableStickerDownload {
     return [[NSUserDefaults standardUserDefaults] boolForKey:@"double_tap_download_sticker"];
 }
++ (BOOL)highestVideoQuality {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"highest_video_quality"];
+}
 + (BOOL)uploadHD {
     return [[NSUserDefaults standardUserDefaults] boolForKey:@"upload_hd"];
 }
 
-// MARK: - Playback Controls
+// MARK: - 3. Playback Controls
 + (BOOL)autoPlay {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:@"auto_play"];
+    return boolForKeys(@"auto_play_next_video", @"auto_play");
 }
 + (BOOL)stopPlay {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:@"stop_play"];
+    return boolForKeys(@"stop_looping_video", @"stop_play");
 }
 + (BOOL)progressBar {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:@"show_porgress_bar"];
+    return boolForKeys(@"progress_bar", @"show_porgress_bar");
 }
-+ (BOOL)loopStoryVideos {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:@"loop_story_videos"];
-}
-+ (BOOL)stopStoryPhotoAdvance {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:@"stop_story_photo_advance"];
-}
-+ (BOOL)backgroundPlay {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:@"background_play"];
++ (BOOL)keepAudioUnmuted {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"keep_audio_unmuted"];
 }
 + (BOOL)speedEnabled {
     return [[NSUserDefaults standardUserDefaults] boolForKey:@"playback_en"];
@@ -113,28 +123,25 @@
 + (NSNumber *)selectedSpeed {
     return [[NSUserDefaults standardUserDefaults] objectForKey:@"playback_speed"];
 }
++ (BOOL)forceHighestBitrate {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"force_highest_bitrate"];
+}
 
-// MARK: - Region & Location
+// MARK: - 4. Region & Location
 + (BOOL)regionChangingEnabled {
     return [[NSUserDefaults standardUserDefaults] boolForKey:@"en_region"];
-}
-+ (BOOL)fullRegionMode {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:@"full_region_mode"];
-}
-+ (BOOL)russianFix {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:@"russian_fix"];
 }
 + (NSDictionary *)selectedRegion {
     return [[NSUserDefaults standardUserDefaults] dictionaryForKey:@"region"];
 }
++ (BOOL)russianFix {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"russian_fix"];
+}
 + (BOOL)uploadRegion {
     return [[NSUserDefaults standardUserDefaults] boolForKey:@"upload_region"];
 }
-+ (BOOL)enableCommentFlags {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:@"enable_comment_flags"];
-}
 
-// MARK: - Privacy & Ghost Mode
+// MARK: - 5. Privacy & Ghost Mode
 + (BOOL)anonymousSeen {
     return [[NSUserDefaults standardUserDefaults] boolForKey:@"anonymous_seen"];
 }
@@ -160,126 +167,121 @@
     return [[NSUserDefaults standardUserDefaults] boolForKey:@"padlock"];
 }
 
-// MARK: - Comments
+// MARK: - 6. Comments & Interaction
 + (BOOL)transparentCommnet {
     return [[NSUserDefaults standardUserDefaults] boolForKey:@"transparent_commnet"];
 }
-+ (BOOL)copyWithoutUsername {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:@"copy_without_username"];
-}
-+ (BOOL)autoUnfold {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:@"auto_unfold"];
-}
-+ (BOOL)massUnfold {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:@"mass_unfold"];
-}
-+ (BOOL)disableCommentTooltip {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:@"disable_tooltip"];
-}
 + (BOOL)hideEmojiBar {
     return [[NSUserDefaults standardUserDefaults] boolForKey:@"hide_emoji_bar"];
+}
++ (BOOL)colorizeCommentUsernames {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"colorize_comment_usernames"];
+}
++ (BOOL)copyCommentText {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"copy_comment_text"];
+}
++ (BOOL)enableCommentFlags {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"enable_comment_flags"];
+}
++ (BOOL)autoTranslateComments {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"auto_translate_comments"];
+}
++ (BOOL)disableSafariRedirect {
+    return boolForKeys(@"disable_safari_redirect", @"openInBrowser");
 }
 + (BOOL)extendedComment {
     return [[NSUserDefaults standardUserDefaults] boolForKey:@"extendedComment"];
 }
 
-// MARK: - Profile & Interactions
-+ (BOOL)profileSave {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:@"save_profile"];
+// MARK: - 7. Profile & Fake Stats
++ (BOOL)fakeVerified {
+    return boolForKeys(@"fake_verified", @"fake_verify");
+}
++ (BOOL)fakeChangesEnabled {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    return [defaults boolForKey:@"enable_fake_follower"] ||
+           [defaults boolForKey:@"enable_fake_following"] ||
+           [defaults boolForKey:@"enable_fake_likes"] ||
+           [defaults boolForKey:@"en_fake"];
+}
++ (NSString *)fakeFollowerCount {
+    return [[NSUserDefaults standardUserDefaults] stringForKey:@"fake_follower_count"] ?: @"";
+}
++ (NSString *)fakeFollowingCount {
+    return [[NSUserDefaults standardUserDefaults] stringForKey:@"fake_following_count"] ?: @"";
+}
++ (NSString *)fakeLikesCount {
+    return [[NSUserDefaults standardUserDefaults] stringForKey:@"fake_likes_count"] ?: @"";
 }
 + (BOOL)profileCopy {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:@"copy_profile_information"];
+    return boolForKeys(@"copy_profile_bio", @"copy_profile_information");
 }
-+ (BOOL)profileVideoCount {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:@"uploaded_videos"];
++ (BOOL)profileIdCopy {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"copy_profile_id"];
+}
++ (BOOL)profileSave {
+    return boolForKeys(@"download_profile_avatar", @"save_profile");
+}
++ (BOOL)hideLikedTab {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"hide_liked_tab"];
+}
++ (BOOL)extendedBio {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"extended_bio"];
+}
++ (BOOL)showUsername {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"show_username"];
 }
 + (BOOL)videoLikeCount {
     return [[NSUserDefaults standardUserDefaults] boolForKey:@"video_like_count"];
 }
 + (BOOL)videoUploadDate {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:@"video_upload_date"];
+    return boolForKeys(@"show_exact_date", @"video_upload_date");
 }
-+ (BOOL)showVideoTimestamp {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:@"show_fyp_timestamps"];
-}
-+ (BOOL)showUsername {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:@"show_username"];
-}
-+ (BOOL)extendedBio {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:@"extended_bio"];
-}
-+ (BOOL)alwaysOpenSafari {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:@"openInBrowser"];
-}
-+ (BOOL)bypassFollowListSearch {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:@"bypass_follow_list_search"];
-}
-+ (BOOL)bypassMediaLimit {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:@"bypass_media_limit"];
-}
-+ (BOOL)fakeChangesEnabled {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:@"en_fake"];
-}
-+ (BOOL)fakeVerified {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:@"fake_verify"];
-}
-+ (NSString *)fakeFollowerCount {
-    return [[NSUserDefaults standardUserDefaults] stringForKey:@"fake_follower_count"] ?: @"999.9K";
-}
-+ (NSString *)fakeFollowingCount {
-    return [[NSUserDefaults standardUserDefaults] stringForKey:@"fake_following_count"] ?: @"1";
++ (BOOL)profileVideoCount {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"uploaded_videos"];
 }
 
-// MARK: - Confirmations
+// MARK: - 8. Confirmations
 + (BOOL)likeConfirmation {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:@"like_confirm"];
-}
-+ (BOOL)likeCommentConfirmation {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:@"like_comment_confirm"];
-}
-+ (BOOL)dislikeCommentConfirmation {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:@"dislike_comment_confirm"];
+    return boolForKeys(@"like_confirmation", @"like_confirm");
 }
 + (BOOL)followConfirmation {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:@"follow_confirm"];
+    return boolForKeys(@"follow_confirmation", @"follow_confirm");
 }
-+ (BOOL)storyLikeConfirmation {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:@"story_like_confirmation"];
++ (BOOL)likeCommentConfirmation {
+    return boolForKeys(@"comment_like_confirmation", @"like_comment_confirm");
 }
-+ (BOOL)quickShareConfirm {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:@"quick_share_confirm"];
++ (BOOL)dislikeCommentConfirmation {
+    return boolForKeys(@"comment_dislike_confirmation", @"dislike_comment_confirm");
 }
-+ (BOOL)repostConfirm {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:@"repost_confirm"];
++ (BOOL)publishConfirmation {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"publish_confirmation"];
 }
-+ (BOOL)disableFeedDoubleTap {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:@"disable_feed_double_tap"];
++ (BOOL)downloadConfirmation {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"download_confirmation"];
 }
-+ (BOOL)disableStoryDoubleTap {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:@"disable_story_double_tap"];
++ (BOOL)bookmarkConfirmation {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"bookmark_confirmation"];
 }
 
-// MARK: - UI & Theme
+// MARK: - 9. Theme & UI
 + (BOOL)hideElementButton {
     return [[NSUserDefaults standardUserDefaults] boolForKey:@"remove_elements_button"];
 }
 + (BOOL)oledKeyboard {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:@"en_oled"];
+    return boolForKeys(@"oled_keyboard", @"en_oled");
 }
 + (BOOL)hideTabBarLabels {
     return [[NSUserDefaults standardUserDefaults] boolForKey:@"hide_tab_bar_labels"];
 }
-+ (BOOL)hidePlusButton {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:@"hide_plus_button"];
++ (BOOL)hideBadgeCounter {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"hide_badge_counter"];
 }
-+ (BOOL)hideFriendsBadge {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:@"hide_friends_badge"];
++ (BOOL)transparentStatusBar {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"transparent_status_bar"];
 }
-+ (BOOL)hideInboxBadge {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:@"hide_inbox_badge"];
-}
-+ (BOOL)hideStreakPet {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:@"hide_streak_pet"];
++ (BOOL)showExactDate {
+    return boolForKeys(@"show_exact_date", @"video_upload_date");
 }
 + (BOOL)liveActionEnabled {
     return [[NSUserDefaults standardUserDefaults] boolForKey:@"en_livefunc"];
@@ -288,20 +290,20 @@
     return [[NSUserDefaults standardUserDefaults] objectForKey:@"live_action"];
 }
 
-// MARK: - Helpers & Utilities
+// MARK: - 10. Helpers & Utilities
 + (void)cleanCache {
-    NSArray <NSURL *> *DocumentFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtURL:[NSURL fileURLWithPath:NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject] includingPropertiesForKeys:@[] options:NSDirectoryEnumerationSkipsHiddenFiles error:nil];
+    NSArray <NSURL *> *documentFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtURL:[NSURL fileURLWithPath:NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject] includingPropertiesForKeys:@[] options:NSDirectoryEnumerationSkipsHiddenFiles error:nil];
     
-    for (NSURL *file in DocumentFiles) {
+    for (NSURL *file in documentFiles) {
         NSString *ext = file.pathExtension.lowercaseString;
         if ([ext isEqualToString:@"mp4"] || [ext isEqualToString:@"png"] || [ext isEqualToString:@"jpeg"] || [ext isEqualToString:@"jpg"] || [ext isEqualToString:@"mp3"] || [ext isEqualToString:@"m4a"]) {
             [[NSFileManager defaultManager] removeItemAtURL:file error:nil];
         }
     }
     
-    NSArray <NSURL *> *TempFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtURL:[NSURL fileURLWithPath:NSTemporaryDirectory()] includingPropertiesForKeys:@[] options:NSDirectoryEnumerationSkipsHiddenFiles error:nil];
+    NSArray <NSURL *> *tempFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtURL:[NSURL fileURLWithPath:NSTemporaryDirectory()] includingPropertiesForKeys:@[] options:NSDirectoryEnumerationSkipsHiddenFiles error:nil];
     
-    for (NSURL *file in TempFiles) {
+    for (NSURL *file in tempFiles) {
         NSString *ext = file.pathExtension.lowercaseString;
         if ([ext isEqualToString:@"mp4"] || [ext isEqualToString:@"mov"] || [ext isEqualToString:@"tmp"] || [ext isEqualToString:@"png"] || [ext isEqualToString:@"jpeg"] || [ext isEqualToString:@"jpg"] || [ext isEqualToString:@"mp3"] || [ext isEqualToString:@"m4a"]) {
             [[NSFileManager defaultManager] removeItemAtURL:file error:nil];
@@ -322,8 +324,8 @@
 }
 
 + (BOOL)isEmpty:(NSURL *)url {
-    NSArray *FolderFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtURL:url includingPropertiesForKeys:@[] options:NSDirectoryEnumerationSkipsHiddenFiles error:nil];
-    return (FolderFiles.count == 0);
+    NSArray *folderFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtURL:url includingPropertiesForKeys:@[] options:NSDirectoryEnumerationSkipsHiddenFiles error:nil];
+    return (folderFiles.count == 0);
 }
 
 + (void)showSaveVC:(id)item {

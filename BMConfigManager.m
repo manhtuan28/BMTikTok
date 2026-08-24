@@ -2,7 +2,7 @@
 //  BMConfigManager.m
 //  BMTikTok
 //
-//  Tác giả: Tuancute28 (Bùi Mạnh Tuấn)
+//  Tác giả & Phát triển: Tuancute28 (Bùi Mạnh Tuấn)
 //
 
 #import "BMConfigManager.h"
@@ -15,25 +15,49 @@ static NSString *const kBMKeychainAccount = @"user_settings_backup";
 
 + (NSArray<NSString *> *)allConfigKeys {
     return @[
+        // Bảng tin & Quảng cáo
         @"hide_ads", @"hide_commission_posts", @"remove_pendant", @"remove_tiktok_ai_button",
         @"block_ai_generated", @"block_movie_tok", @"block_poi", @"disable_unsensitive",
-        @"disable_warnings", @"disable_live", @"hide_play_pause", @"hide_top_items",
-        @"start_fyp_in_following", @"disable_swipe_in_fyp", @"pull_to_refresh", @"auto_scroll_feed",
+        @"disable_warnings", @"remove_elements_button", @"disable_live", @"hide_play_pause",
+        @"hide_top_items", @"start_fyp_in_following", @"disable_swipe_in_fyp", @"pull_to_refresh",
+        @"auto_scroll_feed",
+        
+        // Tải xuống & Media
         @"download_button", @"remove_watermark", @"remove_photo_watermark", @"download_music",
         @"share_sheet", @"save_dm_media", @"double_tap_download_sticker", @"highest_video_quality",
+        @"upload_hd",
+        
+        // Quyền riêng tư & Ẩn danh
         @"anonymous_seen", @"mark_seen_on_reply", @"disable_typing", @"view_profiles_anonymous",
         @"disable_screenshot_detection", @"disable_screenrecording_detection", @"hide_activity_status",
-        @"padlock", @"transparent_commnet", @"hide_emoji_bar", @"colorize_comment_usernames",
-        @"copy_comment_text", @"enable_comment_flags", @"auto_translate_comments", @"disable_safari_redirect",
+        @"padlock",
+        
+        // Bình luận & Tương tác
+        @"transparent_commnet", @"hide_emoji_bar", @"colorize_comment_usernames",
+        @"copy_comment_text", @"enable_comment_flags", @"auto_translate_comments",
+        @"disable_safari_redirect", @"extendedComment",
+        
+        // Phát lại video
         @"auto_play_next_video", @"stop_looping_video", @"progress_bar", @"keep_audio_unmuted",
-        @"playback_en", @"playback_speed", @"force_highest_bitrate", @"fake_verified",
-        @"enable_fake_follower", @"fake_follower_count", @"enable_fake_following", @"fake_following_count",
-        @"enable_fake_likes", @"fake_likes_count", @"copy_profile_bio", @"copy_profile_id",
-        @"download_profile_avatar", @"hide_liked_tab", @"like_confirmation", @"follow_confirmation",
-        @"comment_like_confirmation", @"comment_dislike_confirmation", @"publish_confirmation",
-        @"download_confirmation", @"bookmark_confirmation", @"oled_keyboard", @"hide_tab_bar_labels",
-        @"hide_badge_counter", @"transparent_status_bar", @"show_exact_date", @"en_region",
-        @"region", @"russian_fix"
+        @"playback_en", @"playback_speed", @"force_highest_bitrate",
+        
+        // Khu vực & Quốc gia
+        @"en_region", @"region", @"russian_fix", @"upload_region",
+        
+        // Hồ sơ & Số liệu ảo
+        @"fake_verified", @"enable_fake_follower", @"fake_follower_count",
+        @"enable_fake_following", @"fake_following_count", @"enable_fake_likes", @"fake_likes_count",
+        @"copy_profile_bio", @"copy_profile_id", @"download_profile_avatar", @"hide_liked_tab",
+        @"extended_bio", @"show_username",
+        
+        // Xác nhận thao tác
+        @"like_confirmation", @"follow_confirmation", @"comment_like_confirmation",
+        @"comment_dislike_confirmation", @"publish_confirmation", @"download_confirmation",
+        @"bookmark_confirmation",
+        
+        // Giao diện & Tùy biến
+        @"oled_keyboard", @"hide_tab_bar_labels", @"hide_badge_counter",
+        @"transparent_status_bar", @"show_exact_date", @"en_livefunc", @"live_action"
     ];
 }
 

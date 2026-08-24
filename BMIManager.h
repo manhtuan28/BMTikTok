@@ -1,10 +1,17 @@
+//
+//  BMIManager.h
+//  BMTikTok
+//
+//  Tác giả & Phát triển: Tuancute28 (Bùi Mạnh Tuấn)
+//
+
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import <Photos/Photos.h>
 
 @interface BMIManager: NSObject
 
-// MARK: - Feed & Ads
+// MARK: - 1. Feed & Ads
 + (BOOL)hideAds;
 + (BOOL)hideCommissionPosts;
 + (BOOL)removePendant;
@@ -14,46 +21,42 @@
 + (BOOL)startFYPInFollowing;
 + (BOOL)disableSwipeInFYP;
 + (BOOL)disablePullToRefresh;
++ (BOOL)autoScrollFeed;
 + (BOOL)disableUnsensitive;
 + (BOOL)disableWarnings;
 + (BOOL)disableLive;
-+ (BOOL)skipRecommendations;
-+ (BOOL)disableSurvey;
-+ (BOOL)hideDangerousAction;
 + (BOOL)blockMovieTok;
-+ (BOOL)blockTCM;
 + (BOOL)blockPOI;
 + (BOOL)blockAIGenerated;
++ (BOOL)skipRecommendations;
 
-// MARK: - Download & Media
+// MARK: - 2. Download & Media
 + (BOOL)downloadButton;
-+ (BOOL)downloadMusic;
-+ (BOOL)shareSheet;
 + (BOOL)removeWatermark;
 + (BOOL)removeDraftWatermark;
++ (BOOL)downloadMusic;
++ (BOOL)shareSheet;
 + (BOOL)saveDMMedia;
 + (BOOL)enableStickerDownload;
++ (BOOL)highestVideoQuality;
 + (BOOL)uploadHD;
 
-// MARK: - Playback Controls
+// MARK: - 3. Playback Controls
 + (BOOL)autoPlay;
 + (BOOL)stopPlay;
 + (BOOL)progressBar;
-+ (BOOL)loopStoryVideos;
-+ (BOOL)stopStoryPhotoAdvance;
-+ (BOOL)backgroundPlay;
++ (BOOL)keepAudioUnmuted;
 + (BOOL)speedEnabled;
 + (NSNumber *)selectedSpeed;
++ (BOOL)forceHighestBitrate;
 
-// MARK: - Region & Location
+// MARK: - 4. Region & Location
 + (BOOL)regionChangingEnabled;
-+ (BOOL)fullRegionMode;
-+ (BOOL)russianFix;
 + (NSDictionary *)selectedRegion;
++ (BOOL)russianFix;
 + (BOOL)uploadRegion;
-+ (BOOL)enableCommentFlags;
 
-// MARK: - Privacy & Ghost Mode
+// MARK: - 5. Privacy & Ghost Mode
 + (BOOL)anonymousSeen;
 + (BOOL)markSeenOnReply;
 + (BOOL)disableTyping;
@@ -63,55 +66,52 @@
 + (BOOL)hideActivityStatus;
 + (BOOL)appLock;
 
-// MARK: - Comments
+// MARK: - 6. Comments & Interaction
 + (BOOL)transparentCommnet;
-+ (BOOL)copyWithoutUsername;
-+ (BOOL)autoUnfold;
-+ (BOOL)massUnfold;
-+ (BOOL)disableCommentTooltip;
 + (BOOL)hideEmojiBar;
++ (BOOL)colorizeCommentUsernames;
++ (BOOL)copyCommentText;
++ (BOOL)enableCommentFlags;
++ (BOOL)autoTranslateComments;
++ (BOOL)disableSafariRedirect;
 + (BOOL)extendedComment;
 
-// MARK: - Profile & Interactions
-+ (BOOL)profileSave;
-+ (BOOL)profileCopy;
-+ (BOOL)profileVideoCount;
-+ (BOOL)videoLikeCount;
-+ (BOOL)videoUploadDate;
-+ (BOOL)showVideoTimestamp;
-+ (BOOL)showUsername;
-+ (BOOL)extendedBio;
-+ (BOOL)alwaysOpenSafari;
-+ (BOOL)bypassFollowListSearch;
-+ (BOOL)bypassMediaLimit;
-+ (BOOL)fakeChangesEnabled;
+// MARK: - 7. Profile & Fake Stats
 + (BOOL)fakeVerified;
++ (BOOL)fakeChangesEnabled;
 + (NSString *)fakeFollowerCount;
 + (NSString *)fakeFollowingCount;
++ (NSString *)fakeLikesCount;
++ (BOOL)profileCopy;
++ (BOOL)profileIdCopy;
++ (BOOL)profileSave;
++ (BOOL)hideLikedTab;
++ (BOOL)extendedBio;
++ (BOOL)showUsername;
++ (BOOL)videoLikeCount;
++ (BOOL)videoUploadDate;
++ (BOOL)profileVideoCount;
 
-// MARK: - Confirmations
+// MARK: - 8. Confirmations
 + (BOOL)likeConfirmation;
++ (BOOL)followConfirmation;
 + (BOOL)likeCommentConfirmation;
 + (BOOL)dislikeCommentConfirmation;
-+ (BOOL)followConfirmation;
-+ (BOOL)storyLikeConfirmation;
-+ (BOOL)quickShareConfirm;
-+ (BOOL)repostConfirm;
-+ (BOOL)disableFeedDoubleTap;
-+ (BOOL)disableStoryDoubleTap;
++ (BOOL)publishConfirmation;
++ (BOOL)downloadConfirmation;
++ (BOOL)bookmarkConfirmation;
 
-// MARK: - UI & Theme
+// MARK: - 9. Theme & UI
 + (BOOL)hideElementButton;
 + (BOOL)oledKeyboard;
 + (BOOL)hideTabBarLabels;
-+ (BOOL)hidePlusButton;
-+ (BOOL)hideFriendsBadge;
-+ (BOOL)hideInboxBadge;
-+ (BOOL)hideStreakPet;
++ (BOOL)hideBadgeCounter;
++ (BOOL)transparentStatusBar;
++ (BOOL)showExactDate;
 + (BOOL)liveActionEnabled;
 + (NSNumber *)selectedLiveAction;
 
-// MARK: - Helpers & Utilities
+// MARK: - 10. Helpers & Utilities
 + (void)showSaveVC:(id)item;
 + (void)cleanCache;
 + (void)eraseAllData;

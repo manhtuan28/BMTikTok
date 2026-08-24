@@ -1,3 +1,10 @@
+//
+//  TikTokHeaders.h
+//  BMTikTok
+//
+//  Tác giả & Phát triển: Tuancute28 (Bùi Mạnh Tuấn)
+//
+
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
 #import <SafariServices/SafariServices.h>
@@ -17,13 +24,17 @@
 @end 
 
 @interface AWEUserNameLabel: UILabel
--(void)addVerifiedIcon:(BOOL)arg1;
+- (void)addVerifiedIcon:(BOOL)arg1;
 @end
 
 @interface TTKProfileRootView: UIView
 @end
 
 @interface TTKProfileHeaderView : UIView
+- (void)addHandleLongPress;
+@end
+
+@interface TIKTOKProfileHeaderView : UIView
 - (void)addHandleLongPress;
 @end
 
@@ -40,7 +51,7 @@
 @interface AWETakoEntranceView : UIView
 @end
 
-@interface AWEPlayVideoPauseView : UIView
+@interface AWEAwemePlayVideoPauseIcon : UIView
 @end
 
 @interface AWECommentPanelView : UIView
@@ -57,32 +68,12 @@
 @end
 
 @interface AWEScreenShotTracker : NSObject
+- (void)userDidTakeScreenshot:(id)arg1;
 - (void)trackScreenShotWithParam:(id)arg1;
-@end
-
-@interface TIMMessageService : NSObject
-- (void)markMessageAsRead:(id)arg1 conversationId:(id)arg2;
 @end
 
 @interface AWEIMMessage : NSObject
 - (void)markAsRead;
-@end
-
-@interface AWEIMTypingStatusSender : NSObject
-- (void)sendTypingStatus:(id)arg1;
-@end
-
-@interface AWEProfileVisitorRecordService : NSObject
-- (void)reportVisitWithSecUid:(id)arg1;
-@end
-
-@interface AWEProfileTracker : NSObject
-- (void)trackProfileVisitWithSecUid:(id)arg1;
-@end
-
-@interface INSPrivacyManager : NSObject
-- (void)userDidTakeScreenshot:(id)arg1;
-- (void)userDidScreenRecord:(id)arg1;
 @end
 
 @interface TTNetworkManager : NSObject
@@ -133,15 +124,12 @@
 @property(retain, nonatomic) UIViewController *yy_viewController;
 @end
 
-@interface AWECommentPanelCell: UITableView
+@interface AWECommentPanelCell: UITableViewCell
 - (void)onLikeAction:(id)arg1;
 - (void)onDislikeAction:(id)arg1;
 @end
 
-@interface TikTokFeedTabControl: UIView
-@end
-
-@interface AWEFeedVideoButton: UIButton
+@interface AWEFeedVideoButton : UIButton
 @property(copy, nonatomic, readwrite) NSString *imageNameString;
 @end
 
@@ -197,316 +185,214 @@
 - (BOOL)isAds;
 - (BOOL)isAd;
 - (BOOL)isCommerce;
-- (BOOL)isCommerceAd;
-- (BOOL)isAIGC;
-@property(retain, nonatomic) id statistics;
+- (BOOL)progressBarDraggable;
+- (BOOL)progressBarVisible;
+- (AWEAwemeStatisticsModel *)statistics;
 @end
 
 @interface AWEAwemeStatisticsModel : NSObject
-@property(retain, nonatomic) NSNumber *diggCount;
+@property(readonly, nonatomic) NSNumber *diggCount;
 @end
 
-@interface AWEPlayInteractionWarningElementView: UIView
-@property(retain, nonatomic) NSString *warningText;
-- (id)warningImage;
+@interface AWEAwemeBaseViewController : UIViewController
+@property (retain, nonatomic) AWEAwemeModel *model;
 @end
 
-@interface TUXLabel: UILabel
+@interface AWEFeedCellViewController : AWEAwemeBaseViewController
+@end
+
+@interface TTKPhotoAlbumDetailCellController : AWEAwemeBaseViewController
+@end
+
+@interface TTKPhotoAlbumFeedCellController : AWEAwemeBaseViewController
+@end
+
+@interface AWEPlayPhotoAlbumViewController : UIViewController
+@end
+
+@interface AWEPlayVideoPlayerController: NSObject
+@property(retain, nonatomic) id container;
+@property(retain, nonatomic) AWEAwemeModel *model;
 @end
 
 @interface AWENewFeedTableViewController: UIViewController
-@property (nonatomic, assign) NSInteger defaultIndex;
-@property (nonatomic, retain) UIGestureRecognizer *swipeGesture;
-@property (nonatomic, retain) UIView *feedHeaderView;
 - (void)scrollToNextVideo;
 - (AWEAwemeModel *)currentAweme;
 @end
 
-@interface AWEFeedCellViewController: UIViewController
-@property (nonatomic, strong) AWEAwemeModel *model;
-@end
-
-@interface AWEPlayVideoPlayerController: NSObject
-@property (nonatomic, assign) BOOL isLoop;
-@property (nonatomic, strong) UIViewController *container;
-- (UIViewController *)container;
+@interface TTKProfileOtherViewController: UIViewController
+@property(retain, nonatomic) AWEUserModel *user;
 @end
 
 @interface TTKProfileBaseComponentModel: NSObject
-@property (nonatomic, copy, readwrite) NSDictionary *bizData;
-@property (nonatomic, copy, readwrite) NSString *componentID;
-@property (nonatomic, copy, readwrite) NSString *name;
-- (NSString *)formattedStringFromNumber:(NSNumber *)number;
-- (NSNumber *)numberFromUserDefaultsForKey:(NSString *)key;
-@end
-
-@interface AWEPlayInteractionUserAvatarElement: NSObject
-@property (nonatomic, strong, readwrite) UIView *view;
-- (void)onFollowViewClicked:(id)sender;
-@end
-
-@interface AWETextInputController: UIViewController
-@property(nonatomic, assign) NSInteger maxTextLength;
-@end
-
-@interface AWEProfileEditTextViewController: UIViewController
-@property(nonatomic, assign) NSInteger maxTextLength;
-@end
-
-@interface TIKTOKProfileHeaderView: UIView
-- (void)addHandleLongPress;
-@end
-
-@interface AWELiveFeedEntranceView: UIView
-@end
-
-@interface TTKFeedInteractionLegacyMainContainerElement : NSObject
-- (void)hideAllElements:(BOOL)hide exceptArray:(NSArray *)exceptArray;
-- (void)hideAllElements:(BOOL)hide;
-- (void)showAllElements;
-- (void)hideAllElements;
-- (void)appear;
-- (void)disAppear;
-@end
-
-@interface AWEFeedViewTemplateCell: UIView <BMMultipleDownloadDelegate>
-@property (nonatomic, strong) JGProgressHUD *hud;
-@property (nonatomic, assign) BOOL elementsHidden;
-@property (nonatomic, retain) NSString *fileextension;
-@property (nonatomic, retain) UIProgressView *progressView;
-@property (nonatomic, readonly) UIViewController *viewController;
-- (UIViewController *)viewController;
-- (void)addDownloadButton;
-- (void)addHideElementButton;
-- (void)downloadVideo:(id)sender;
-- (void)downloadHDVideo:(id)sender;
-- (void)downloadMusic:(id)sender;
-- (void)copyMusic:(id)sender;
-- (void)copyVideo:(id)sender;
-- (void)copyDecription:(id)sender;
-- (void)downloadPhotos:(id)sender photoIndex:(NSInteger)index;
-- (void)downloadPhotos:(id)sender;
-@end
-
-@interface AWEAwemeBaseViewController: UIViewController
-@property(readonly, nonatomic) AWEAwemeModel *model;
-@property(nonatomic, strong) id interactionController;
-@end
-
-@interface TTKPhotoAlbumDetailCellController: UIViewController
-@property(readonly, nonatomic) AWEAwemeModel *model;
-@end
-
-@interface TTKPhotoAlbumFeedCellController: UIViewController
-@property(readonly, nonatomic) AWEAwemeModel *model;
-@end
-
-@interface AWEPlayPhotoAlbumViewController: UIViewController
+@property(retain, nonatomic) NSString *componentID;
+@property(retain, nonatomic) NSString *name;
 @end
 
 @interface AWESettingItemModel: NSObject
-@property (nonatomic, copy, readwrite) NSString *identifier;
-@property (nonatomic, copy, readwrite) NSString *title;
-@property (nonatomic, copy, readwrite) NSString *detail;
-@property (nonatomic, strong, readwrite) UIImage *iconImage;
-@property (nonatomic, assign, readwrite) NSInteger type;
-- (instancetype)initWithIdentifier:(NSString *)identifier;
+@property(retain, nonatomic) NSString *identifier;
+@property(retain, nonatomic) NSString *title;
+@property(retain, nonatomic) NSString *detail;
+@property(retain, nonatomic) UIImage *iconImage;
+@property(nonatomic) NSInteger type;
+- (instancetype)initWithIdentifier:(NSString *)arg1;
 @end
 
 @interface TTKSettingsBaseCellPlugin: NSObject
-@property (nonatomic, strong, readwrite) AWESettingItemModel *itemModel;
-- (instancetype)initWithPluginContext:(id)context;
+@property(retain, nonatomic) AWESettingItemModel *itemModel;
+- (instancetype)initWithPluginContext:(id)arg1;
 @end
 
 @interface AWESettingsNormalSectionViewModel: NSObject
-@property (nonatomic, copy, readwrite) NSString *sectionIdentifier;
-@property (nonatomic, strong, readwrite) id context;
-- (void)insertModel:(id)model atIndex:(NSInteger)index animated:(BOOL)animated;
-@end
-
-@interface TTKProfileOtherViewController: UIViewController
-@property(readonly, nonatomic) AWEUserModel *user;
-@end
-
-@interface TTKProfileHomeViewController: UIViewController
+@property(retain, nonatomic) NSString *sectionIdentifier;
+@property(retain, nonatomic) id context;
+- (void)insertModel:(id)arg1 atIndex:(NSInteger)arg2 animated:(BOOL)arg3;
 @end
 
 @interface AWEUIAlertView: NSObject
 + (void)showAlertWithTitle:(NSString *)title description:(NSString *)description image:(UIImage *)image actionButtonTitle:(NSString *)actionTitle cancelButtonTitle:(NSString *)cancelTitle actionBlock:(void (^)(void))actionBlock cancelBlock:(void (^)(void))cancelBlock;
 @end
 
-@interface FLEXManager: NSObject
-+ (instancetype)sharedManager;
-- (void)showExplorer;
+@interface AWEPlayInteractionAuthorUserNameButton: UIButton
 @end
 
-@interface AWEUserWorkCollectionViewCell: UICollectionViewCell
-@property (nonatomic, strong, readwrite) AWEAwemeModel *model;
-- (NSString *)formattedNumber:(NSInteger)number;
-- (NSString *)formattedDateStringFromTimestamp:(NSTimeInterval)timestamp;
+@interface TUXLabel: UILabel
 @end
 
-@interface TTKMediaSpeedControlService: NSObject
-- (void)setPlaybackRate:(CGFloat)rate;
+@interface AWEFeedViewTemplateCell: UITableViewCell
+@property (nonatomic, strong) JGProgressHUD *hud;
+@property (nonatomic, assign) BOOL elementsHidden;
+@property (nonatomic, retain) NSString *fileextension;
+@property (nonatomic, retain) UIProgressView *progressView;
+- (void)addDownloadButton;
+- (void)addHideElementButton;
+- (void)resetPureModeState;
+- (void)downloadButtonHandler:(UIButton *)sender;
+- (void)hideElementButtonHandler:(UIButton *)sender;
+- (void)downloadVideo:(AWEAwemeBaseViewController *)rootVC;
+- (void)downloadHDVideo:(AWEAwemeBaseViewController *)rootVC;
+- (void)downloadPhotos:(TTKPhotoAlbumDetailCellController *)rootVC;
+- (void)downloadPhotos:(TTKPhotoAlbumDetailCellController *)rootVC photoIndex:(unsigned long)index;
+- (void)downloadMusic:(AWEAwemeBaseViewController *)rootVC;
+- (void)copyMusic:(AWEAwemeBaseViewController *)rootVC;
+- (void)copyVideo:(AWEAwemeBaseViewController *)rootVC;
+- (void)copyDecription:(AWEAwemeBaseViewController *)rootVC;
 @end
 
-@interface TTKStoreRegionModel: NSObject
-@property (nonatomic, copy, readwrite) NSString *currentRegion;
+@interface AWEAwemeDetailTableViewCell: UITableViewCell
+@property (nonatomic, strong) JGProgressHUD *hud;
+@property (nonatomic, assign) BOOL elementsHidden;
+@property (nonatomic, retain) UIProgressView *progressView;
+@property (nonatomic, retain) NSString *fileextension;
+- (void)addDownloadButton;
+- (void)addHideElementButton;
+- (void)resetPureModeState;
+- (void)downloadButtonHandler:(UIButton *)sender;
+- (void)hideElementButtonHandler:(UIButton *)sender;
+- (void)downloadVideo:(AWEAwemeBaseViewController *)rootVC;
+- (void)downloadHDVideo:(AWEAwemeBaseViewController *)rootVC;
+- (void)downloadMusic:(AWEAwemeBaseViewController *)rootVC;
+- (void)copyMusic:(AWEAwemeBaseViewController *)rootVC;
+- (void)copyVideo:(AWEAwemeBaseViewController *)rootVC;
+- (void)copyDecription:(AWEAwemeBaseViewController *)rootVC;
+@end
+
+@interface CTCarrier: NSObject
+@property (nonatomic, strong) NSString *mobileCountryCode;
+@property (nonatomic, strong) NSString *isoCountryCode;
+@property (nonatomic, strong) NSString *mobileNetworkCode;
 @end
 
 @interface TTKStoreRegionService: NSObject
-@property (nonatomic, strong, readwrite) TTKStoreRegionModel *storeRegionModel;
+- (id)storeRegion;
+- (id)getStoreRegion;
+- (void)setStoreRegion:(id)arg1;
 @end
 
 @interface TIKTOKRegionManager: NSObject
-+ (instancetype)sharedInstance;
-- (NSString *)getRegion;
-- (NSString *)getCarrierRegion;
-- (NSString *)getSysRegion;
-- (NSString *)getAppLanguage;
++ (NSString *)systemRegion;
++ (id)region;
++ (id)mccmnc;
++ (id)storeRegion;
++ (id)currentRegionV2;
++ (id)localRegion;
 @end
 
-@interface TTKPassportAppStoreRegionModel: NSObject
-@property (nonatomic, copy, readwrite) NSString *currentRegion;
+@interface TTKMediaSpeedControlService: NSObject
+- (void)setPlaybackRate:(CGFloat)arg1;
 @end
 
-@interface ATSRegionCacheManager: NSObject
-+ (instancetype)sharedInstance;
-- (NSString *)getRegion;
+@interface AWEPlayInteractionWarningElementView: UIView
+- (id)warningImage;
+- (id)warningLabel;
 @end
 
-@interface TTInstallIDManager: NSObject
-+ (instancetype)sharedInstance;
-- (NSString *)getRegion;
+@interface AWEPlayInteractionUserAvatarElement: NSObject
+- (void)onFollowViewClicked:(id)sender;
 @end
 
-@interface BDInstallGlobalConfig: NSObject
-+ (instancetype)sharedInstance;
-@property (nonatomic, copy, readwrite) NSString *appRegion;
+@interface AWETextInputController: NSObject
+- (NSUInteger)maxLength;
 @end
 
-@interface BDInstallNetworkUtility: NSObject
-+ (NSString *)carrierRegion;
+@interface AWEProfileEditTextViewController: UIViewController
+- (NSInteger)maxTextLength;
 @end
 
-@interface TTAdSplashDeviceHelper: NSObject
-+ (NSString *)carrierRegion;
-@end
-
-@interface AppsFlyerUtils: NSObject
-+ (NSString *)carrierRegion;
-@end
-
-@interface PIPOIAPStoreManager: NSObject
-+ (NSString *)carrierRegion;
-@end
-
-@interface IESLiveDeviceInfo: NSObject
-+ (NSString *)carrierRegion;
-@end
-
-@interface GULAppEnvironmentUtil: NSObject
-+ (BOOL)isFromAppStore;
-+ (BOOL)isAppStoreReceiptSandbox;
-+ (BOOL)isAppExtension;
-@end
-
-@interface FBSDKAppEventsUtility: NSObject
-+ (BOOL)isDebugBuild;
-@end
-
-@interface AWEAPMManager: NSObject
-+ (id)signInfo;
-@end
-
-@interface AWESecurity: NSObject
-- (void)resetCollectMode;
-@end
-
-@interface MSManagerOV: NSObject
-- (id)setMode;
-@end
-
-@interface MSConfigOV: NSObject
-- (id)setMode;
-@end
-
-@interface PIPOStoreKitHelper: NSObject
-+ (NSString *)carrierRegion;
+@interface AWELiveFeedEntranceView: UIView
+- (void)switchStateWithTapped:(BOOL)arg1;
 @end
 
 @interface BDADeviceHelper: NSObject
-+ (NSString *)carrierRegion;
++ (bool)isJailBroken;
 @end
 
 @interface TTInstallUtil: NSObject
-+ (NSString *)carrierRegion;
++ (bool)isJailBroken;
 @end
 
-@interface AWEAwemeDetailTableViewCell: UIView <BMMultipleDownloadDelegate>
-@property (nonatomic, strong) JGProgressHUD *hud;
-@property (nonatomic, assign) BOOL elementsHidden;
-@property (nonatomic, retain) NSString *fileextension;
-@property (nonatomic, retain) UIProgressView *progressView;
-@property (nonatomic, readonly) UIViewController *viewController;
-- (UIViewController *)viewController;
-- (void)addDownloadButton;
-- (void)addHideElementButton;
-- (void)downloadVideo:(id)sender;
-- (void)downloadHDVideo:(id)sender;
-- (void)downloadMusic:(id)sender;
-- (void)copyMusic:(id)sender;
-- (void)copyVideo:(id)sender;
-- (void)copyDecription:(id)sender;
-- (void)downloadPhotos:(id)sender photoIndex:(NSInteger)index;
-- (void)downloadPhotos:(id)sender;
+@interface AppsFlyerUtils: NSObject
++ (bool)isJailbrokenWithSkipAdvancedJailbreakValidation:(bool)arg2;
 @end
 
-@interface TTKStoryDetailTableViewCell: UIView <BMMultipleDownloadDelegate>
-@property (nonatomic, strong) JGProgressHUD *hud;
-@property (nonatomic, assign) BOOL elementsHidden;
-@property (nonatomic, retain) NSString *fileextension;
-@property (nonatomic, retain) UIProgressView *progressView;
-@property (nonatomic, readonly) UIViewController *viewController;
-- (UIViewController *)viewController;
-- (void)addDownloadButton;
-- (void)addHideElementButton;
-- (void)downloadVideo:(id)sender;
-- (void)downloadHDVideo:(id)sender;
-- (void)downloadMusic:(id)sender;
-- (void)copyMusic:(id)sender;
-- (void)copyVideo:(id)sender;
-- (void)copyDecription:(id)sender;
-- (void)downloadPhotos:(id)sender photoIndex:(NSInteger)index;
-- (void)downloadPhotos:(id)sender;
+@interface IESLiveDeviceInfo: NSObject
++ (bool)isJailBroken;
 @end
 
-static inline BOOL is_iPad() {
-    if ([(NSString *)[UIDevice currentDevice].model hasPrefix:@"iPad"]) {
-        return YES;
-    }
-    return NO;
-}
+@interface PIPOStoreKitHelper: NSObject
+- (bool)isJailBroken;
+@end
 
-static inline UIViewController * _Nullable _topMostController(UIViewController * _Nonnull cont) {
-    UIViewController *topController = cont;
-    while (topController.presentedViewController) {
-        topController = topController.presentedViewController;
-    }
-    if ([topController isKindOfClass:[UINavigationController class]]) {
-        UIViewController *visible = ((UINavigationController *)topController).visibleViewController;
-        if (visible) {
-            topController = visible;
+@interface BDInstallNetworkUtility: NSObject
++ (bool)isJailBroken;
+@end
+
+@interface TTAdSplashDeviceHelper: NSObject
++ (bool)isJailBroken;
+@end
+
+@interface FBSDKAppEventsUtility: NSObject
++ (bool)isDebugBuild;
+@end
+
+static inline UIViewController * _Nullable topMostController() {
+    UIWindow *keyWindow = nil;
+    for (UIWindow *w in [UIApplication sharedApplication].windows) {
+        if (w.isKeyWindow) {
+            keyWindow = w;
+            break;
         }
     }
-    return (topController != cont ? topController : nil);
-}
-
-static inline UIViewController * _Nonnull topMostController() {
-    UIViewController *topController = [UIApplication sharedApplication].keyWindow.rootViewController;
-    UIViewController *next = nil;
-    while ((next = _topMostController(topController)) != nil) {
-        topController = next;
+    if (!keyWindow) {
+        keyWindow = [UIApplication sharedApplication].windows.firstObject;
+    }
+    UIViewController *topController = [keyWindow rootViewController];
+    while ([topController presentedViewController]) {
+        topController = [topController presentedViewController];
     }
     return topController;
+}
+
+static inline BOOL is_iPad() {
+    return [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad;
 }
