@@ -815,10 +815,13 @@ static BOOL isAuthenticationShowed = FALSE;
 }
 %end
 
-%hook UIButton // follow confirmation broken 
+%hook UIButton // follow confirmation
 - (void)_onTouchUpInside {
     if ([BMIManager followConfirmation] && [self.currentTitle isEqualToString:@"Follow"]) {
-        showConfirmation(^(void) { %orig; });
+        void (^actionBlock)(void) = ^{
+            %orig;
+        };
+        showConfirmation(actionBlock);
     } else {
         %orig;
     }
@@ -827,9 +830,12 @@ static BOOL isAuthenticationShowed = FALSE;
 %hook AWEPlayInteractionUserAvatarElement
 - (void)onFollowViewClicked:(id)sender {
     if ([BMIManager followConfirmation]) {
-        showConfirmation(^(void) { %orig; });
+        void (^actionBlock)(void) = ^{
+            %orig(sender);
+        };
+        showConfirmation(actionBlock);
     } else {
-        return %orig;
+        %orig(sender);
     }
 }
 %end
@@ -900,7 +906,10 @@ static BOOL isAuthenticationShowed = FALSE;
 %hook AWEFeedVideoButton // like feed confirmation
 - (void)_onTouchUpInside {
     if ([BMIManager likeConfirmation] && [self.imageNameString isEqualToString:@"ic_like_fill_1_new"]) {
-        showConfirmation(^(void) { %orig; });
+        void (^actionBlock)(void) = ^{
+            %orig;
+        };
+        showConfirmation(actionBlock);
     } else {
         %orig;
     }
@@ -909,16 +918,22 @@ static BOOL isAuthenticationShowed = FALSE;
 %hook AWECommentPanelCell // like/dislike comment confirmation
 - (void)onLikeAction:(id)arg1 {
     if ([BMIManager likeCommentConfirmation]) {
-        showConfirmation(^(void) { %orig; });
+        void (^actionBlock)(void) = ^{
+            %orig(arg1);
+        };
+        showConfirmation(actionBlock);
     } else {
-        return %orig;
+        %orig(arg1);
     }
 }
 - (void)onDislikeAction:(id)arg1 {
     if ([BMIManager dislikeCommentConfirmation]) {
-        showConfirmation(^(void) { %orig; });
+        void (^actionBlock)(void) = ^{
+            %orig(arg1);
+        };
+        showConfirmation(actionBlock);
     } else {
-        return %orig;
+        %orig(arg1);
     }
 }
 %end
