@@ -169,6 +169,14 @@
 @property(readonly, nonatomic) NSArray <AWEPhotoAlbumPhoto *> *photos;
 @end
 
+@interface AWEUserModel: NSObject
+@property(retain, nonatomic) NSNumber *visibleVideosCount;
+@property(retain, nonatomic) NSNumber *followerCount;
+@property(retain, nonatomic) NSNumber *followingCount;
+@property(nonatomic, copy) NSString *nickname;
+@property(nonatomic, copy) NSString *socialName;
+@end
+
 @interface AWEAwemeModel : NSObject
 @property(readonly, nonatomic) AWEVideoModel *video;
 @property(readonly, nonatomic) AWEMusicModel *music;
@@ -176,7 +184,13 @@
 @property(readonly, nonatomic) AWEPhotoAlbumModel *photoAlbum;
 @property(readonly, nonatomic) NSString *music_songName;
 @property(retain, nonatomic) NSNumber *createTime;
+@property(retain, nonatomic) AWEUserModel *author;
+@property(nonatomic, copy) NSString *region;
+- (BOOL)isUserRecommendBigCard;
 - (BOOL)isAds;
+- (BOOL)isAd;
+- (BOOL)isCommerce;
+- (BOOL)isCommerceAd;
 @property(retain, nonatomic) id statistics;
 @end
 
@@ -196,14 +210,23 @@
 @property (nonatomic, assign) NSInteger defaultIndex;
 @property (nonatomic, retain) UIGestureRecognizer *swipeGesture;
 @property (nonatomic, retain) UIView *feedHeaderView;
+- (void)scrollToNextVideo;
+- (AWEAwemeModel *)currentAweme;
+@end
+
+@interface AWEFeedCellViewController: UIViewController
+@property (nonatomic, strong) AWEAwemeModel *model;
 @end
 
 @interface AWEPlayVideoPlayerController: NSObject
 @property (nonatomic, assign) BOOL isLoop;
+@property (nonatomic, strong) id container;
 @end
 
 @interface TTKProfileBaseComponentModel: NSObject
 @property (nonatomic, copy, readwrite) NSDictionary *bizData;
+@property (nonatomic, copy, readwrite) NSString *componentID;
+@property (nonatomic, copy, readwrite) NSString *name;
 - (NSString *)formattedStringFromNumber:(NSNumber *)number;
 - (NSNumber *)numberFromUserDefaultsForKey:(NSString *)key;
 @end
@@ -211,12 +234,6 @@
 @interface AWEPlayInteractionUserAvatarElement: NSObject
 @property (nonatomic, strong, readwrite) UIView *view;
 - (void)onFollowViewClicked:(id)sender;
-@end
-
-@interface AWEUserModel: NSObject
-@property(retain, nonatomic) NSNumber *visibleVideosCount;
-@property(retain, nonatomic) NSNumber *followerCount;
-@property(retain, nonatomic) NSNumber *followingCount;
 @end
 
 @interface AWETextInputController: UIViewController
