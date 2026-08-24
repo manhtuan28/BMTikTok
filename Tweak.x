@@ -239,8 +239,12 @@ static BOOL isAuthenticationShowed = FALSE;
 %hook AWEPlayVideoPlayerController
 - (void)playerWillLoopPlaying:(id)arg1 {
     if ([BMIManager autoPlay]) {
-        if ([self.container.parentViewController isKindOfClass:%c(AWENewFeedTableViewController)]) {
-            [((AWENewFeedTableViewController *)self.container.parentViewController) scrollToNextVideo];
+        UIViewController *parentVC = nil;
+        if ([self.container respondsToSelector:@selector(parentViewController)]) {
+            parentVC = [self.container parentViewController];
+        }
+        if ([parentVC isKindOfClass:%c(AWENewFeedTableViewController)]) {
+            [((AWENewFeedTableViewController *)parentVC) scrollToNextVideo];
             return;
         }
     }

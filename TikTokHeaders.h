@@ -17,6 +17,15 @@
 #import "Settings/ViewController.h"
 #import "Settings/PlaybackSpeed.h"
 
+@class AWEAwemeModel;
+@class AWEAwemeStatisticsModel;
+@class AWEUserModel;
+@class AWEVideoModel;
+@class AWEMusicModel;
+@class AWEPhotoAlbumModel;
+@class AWEPhotoAlbumPhoto;
+@class AWEURLModel;
+
 @interface AppDelegate : NSObject <UIApplicationDelegate>
 @end
 
@@ -178,6 +187,10 @@
 @property(nonatomic, assign) BOOL isAIGC;
 @end
 
+@interface AWEAwemeStatisticsModel : NSObject
+@property(readonly, nonatomic) NSNumber *diggCount;
+@end
+
 @interface AWEAwemeModel : NSObject
 @property(readonly, nonatomic) AWEVideoModel *video;
 @property(readonly, nonatomic) AWEMusicModel *music;
@@ -196,10 +209,6 @@
 - (BOOL)progressBarDraggable;
 - (BOOL)progressBarVisible;
 - (AWEAwemeStatisticsModel *)statistics;
-@end
-
-@interface AWEAwemeStatisticsModel : NSObject
-@property(readonly, nonatomic) NSNumber *diggCount;
 @end
 
 @interface AWEAwemeBaseViewController : UIViewController
@@ -235,6 +244,8 @@
 @interface TTKProfileBaseComponentModel: NSObject
 @property(retain, nonatomic) NSString *componentID;
 @property(retain, nonatomic) NSString *name;
+- (NSNumber *)numberFromUserDefaultsForKey:(NSString *)key;
+- (NSString *)formattedStringFromNumber:(NSNumber *)number;
 @end
 
 @interface AWESettingItemModel: NSObject
@@ -273,7 +284,7 @@
 - (NSString *)formattedDateStringFromTimestamp:(NSTimeInterval)timestamp;
 @end
 
-@interface AWEFeedViewTemplateCell: UITableViewCell
+@interface AWEFeedViewTemplateCell: UITableViewCell <BMDownloadDelegate, BMMultipleDownloadDelegate>
 @property (nonatomic, strong) JGProgressHUD *hud;
 @property (nonatomic, assign) BOOL elementsHidden;
 @property (nonatomic, retain) NSString *fileextension;
@@ -293,7 +304,7 @@
 - (void)copyDecription:(AWEAwemeBaseViewController *)rootVC;
 @end
 
-@interface AWEAwemeDetailTableViewCell: UITableViewCell
+@interface AWEAwemeDetailTableViewCell: UITableViewCell <BMDownloadDelegate, BMMultipleDownloadDelegate>
 @property (nonatomic, strong) JGProgressHUD *hud;
 @property (nonatomic, assign) BOOL elementsHidden;
 @property (nonatomic, retain) UIProgressView *progressView;
