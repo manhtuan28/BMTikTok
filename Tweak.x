@@ -1031,6 +1031,36 @@ static BOOL isAuthenticationShowed = FALSE;
     }
 }
 %end
+
+// Modern TikTok 46.5.0 hooks
+%hook TTKProfileHeaderView
+- (id)initWithFrame:(CGRect)arg1 {
+    self = %orig;
+    if ([BMIManager profileCopy]) {
+        [self addHandleLongPress];
+    }
+    return self;
+}
+%end
+
+%hook TTKAdsTimerPendantAdapter
+- (void)viewDidLoad {
+    %orig;
+    if ([BMIManager removePendant]) {
+        [[self view] setHidden:YES];
+    }
+}
+%end
+
+%hook AWEScreenShotTracker
+- (void)trackScreenShotWithParam:(id)arg1 {
+    if ([BMIManager disableScreenshotDetection]) {
+        return;
+    }
+    %orig(arg1);
+}
+%end
+
 %hook TIKTOKProfileHeaderView // copy profile information
 - (id)initWithFrame:(CGRect)arg1 {
     self = %orig;
