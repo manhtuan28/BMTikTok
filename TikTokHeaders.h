@@ -178,6 +178,10 @@
 @property(nonatomic, copy) NSString *socialName;
 @end
 
+@interface AWEAigcInfoModel : NSObject
+@property(nonatomic, assign) BOOL isAIGC;
+@end
+
 @interface AWEAwemeModel : NSObject
 @property(readonly, nonatomic) AWEVideoModel *video;
 @property(readonly, nonatomic) AWEMusicModel *music;
@@ -187,11 +191,14 @@
 @property(retain, nonatomic) NSNumber *createTime;
 @property(retain, nonatomic) AWEUserModel *author;
 @property(nonatomic, copy) NSString *region;
+@property(retain, nonatomic) AWEAigcInfoModel *aigcInfoModel;
+@property(nonatomic, assign) BOOL isAIGCSuggested;
 - (BOOL)isUserRecommendBigCard;
 - (BOOL)isAds;
 - (BOOL)isAd;
 - (BOOL)isCommerce;
 - (BOOL)isCommerceAd;
+- (BOOL)isAIGC;
 @property(retain, nonatomic) id statistics;
 @end
 

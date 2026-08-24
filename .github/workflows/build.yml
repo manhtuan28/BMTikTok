@@ -59,9 +59,20 @@ jobs:
           if [ -z "$DYLIB_PATH" ] || [ ! -f "$DYLIB_PATH" ]; then
             DYLIB_PATH=$(find .theos -name "BMTikTok.dylib" ! -path "*.dSYM*" | head -n 1)
           fi
+          
+          # Sửa dependency CydiaSubstrate sang @rpath/libsubstrate.dylib cho máy không Jailbreak (Sideloading)
+          install_name_tool -change /Library/Frameworks/CydiaSubstrate.framework/CydiaSubstrate @rpath/libsubstrate.dylib "$DYLIB_PATH" || true
+          install_name_tool -id @rpath/BMTikTok.dylib "$DYLIB_PATH" || true
+          ldid -S "$DYLIB_PATH" || true
+          
+          if [ -f "tools/deps/libsubstrate.dylib" ]; then
+            ldid -S tools/deps/libsubstrate.dylib || true
+          fi
+          
           echo "DYLIB_PATH=$DYLIB_PATH" >> $GITHUB_ENV
-          echo "✅ Đã tìm thấy dylib thành phẩm: $DYLIB_PATH"
+          echo "✅ Đã tìm thấy và patch dylib thành phẩm: $DYLIB_PATH"
           file "$DYLIB_PATH"
+          otool -L "$DYLIB_PATH" || true
 
       - name: 📦 Tải File TikTok IPA Gốc
         run: |

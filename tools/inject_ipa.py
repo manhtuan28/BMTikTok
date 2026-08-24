@@ -4,8 +4,9 @@
 BMTikTok IPA Injector Tool
 Created by Tuancute28 (Bùi Mạnh Tuấn)
 
-Tự động giải nén IPA TikTok gốc, chèn BMTikTok.dylib, BMTikTok.bundle,
+Tự động giải nén IPA TikTok gốc, chèn BMTikTok.dylib, libsubstrate.dylib, BMTikTok.bundle,
 loại bỏ các PlugIns/Extensions/Watch để tối ưu chỉ cần 1 App ID khi Sideload (Sideloadly / AltStore),
+sửa liên kết CydiaSubstrate sang @rpath/libsubstrate.dylib để chạy trên máy không Jailbreak,
 và đóng gói thành phẩm BMTikTok IPA hoàn chỉnh.
 """
 
@@ -36,6 +37,30 @@ def validate_dylib(dylib_path):
             print(f"[✅] Xác nhận file dylib hợp lệ: {dylib_path} (Universal FAT binary)")
         else:
             raise ValueError(f"File {dylib_path} không phải định dạng Mach-O hợp lệ (Magic: {hex(magic)})!")
+
+def patch_dylib_dependency(dylib_path, old_dep, new_dep):
+    """
+    Thay thế chuỗi dependency trong Mach-O load command (ví dụ đổi CydiaSubstrate sang @rpath/libsubstrate.dylib)
+    """
+    old_bytes = old_dep.encode('utf-8')
+    new_bytes = new_dep.encode('utf-8')
+    if len(new_bytes) > len(old_bytes):
+        print(f"[!] Cảnh báo: Đường dẫn mới dài hơn đường dẫn cũ!")
+        return False
+        
+    with open(dylib_path, 'r+b') as f:
+        content = f.read()
+        pos = content.find(old_bytes)
+        if pos != -1:
+            print(f"[*] Đang vá dependency trong {dylib_path}: {old_dep} -> {new_dep}")
+            f.seek(pos)
+            # Ghi chuỗi mới và đệm các byte null \x00 cho đủ chiều dài chuỗi cũ
+            padded = new_bytes + b'\x00' * (len(old_bytes) - len(new_bytes))
+            f.write(padded)
+            return True
+        else:
+            print(f"[*] Không tìm thấy chuỗi dependency {old_dep} (có thể đã được đổi trước đó)")
+            return True
 
 def inject_load_dylib(binary_path, dylib_payload_path):
     """
@@ -146,7 +171,22 @@ def repackage_ipa(input_ipa, dylib_path, bundle_path, output_ipa):
     shutil.copy(dylib_path, dest_dylib)
     print(f"[+] Đã sao chép BMTikTok.dylib -> {dest_dylib}")
     
-    # 4. Copy BMTikTok.bundle vào thư mục ứng dụng
+    # 4. Copy libsubstrate.dylib vào Frameworks và vá dependency cho non-jailbreak
+    substrate_src = os.path.join(os.path.dirname(__file__), "deps", "libsubstrate.dylib")
+    if not os.path.exists(substrate_src):
+        substrate_src = "tools/deps/libsubstrate.dylib"
+        
+    if os.path.exists(substrate_src):
+        dest_substrate = os.path.join(frameworks_dir, "libsubstrate.dylib")
+        shutil.copy(substrate_src, dest_substrate)
+        print(f"[+] Đã sao chép libsubstrate.dylib -> {dest_substrate}")
+    else:
+        print("[!] Không tìm thấy libsubstrate.dylib trong tools/deps!")
+        
+    # Vá dependency CydiaSubstrate trong BMTikTok.dylib
+    patch_dylib_dependency(dest_dylib, "/Library/Frameworks/CydiaSubstrate.framework/CydiaSubstrate", "@rpath/libsubstrate.dylib")
+    
+    # 5. Copy BMTikTok.bundle vào thư mục ứng dụng
     if os.path.exists(bundle_path):
         dest_bundle = os.path.join(app_path, "BMTikTok.bundle")
         if os.path.exists(dest_bundle):
@@ -154,17 +194,17 @@ def repackage_ipa(input_ipa, dylib_path, bundle_path, output_ipa):
         shutil.copytree(bundle_path, dest_bundle)
         print(f"[+] Đã sao chép BMTikTok.bundle -> {dest_bundle}")
         
-    # 5. Patch LC_LOAD_DYLIB vào file thực thi
+    # 6. Patch LC_LOAD_DYLIB vào file thực thi
     print(f"[*] Đang chèn load dylib vào file thực thi: {main_executable}")
     inject_load_dylib(main_executable, "@rpath/BMTikTok.dylib")
     
-    # 6. Kiểm tra MusicallyCore.framework nếu có
+    # 7. Kiểm tra MusicallyCore.framework nếu có
     musically_core = os.path.join(frameworks_dir, "MusicallyCore.framework", "MusicallyCore")
     if os.path.exists(musically_core):
         print(f"[*] Phát hiện MusicallyCore.framework, đang chèn load dylib...")
         inject_load_dylib(musically_core, "@rpath/BMTikTok.dylib")
         
-    # 7. Đóng gói lại thành file IPA mới
+    # 8. Đóng gói lại thành file IPA mới
     print(f"[*] Đang nén thành phẩm IPA: {output_ipa}")
     with zipfile.ZipFile(output_ipa, 'w', zipfile.ZIP_DEFLATED) as zip_out:
         for root, dirs, files in os.walk(work_dir):

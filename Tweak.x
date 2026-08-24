@@ -664,14 +664,42 @@ static BOOL isAuthenticationShowed = FALSE;
 }
 %end
 
-%hook AWEAwemeModel // no ads, show porgress bar
+%hook AWEAwemeModel // no ads, block AI videos, show progress bar
 - (id)initWithDictionary:(id)arg1 error:(id *)arg2 {
     id orig = %orig;
-    return [BMIManager hideAds] && self.isAds ? nil : orig;
+    if ([BMIManager hideAds] && self.isAds) {
+        return nil;
+    }
+    if ([BMIManager blockAIGenerated]) {
+        if ([self respondsToSelector:@selector(aigcInfoModel)] && [self aigcInfoModel]) {
+            return nil;
+        }
+        if ([self respondsToSelector:@selector(isAIGC)] && [self isAIGC]) {
+            return nil;
+        }
+        if ([self respondsToSelector:@selector(isAIGCSuggested)] && [self isAIGCSuggested]) {
+            return nil;
+        }
+    }
+    return orig;
 }
 - (id)init {
     id orig = %orig;
-    return [BMIManager hideAds] && self.isAds ? nil : orig;
+    if ([BMIManager hideAds] && self.isAds) {
+        return nil;
+    }
+    if ([BMIManager blockAIGenerated]) {
+        if ([self respondsToSelector:@selector(aigcInfoModel)] && [self aigcInfoModel]) {
+            return nil;
+        }
+        if ([self respondsToSelector:@selector(isAIGC)] && [self isAIGC]) {
+            return nil;
+        }
+        if ([self respondsToSelector:@selector(isAIGCSuggested)] && [self isAIGCSuggested]) {
+            return nil;
+        }
+    }
+    return orig;
 }
 
 - (BOOL)progressBarDraggable {
