@@ -1675,79 +1675,6 @@ static BOOL isAuthenticationShowed = FALSE;
 }
 %end
 
-// --- Passport SMS Login Bypass (targeted, does NOT touch global `NSBundle`) ---
-// Spoof bundle ID only inside Passport network requests
-%hook AWEPassportNetworkManager
-- (NSDictionary *)commonParams {
-    NSDictionary *origParams = %orig;
-    NSMutableDictionary *params = [origParams mutableCopy];
-    if (params) {
-        params[@"aid"] = @"1233";
-        params[@"app_name"] = @"musical_ly";
-        params[@"channel"] = @"App Store";
-        params[@"iid"] = params[@"iid"] ?: @"";
-    }
-    return params;
-}
-%end
-
-%hook AWEPassportURLSettings
-- (NSString *)appId {
-    return @"1233";
-}
-%end
-
-%hook TTKPassportSettings
-- (NSString *)appId {
-    return @"1233";
-}
-%end
-
-// Bypass anti-spam and risk checks during login
-%hook AWEPassportAntiSpamManager
-- (BOOL)isSpam {
-    return NO;
-}
-- (BOOL)shouldBlockRequest {
-    return NO;
-}
-%end
-
-%hook AWEPassportCheckEnvModel
-- (BOOL)isRisky {
-    return NO;
-}
-- (NSInteger)riskLevel {
-    return 0;
-}
-%end
-
-%hook AWERiskControlService
-- (BOOL)isDeviceRisky {
-    return NO;
-}
-- (NSDictionary *)riskInfo {
-    return @{};
-}
-%end
-
-// Bypass `AWEPassportSendCodeTicketManager` rate limiting
-%hook AWEPassportSendCodeTicketManager
-- (BOOL)isTicketExpired {
-    return YES;
-}
-- (BOOL)needsTicket {
-    return NO;
-}
-%end
-
-// Ensure `DYASendCodeModel` (the actual SMS sender) does not get blocked
-%hook DYASendCodeModel
-- (void)setNeedCaptcha:(BOOL)arg1 {
-    %orig(NO);
-}
-%end
-
 %hook AppsFlyerUtils
 +(bool)isJailbrokenWithSkipAdvancedJailbreakValidation:(bool)arg2 {
 	return NO;
@@ -1784,18 +1711,6 @@ static BOOL isAuthenticationShowed = FALSE;
 }
 %end
 
-%hook GULAppEnvironmentUtil
-+(bool)isFromAppStore {
-	return YES;
-}
-+(bool)isAppStoreReceiptSandbox {
-	return NO;
-}
-+(bool)isAppExtension {
-	return YES;
-}
-%end
-
 %hook FBSDKAppEventsUtility
 +(bool)isDebugBuild {
 	return NO;
@@ -1805,32 +1720,6 @@ static BOOL isAuthenticationShowed = FALSE;
 %hook AWEAPMManager
 +(id)signInfo {
 	return @"AppStore";
-}
-%end
-
-%hook NSBundle
--(id)pathForResource:(id)arg1 ofType:(id)arg2 {
-	if ([arg2 isEqualToString:@"mobileprovision"]) {
-		return nil;
-	}
-	return %orig;
-}
-%end
-%hook AWESecurity
-- (void)resetCollectMode {
-	return;
-}
-%end
-%hook MSManagerOV
-- (id)setMode {
-	return (id (^)(id)) ^{
-	};
-}
-%end
-%hook MSConfigOV
-- (id)setMode {
-	return (id (^)(id)) ^{
-	};
 }
 %end
 
