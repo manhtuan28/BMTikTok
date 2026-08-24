@@ -40,6 +40,9 @@
 @interface TTKCommentPanelViewController: UIViewController
 @end 
 
+@interface AWECommentListViewController: UIViewController
+@end 
+
 @interface AWEUserNameLabel: UILabel
 - (void)addVerifiedIcon:(BOOL)arg1;
 @end
