@@ -20,6 +20,14 @@
 @interface AppDelegate : NSObject <UIApplicationDelegate>
 @end
 
+@interface FLEXManager : NSObject
++ (instancetype)sharedManager;
+- (void)showExplorer;
+@end
+
+@interface TTKProfileHomeViewController : UIViewController
+@end
+
 @interface TTKCommentPanelViewController: UIViewController
 @end 
 
@@ -257,6 +265,12 @@
 @end
 
 @interface TUXLabel: UILabel
+@end
+
+@interface AWEUserWorkCollectionViewCell : UICollectionViewCell
+- (AWEAwemeModel *)model;
+- (NSString *)formattedNumber:(NSInteger)number;
+- (NSString *)formattedDateStringFromTimestamp:(NSTimeInterval)timestamp;
 @end
 
 @interface AWEFeedViewTemplateCell: UITableViewCell

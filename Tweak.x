@@ -1272,15 +1272,15 @@ static BOOL isAuthenticationShowed = FALSE;
         if ([BMIManager videoLikeCount]) {
             [self.contentView addSubview:heartImage];
             [NSLayoutConstraint activateConstraints:@[
-                [heartImage.topAnchor constraintEqualToAnchor:self.safeAreaLayoutGuide.topAnchor constant:110],
-                [heartImage.leadingAnchor constraintEqualToAnchor:self.safeAreaLayoutGuide.leadingAnchor constant:4],
+                [heartImage.topAnchor constraintEqualToAnchor:self.contentView.topAnchor constant:110],
+                [heartImage.leadingAnchor constraintEqualToAnchor:self.contentView.leadingAnchor constant:4],
                 [heartImage.widthAnchor constraintEqualToConstant:16],
                 [heartImage.heightAnchor constraintEqualToConstant:16],
             ]];
             [self.contentView addSubview:likeCountLabel];
             [NSLayoutConstraint activateConstraints:@[
-                [likeCountLabel.topAnchor constraintEqualToAnchor:self.safeAreaLayoutGuide.topAnchor constant:109],
-                [likeCountLabel.leadingAnchor constraintEqualToAnchor:self.safeAreaLayoutGuide.leadingAnchor constant:23],
+                [likeCountLabel.topAnchor constraintEqualToAnchor:self.contentView.topAnchor constant:109],
+                [likeCountLabel.leadingAnchor constraintEqualToAnchor:self.contentView.leadingAnchor constant:23],
                 [likeCountLabel.widthAnchor constraintEqualToConstant:200],
                 [likeCountLabel.heightAnchor constraintEqualToConstant:16],
             ]];
@@ -1288,15 +1288,15 @@ static BOOL isAuthenticationShowed = FALSE;
         if ([BMIManager videoUploadDate]) {
             [self.contentView addSubview:clockImage];
             [NSLayoutConstraint activateConstraints:@[
-                [clockImage.topAnchor constraintEqualToAnchor:self.safeAreaLayoutGuide.topAnchor constant:128],
-                [clockImage.leadingAnchor constraintEqualToAnchor:self.safeAreaLayoutGuide.leadingAnchor constant:4],
+                [clockImage.topAnchor constraintEqualToAnchor:self.contentView.topAnchor constant:128],
+                [clockImage.leadingAnchor constraintEqualToAnchor:self.contentView.leadingAnchor constant:4],
                 [clockImage.widthAnchor constraintEqualToConstant:16],
                 [clockImage.heightAnchor constraintEqualToConstant:16],
             ]];
             [self.contentView addSubview:uploadDateLabel];
             [NSLayoutConstraint activateConstraints:@[
-                [uploadDateLabel.topAnchor constraintEqualToAnchor:self.safeAreaLayoutGuide.topAnchor constant:127],
-                [uploadDateLabel.leadingAnchor constraintEqualToAnchor:self.safeAreaLayoutGuide.leadingAnchor constant:23],
+                [uploadDateLabel.topAnchor constraintEqualToAnchor:self.contentView.topAnchor constant:127],
+                [uploadDateLabel.leadingAnchor constraintEqualToAnchor:self.contentView.leadingAnchor constant:23],
                 [uploadDateLabel.widthAnchor constraintEqualToConstant:200],
                 [uploadDateLabel.heightAnchor constraintEqualToConstant:16],
             ]];
