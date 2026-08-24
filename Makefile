@@ -1,7 +1,7 @@
-TARGET := iphone:clang:16.5
+ARCHS = arm64 arm64e
+TARGET := iphone:clang:latest:14.0
 INSTALL_TARGET_PROCESSES = TikTok
-THEOS_DEVICE_IP = 192.168.100.246
-THEOS_DEVICE_USER = root
+
 include $(THEOS)/makefiles/common.mk
 
 TWEAK_NAME = BMTikTok

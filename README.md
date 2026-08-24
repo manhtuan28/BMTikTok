@@ -3,7 +3,7 @@
 <p align="center">
   <img src="avatar.jpg" width="120" height="120" style="border-radius: 50%" alt="Tuancute28 Avatar" />
   <br>
-  <b>BMTikTok - Tweak TikTok iOS Tối Thượng Không Cần Key</b>
+  <b>BMTikTok - Tweak TikTok iOS</b>
   <br>
   <i>Phát triển & duy trì bởi <b>Tuancute28 (Bùi Mạnh Tuấn)</b></i>
 </p>
@@ -11,6 +11,7 @@
 ---
 
 ## 🚀 Giới Thiệu
+
 **BMTikTok** là bản mod TikTok đỉnh cao dành cho iOS, tích hợp toàn bộ các tính năng cao cấp nhất của dòng tweak TikTok (Tải HD không logo, đổi vùng không cần VPN/SIM, Ghost Mode ẩn danh, chặn sạch quảng cáo, giao diện OLED...).
 
 Mã nguồn sạch 100%, không bị mã hóa OLLVM, không có DRM và **vĩnh viễn không bao giờ có popup đòi key**.
@@ -20,6 +21,7 @@ Mã nguồn sạch 100%, không bị mã hóa OLLVM, không có DRM và **vĩnh 
 ## ✨ Tính Năng Nổi Bật
 
 ### 1. 🚫 Bảng Tin & Chặn Quảng Cáo
+
 - **Chặn 100% Quảng Cáo**: Ẩn mọi video quảng cáo tài trợ trên bảng tin.
 - **Ẩn Bài Đăng Hoa Hồng**: Tự động lọc các video tiếp thị liên kết / giỏ hàng.
 - **Ẩn Banner Góc**: Xóa biểu tượng quảng cáo nổi góc trên bên trái.
@@ -30,6 +32,7 @@ Mã nguồn sạch 100%, không bị mã hóa OLLVM, không có DRM và **vĩnh 
 - **Ẩn Cảnh Báo**: Tắt thông báo nội dung nhạy cảm và cảnh báo thể thao/UFC.
 
 ### 2. 📥 Tải Xuống Đa Phương Tiện
+
 - **Tải Video Không Logo**: Lưu video chất lượng HD/4K gốc về Camera Roll.
 - **Tải Âm Thanh / Nhạc Nền**: Tải trực tiếp file nhạc `.m4a` từ bài viết.
 - **Tải Phương Tiện Trong Tin Nhắn**: Thêm nút lưu ảnh, video, sticker trong Direct Messages.
@@ -37,6 +40,7 @@ Mã nguồn sạch 100%, không bị mã hóa OLLVM, không có DRM và **vĩnh 
 - **Tải Lên Chất Lượng HD**: Kích hoạt chế độ tải lên nét nhất.
 
 ### 3. 🛡️ Quyền Riêng Tư & Ẩn Danh (Ghost Mode)
+
 - **Đọc Tin Nhắn Ẩn Danh**: Đọc tin nhắn không hiện trạng thái "Đã xem".
 - **Chỉ Hiện Đã Xem Khi Trả Lời**: Đánh dấu đã xem khi gửi phản hồi.
 - **Tắt Chỉ Báo Soạn Thảo**: Ẩn biểu tượng "đang soạn tin...".
@@ -46,6 +50,7 @@ Mã nguồn sạch 100%, không bị mã hóa OLLVM, không có DRM và **vĩnh 
 - **Khóa App Sinh Trắc Học**: Mở khóa bằng FaceID / TouchID / Passcode.
 
 ### 4. 💬 Bình Luận & Tương Tác
+
 - **Nền Bình Luận Trong Suốt**: Giao diện bình luận mờ kính đẹp mắt.
 - **Sao Chép Không Dính Tên**: Copy nội dung bình luận không kèm username.
 - **Tự Động Mở Rộng Bình Luận**: Mở rộng toàn bộ văn bản bình luận dài.
@@ -54,6 +59,7 @@ Mã nguồn sạch 100%, không bị mã hóa OLLVM, không có DRM và **vĩnh 
 - **Mở Rộng Ký Tự**: Tăng giới hạn ký tự khi viết bình luận & Bio.
 
 ### 5. 🎮 Điều Khiển Trình Phát Video
+
 - **Tự Động Cuộn Video**: Tự động lướt sang video kế tiếp khi xem xong.
 - **Cố Định Tốc Độ Phát**: Giữ nguyên tốc độ (1.25x, 1.5x, 2.0x...).
 - **Luôn Hiện Thanh Tiến Trình**: Thanh tua thời lượng dưới mọi video.
@@ -61,11 +67,13 @@ Mã nguồn sạch 100%, không bị mã hóa OLLVM, không có DRM và **vĩnh 
 - **Phát Âm Thanh Nền**: Tiếp tục nghe âm thanh khi khóa máy hoặc ẩn app.
 
 ### 6. 🌍 Đổi Vùng & Quốc Gia
+
 - **Đổi Vùng 38 Quốc Gia**: Mỹ, Nhật, Hàn, Anh, Singapore, Việt Nam... không cần tháo SIM hoặc bật VPN.
 - **Russian Feed Fix**: Vượt rào mở khóa bảng tin tiếng Nga.
 - **Hiển Thị Cờ Quốc Gia**: Hiện cờ nơi đăng tải bên cạnh username và trong bình luận.
 
 ### 7. 👤 Hồ Sơ & Tuỳ Biến Sống Ảo
+
 - **Tải Avatar Gốc**: Nhấn giữ ảnh đại diện để lưu full-size.
 - **Sao Chép Tiểu Sử**: Nhấn giữ Bio để copy.
 - **Hiện Số Lượt Like & Ngày Đăng**: Hiển thị chi tiết thống kê trên video.
@@ -73,6 +81,7 @@ Mã nguồn sạch 100%, không bị mã hóa OLLVM, không có DRM và **vĩnh 
 - **Tùy Chỉnh Số Follower / Following**: Tự do đặt số lượng người theo dõi ảo.
 
 ### 8. 🎨 Giao Diện & Theme
+
 - **Bàn Phím OLED Đen Sâu**: Tiết kiệm pin trên màn hình OLED.
 - **Nút Nổi Ẩn UI**: Nút tròn ẩn/hiện toàn bộ giao diện xem video.
 - **Ẩn Nhãn Tab Bar & Nút Cộng**: Tinh gọn thanh điều hướng bên dưới.
@@ -82,18 +91,19 @@ Mã nguồn sạch 100%, không bị mã hóa OLLVM, không có DRM và **vĩnh 
 
 ## 👨‍💻 Thông Tin Tác Giả & Liên Hệ
 
-* **Tác giả / Developer**: **Tuancute28 (Bùi Mạnh Tuấn)**
-* 🌐 **GitHub**: [https://github.com/manhtuan28](https://github.com/manhtuan28)
-* 🐙 **Git Repository**: [https://github.com/manhtuan28/BMTikTok.git](https://github.com/manhtuan28/BMTikTok.git)
-* 📘 **Facebook**: [https://www.facebook.com/b.manhtuan.028](https://www.facebook.com/b.manhtuan.028)
-* 📸 **Instagram**: [https://www.instagram.com/bmanhtuan282/](https://www.instagram.com/bmanhtuan282/)
-* 🎵 **TikTok**: [https://www.tiktok.com/@capyboiii_28](https://www.tiktok.com/@capyboiii_28)
-* 🐦 **X (Twitter)**: [https://x.com/buituan282](https://x.com/buituan282)
-* ✉️ **Email**: [buimanhtuan2k4@gmail.com](mailto:buimanhtuan2k4@gmail.com)
+- **Tác giả / Developer**: **Tuancute28 (Bùi Mạnh Tuấn)**
+- 🌐 **GitHub**: [https://github.com/manhtuan28](https://github.com/manhtuan28)
+- 🐙 **Git Repository**: [https://github.com/manhtuan28/BMTikTok.git](https://github.com/manhtuan28/BMTikTok.git)
+- 📘 **Facebook**: [https://www.facebook.com/b.manhtuan.028](https://www.facebook.com/b.manhtuan.028)
+- 📸 **Instagram**: [https://www.instagram.com/bmanhtuan282/](https://www.instagram.com/bmanhtuan282/)
+- 🎵 **TikTok**: [https://www.tiktok.com/@capyboiii_28](https://www.tiktok.com/@capyboiii_28)
+- 🐦 **X (Twitter)**: [https://x.com/buituan282](https://x.com/buituan282)
+- ✉️ **Email**: [buimanhtuan2k4@gmail.com](mailto:buimanhtuan2k4@gmail.com)
 
 ---
 
 ## 📦 Hướng Dẫn Git
+
 ```bash
 # Khởi tạo và liên kết repo
 git init

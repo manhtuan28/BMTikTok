@@ -1,0 +1,108 @@
+name: Build BMTikTok IPA
+
+on:
+  workflow_dispatch:
+    inputs:
+      ipa_url:
+        description: 'Đường link tải file TikTok IPA gốc (Google Drive, Direct Link, Dropbox...)'
+        required: true
+        type: string
+      tiktok_version:
+        description: 'Phiên bản TikTok (Ví dụ: 46.5.0)'
+        required: false
+        default: '46.5.0'
+        type: string
+      create_release:
+        description: 'Tạo GitHub Release để tải trực tiếp từ tab Releases'
+        required: false
+        default: true
+        type: boolean
+
+jobs:
+  build:
+    name: Build & Inject BMTikTok IPA
+    runs-on: macos-14
+
+    steps:
+      - name: 📥 Checkout Mã Nguồn
+        uses: actions/checkout@v4
+
+      - name: 🛠️ Cài Đặt Theos & iOS SDK
+        run: |
+          echo "Cloning Theos..."
+          git clone --recursive https://github.com/theos/theos.git ~/theos
+          echo "THEOS=$HOME/theos" >> $GITHUB_ENV
+          
+          echo "Downloading iOS SDKs..."
+          git clone --depth 1 https://github.com/theos/sdks.git ~/theos/sdks
+
+      - name: ⚙️ Biên Dịch BMTikTok Tweak (Dylib & Deb)
+        run: |
+          make clean
+          make package FINALPACKAGE=1
+          
+          # Tìm file dylib sau khi build
+          DYLIB_PATH=$(find .theos/obj -name "BMTikTok.dylib" | head -n 1)
+          if [ -z "$DYLIB_PATH" ]; then
+            DYLIB_PATH=$(find . -name "BMTikTok.dylib" | head -n 1)
+          fi
+          echo "DYLIB_PATH=$DYLIB_PATH" >> $GITHUB_ENV
+          echo "✅ Đã build thành công: $DYLIB_PATH"
+
+      - name: 📦 Tải File TikTok IPA Gốc
+        run: |
+          python3 -m pip install gdown
+          
+          IPA_URL="${{ inputs.ipa_url }}"
+          echo "Đang tải IPA từ: $IPA_URL"
+          
+          if [[ "$IPA_URL" == *"drive.google.com"* ]]; then
+            echo "Phát hiện link Google Drive, sử dụng gdown..."
+            gdown "$IPA_URL" -O input_tiktok.ipa --fuzzy
+          else
+            echo "Đang tải qua curl..."
+            curl -L -o input_tiktok.ipa "$IPA_URL"
+          fi
+          
+          if [ ! -f "input_tiktok.ipa" ] || [ ! -s "input_tiktok.ipa" ]; then
+            echo "❌ Lỗi: Không thể tải file IPA gốc!"
+            exit 1
+          fi
+          
+          echo "✅ Tải IPA thành công! Kích thước: $(ls -lh input_tiktok.ipa | awk '{print $5}')"
+
+      - name: 💉 Chèn BMTikTok Vào TikTok IPA
+        run: |
+          OUTPUT_IPA="BMTikTok_${{ inputs.tiktok_version }}.ipa"
+          python3 tools/inject_ipa.py -i input_tiktok.ipa -d "$DYLIB_PATH" -b BMTikTok.bundle -o "$OUTPUT_IPA"
+          echo "OUTPUT_IPA=$OUTPUT_IPA" >> $GITHUB_ENV
+
+      - name: 📤 Upload Artifact (File IPA & DEB)
+        uses: actions/upload-artifact@v4
+        with:
+          name: BMTikTok-${{ inputs.tiktok_version }}
+          path: |
+            ${{ env.OUTPUT_IPA }}
+            packages/*.deb
+
+      - name: 🚀 Tạo GitHub Release
+        if: ${{ inputs.create_release }}
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ inputs.tiktok_version }}-${{ github.run_number }}
+          name: BMTikTok v${{ inputs.tiktok_version }}
+          body: |
+            ## 🌟 BMTikTok - Bản Mod TikTok iOS Tối Thượng
+            * **Phiên bản TikTok:** ${{ inputs.tiktok_version }}
+            * **Tác giả:** Tuancute28 (Bùi Mạnh Tuấn)
+            * **Ngày phát hành:** ${{ github.event.head_commit.timestamp }}
+            
+            ### ✨ Hướng Dẫn Cài Đặt
+            1. Tải file `.ipa` đính kèm bên dưới.
+            2. Cài đặt trực tiếp qua **TrollStore**, **Sideloadly**, **AltStore**, hoặc **Esign**.
+            3. Mở ứng dụng và tận hưởng toàn bộ các tính năng cao cấp!
+          files: |
+            ${{ env.OUTPUT_IPA }}
+            packages/*.deb
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
