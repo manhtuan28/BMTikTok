@@ -1,6 +1,18 @@
 #import "TikTokHeaders.h"
 #import "BMConfigManager.h"
 
+@interface UIViewController (BMPureMode)
+- (void)setPureMode:(BOOL)pureMode animated:(BOOL)animated;
+- (void)setNeedsSetPureMode:(BOOL)pureMode;
+- (id)interactionController;
+- (void)hideAllElements:(BOOL)hidden exceptArray:(NSArray *)except;
+@end
+
+@interface UIView (BMViewHelpers)
+- (UIViewController *)viewController;
+- (UIViewController *)parentViewController;
+@end
+
 NSArray *jailbreakPaths;
 
 static void showConfirmation(void (^okHandler)(void)) {
