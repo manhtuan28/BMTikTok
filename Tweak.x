@@ -1,4 +1,5 @@
 #import "TikTokHeaders.h"
+#import "BMConfigManager.h"
 
 NSArray *jailbreakPaths;
 
@@ -15,15 +16,19 @@ static void showConfirmation(void (^okHandler)(void)) {
         [[%c(FLEXManager) performSelector:@selector(sharedManager)] performSelector:@selector(showExplorer)];
     }
     if (![[NSUserDefaults standardUserDefaults] objectForKey:@"BMTikTokFirstRun"]) {
-        [[NSUserDefaults standardUserDefaults] setValue:@"BMTikTokFirstRun" forKey:@"BMTikTokFirstRun"];
-        [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"hide_ads"];
-        [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"download_button"];
-        [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"remove_elements_button"];
-        [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"show_porgress_bar"];
-        [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"save_profile"];
-        [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"copy_profile_information"];
-        [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"extended_bio"];
-        [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"extendedComment"];
+        // Thử khôi phục cài đặt từ Keychain trước (nếu người dùng cài lại IPA hoặc nâng cấp)
+        if (![BMConfigManager restoreSettingsFromKeychain]) {
+            [[NSUserDefaults standardUserDefaults] setValue:@"BMTikTokFirstRun" forKey:@"BMTikTokFirstRun"];
+            [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"hide_ads"];
+            [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"download_button"];
+            [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"remove_elements_button"];
+            [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"show_porgress_bar"];
+            [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"save_profile"];
+            [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"copy_profile_information"];
+            [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"extended_bio"];
+            [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"extendedComment"];
+            [BMConfigManager saveSettingsToKeychain];
+        }
     }
     [BMIManager cleanCache];
     return true;

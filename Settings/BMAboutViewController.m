@@ -6,6 +6,11 @@
 //
 
 #import "BMAboutViewController.h"
+#import "BMConfigManager.h"
+#import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
+
+@interface BMAboutViewController () <UIDocumentPickerDelegate>
+@end
 
 @implementation BMAboutViewController
 
@@ -15,14 +20,15 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 3;
+    return 4;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     switch (section) {
         case 0: return @"TÁC GIẢ & LIÊN KẾT XÃ HỘI";
-        case 1: return @"HỖ TRỢ & HƯỚNG DẪN";
-        case 2: return @"QUẢN TRỊ HỆ THỐNG";
+        case 1: return @"SAO LƯU & XUẤT/NHẬP CẤU HÌNH";
+        case 2: return @"HỖ TRỢ & HƯỚNG DẪN";
+        case 3: return @"QUẢN TRỊ HỆ THỐNG";
         default: return @"";
     }
 }
@@ -30,8 +36,9 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     switch (section) {
         case 0: return 6;
-        case 1: return 2;
-        case 2: return 1;
+        case 1: return 6; // Xuất JSON, Nhập File, Copy Clipboard, Dán Clipboard, Lưu Keychain, Khôi phục Keychain
+        case 2: return 2;
+        case 3: return 1;
         default: return 0;
     }
 }
@@ -80,6 +87,49 @@
         }
         return cell;
     } else if (indexPath.section == 1) {
+        static NSString *configCellId = @"ConfigActionCell";
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:configCellId];
+        if (!cell) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:configCellId];
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        }
+        cell.textLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightMedium];
+        cell.detailTextLabel.textColor = [UIColor secondaryLabelColor];
+        
+        switch (indexPath.row) {
+            case 0:
+                cell.textLabel.text = @"Xuất tệp cấu hình (.json)";
+                cell.detailTextLabel.text = @"Lưu file cấu hình vào ứng dụng Tệp hoặc AirDrop";
+                cell.imageView.image = [UIImage systemImageNamed:@"square.and.arrow.up.fill"];
+                break;
+            case 1:
+                cell.textLabel.text = @"Nhập tệp cấu hình từ máy";
+                cell.detailTextLabel.text = @"Khôi phục cài đặt từ file JSON đã lưu";
+                cell.imageView.image = [UIImage systemImageNamed:@"square.and.arrow.down.fill"];
+                break;
+            case 2:
+                cell.textLabel.text = @"Sao chép cấu hình vào Clipboard";
+                cell.detailTextLabel.text = @"Copy chuỗi JSON cấu hình vào bộ nhớ tạm";
+                cell.imageView.image = [UIImage systemImageNamed:@"doc.on.doc.fill"];
+                break;
+            case 3:
+                cell.textLabel.text = @"Dán & Áp dụng từ Clipboard";
+                cell.detailTextLabel.text = @"Đọc cấu hình JSON từ bộ nhớ tạm và áp dụng ngay";
+                cell.imageView.image = [UIImage systemImageNamed:@"doc.badge.arrow.up.fill"];
+                break;
+            case 4:
+                cell.textLabel.text = @"Lưu cấu hình vào Keychain";
+                cell.detailTextLabel.text = @"Lưu an toàn trên máy, không bị mất khi cài lại IPA";
+                cell.imageView.image = [UIImage systemImageNamed:@"key.fill"];
+                break;
+            case 5:
+                cell.textLabel.text = @"Khôi phục cấu hình từ Keychain";
+                cell.detailTextLabel.text = @"Nạp lại toàn bộ cài đặt đã lưu trong Keychain";
+                cell.imageView.image = [UIImage systemImageNamed:@"arrow.counterclockwise.circle.fill"];
+                break;
+        }
+        return cell;
+    } else if (indexPath.section == 2) {
         static NSString *guideCellId = @"GuideCell";
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:guideCellId];
         if (!cell) {
@@ -96,7 +146,7 @@
             cell.imageView.image = [UIImage systemImageNamed:@"folder.fill"];
         }
         return cell;
-    } else if (indexPath.section == 2) {
+    } else if (indexPath.section == 3) {
         static NSString *resetCellId = @"ResetCell";
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:resetCellId];
         if (!cell) {
@@ -113,6 +163,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
     if (indexPath.section == 0) {
         NSString *urlString = nil;
         switch (indexPath.row) {
@@ -127,51 +178,113 @@
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString] options:@{} completionHandler:nil];
         }
     } else if (indexPath.section == 1) {
+        switch (indexPath.row) {
+            case 0: { // Xuất JSON File
+                NSURL *fileURL = [BMConfigManager createExportConfigFileURL];
+                if (fileURL) {
+                    UIActivityViewController *act = [[UIActivityViewController alloc] initWithActivityItems:@[fileURL] applicationActivities:nil];
+                    if (UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+                        act.popoverPresentationController.sourceView = self.view;
+                        act.popoverPresentationController.sourceRect = CGRectMake(self.view.bounds.size.width/2, self.view.bounds.size.height/2, 0, 0);
+                    }
+                    [self presentViewController:act animated:YES completion:nil];
+                }
+                break;
+            }
+            case 1: { // Nhập File JSON
+                UIDocumentPickerViewController *picker = nil;
+                if (@available(iOS 14.0, *)) {
+                    picker = [[UIDocumentPickerViewController alloc] initForOpeningContentTypes:@[UTTypeJSON, UTTypePlainText]];
+                } else {
+                    picker = [[UIDocumentPickerViewController alloc] initWithDocumentTypes:@[@"public.json", @"public.plain-text"] inMode:UIDocumentPickerModeImport];
+                }
+                picker.delegate = self;
+                picker.allowsMultipleSelection = NO;
+                [self presentViewController:picker animated:YES completion:nil];
+                break;
+            }
+            case 2: { // Copy Clipboard
+                NSString *json = [BMConfigManager exportSettingsToJSONString];
+                if (json) {
+                    [UIPasteboard generalPasteboard].string = json;
+                    [self showAlertWithTitle:@"Đã sao chép" message:@"Cấu hình JSON đã được lưu vào bộ nhớ tạm."];
+                }
+                break;
+            }
+            case 3: { // Dán Clipboard
+                NSString *clipboard = [UIPasteboard generalPasteboard].string;
+                if (clipboard && [BMConfigManager importSettingsFromJSONString:clipboard]) {
+                    [self showAlertWithTitle:@"Thành công" message:@"Đã nạp và áp dụng cấu hình từ Clipboard!"];
+                } else {
+                    [self showAlertWithTitle:@"Lỗi" message:@"Nội dung trong bộ nhớ tạm không phải định dạng JSON cấu hình BMTikTok hợp lệ."];
+                }
+                break;
+            }
+            case 4: { // Lưu Keychain
+                if ([BMConfigManager saveSettingsToKeychain]) {
+                    [self showAlertWithTitle:@"Đã lưu Keychain" message:@"Cấu hình đã được lưu an toàn vào Keychain của iOS. Khi bạn cài lại app hoặc nâng cấp IPA, cài đặt sẽ không bị mất."];
+                } else {
+                    [self showAlertWithTitle:@"Lỗi" message:@"Không thể ghi cấu hình vào Keychain."];
+                }
+                break;
+            }
+            case 5: { // Khôi phục Keychain
+                if ([BMConfigManager restoreSettingsFromKeychain]) {
+                    [self showAlertWithTitle:@"Thành công" message:@"Đã khôi phục toàn bộ cài đặt BMTikTok từ Keychain!"];
+                } else {
+                    [self showAlertWithTitle:@"Thông báo" message:@"Chưa có bản sao lưu cấu hình nào trong Keychain."];
+                }
+                break;
+            }
+        }
+    } else if (indexPath.section == 2) {
         if (indexPath.row == 0) {
             UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Mẹo Đăng Nhập Tài Khoản"
-                                                                           message:@"Nếu gặp lỗi 'Gửi quá nhiều lần' khi nhận mã SMS:\n\n1. Sử dụng Tên người dùng / Email & Mật khẩu để vào thẳng.\n\n2. Hoặc đăng nhập trên máy tính / Safari rồi dùng app quét mã QR.\n\n3. Tạm thời tắt 'Đổi quốc gia' trong menu BMTikTok trước khi gửi mã SMS."
+                                                                           message:@"Nếu gặp lỗi 'Gửi quá nhiều lần' khi nhận mã SMS:\n\n1. Sử dụng Tên người dùng / Email & Mật khẩu để vào thẳng.\n\n2. Hoặc đăng nhập trên máy tính / Safari rồi dùng app quét mã QR.\n\n3. Tắt công tắc 'Bật đổi vùng' trong mục Khu Vực & Đổi Quốc Gia trước khi gửi mã SMS."
                                                                     preferredStyle:UIAlertControllerStyleAlert];
             [alert addAction:[UIAlertAction actionWithTitle:@"Đã hiểu" style:UIAlertActionStyleDefault handler:nil]];
             [self presentViewController:alert animated:YES completion:nil];
         } else {
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://github.com/manhtuan28/BMTikTok"] options:@{} completionHandler:nil];
         }
-    } else if (indexPath.section == 2) {
+    } else if (indexPath.section == 3) {
         UIAlertController *confirm = [UIAlertController alertControllerWithTitle:@"Khôi phục cài đặt gốc"
                                                                          message:@"Bạn có chắc chắn muốn đặt lại tất cả các tùy chọn BMTikTok về mặc định?"
                                                                   preferredStyle:UIAlertControllerStyleActionSheet];
         [confirm addAction:[UIAlertAction actionWithTitle:@"Đặt lại ngay" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
-            NSArray *keys = @[
-                @"hide_ads", @"hide_commission_posts", @"remove_pendant", @"remove_tiktok_ai_button",
-                @"block_ai_generated", @"block_movie_tok", @"block_poi", @"disable_unsensitive",
-                @"disable_warnings", @"disable_live", @"hide_play_pause", @"hide_top_items",
-                @"start_fyp_in_following", @"disable_swipe_in_fyp", @"pull_to_refresh", @"auto_scroll_feed",
-                @"download_button", @"remove_watermark", @"remove_photo_watermark", @"download_music",
-                @"share_sheet", @"save_dm_media", @"double_tap_download_sticker", @"highest_video_quality",
-                @"anonymous_seen", @"mark_seen_on_reply", @"disable_typing", @"view_profiles_anonymous",
-                @"disable_screenshot_detection", @"disable_screenrecording_detection", @"hide_activity_status",
-                @"padlock", @"transparent_commnet", @"hide_emoji_bar", @"colorize_comment_usernames",
-                @"copy_comment_text", @"enable_comment_flags", @"auto_translate_comments", @"disable_safari_redirect",
-                @"auto_play_next_video", @"stop_looping_video", @"progress_bar", @"keep_audio_unmuted",
-                @"playback_en", @"force_highest_bitrate", @"fake_verified", @"enable_fake_follower",
-                @"enable_fake_following", @"enable_fake_likes", @"copy_profile_bio", @"copy_profile_id",
-                @"download_profile_avatar", @"hide_liked_tab", @"like_confirmation", @"follow_confirmation",
-                @"comment_like_confirmation", @"comment_dislike_confirmation", @"publish_confirmation",
-                @"download_confirmation", @"bookmark_confirmation", @"oled_keyboard", @"hide_tab_bar_labels",
-                @"hide_badge_counter", @"transparent_status_bar", @"show_exact_date", @"en_region"
-            ];
-            for (NSString *k in keys) {
+            for (NSString *k in [BMConfigManager allConfigKeys]) {
                 [[NSUserDefaults standardUserDefaults] removeObjectForKey:k];
             }
             [[NSUserDefaults standardUserDefaults] synchronize];
-            
-            UIAlertController *doneAlert = [UIAlertController alertControllerWithTitle:@"Thành công" message:@"Đã đặt lại toàn bộ cài đặt BMTikTok về mặc định." preferredStyle:UIAlertControllerStyleAlert];
-            [doneAlert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
-            [self presentViewController:doneAlert animated:YES completion:nil];
+            [self showAlertWithTitle:@"Thành công" message:@"Đã đặt lại toàn bộ cài đặt BMTikTok về mặc định."];
         }]];
         [confirm addAction:[UIAlertAction actionWithTitle:@"Hủy" style:UIAlertActionStyleCancel handler:nil]];
         [self presentViewController:confirm animated:YES completion:nil];
     }
+}
+
+#pragma mark - UIDocumentPickerDelegate
+
+- (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentsAtURLs:(NSArray<NSURL *> *)urls {
+    if (urls.count > 0) {
+        NSURL *url = urls.firstObject;
+        [url startAccessingSecurityScopedResource];
+        NSError *error = nil;
+        NSString *content = [NSString stringWithContentsOfURL:url encoding:NSUTF8StringEncoding error:&error];
+        [url stopAccessingSecurityScopedResource];
+        
+        if (content && [BMConfigManager importSettingsFromJSONString:content]) {
+            [self showAlertWithTitle:@"Thành công" message:@"Đã nhập và áp dụng cấu hình từ tệp JSON thành công!"];
+        } else {
+            [self showAlertWithTitle:@"Lỗi" message:@"Tệp đã chọn không phải file cấu hình BMTikTok hợp lệ."];
+        }
+    }
+}
+
+- (void)showAlertWithTitle:(NSString *)title message:(NSString *)message {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 @end
