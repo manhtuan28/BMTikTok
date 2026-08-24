@@ -106,42 +106,31 @@ static BOOL isAuthenticationShowed = FALSE;
 // ═══════════════════════════════════════════════════════════════
 
 %hook AWEAwemeModel
-// --- Ad & AI filtering trong `init` ---
-- (id)initWithDictionary:(id)arg1 error:(id *)arg2 {
-    id orig = %orig;
-    if ([BMIManager hideAds] && self.isAds) {
-        return nil;
-    }
-    if ([BMIManager blockAIGenerated]) {
-        if ([self respondsToSelector:@selector(aigcInfoModel)] && [self aigcInfoModel]) {
-            return nil;
-        }
-        if ([self respondsToSelector:@selector(isAIGC)] && [self isAIGC]) {
-            return nil;
-        }
-        if ([self respondsToSelector:@selector(isAIGCSuggested)] && [self isAIGCSuggested]) {
-            return nil;
-        }
-    }
-    return orig;
+// --- Lọc quảng cáo an toàn ---
+// KHÔNG dùng `return nil` trong `init` / `initWithDictionary:` vì nó phá vỡ
+// video model của TikTok gây lỗi không load được video. Thay vào đó, đánh dấu
+// model là ads/commerce để TikTok tự ẩn chúng khỏi feed.
+- (BOOL)isAds {
+    if ([BMIManager hideAds]) return YES;
+    return %orig;
 }
-- (id)init {
-    id orig = %orig;
-    if ([BMIManager hideAds] && self.isAds) {
-        return nil;
-    }
-    if ([BMIManager blockAIGenerated]) {
-        if ([self respondsToSelector:@selector(aigcInfoModel)] && [self aigcInfoModel]) {
-            return nil;
-        }
-        if ([self respondsToSelector:@selector(isAIGC)] && [self isAIGC]) {
-            return nil;
-        }
-        if ([self respondsToSelector:@selector(isAIGCSuggested)] && [self isAIGCSuggested]) {
-            return nil;
-        }
-    }
-    return orig;
+- (BOOL)isAd {
+    if ([BMIManager hideAds]) return YES;
+    return %orig;
+}
+- (BOOL)isCommerce {
+    if ([BMIManager hideCommissionPosts]) return YES;
+    return %orig;
+}
+- (BOOL)isCommerceAd {
+    if ([BMIManager hideCommissionPosts] || [BMIManager hideAds]) return YES;
+    return %orig;
+}
+
+// --- Chặn video AI ---
+- (BOOL)isAIGC {
+    if ([BMIManager blockAIGenerated]) return YES;
+    return %orig;
 }
 
 // --- Progress bar ---
@@ -172,16 +161,6 @@ static BOOL isAuthenticationShowed = FALSE;
 }
 + (id)aweLiveRoom_subModelPropertyKey {
     if ([BMIManager disableLive]) return nil;
-    return %orig;
-}
-
-// --- Commerce/Commission post filtering ---
-- (BOOL)isCommerce {
-    if ([BMIManager hideCommissionPosts]) return NO;
-    return %orig;
-}
-- (BOOL)isCommerceAd {
-    if ([BMIManager hideCommissionPosts] || [BMIManager hideAds]) return NO;
     return %orig;
 }
 %end
@@ -317,7 +296,9 @@ static BOOL isAuthenticationShowed = FALSE;
 %property (nonatomic, retain) UIProgressView *progressView;
 - (void)configWithModel:(id)model {
     %orig;
+    // Reset Pure Mode khi vuốt sang video mới
     self.elementsHidden = false;
+    [self resetPureModeState];
     if ([BMIManager downloadButton]){
         [self addDownloadButton];
     }
@@ -327,7 +308,9 @@ static BOOL isAuthenticationShowed = FALSE;
 }
 - (void)configureWithModel:(id)model {
     %orig;
+    // Reset Pure Mode khi vuốt sang video mới
     self.elementsHidden = false;
+    [self resetPureModeState];
     if ([BMIManager downloadButton]){
         [self addDownloadButton];
     }
@@ -628,11 +611,8 @@ static BOOL isAuthenticationShowed = FALSE;
     [hideElementButton setTag:999];
     [hideElementButton setTranslatesAutoresizingMaskIntoConstraints:false];
     [hideElementButton addTarget:self action:@selector(hideElementButtonHandler:) forControlEvents:UIControlEventTouchUpInside];
-    if (self.elementsHidden) {
-        [hideElementButton setImage:[UIImage systemImageNamed:@"eye"] forState:UIControlStateNormal];
-    } else {
-        [hideElementButton setImage:[UIImage systemImageNamed:@"eye.slash"] forState:UIControlStateNormal];
-    }
+    // Luôn hiển thị icon eye.slash vì `elementsHidden` đã reset về false trong `configWithModel:`
+    [hideElementButton setImage:[UIImage systemImageNamed:@"eye.slash"] forState:UIControlStateNormal];
 
     if (![self viewWithTag:999]) {
         [hideElementButton setTintColor:[UIColor whiteColor]];
@@ -644,6 +624,44 @@ static BOOL isAuthenticationShowed = FALSE;
             [hideElementButton.widthAnchor constraintEqualToConstant:30],
             [hideElementButton.heightAnchor constraintEqualToConstant:30],
         ]];
+    } else {
+        // Nếu nút đã tồn tại, chỉ reset icon
+        UIButton *existingButton = (UIButton *)[self viewWithTag:999];
+        [existingButton setImage:[UIImage systemImageNamed:@"eye.slash"] forState:UIControlStateNormal];
+    }
+}
+// Reset Pure Mode khi vuốt sang video mới (gọi từ `configWithModel:`)
+%new - (void)resetPureModeState {
+    id rootVC = nil;
+    if ([self respondsToSelector:@selector(viewController)]) {
+        rootVC = [self performSelector:@selector(viewController)];
+    }
+    if (!rootVC && [self respondsToSelector:@selector(parentViewController)]) {
+        rootVC = [self performSelector:@selector(parentViewController)];
+    }
+    if (rootVC) {
+        if ([rootVC respondsToSelector:@selector(setPureMode:animated:)]) {
+            [((id)rootVC) setPureMode:NO animated:NO];
+        }
+        if ([rootVC respondsToSelector:@selector(setNeedsSetPureMode:)]) {
+            [((id)rootVC) setNeedsSetPureMode:NO];
+        }
+    }
+    id interactionController = nil;
+    if (rootVC && [rootVC respondsToSelector:@selector(interactionController)]) {
+        interactionController = [((id)rootVC) interactionController];
+    }
+    if (interactionController) {
+        if ([interactionController respondsToSelector:@selector(setPureMode:animated:)]) {
+            [((id)interactionController) setPureMode:NO animated:NO];
+        }
+        if ([interactionController respondsToSelector:@selector(hideAllElements:exceptArray:)]) {
+            [((id)interactionController) hideAllElements:NO exceptArray:nil];
+        }
+        if ([interactionController respondsToSelector:@selector(view)]) {
+            UIView *interView = [((id)interactionController) view];
+            if (interView) interView.alpha = 1.0;
+        }
     }
 }
 %new - (void)hideElementButtonHandler:(UIButton *)sender {
@@ -753,6 +771,7 @@ static BOOL isAuthenticationShowed = FALSE;
 - (void)configWithModel:(id)model {
     %orig;
     self.elementsHidden = false;
+    [self resetPureModeState];
     if ([BMIManager downloadButton]){
         [self addDownloadButton];
     }
@@ -763,6 +782,7 @@ static BOOL isAuthenticationShowed = FALSE;
 - (void)configureWithModel:(id)model {
     %orig;
     self.elementsHidden = false;
+    [self resetPureModeState];
     if ([BMIManager downloadButton]){
         [self addDownloadButton];
     }
@@ -910,11 +930,7 @@ static BOOL isAuthenticationShowed = FALSE;
     [hideElementButton setTag:999];
     [hideElementButton setTranslatesAutoresizingMaskIntoConstraints:false];
     [hideElementButton addTarget:self action:@selector(hideElementButtonHandler:) forControlEvents:UIControlEventTouchUpInside];
-    if (self.elementsHidden) {
-        [hideElementButton setImage:[UIImage systemImageNamed:@"eye"] forState:UIControlStateNormal];
-    } else {
-        [hideElementButton setImage:[UIImage systemImageNamed:@"eye.slash"] forState:UIControlStateNormal];
-    }
+    [hideElementButton setImage:[UIImage systemImageNamed:@"eye.slash"] forState:UIControlStateNormal];
 
     if (![self viewWithTag:999]) {
         [hideElementButton setTintColor:[UIColor whiteColor]];
@@ -926,6 +942,42 @@ static BOOL isAuthenticationShowed = FALSE;
             [hideElementButton.widthAnchor constraintEqualToConstant:30],
             [hideElementButton.heightAnchor constraintEqualToConstant:30],
         ]];
+    } else {
+        UIButton *existingButton = (UIButton *)[self viewWithTag:999];
+        [existingButton setImage:[UIImage systemImageNamed:@"eye.slash"] forState:UIControlStateNormal];
+    }
+}
+%new - (void)resetPureModeState {
+    id rootVC = nil;
+    if ([self respondsToSelector:@selector(viewController)]) {
+        rootVC = [self performSelector:@selector(viewController)];
+    }
+    if (!rootVC && [self respondsToSelector:@selector(parentViewController)]) {
+        rootVC = [self performSelector:@selector(parentViewController)];
+    }
+    if (rootVC) {
+        if ([rootVC respondsToSelector:@selector(setPureMode:animated:)]) {
+            [((id)rootVC) setPureMode:NO animated:NO];
+        }
+        if ([rootVC respondsToSelector:@selector(setNeedsSetPureMode:)]) {
+            [((id)rootVC) setNeedsSetPureMode:NO];
+        }
+    }
+    id interactionController = nil;
+    if (rootVC && [rootVC respondsToSelector:@selector(interactionController)]) {
+        interactionController = [((id)rootVC) interactionController];
+    }
+    if (interactionController) {
+        if ([interactionController respondsToSelector:@selector(setPureMode:animated:)]) {
+            [((id)interactionController) setPureMode:NO animated:NO];
+        }
+        if ([interactionController respondsToSelector:@selector(hideAllElements:exceptArray:)]) {
+            [((id)interactionController) hideAllElements:NO exceptArray:nil];
+        }
+        if ([interactionController respondsToSelector:@selector(view)]) {
+            UIView *interView = [((id)interactionController) view];
+            if (interView) interView.alpha = 1.0;
+        }
     }
 }
 %new - (void)hideElementButtonHandler:(UIButton *)sender {
