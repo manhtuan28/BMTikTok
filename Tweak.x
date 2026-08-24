@@ -1675,6 +1675,36 @@ static BOOL isAuthenticationShowed = FALSE;
 }
 %end
 
+%hook NSBundle
+- (NSString *)bundleIdentifier {
+    if (self == [NSBundle mainBundle]) {
+        return @"com.zhiliaoapp.musically";
+    }
+    return %orig;
+}
+- (id)objectForInfoDictionaryKey:(NSString *)key {
+    if (self == [NSBundle mainBundle] && [key isEqualToString:@"CFBundleIdentifier"]) {
+        return @"com.zhiliaoapp.musically";
+    }
+    return %orig;
+}
+- (NSDictionary *)infoDictionary {
+    NSDictionary *orig = %orig;
+    if (self == [NSBundle mainBundle] && orig) {
+        NSMutableDictionary *mut = [orig mutableCopy];
+        mut[@"CFBundleIdentifier"] = @"com.zhiliaoapp.musically";
+        return mut;
+    }
+    return orig;
+}
+%end
+
+%hook AWEPassportAntiSpamManager
+- (BOOL)isSpam {
+    return NO;
+}
+%end
+
 %hook AppsFlyerUtils
 +(bool)isJailbrokenWithSkipAdvancedJailbreakValidation:(bool)arg2 {
 	return NO;
