@@ -10,8 +10,6 @@
 #import <Security/Security.h>
 #import <substrate.h>
 #import <objc/message.h>
-#import "fishhook/fishhook.h"
-#import "BMKeychainVault.h"
 
 // ═══════════════════════════════════════════════════════════════
 // MARK: - 0. Keychain Sideload Fix (Khắc phục triệt để lỗi Login Loop & OTP Email)
@@ -33,50 +31,33 @@ static OSStatus hook_SecItemAdd(CFDictionaryRef attributes, CFTypeRef *result) {
     if (!attributes) return errSecParam;
     NSMutableDictionary *clean = BMCleanKeychainQuery(attributes);
     clean[(__bridge id)kSecAttrAccessible] = (__bridge id)kSecAttrAccessibleAfterFirstUnlock;
-
-    id itemClass = clean[(__bridge id)kSecClass];
-    NSString *service = clean[(__bridge id)kSecAttrService];
-    NSString *account = clean[(__bridge id)kSecAttrAccount];
-    NSData *data = clean[(__bridge id)kSecValueData];
-
-    OSStatus status = errSecSuccess;
-    if (orig_SecItemAdd) {
-        status = orig_SecItemAdd((__bridge CFDictionaryRef)clean, result);
-    } else {
-        status = SecItemAdd((__bridge CFDictionaryRef)clean, result);
-    }
-
-    // Xử lý trùng lặp khóa (-25299): Xóa item cũ và thêm lại
+    if (!orig_SecItemAdd) return errSecSuccess;
+    OSStatus status = orig_SecItemAdd((__bridge CFDictionaryRef)clean, result);
+    // Nếu bị trùng lặp khóa cũ trong keychain cá nhân (errSecDuplicateItem = -25299), xóa key cũ và ghi đè lại
     if (status == errSecDuplicateItem || status == -25299) {
-        NSMutableDictionary *del = [clean mutableCopy];
-        [del removeObjectForKey:(__bridge id)kSecValueData];
-        [del removeObjectForKey:(__bridge id)kSecValueRef];
-        [del removeObjectForKey:(__bridge id)kSecValuePersistentRef];
-        [del removeObjectForKey:(__bridge id)kSecReturnData];
-        [del removeObjectForKey:(__bridge id)kSecReturnAttributes];
+        NSMutableDictionary *deleteQuery = [clean mutableCopy];
+        [deleteQuery removeObjectForKey:(__bridge id)kSecValueData];
+        [deleteQuery removeObjectForKey:(__bridge id)kSecValueRef];
+        [deleteQuery removeObjectForKey:(__bridge id)kSecValuePersistentRef];
+        [deleteQuery removeObjectForKey:(__bridge id)kSecAttrAccessible];
+        [deleteQuery removeObjectForKey:(__bridge id)kSecAttrCreationDate];
+        [deleteQuery removeObjectForKey:(__bridge id)kSecAttrModificationDate];
+        [deleteQuery removeObjectForKey:(__bridge id)kSecAttrDescription];
+        [deleteQuery removeObjectForKey:(__bridge id)kSecAttrComment];
+        [deleteQuery removeObjectForKey:(__bridge id)kSecAttrCreator];
+        [deleteQuery removeObjectForKey:(__bridge id)kSecAttrType];
+        [deleteQuery removeObjectForKey:(__bridge id)kSecAttrLabel];
+        [deleteQuery removeObjectForKey:(__bridge id)kSecAttrIsInvisible];
+        [deleteQuery removeObjectForKey:(__bridge id)kSecAttrIsNegative];
+        [deleteQuery removeObjectForKey:(__bridge id)kSecReturnData];
+        [deleteQuery removeObjectForKey:(__bridge id)kSecReturnAttributes];
+        [deleteQuery removeObjectForKey:(__bridge id)kSecReturnRef];
+        [deleteQuery removeObjectForKey:(__bridge id)kSecReturnPersistentRef];
         if (orig_SecItemDelete) {
-            orig_SecItemDelete((__bridge CFDictionaryRef)del);
-        } else {
-            SecItemDelete((__bridge CFDictionaryRef)del);
+            orig_SecItemDelete((__bridge CFDictionaryRef)deleteQuery);
         }
-        if (orig_SecItemAdd) {
-            status = orig_SecItemAdd((__bridge CFDictionaryRef)clean, result);
-        } else {
-            status = SecItemAdd((__bridge CFDictionaryRef)clean, result);
-        }
+        status = orig_SecItemAdd((__bridge CFDictionaryRef)clean, result);
     }
-
-    // Luôn lưu bản sao vào BMKeychainVault bảo đảm an toàn dữ liệu
-    if (data) {
-        [BMKeychainVault saveItemWithClass:itemClass service:service account:account data:data attributes:clean];
-    }
-
-    // Nếu Keychain hệ thống từ chối do thiếu quyền Sideload (-34018 / -25308 / -25299)
-    // Coi như thành công vì BMKeychainVault đã lưu trữ phiên đăng nhập an toàn!
-    if (status == -34018 || status == errSecInteractionNotAllowed || status == errSecDuplicateItem) {
-        return errSecSuccess;
-    }
-
     return status;
 }
 
@@ -84,47 +65,10 @@ static OSStatus hook_SecItemCopyMatching(CFDictionaryRef query, CFTypeRef *resul
     if (!query) return errSecParam;
     NSMutableDictionary *clean = BMCleanKeychainQuery(query);
     [clean removeObjectForKey:(__bridge id)kSecAttrAccessible];
-
-    OSStatus status = errSecItemNotFound;
     if (orig_SecItemCopyMatching) {
-        status = orig_SecItemCopyMatching((__bridge CFDictionaryRef)clean, result);
-    } else {
-        status = SecItemCopyMatching((__bridge CFDictionaryRef)clean, result);
+        return orig_SecItemCopyMatching((__bridge CFDictionaryRef)clean, result);
     }
-
-    if (status == errSecSuccess && result && *result != NULL) {
-        return status;
-    }
-
-    // Nếu Keychain hệ thống không có quyền (-34018) hoặc không tìm thấy, phục hồi từ Vault
-    id itemClass = clean[(__bridge id)kSecClass];
-    NSString *service = clean[(__bridge id)kSecAttrService];
-    NSString *account = clean[(__bridge id)kSecAttrAccount];
-
-    NSData *vaultData = [BMKeychainVault dataForClass:itemClass service:service account:account];
-    if (vaultData && vaultData.length > 0) {
-        if (result) {
-            BOOL returnData = [clean[(__bridge id)kSecReturnData] boolValue];
-            BOOL returnAttributes = [clean[(__bridge id)kSecReturnAttributes] boolValue];
-
-            if (returnData) {
-                *result = (__bridge_retained CFTypeRef)vaultData;
-                return errSecSuccess;
-            } else if (returnAttributes) {
-                NSDictionary *attrs = [BMKeychainVault attributesForClass:itemClass service:service account:account];
-                if (attrs) {
-                    *result = (__bridge_retained CFTypeRef)attrs;
-                    return errSecSuccess;
-                }
-            } else {
-                *result = (__bridge_retained CFTypeRef)vaultData;
-                return errSecSuccess;
-            }
-        }
-        return errSecSuccess;
-    }
-
-    return status;
+    return errSecItemNotFound;
 }
 
 static OSStatus hook_SecItemUpdate(CFDictionaryRef query, CFDictionaryRef attributesToUpdate) {
@@ -132,49 +76,20 @@ static OSStatus hook_SecItemUpdate(CFDictionaryRef query, CFDictionaryRef attrib
     NSMutableDictionary *cleanQuery = BMCleanKeychainQuery(query);
     [cleanQuery removeObjectForKey:(__bridge id)kSecAttrAccessible];
     NSMutableDictionary *cleanAttr = BMCleanKeychainQuery(attributesToUpdate);
-
-    OSStatus status = errSecSuccess;
     if (orig_SecItemUpdate) {
-        status = orig_SecItemUpdate((__bridge CFDictionaryRef)cleanQuery, (__bridge CFDictionaryRef)cleanAttr);
-    } else {
-        status = SecItemUpdate((__bridge CFDictionaryRef)cleanQuery, (__bridge CFDictionaryRef)cleanAttr);
+        return orig_SecItemUpdate((__bridge CFDictionaryRef)cleanQuery, (__bridge CFDictionaryRef)cleanAttr);
     }
-
-    id itemClass = cleanQuery[(__bridge id)kSecClass];
-    NSString *service = cleanQuery[(__bridge id)kSecAttrService];
-    NSString *account = cleanQuery[(__bridge id)kSecAttrAccount];
-    NSData *newData = cleanAttr[(__bridge id)kSecValueData];
-    if (newData) {
-        [BMKeychainVault saveItemWithClass:itemClass service:service account:account data:newData attributes:cleanAttr];
-    }
-
-    if (status == -34018 || status == errSecInteractionNotAllowed) {
-        return errSecSuccess;
-    }
-    return status;
+    return errSecSuccess;
 }
 
 static OSStatus hook_SecItemDelete(CFDictionaryRef query) {
     if (!query) return errSecParam;
     NSMutableDictionary *clean = BMCleanKeychainQuery(query);
     [clean removeObjectForKey:(__bridge id)kSecAttrAccessible];
-
-    OSStatus status = errSecSuccess;
     if (orig_SecItemDelete) {
-        status = orig_SecItemDelete((__bridge CFDictionaryRef)clean);
-    } else {
-        status = SecItemDelete((__bridge CFDictionaryRef)clean);
+        return orig_SecItemDelete((__bridge CFDictionaryRef)clean);
     }
-
-    id itemClass = clean[(__bridge id)kSecClass];
-    NSString *service = clean[(__bridge id)kSecAttrService];
-    NSString *account = clean[(__bridge id)kSecAttrAccount];
-    [BMKeychainVault deleteItemsForClass:itemClass service:service account:account];
-
-    if (status == -34018 || status == errSecInteractionNotAllowed) {
-        return errSecSuccess;
-    }
-    return status;
+    return errSecSuccess;
 }
 
 @interface UIViewController (BMPureMode)
@@ -3154,27 +3069,44 @@ static NSString *bm_emojiForCountryCode(NSString *countryCode) {
 %hook TTNetworkManager
 - (id)commonParams {
     id params = %orig;
-    if ([BMIManager russianFix]) {
-        if ([params isKindOfClass:[NSMutableDictionary class]]) {
-            NSMutableDictionary *mut = (NSMutableDictionary *)params;
+    if ([params isKindOfClass:[NSDictionary class]]) {
+        NSMutableDictionary *mut = [params isKindOfClass:[NSMutableDictionary class]] ? (NSMutableDictionary *)params : [params mutableCopy];
+        if (mut[@"package"] && ![mut[@"package"] isEqualToString:@"com.zhiliaoapp.musically"]) {
+            mut[@"package"] = @"com.zhiliaoapp.musically";
+        }
+        if (mut[@"bundle_id"] && ![mut[@"bundle_id"] isEqualToString:@"com.zhiliaoapp.musically"]) {
+            mut[@"bundle_id"] = @"com.zhiliaoapp.musically";
+        }
+        if ([BMIManager russianFix]) {
             mut[@"carrier_region"] = @"RU";
             mut[@"sys_region"] = @"RU";
             mut[@"region"] = @"RU";
             mut[@"app_language"] = @"ru";
             return mut;
-        }
-    } else if (bm_shouldSpoofRegion()) {
-        NSDictionary *selectedRegion = [BMIManager selectedRegion];
-        if (selectedRegion && selectedRegion[@"code"]) {
-            NSString *code = [selectedRegion[@"code"] uppercaseString];
-            NSMutableDictionary *mut = [params isKindOfClass:[NSMutableDictionary class]] ? (NSMutableDictionary *)params : [params mutableCopy];
-            if (mut) {
+        } else if (bm_shouldSpoofRegion()) {
+            NSDictionary *selectedRegion = [BMIManager selectedRegion];
+            if (selectedRegion && selectedRegion[@"code"]) {
+                NSString *code = [selectedRegion[@"code"] uppercaseString];
                 mut[@"carrier_region"] = code;
                 mut[@"sys_region"] = code;
                 mut[@"region"] = code;
                 return mut;
             }
         }
+        return mut;
+    }
+    return params;
+}
+%end
+
+%hook AWEPassportNetworkManager
+- (NSDictionary *)commonParams {
+    NSDictionary *origParams = %orig;
+    NSMutableDictionary *params = [origParams mutableCopy];
+    if (params) {
+        params[@"aid"] = @"1233";
+        params[@"app_name"] = @"musical_ly";
+        params[@"channel"] = @"App Store";
     }
     return params;
 }
@@ -3254,21 +3186,13 @@ static NSString *bm_emojiForCountryCode(NSString *countryCode) {
         @"/bin/sh", @"/bin/bash",
     ];
 
-    // Khắc phục triệt để lỗi Keychain Sideload (-34018 & errSecDuplicateItem) gây lặp Email/OTP Login
-    // 1. Dùng fishhook để rebind bảng ký hiệu C qua toàn bộ Mach-O binaries (TikTok + TikTokCore)
-    struct rebinding secRebindings[] = {
-        {"SecItemAdd", (void *)hook_SecItemAdd, (void **)&orig_SecItemAdd},
-        {"SecItemCopyMatching", (void *)hook_SecItemCopyMatching, (void **)&orig_SecItemCopyMatching},
-        {"SecItemUpdate", (void *)hook_SecItemUpdate, (void **)&orig_SecItemUpdate},
-        {"SecItemDelete", (void *)hook_SecItemDelete, (void **)&orig_SecItemDelete}
-    };
-    rebind_symbols(secRebindings, 4);
-
-    // 2. Đồng thời đăng ký MSHookFunction bổ trợ nếu ở môi trường hỗ trợ
-    MSHookFunction(SecItemAdd, hook_SecItemAdd, (void **)&orig_SecItemAdd);
-    MSHookFunction(SecItemCopyMatching, hook_SecItemCopyMatching, (void **)&orig_SecItemCopyMatching);
-    MSHookFunction(SecItemUpdate, hook_SecItemUpdate, (void **)&orig_SecItemUpdate);
-    MSHookFunction(SecItemDelete, hook_SecItemDelete, (void **)&orig_SecItemDelete);
+    // Khắc phục lỗi Keychain Sideload (-34018 & errSecDuplicateItem)
+    if (orig_SecItemAdd == NULL) {
+        MSHookFunction(SecItemAdd, hook_SecItemAdd, (void **)&orig_SecItemAdd);
+        MSHookFunction(SecItemCopyMatching, hook_SecItemCopyMatching, (void **)&orig_SecItemCopyMatching);
+        MSHookFunction(SecItemUpdate, hook_SecItemUpdate, (void **)&orig_SecItemUpdate);
+        MSHookFunction(SecItemDelete, hook_SecItemDelete, (void **)&orig_SecItemDelete);
+    }
 
     %init;
 
