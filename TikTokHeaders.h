@@ -34,6 +34,31 @@
 @property (nonatomic, copy) NSString *region;
 @end
 
+@interface AWEPassportCheckEnvModel : NSObject
+@property (nonatomic, assign) BOOL isSafeEnv;
+@end
+
+@interface AWEPassportAccoutRecoverCheckEnvModel : NSObject
+@property (nonatomic, assign) BOOL isSafeEnv;
+@end
+
+@interface AWEPassportAccoutUpdateCheckEnvModelV2 : NSObject
+@property (nonatomic, assign) BOOL isSafeEnv;
+@end
+
+@interface AWERiskModel : NSObject
+@property (nonatomic, assign) BOOL isUnderRiskControl;
+@property (nonatomic, strong) NSNumber *riskControlCode;
+@property (nonatomic, copy) NSString *riskControlMessage;
+@end
+
+@interface AWEPassportAntiSpamManager : NSObject
+@property (nonatomic, assign) BOOL isUnusable;
+@end
+
+@interface TTNetworkManagerChromium : NSObject
+@end
+
 @interface AppDelegate : NSObject <UIApplicationDelegate>
 @end
 

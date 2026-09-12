@@ -135,7 +135,7 @@
     // Tên & Badge
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(92, 18, cardView.bounds.size.width - 100, 24)];
     titleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    titleLabel.text = @"BMTikTok VIP Mod 🇻🇳";
+    titleLabel.text = @"BMTikTok";
     titleLabel.font = [UIFont systemFontOfSize:18 weight:UIFontWeightBold];
     [cardView addSubview:titleLabel];
     
@@ -148,7 +148,8 @@
     
     UILabel *descLabel = [[UILabel alloc] initWithFrame:CGRectMake(92, 60, cardView.bounds.size.width - 100, 16)];
     descLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    descLabel.text = @"TikTok v46.5.0 • Đầy đủ tính năng cao cấp";
+    NSString *appVer = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"] ?: @"46.8.0";
+    descLabel.text = [NSString stringWithFormat:@"TikTok v%@", appVer];
     descLabel.font = [UIFont systemFontOfSize:11];
     descLabel.textColor = [UIColor secondaryLabelColor];
     [cardView addSubview:descLabel];

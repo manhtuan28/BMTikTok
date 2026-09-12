@@ -38,7 +38,7 @@
         case 0: return 6;
         case 1: return 6; // Xuất JSON, Nhập File, Copy Clipboard, Dán Clipboard, Lưu Keychain, Khôi phục Keychain
         case 2: return 2;
-        case 3: return 1;
+        case 3: return 2;
         default: return 0;
     }
 }
@@ -147,16 +147,34 @@
         }
         return cell;
     } else if (indexPath.section == 3) {
-        static NSString *resetCellId = @"ResetCell";
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:resetCellId];
-        if (!cell) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:resetCellId];
+        if (indexPath.row == 0) {
+            static NSString *fixLoginCellId = @"FixLoginCell";
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:fixLoginCellId];
+            if (!cell) {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:fixLoginCellId];
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            }
+            cell.textLabel.text = @"Sửa lỗi Đăng nhập (Làm mới Device ID)";
+            cell.textLabel.textColor = [UIColor systemOrangeColor];
+            cell.textLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightSemibold];
+            cell.detailTextLabel.text = @"Xóa mã máy bị TikTok chặn 'quá thường xuyên', cấp mã mới";
+            cell.detailTextLabel.textColor = [UIColor secondaryLabelColor];
+            cell.imageView.image = [UIImage systemImageNamed:@"arrow.triangle.2.circlepath.circle.fill"];
+            cell.imageView.tintColor = [UIColor systemOrangeColor];
+            return cell;
+        } else {
+            static NSString *resetCellId = @"ResetCell";
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:resetCellId];
+            if (!cell) {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:resetCellId];
+            }
+            cell.textLabel.text = @"Khôi phục tất cả cài đặt BMTikTok";
+            cell.textLabel.textColor = [UIColor systemRedColor];
+            cell.textLabel.textAlignment = NSTextAlignmentCenter;
+            cell.textLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightSemibold];
+            cell.imageView.image = nil;
+            return cell;
         }
-        cell.textLabel.text = @"Khôi phục tất cả cài đặt BMTikTok";
-        cell.textLabel.textColor = [UIColor systemRedColor];
-        cell.textLabel.textAlignment = NSTextAlignmentCenter;
-        cell.textLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightSemibold];
-        return cell;
     }
     return [[UITableViewCell alloc] init];
 }
@@ -248,15 +266,27 @@
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://github.com/manhtuan28/BMTikTok"] options:@{} completionHandler:nil];
         }
     } else if (indexPath.section == 3) {
-        UIAlertController *confirm = [UIAlertController alertControllerWithTitle:@"Khôi phục cài đặt gốc"
-                                                                         message:@"Bạn có chắc chắn muốn đặt lại tất cả các tùy chọn BMTikTok về mặc định (TẮT toàn bộ chức năng)?"
-                                                                  preferredStyle:UIAlertControllerStyleActionSheet];
-        [confirm addAction:[UIAlertAction actionWithTitle:@"Đặt lại ngay" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
-            [BMConfigManager resetAllSettingsToDefault];
-            [self showAlertWithTitle:@"Thành công" message:@"Đã đặt lại toàn bộ cài đặt BMTikTok về mặc định (Toàn bộ tính năng đã được TẮT)."];
-        }]];
-        [confirm addAction:[UIAlertAction actionWithTitle:@"Hủy" style:UIAlertActionStyleCancel handler:nil]];
-        [self presentViewController:confirm animated:YES completion:nil];
+        if (indexPath.row == 0) {
+            UIAlertController *confirm = [UIAlertController alertControllerWithTitle:@"Làm mới Device ID & Sửa lỗi Đăng nhập"
+                                                                             message:@"Chức năng này sẽ xóa mã máy bị TikTok chặn do 'truy cập quá thường xuyên', cấp phát Device ID mới hoàn toàn để bạn đăng nhập bình thường.\n\nBạn có muốn tiếp tục không?"
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+            [confirm addAction:[UIAlertAction actionWithTitle:@"Làm mới ngay" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                [BMConfigManager fixLoginRateLimitAndResetDeviceID];
+                [self showAlertWithTitle:@"Đã làm mới Device ID thành công!" message:@"Mã thiết bị đã được làm mới sạch sẽ. Hãy mở màn hình Đăng nhập để đăng nhập tài khoản ngay bây giờ."];
+            }]];
+            [confirm addAction:[UIAlertAction actionWithTitle:@"Hủy" style:UIAlertActionStyleCancel handler:nil]];
+            [self presentViewController:confirm animated:YES completion:nil];
+        } else {
+            UIAlertController *confirm = [UIAlertController alertControllerWithTitle:@"Khôi phục cài đặt gốc"
+                                                                             message:@"Bạn có chắc chắn muốn đặt lại tất cả các tùy chọn BMTikTok về mặc định (TẮT toàn bộ chức năng)?"
+                                                                      preferredStyle:UIAlertControllerStyleActionSheet];
+            [confirm addAction:[UIAlertAction actionWithTitle:@"Đặt lại ngay" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+                [BMConfigManager resetAllSettingsToDefault];
+                [self showAlertWithTitle:@"Thành công" message:@"Đã đặt lại toàn bộ cài đặt BMTikTok về mặc định (Toàn bộ tính năng đã được TẮT)."];
+            }]];
+            [confirm addAction:[UIAlertAction actionWithTitle:@"Hủy" style:UIAlertActionStyleCancel handler:nil]];
+            [self presentViewController:confirm animated:YES completion:nil];
+        }
     }
 }
 

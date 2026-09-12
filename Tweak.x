@@ -164,8 +164,8 @@ static BOOL isAuthenticationShowed = FALSE;
         TTKSettingsBaseCellPlugin *BMTikTokSettingsPluginCell = [[%c(TTKSettingsBaseCellPlugin) alloc] initWithPluginContext:self.context];
 
         AWESettingItemModel *BMTikTokSettingsItemModel = [[%c(AWESettingItemModel) alloc] initWithIdentifier:@"bmtiktok_settings"];
-        [BMTikTokSettingsItemModel setTitle:@"BMTikTok VIP Mod 🇻🇳"];
-        [BMTikTokSettingsItemModel setDetail:@"BMTikTok VIP Mod 🇻🇳"];
+        [BMTikTokSettingsItemModel setTitle:@"BMTikTok"];
+        [BMTikTokSettingsItemModel setDetail:@"BMTikTok"];
         [BMTikTokSettingsItemModel setIconImage:[UIImage systemImageNamed:@"gear"]];
         [BMTikTokSettingsItemModel setType:99];
 
@@ -1544,9 +1544,53 @@ static BOOL isAuthenticationShowed = FALSE;
 // MARK: - 5. Region & Location
 // ═══════════════════════════════════════════════════════════════
 
+static BOOL bm_isUserLoggedIn(void) {
+    Class ttAccountClass = objc_getClass("TTAccount");
+    if (ttAccountClass && [ttAccountClass respondsToSelector:@selector(sharedAccount)]) {
+        id acc = [ttAccountClass sharedAccount];
+        if (acc && [acc respondsToSelector:@selector(isLogin)]) {
+            return [acc isLogin];
+        }
+    }
+    Class aweUserClass = objc_getClass("AWEMainUser");
+    if (aweUserClass && [aweUserClass respondsToSelector:@selector(isLogin)]) {
+        return [aweUserClass isLogin];
+    }
+    return NO;
+}
+
+static BOOL bm_isLoginOrAuthFlowActive(void) {
+    UIViewController *topVC = topMostController();
+    if (topVC) {
+        NSString *vcName = NSStringFromClass([topVC class]);
+        if ([vcName containsString:@"Login"] ||
+            [vcName containsString:@"SignUp"] ||
+            [vcName containsString:@"Register"] ||
+            [vcName containsString:@"Passport"] ||
+            [vcName containsString:@"VerifyCode"] ||
+            [vcName containsString:@"TwoStep"] ||
+            [vcName containsString:@"PhoneBind"] ||
+            [vcName containsString:@"Security"]) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
+static BOOL bm_shouldSpoofRegion(void) {
+    if (![BMIManager regionChangingEnabled]) {
+        return NO;
+    }
+    // Tuyệt đối KHÔNG giả lập quốc gia/nhà mạng khi đang ở luồng Đăng nhập/Đăng ký/Xác thực (ngăn chặn triệt để lỗi 1009/quá thường xuyên)
+    if (bm_isLoginOrAuthFlowActive()) {
+        return NO;
+    }
+    return YES;
+}
+
 %hook CTCarrier
 - (NSString *)mobileCountryCode {
-    if ([BMIManager regionChangingEnabled]) {
+    if (bm_shouldSpoofRegion()) {
         NSDictionary *selectedRegion = [BMIManager selectedRegion];
         if (selectedRegion && selectedRegion[@"mcc"]) {
             return selectedRegion[@"mcc"];
@@ -1556,7 +1600,7 @@ static BOOL isAuthenticationShowed = FALSE;
 }
 
 - (NSString *)isoCountryCode {
-    if ([BMIManager regionChangingEnabled]) {
+    if (bm_shouldSpoofRegion()) {
         NSDictionary *selectedRegion = [BMIManager selectedRegion];
         if (selectedRegion && selectedRegion[@"code"]) {
             return selectedRegion[@"code"];
@@ -1566,7 +1610,7 @@ static BOOL isAuthenticationShowed = FALSE;
 }
 
 - (NSString *)mobileNetworkCode {
-    if ([BMIManager regionChangingEnabled]) {
+    if (bm_shouldSpoofRegion()) {
         NSDictionary *selectedRegion = [BMIManager selectedRegion];
         if (selectedRegion && selectedRegion[@"mnc"]) {
             return selectedRegion[@"mnc"];
@@ -1578,7 +1622,7 @@ static BOOL isAuthenticationShowed = FALSE;
 
 %hook TTKStoreRegionService
 - (id)storeRegion {
-    if ([BMIManager regionChangingEnabled]) {
+    if (bm_shouldSpoofRegion()) {
         NSDictionary *selectedRegion = [BMIManager selectedRegion];
         if (selectedRegion && selectedRegion[@"code"]) {
             return [selectedRegion[@"code"] lowercaseString];
@@ -1587,7 +1631,7 @@ static BOOL isAuthenticationShowed = FALSE;
     return %orig;
 }
 - (id)getStoreRegion {
-    if ([BMIManager regionChangingEnabled]) {
+    if (bm_shouldSpoofRegion()) {
         NSDictionary *selectedRegion = [BMIManager selectedRegion];
         if (selectedRegion && selectedRegion[@"code"]) {
             return [selectedRegion[@"code"] lowercaseString];
@@ -1596,7 +1640,7 @@ static BOOL isAuthenticationShowed = FALSE;
     return %orig;
 }
 - (void)setStoreRegion:(id)arg1 {
-    if ([BMIManager regionChangingEnabled]) {
+    if (bm_shouldSpoofRegion()) {
         NSDictionary *selectedRegion = [BMIManager selectedRegion];
         if (selectedRegion && selectedRegion[@"code"]) {
             return %orig([selectedRegion[@"code"] lowercaseString]);
@@ -1608,7 +1652,7 @@ static BOOL isAuthenticationShowed = FALSE;
 
 %hook TIKTOKRegionManager
 + (NSString *)systemRegion {
-    if ([BMIManager regionChangingEnabled]) {
+    if (bm_shouldSpoofRegion()) {
         NSDictionary *selectedRegion = [BMIManager selectedRegion];
         if (selectedRegion && selectedRegion[@"code"]) {
             return selectedRegion[@"code"];
@@ -1617,7 +1661,7 @@ static BOOL isAuthenticationShowed = FALSE;
     return %orig;
 }
 + (id)region {
-    if ([BMIManager regionChangingEnabled]) {
+    if (bm_shouldSpoofRegion()) {
         NSDictionary *selectedRegion = [BMIManager selectedRegion];
         if (selectedRegion && selectedRegion[@"code"]) {
             return selectedRegion[@"code"];
@@ -1626,7 +1670,7 @@ static BOOL isAuthenticationShowed = FALSE;
     return %orig;
 }
 + (id)mccmnc {
-    if ([BMIManager regionChangingEnabled]) {
+    if (bm_shouldSpoofRegion()) {
         NSDictionary *selectedRegion = [BMIManager selectedRegion];
         if (selectedRegion && selectedRegion[@"mcc"] && selectedRegion[@"mnc"]) {
             return [NSString stringWithFormat:@"%@%@", selectedRegion[@"mcc"], selectedRegion[@"mnc"]];
@@ -1635,7 +1679,7 @@ static BOOL isAuthenticationShowed = FALSE;
     return %orig;
 }
 + (id)storeRegion {
-    if ([BMIManager regionChangingEnabled]) {
+    if (bm_shouldSpoofRegion()) {
         NSDictionary *selectedRegion = [BMIManager selectedRegion];
         if (selectedRegion && selectedRegion[@"code"]) {
             return selectedRegion[@"code"];
@@ -1644,7 +1688,7 @@ static BOOL isAuthenticationShowed = FALSE;
     return %orig;
 }
 + (id)currentRegionV2 {
-    if ([BMIManager regionChangingEnabled]) {
+    if (bm_shouldSpoofRegion()) {
         NSDictionary *selectedRegion = [BMIManager selectedRegion];
         if (selectedRegion && selectedRegion[@"code"]) {
             return selectedRegion[@"code"];
@@ -1653,7 +1697,7 @@ static BOOL isAuthenticationShowed = FALSE;
     return %orig;
 }
 + (id)localRegion {
-    if ([BMIManager regionChangingEnabled]) {
+    if (bm_shouldSpoofRegion()) {
         NSDictionary *selectedRegion = [BMIManager selectedRegion];
         if (selectedRegion && selectedRegion[@"code"]) {
             return selectedRegion[@"code"];
@@ -2983,7 +3027,7 @@ static NSString *bm_emojiForCountryCode(NSString *countryCode) {
 
 
 // ═══════════════════════════════════════════════════════════════
-// MARK: - 12. Network
+// MARK: - 12. Network & Login Security Bypass
 // ═══════════════════════════════════════════════════════════════
 
 %hook TTNetworkManager
@@ -2998,7 +3042,7 @@ static NSString *bm_emojiForCountryCode(NSString *countryCode) {
             mut[@"app_language"] = @"ru";
             return mut;
         }
-    } else if ([BMIManager regionChangingEnabled]) {
+    } else if (bm_shouldSpoofRegion()) {
         NSDictionary *selectedRegion = [BMIManager selectedRegion];
         if (selectedRegion && selectedRegion[@"code"]) {
             NSString *code = [selectedRegion[@"code"] uppercaseString];
@@ -3012,6 +3056,116 @@ static NSString *bm_emojiForCountryCode(NSString *countryCode) {
         }
     }
     return params;
+}
+%end
+
+%hook TTNetworkManagerChromium
+- (id)buildJSONHttpTask:(id)url params:(id)params method:(id)method needCommonParams:(BOOL)needCommonParams commonParamLevel:(long long)paramLevel headerField:(id)headers requestSerializer:(id)reqSer responseSerializer:(id)respSer autoResume:(BOOL)autoResume verifyRequest:(BOOL)verify isCustomizedCookie:(BOOL)isCustomized callback:(id)cb callbackWithResponse:(id)cbResp dispatch_queue:(id)queue entrySelector:(SEL)sel {
+    NSString *urlStr = [url description].lowercaseString;
+    if ([urlStr containsString:@"passport"] ||
+        [urlStr containsString:@"login"] ||
+        [urlStr containsString:@"send_code"] ||
+        [urlStr containsString:@"check_email"] ||
+        [urlStr containsString:@"safe_env"] ||
+        [urlStr containsString:@"device_register"] ||
+        [urlStr containsString:@"auth/"]) {
+        if ([params isKindOfClass:[NSDictionary class]]) {
+            NSMutableDictionary *cleanParams = [params mutableCopy];
+            [cleanParams removeObjectForKey:@"carrier_region"];
+            [cleanParams removeObjectForKey:@"sys_region"];
+            [cleanParams removeObjectForKey:@"region"];
+            params = cleanParams;
+        }
+    }
+    return %orig(url, params, method, needCommonParams, paramLevel, headers, reqSer, respSer, autoResume, verify, isCustomized, cb, cbResp, queue, sel);
+}
+
+- (id)buildJSONHttpTask:(id)url params:(id)params method:(id)method needCommonParams:(BOOL)needCommonParams headerField:(id)headers requestSerializer:(id)reqSer responseSerializer:(id)respSer autoResume:(BOOL)autoResume verifyRequest:(BOOL)verify isCustomizedCookie:(BOOL)isCustomized callback:(id)cb callbackWithResponse:(id)cbResp dispatch_queue:(id)queue entrySelector:(SEL)sel {
+    NSString *urlStr = [url description].lowercaseString;
+    if ([urlStr containsString:@"passport"] ||
+        [urlStr containsString:@"login"] ||
+        [urlStr containsString:@"send_code"] ||
+        [urlStr containsString:@"check_email"] ||
+        [urlStr containsString:@"safe_env"] ||
+        [urlStr containsString:@"device_register"] ||
+        [urlStr containsString:@"auth/"]) {
+        if ([params isKindOfClass:[NSDictionary class]]) {
+            NSMutableDictionary *cleanParams = [params mutableCopy];
+            [cleanParams removeObjectForKey:@"carrier_region"];
+            [cleanParams removeObjectForKey:@"sys_region"];
+            [cleanParams removeObjectForKey:@"region"];
+            params = cleanParams;
+        }
+    }
+    return %orig(url, params, method, needCommonParams, headers, reqSer, respSer, autoResume, verify, isCustomized, cb, cbResp, queue, sel);
+}
+%end
+
+// ═══════════════════════════════════════════════════════════════
+// MARK: - 12.1 Passport & Login Protection (Sửa lỗi "Bạn đã truy cập dịch vụ của chúng tôi quá thường xuyên")
+// ═══════════════════════════════════════════════════════════════
+
+%hook AWEPassportCheckEnvModel
+- (BOOL)isSafeEnv {
+    return YES;
+}
+%end
+
+%hook AWEPassportAccoutRecoverCheckEnvModel
+- (BOOL)isSafeEnv {
+    return YES;
+}
+%end
+
+%hook AWEPassportAccoutUpdateCheckEnvModelV2
+- (BOOL)isSafeEnv {
+    return YES;
+}
+%end
+
+%hook AWERiskModel
+- (BOOL)isUnderRiskControl {
+    return NO;
+}
+- (id)riskControlCode {
+    return @(0);
+}
+- (id)riskControlMessage {
+    return nil;
+}
+%end
+
+%hook AWEPassportAntiSpamManager
+- (BOOL)isUnusable {
+    return NO;
+}
+%end
+
+%hook UIAlertController
+- (void)viewWillAppear:(BOOL)animated {
+    %orig;
+    NSString *msg = self.message;
+    if (msg && ([msg containsString:@"quá thường xuyên"] || 
+                [msg containsString:@"too frequently"] || 
+                [msg containsString:@"quá nhiều lần"] ||
+                [msg containsString:@"1009"])) {
+        BOOL alreadyHasResetAction = NO;
+        for (UIAlertAction *act in self.actions) {
+            if ([act.title containsString:@"Device ID"] || [act.title containsString:@"Sửa lỗi"]) {
+                alreadyHasResetAction = YES;
+                break;
+            }
+        }
+        if (!alreadyHasResetAction) {
+            UIAlertAction *resetAction = [UIAlertAction actionWithTitle:@"Sửa lỗi (Làm mới Device ID)" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
+                [BMConfigManager fixLoginRateLimitAndResetDeviceID];
+                UIAlertController *doneAlert = [UIAlertController alertControllerWithTitle:@"Đã làm mới Device ID!" message:@"Mã thiết bị đã được làm mới thành công. Hãy bấm thử đăng nhập lại ngay bây giờ." preferredStyle:UIAlertControllerStyleAlert];
+                [doneAlert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
+                [topMostController() presentViewController:doneAlert animated:YES completion:nil];
+            }];
+            [self addAction:resetAction];
+        }
+    }
 }
 %end
 

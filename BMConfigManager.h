@@ -37,4 +37,7 @@
 /// Tạo file cấu hình JSON tạm thời để chia sẻ (Share Sheet)
 + (NSURL *)createExportConfigFileURL;
 
+/// Sửa lỗi đăng nhập "Bạn đã truy cập dịch vụ của chúng tôi quá thường xuyên" bằng cách làm mới Device ID & Install ID
++ (BOOL)fixLoginRateLimitAndResetDeviceID;
+
 @end

@@ -7,6 +7,7 @@
 
 #import "BMConfigManager.h"
 #import <Security/Security.h>
+#import <objc/runtime.h>
 
 static NSString *const kBMKeychainService = @"com.tuancute28.bmtiktok.config";
 static NSString *const kBMKeychainAccount = @"user_settings_backup";
@@ -244,6 +245,100 @@ static NSString *settingsBackupFilePath() {
     }
     
     return NO;
+}
+
+#pragma mark - Login Fix & Device ID Reset
+
++ (BOOL)fixLoginRateLimitAndResetDeviceID {
+    // 1. Xóa các cache ID thiết bị lưu trong NSUserDefaults bị ByteDance đưa vào danh sách hạn chế
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSArray *keysToRemove = @[
+        @"kInstallIDStorageKey",
+        @"kDeviceIDStorageKey",
+        @"kClientDIDStorageKey",
+        @"kDeviceTokenStorageKey",
+        @"kOldDeviceIDStorageKey",
+        @"tt_install_id",
+        @"tt_device_id",
+        @"did",
+        @"iid",
+        @"cdid",
+        @"openudid",
+        @"clientudid",
+        @"kInstallClientDIDStorageKey",
+        @"kEnableDeviceIDStorageKey",
+        @"kTTInstallServiceIsActivated",
+        @"kTTInstallServiceLastRequestTime",
+        @"com.ss.iphone.ugc.Awe.install_id",
+        @"com.ss.iphone.ugc.Awe.device_id"
+    ];
+    for (NSString *key in keysToRemove) {
+        [defaults removeObjectForKey:key];
+    }
+    
+    // Đặt cờ reset ByteDance SDK để cấp phát Device ID / Install ID hoàn toàn mới
+    [defaults setBool:YES forKey:@"kAutoResetKey"];
+    [defaults setBool:YES forKey:@"kTTResetedDeviceID"];
+    [defaults setBool:YES forKey:@"kTTResetedInstallID"];
+    [defaults setBool:YES forKey:@"kTTResetNewUser"];
+    [defaults synchronize];
+    
+    // 2. Xóa các tệp plist lưu cache ID thiết bị trong sandbox ứng dụng
+    NSFileManager *fm = [NSFileManager defaultManager];
+    NSArray *searchPaths = @[
+        NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES).firstObject,
+        NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject,
+        NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES).firstObject,
+        [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES).firstObject stringByAppendingPathComponent:@"Preferences"],
+        [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES).firstObject stringByAppendingPathComponent:@"Application Support"]
+    ];
+    
+    for (NSString *dir in searchPaths) {
+        if (!dir) continue;
+        NSString *plistPath = [dir stringByAppendingPathComponent:@"ttinstall_ids.plist"];
+        if ([fm fileExistsAtPath:plistPath]) {
+            [fm removeItemAtPath:plistPath error:nil];
+        }
+        NSString *appGroupsPlist = [dir stringByAppendingPathComponent:@"install_app_groups.plist"];
+        if ([fm fileExistsAtPath:appGroupsPlist]) {
+            [fm removeItemAtPath:appGroupsPlist error:nil];
+        }
+    }
+    
+    // 3. Xóa các khóa Keychain lưu ID cũ nếu có
+    NSArray *kcServices = @[@"kBDInstallOldDidKeychainService", @"com.bytedance.ttinstallservice", @"com.ss.iphone.ugc.Awe.device_id"];
+    for (NSString *svc in kcServices) {
+        NSDictionary *kcQuery = @{
+            (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
+            (__bridge id)kSecAttrService: svc
+        };
+        SecItemDelete((__bridge CFDictionaryRef)kcQuery);
+    }
+    
+    // 4. Nếu TTInstallIDManager tồn tại trong runtime, kích hoạt cấp lại Device ID ngay lập tức
+    Class installManagerClass = objc_getClass("TTInstallIDManager");
+    if (installManagerClass) {
+        SEL selShared = NSSelectorFromString(@"sharedManager");
+        SEL selDefault = NSSelectorFromString(@"defaultManager");
+        id manager = nil;
+        if ([installManagerClass respondsToSelector:selShared]) {
+            manager = [installManagerClass performSelector:selShared];
+        } else if ([installManagerClass respondsToSelector:selDefault]) {
+            manager = [installManagerClass performSelector:selDefault];
+        }
+        if (manager) {
+            SEL reRegisterSel = NSSelectorFromString(@"reRegisterDeviceWithSceneStatus:triggerFrom:registerSuccessObserver:completion:");
+            if ([manager respondsToSelector:reRegisterSel]) {
+                typedef void (*ReRegisterFunc)(id, SEL, id, id, id, id);
+                ReRegisterFunc func = (ReRegisterFunc)[manager methodForSelector:reRegisterSel];
+                if (func) {
+                    func(manager, reRegisterSel, nil, @"BMTikTok_RateLimitFix", nil, nil);
+                }
+            }
+        }
+    }
+    
+    return YES;
 }
 
 @end
