@@ -186,6 +186,36 @@ def repackage_ipa(input_ipa, dylib_path, bundle_path, output_ipa):
     # Vá dependency CydiaSubstrate trong BMTikTok.dylib
     patch_dylib_dependency(dest_dylib, "/Library/Frameworks/CydiaSubstrate.framework/CydiaSubstrate", "@rpath/libsubstrate.dylib")
     
+    # 4.1 Copy FLEX.dylib vào Frameworks và vá dependency cho non-jailbreak
+    flex_src = os.path.join(os.path.dirname(__file__), "deps", "FLEX.dylib")
+    if not os.path.exists(flex_src):
+        flex_src = "tools/deps/FLEX.dylib"
+        
+    has_flex = False
+    if os.path.exists(flex_src):
+        dest_flex = os.path.join(frameworks_dir, "FLEX.dylib")
+        shutil.copy(flex_src, dest_flex)
+        patch_dylib_dependency(dest_flex, "/usr/lib/libsubstrate.dylib", "@rpath/libsubstrate.dylib")
+        print(f"[+] Đã sao chép và patch FLEX.dylib -> {dest_flex}")
+        has_flex = True
+    else:
+        print("[!] Không tìm thấy FLEX.dylib trong tools/deps!")
+
+    # 4.2 Bật UIFileSharingEnabled và LSSupportsOpeningDocumentsInPlace trong Info.plist
+    info_plist_path = os.path.join(app_path, "Info.plist")
+    if os.path.exists(info_plist_path):
+        try:
+            import plistlib
+            with open(info_plist_path, 'rb') as fp:
+                plist_obj = plistlib.load(fp)
+            plist_obj["UIFileSharingEnabled"] = True
+            plist_obj["LSSupportsOpeningDocumentsInPlace"] = True
+            with open(info_plist_path, 'wb') as fp:
+                plistlib.dump(plist_obj, fp)
+            print("[+] Đã kích hoạt UIFileSharingEnabled & LSSupportsOpeningDocumentsInPlace trong Info.plist (Tệp debug log sẽ xuất hiện trong ứng dụng Tệp/Files)")
+        except Exception as e:
+            print(f"[!] Cảnh báo không thể sửa Info.plist: {e}")
+        
     # 5. Copy BMTikTok.bundle vào thư mục ứng dụng
     if os.path.exists(bundle_path):
         dest_bundle = os.path.join(app_path, "BMTikTok.bundle")
@@ -197,17 +227,23 @@ def repackage_ipa(input_ipa, dylib_path, bundle_path, output_ipa):
     # 6. Patch LC_LOAD_DYLIB vào file thực thi
     print(f"[*] Đang chèn load dylib vào file thực thi: {main_executable}")
     inject_load_dylib(main_executable, "@rpath/BMTikTok.dylib")
+    if has_flex:
+        inject_load_dylib(main_executable, "@rpath/FLEX.dylib")
     
     # 7. Kiểm tra TikTokCore.framework (TikTok 46.8.0+) hoặc MusicallyCore.framework nếu có
     tiktok_core = os.path.join(frameworks_dir, "TikTokCore.framework", "TikTokCore")
     if os.path.exists(tiktok_core):
         print(f"[*] Phát hiện TikTokCore.framework (TikTok 46.8.0+), đang chèn load dylib...")
         inject_load_dylib(tiktok_core, "@rpath/BMTikTok.dylib")
+        if has_flex:
+            inject_load_dylib(tiktok_core, "@rpath/FLEX.dylib")
 
     musically_core = os.path.join(frameworks_dir, "MusicallyCore.framework", "MusicallyCore")
     if os.path.exists(musically_core):
         print(f"[*] Phát hiện MusicallyCore.framework, đang chèn load dylib...")
         inject_load_dylib(musically_core, "@rpath/BMTikTok.dylib")
+        if has_flex:
+            inject_load_dylib(musically_core, "@rpath/FLEX.dylib")
         
     # 8. Đóng gói lại thành file IPA mới
     print(f"[*] Đang nén thành phẩm IPA: {output_ipa}")

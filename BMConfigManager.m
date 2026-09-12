@@ -6,6 +6,7 @@
 //
 
 #import "BMConfigManager.h"
+#import "BMLogger.h"
 #import <Security/Security.h>
 #import <objc/runtime.h>
 
@@ -250,7 +251,8 @@ static NSString *settingsBackupFilePath() {
 #pragma mark - Login Fix & Device ID Reset
 
 + (BOOL)fixLoginRateLimitAndResetDeviceID {
-    // 1. Xóa các cache ID thiết bị lưu trong NSUserDefaults bị ByteDance đưa vào danh sách hạn chế
+    [BMLogger log:@"[DEVICE-RESET] Bắt đầu quá trình xóa cache Device ID & làm mới thiết bị..."];
+    // 1. Xóa các khóa lưu cache Device ID / Install ID trong NSUserDefaults
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSArray *keysToRemove = @[
         @"kInstallIDStorageKey",
@@ -338,6 +340,7 @@ static NSString *settingsBackupFilePath() {
         }
     }
     
+    [BMLogger log:@"[DEVICE-RESET] Đã hoàn tất làm mới Device ID & kích hoạt reRegisterDevice."];
     return YES;
 }
 

@@ -68,6 +68,9 @@ jobs:
           if [ -f "tools/deps/libsubstrate.dylib" ]; then
             ldid -S tools/deps/libsubstrate.dylib || true
           fi
+          if [ -f "tools/deps/FLEX.dylib" ]; then
+            ldid -S tools/deps/FLEX.dylib || true
+          fi
           
           echo "DYLIB_PATH=$DYLIB_PATH" >> $GITHUB_ENV
           echo "✅ Đã tìm thấy và patch dylib thành phẩm: $DYLIB_PATH"

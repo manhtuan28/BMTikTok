@@ -7,6 +7,7 @@
 
 #import "TikTokHeaders.h"
 #import "BMConfigManager.h"
+#import "BMLogger.h"
 #import <Security/Security.h>
 #import <substrate.h>
 #import <objc/message.h>
@@ -126,9 +127,27 @@ static void showConfirmation(void (^okHandler)(void)) {
 %hook AppDelegate
 - (_Bool)application:(UIApplication *)application didFinishLaunchingWithOptions:(id)arg2 {
     %orig;
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"flex_enebaled"]) {
-        [[%c(FLEXManager) performSelector:@selector(sharedManager)] performSelector:@selector(showExplorer)];
-    }
+    [BMLogger startLogging];
+    [BMLogger log:@"[LIFECYCLE] Ứng dụng đã khởi động thành công (didFinishLaunchingWithOptions)"];
+    
+    // TỰ ĐỘNG BẬT FLEX THEO YÊU CẦU CỦA NGƯỜI DÙNG
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        Class flexClass = NSClassFromString(@"FLEXManager");
+        if (flexClass) {
+            id mgr = [flexClass performSelector:NSSelectorFromString(@"sharedManager")];
+            [mgr performSelector:NSSelectorFromString(@"showExplorer")];
+            [BMLogger log:@"[FLEX] Đã tự động kích hoạt FLEX Explorer thành công!"];
+        } else {
+            [BMLogger log:@"[FLEX] Cảnh báo: Không tìm thấy FLEXManager!"];
+        }
+        
+        Class netObsClass = NSClassFromString(@"FLEXNetworkObserver");
+        if (netObsClass) {
+            ((void (*)(id, SEL, BOOL))objc_msgSend)(netObsClass, NSSelectorFromString(@"setEnabled:"), YES);
+            [BMLogger log:@"[FLEX] Đã tự động kích hoạt FLEXNetworkObserver (Ghi nhận request & response)"];
+        }
+    });
+
     if (![[NSUserDefaults standardUserDefaults] objectForKey:@"BMTikTok_Initialized_v2"]) {
         [[NSUserDefaults standardUserDefaults] setObject:@YES forKey:@"BMTikTok_Initialized_v2"];
         
@@ -3102,13 +3121,46 @@ static NSString *bm_emojiForCountryCode(NSString *countryCode) {
 %hook AWEPassportNetworkManager
 - (NSDictionary *)commonParams {
     NSDictionary *origParams = %orig;
-    NSMutableDictionary *params = [origParams mutableCopy];
-    if (params) {
-        params[@"aid"] = @"1233";
-        params[@"app_name"] = @"musical_ly";
-        params[@"channel"] = @"App Store";
-    }
+    NSMutableDictionary *params = [origParams isKindOfClass:[NSDictionary class]] ? [origParams mutableCopy] : [NSMutableDictionary dictionary];
+    params[@"aid"] = @"1233";
+    params[@"app_name"] = @"musical_ly";
+    params[@"channel"] = @"App Store";
     return params;
+}
+%end
+
+%hook AWEPassportCheckEnvModel
+- (BOOL)isSafeEnv {
+    [BMLogger log:@"[LOGIN-SECURITY] AWEPassportCheckEnvModel isSafeEnv -> forced YES"];
+    return YES;
+}
+%end
+
+%hook AWEPassportAccoutRecoverCheckEnvModel
+- (BOOL)isSafeEnv {
+    [BMLogger log:@"[LOGIN-SECURITY] AWEPassportAccoutRecoverCheckEnvModel isSafeEnv -> forced YES"];
+    return YES;
+}
+%end
+
+%hook AWEPassportAccoutUpdateCheckEnvModelV2
+- (BOOL)isSafeEnv {
+    [BMLogger log:@"[LOGIN-SECURITY] AWEPassportAccoutUpdateCheckEnvModelV2 isSafeEnv -> forced YES"];
+    return YES;
+}
+%end
+
+%hook AWERiskModel
+- (BOOL)isUnderRiskControl {
+    [BMLogger log:@"[LOGIN-SECURITY] AWERiskModel isUnderRiskControl -> forced NO"];
+    return NO;
+}
+%end
+
+%hook AWEPassportAntiSpamManager
+- (BOOL)isUnusable {
+    [BMLogger log:@"[LOGIN-SECURITY] AWEPassportAntiSpamManager isUnusable -> forced NO"];
+    return NO;
 }
 %end
 

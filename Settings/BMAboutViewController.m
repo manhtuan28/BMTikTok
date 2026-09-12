@@ -7,6 +7,7 @@
 
 #import "BMAboutViewController.h"
 #import "BMConfigManager.h"
+#import "BMLogger.h"
 #import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
 
 @interface BMAboutViewController () <UIDocumentPickerDelegate>
@@ -27,7 +28,7 @@
     switch (section) {
         case 0: return @"TÁC GIẢ & LIÊN KẾT XÃ HỘI";
         case 1: return @"SAO LƯU & XUẤT/NHẬP CẤU HÌNH";
-        case 2: return @"QUẢN TRỊ HỆ THỐNG";
+        case 2: return @"QUẢN TRỊ & GỠ LỖI (DEBUG)";
         default: return @"";
     }
 }
@@ -36,7 +37,7 @@
     switch (section) {
         case 0: return 6;
         case 1: return 6; // Xuất JSON, Nhập File, Copy Clipboard, Dán Clipboard, Lưu Keychain, Khôi phục Keychain
-        case 2: return 2;
+        case 2: return 5; // Reset DID, Mở FLEX, Xuất Log, Xóa Log, Reset All
         default: return 0;
     }
 }
@@ -128,34 +129,58 @@
         }
         return cell;
     } else if (indexPath.section == 2) {
-        if (indexPath.row == 0) {
-            static NSString *fixLoginCellId = @"FixLoginCell";
-            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:fixLoginCellId];
-            if (!cell) {
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:fixLoginCellId];
-                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            }
-            cell.textLabel.text = @"Sửa lỗi Đăng nhập (Làm mới Device ID)";
-            cell.textLabel.textColor = [UIColor systemOrangeColor];
-            cell.textLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightSemibold];
-            cell.detailTextLabel.text = @"Xóa mã máy bị TikTok chặn 'quá thường xuyên', cấp mã mới";
-            cell.detailTextLabel.textColor = [UIColor secondaryLabelColor];
-            cell.imageView.image = [UIImage systemImageNamed:@"arrow.triangle.2.circlepath.circle.fill"];
-            cell.imageView.tintColor = [UIColor systemOrangeColor];
-            return cell;
-        } else {
-            static NSString *resetCellId = @"ResetCell";
-            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:resetCellId];
-            if (!cell) {
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:resetCellId];
-            }
-            cell.textLabel.text = @"Khôi phục tất cả cài đặt BMTikTok";
-            cell.textLabel.textColor = [UIColor systemRedColor];
-            cell.textLabel.textAlignment = NSTextAlignmentCenter;
-            cell.textLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightSemibold];
-            cell.imageView.image = nil;
-            return cell;
+        static NSString *debugCellId = @"DebugActionCell";
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:debugCellId];
+        if (!cell) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:debugCellId];
         }
+        cell.textLabel.textColor = [UIColor labelColor];
+        cell.textLabel.textAlignment = NSTextAlignmentNatural;
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        cell.detailTextLabel.textColor = [UIColor secondaryLabelColor];
+        
+        switch (indexPath.row) {
+            case 0:
+                cell.textLabel.text = @"Sửa lỗi Đăng nhập (Làm mới Device ID)";
+                cell.textLabel.textColor = [UIColor systemOrangeColor];
+                cell.textLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightSemibold];
+                cell.detailTextLabel.text = @"Xóa mã máy bị TikTok chặn 'quá thường xuyên', cấp mã mới";
+                cell.imageView.image = [UIImage systemImageNamed:@"arrow.triangle.2.circlepath.circle.fill"];
+                cell.imageView.tintColor = [UIColor systemOrangeColor];
+                break;
+            case 1:
+                cell.textLabel.text = @"Mở Trình Gỡ Lỗi FLEX Explorer";
+                cell.textLabel.textColor = [UIColor systemBlueColor];
+                cell.textLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightSemibold];
+                cell.detailTextLabel.text = @"Mở thanh công cụ soi View, Network, Controller, Database";
+                cell.imageView.image = [UIImage systemImageNamed:@"hammer.fill"];
+                cell.imageView.tintColor = [UIColor systemBlueColor];
+                break;
+            case 2:
+                cell.textLabel.text = @"Xuất File Log Debug (BMTikTok_Debug_Log.txt)";
+                cell.textLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightSemibold];
+                cell.detailTextLabel.text = @"Gửi/Lưu toàn bộ log mạng và lỗi đăng nhập";
+                cell.imageView.image = [UIImage systemImageNamed:@"doc.text.magnifyingglass"];
+                cell.imageView.tintColor = [UIColor systemTealColor];
+                break;
+            case 3:
+                cell.textLabel.text = @"Xóa Lịch Sử Log Debug";
+                cell.textLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightMedium];
+                cell.detailTextLabel.text = @"Làm trống file log hiện tại để ghi phiên mới";
+                cell.imageView.image = [UIImage systemImageNamed:@"trash.fill"];
+                cell.imageView.tintColor = [UIColor systemGrayColor];
+                break;
+            case 4:
+                cell.textLabel.text = @"Khôi phục tất cả cài đặt BMTikTok";
+                cell.textLabel.textColor = [UIColor systemRedColor];
+                cell.textLabel.textAlignment = NSTextAlignmentCenter;
+                cell.textLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightSemibold];
+                cell.detailTextLabel.text = nil;
+                cell.imageView.image = nil;
+                cell.accessoryType = UITableViewCellAccessoryNone;
+                break;
+        }
+        return cell;
     }
     return [[UITableViewCell alloc] init];
 }
@@ -237,26 +262,52 @@
             }
         }
     } else if (indexPath.section == 2) {
-        if (indexPath.row == 0) {
-            UIAlertController *confirm = [UIAlertController alertControllerWithTitle:@"Làm mới Device ID & Sửa lỗi Đăng nhập"
-                                                                             message:@"Chức năng này sẽ xóa mã máy bị TikTok chặn do 'truy cập quá thường xuyên', cấp phát Device ID mới hoàn toàn để bạn đăng nhập bình thường.\n\nBạn có muốn tiếp tục không?"
-                                                                      preferredStyle:UIAlertControllerStyleAlert];
-            [confirm addAction:[UIAlertAction actionWithTitle:@"Làm mới ngay" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                [BMConfigManager fixLoginRateLimitAndResetDeviceID];
-                [self showAlertWithTitle:@"Đã làm mới Device ID thành công!" message:@"Mã thiết bị đã được làm mới sạch sẽ. Hãy mở màn hình Đăng nhập để đăng nhập tài khoản ngay bây giờ."];
-            }]];
-            [confirm addAction:[UIAlertAction actionWithTitle:@"Hủy" style:UIAlertActionStyleCancel handler:nil]];
-            [self presentViewController:confirm animated:YES completion:nil];
-        } else {
-            UIAlertController *confirm = [UIAlertController alertControllerWithTitle:@"Khôi phục cài đặt gốc"
-                                                                             message:@"Bạn có chắc chắn muốn đặt lại tất cả các tùy chọn BMTikTok về mặc định (TẮT toàn bộ chức năng)?"
-                                                                      preferredStyle:UIAlertControllerStyleActionSheet];
-            [confirm addAction:[UIAlertAction actionWithTitle:@"Đặt lại ngay" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
-                [BMConfigManager resetAllSettingsToDefault];
-                [self showAlertWithTitle:@"Thành công" message:@"Đã đặt lại toàn bộ cài đặt BMTikTok về mặc định (Toàn bộ tính năng đã được TẮT)."];
-            }]];
-            [confirm addAction:[UIAlertAction actionWithTitle:@"Hủy" style:UIAlertActionStyleCancel handler:nil]];
-            [self presentViewController:confirm animated:YES completion:nil];
+        switch (indexPath.row) {
+            case 0: { // Sửa lỗi Đăng nhập (Làm mới Device ID)
+                UIAlertController *confirm = [UIAlertController alertControllerWithTitle:@"Làm mới Device ID & Sửa lỗi Đăng nhập"
+                                                                                 message:@"Chức năng này sẽ xóa mã máy bị TikTok chặn do 'truy cập quá thường xuyên', cấp phát Device ID mới hoàn toàn để bạn đăng nhập bình thường.\n\nBạn có muốn tiếp tục không?"
+                                                                          preferredStyle:UIAlertControllerStyleAlert];
+                [confirm addAction:[UIAlertAction actionWithTitle:@"Làm mới ngay" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                    [BMConfigManager fixLoginRateLimitAndResetDeviceID];
+                    [self showAlertWithTitle:@"Đã làm mới Device ID thành công!" message:@"Mã thiết bị đã được làm mới sạch sẽ. Hãy mở màn hình Đăng nhập để đăng nhập tài khoản ngay bây giờ."];
+                }]];
+                [confirm addAction:[UIAlertAction actionWithTitle:@"Hủy" style:UIAlertActionStyleCancel handler:nil]];
+                [self presentViewController:confirm animated:YES completion:nil];
+                break;
+            }
+            case 1: { // Mở FLEX Explorer
+                Class flexClass = NSClassFromString(@"FLEXManager");
+                if (flexClass) {
+                    id mgr = [flexClass performSelector:NSSelectorFromString(@"sharedManager")];
+                    [mgr performSelector:NSSelectorFromString(@"showExplorer")];
+                    [self showAlertWithTitle:@"FLEX Explorer" message:@"Đã kích hoạt thanh công cụ gỡ lỗi FLEX trên màn hình!"];
+                } else {
+                    [self showAlertWithTitle:@"Lỗi" message:@"Không tìm thấy thư viện FLEX trong ứng dụng."];
+                }
+                break;
+            }
+            case 2: { // Xuất File Log Debug
+                UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+                [BMLogger shareLogFromViewController:self sender:cell ?: self.view];
+                break;
+            }
+            case 3: { // Xóa Lịch Sử Log Debug
+                [BMLogger clearLog];
+                [self showAlertWithTitle:@"Thành công" message:@"Đã xóa sạch dữ liệu log và khởi tạo phiên log mới."];
+                break;
+            }
+            case 4: { // Khôi phục cài đặt gốc
+                UIAlertController *confirm = [UIAlertController alertControllerWithTitle:@"Khôi phục cài đặt gốc"
+                                                                                 message:@"Bạn có chắc chắn muốn đặt lại tất cả các tùy chọn BMTikTok về mặc định (TẮT toàn bộ chức năng)?"
+                                                                          preferredStyle:UIAlertControllerStyleActionSheet];
+                [confirm addAction:[UIAlertAction actionWithTitle:@"Đặt lại ngay" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+                    [BMConfigManager resetAllSettingsToDefault];
+                    [self showAlertWithTitle:@"Thành công" message:@"Đã đặt lại toàn bộ cài đặt BMTikTok về mặc định (Toàn bộ tính năng đã được TẮT)."];
+                }]];
+                [confirm addAction:[UIAlertAction actionWithTitle:@"Hủy" style:UIAlertActionStyleCancel handler:nil]];
+                [self presentViewController:confirm animated:YES completion:nil];
+                break;
+            }
         }
     }
 }
