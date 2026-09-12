@@ -649,10 +649,8 @@ static inline BOOL is_iPad() {
 - (void)loadDTokenAndDTokenSign;
 @end
 
-@interface TTInstallIDManager : NSObject
-+ (id)sharedManager;
-+ (id)defaultManager;
-- (NSString *)deviceID;
-- (NSString *)installID;
-- (NSString *)clientDID;
+@interface NSObject (PureModeMethods)
+- (void)setPureMode:(BOOL)arg1 animateDuration:(double)arg2;
+- (void)setPureMode:(BOOL)arg1 animated:(BOOL)arg2;
 @end
+
