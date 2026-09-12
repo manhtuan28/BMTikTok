@@ -7,6 +7,74 @@
 
 #import "TikTokHeaders.h"
 #import "BMConfigManager.h"
+#import <Security/Security.h>
+#import <substrate.h>
+
+// ═══════════════════════════════════════════════════════════════
+// MARK: - 0. Keychain Sideload Fix (Khắc phục triệt để lỗi Login Loop & OTP Email)
+// ═══════════════════════════════════════════════════════════════
+
+static NSMutableDictionary *BMCleanKeychainQuery(CFDictionaryRef dict) {
+    if (!dict) return nil;
+    NSMutableDictionary *query = [(__bridge NSDictionary *)dict mutableCopy];
+    [query removeObjectForKey:(__bridge id)kSecAttrAccessGroup];
+    return query;
+}
+
+static OSStatus (*orig_SecItemAdd)(CFDictionaryRef attributes, CFTypeRef *result) = NULL;
+static OSStatus (*orig_SecItemDelete)(CFDictionaryRef query) = NULL;
+
+static OSStatus hook_SecItemAdd(CFDictionaryRef attributes, CFTypeRef *result) {
+    NSMutableDictionary *clean = BMCleanKeychainQuery(attributes);
+    OSStatus status = orig_SecItemAdd((__bridge CFDictionaryRef)clean, result);
+    // Nếu bị trùng lặp khóa cũ trong keychain cá nhân (errSecDuplicateItem = -25299), xóa key cũ và ghi đè lại
+    if (status == errSecDuplicateItem || status == -25299) {
+        NSMutableDictionary *deleteQuery = [clean mutableCopy];
+        [deleteQuery removeObjectForKey:(__bridge id)kSecValueData];
+        [deleteQuery removeObjectForKey:(__bridge id)kSecValueRef];
+        [deleteQuery removeObjectForKey:(__bridge id)kSecValuePersistentRef];
+        [deleteQuery removeObjectForKey:(__bridge id)kSecAttrAccessible];
+        [deleteQuery removeObjectForKey:(__bridge id)kSecAttrCreationDate];
+        [deleteQuery removeObjectForKey:(__bridge id)kSecAttrModificationDate];
+        [deleteQuery removeObjectForKey:(__bridge id)kSecAttrDescription];
+        [deleteQuery removeObjectForKey:(__bridge id)kSecAttrComment];
+        [deleteQuery removeObjectForKey:(__bridge id)kSecAttrCreator];
+        [deleteQuery removeObjectForKey:(__bridge id)kSecAttrType];
+        [deleteQuery removeObjectForKey:(__bridge id)kSecAttrLabel];
+        [deleteQuery removeObjectForKey:(__bridge id)kSecAttrIsInvisible];
+        [deleteQuery removeObjectForKey:(__bridge id)kSecAttrIsNegative];
+        [deleteQuery removeObjectForKey:(__bridge id)kSecReturnData];
+        [deleteQuery removeObjectForKey:(__bridge id)kSecReturnAttributes];
+        [deleteQuery removeObjectForKey:(__bridge id)kSecReturnRef];
+        [deleteQuery removeObjectForKey:(__bridge id)kSecReturnPersistentRef];
+        if (orig_SecItemDelete) {
+            orig_SecItemDelete((__bridge CFDictionaryRef)deleteQuery);
+        }
+        status = orig_SecItemAdd((__bridge CFDictionaryRef)clean, result);
+    }
+    return status;
+}
+
+static OSStatus (*orig_SecItemCopyMatching)(CFDictionaryRef query, CFTypeRef *result) = NULL;
+static OSStatus hook_SecItemCopyMatching(CFDictionaryRef query, CFTypeRef *result) {
+    NSMutableDictionary *clean = BMCleanKeychainQuery(query);
+    [clean removeObjectForKey:(__bridge id)kSecAttrAccessible];
+    return orig_SecItemCopyMatching((__bridge CFDictionaryRef)clean, result);
+}
+
+static OSStatus (*orig_SecItemUpdate)(CFDictionaryRef query, CFDictionaryRef attributesToUpdate) = NULL;
+static OSStatus hook_SecItemUpdate(CFDictionaryRef query, CFDictionaryRef attributesToUpdate) {
+    NSMutableDictionary *cleanQuery = BMCleanKeychainQuery(query);
+    [cleanQuery removeObjectForKey:(__bridge id)kSecAttrAccessible];
+    NSMutableDictionary *cleanAttr = BMCleanKeychainQuery(attributesToUpdate);
+    return orig_SecItemUpdate((__bridge CFDictionaryRef)cleanQuery, (__bridge CFDictionaryRef)cleanAttr);
+}
+
+static OSStatus hook_SecItemDelete(CFDictionaryRef query) {
+    NSMutableDictionary *clean = BMCleanKeychainQuery(query);
+    [clean removeObjectForKey:(__bridge id)kSecAttrAccessible];
+    return orig_SecItemDelete((__bridge CFDictionaryRef)clean);
+}
 
 @interface UIViewController (BMPureMode)
 - (void)setPureMode:(BOOL)pureMode animated:(BOOL)animated;
@@ -45,19 +113,14 @@ static void showConfirmation(void (^okHandler)(void)) {
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"flex_enebaled"]) {
         [[%c(FLEXManager) performSelector:@selector(sharedManager)] performSelector:@selector(showExplorer)];
     }
-    if (![[NSUserDefaults standardUserDefaults] objectForKey:@"BMTikTokFirstRun"]) {
-        // Khôi phục cài đặt từ Keychain trước (nếu người dùng cài lại IPA hoặc nâng cấp)
-        if (![BMConfigManager restoreSettingsFromKeychain]) {
-            [[NSUserDefaults standardUserDefaults] setValue:@"BMTikTokFirstRun" forKey:@"BMTikTokFirstRun"];
-            [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"hide_ads"];
-            [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"download_button"];
-            [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"remove_elements_button"];
-            [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"progress_bar"];
-            [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"download_profile_avatar"];
-            [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"copy_profile_bio"];
-            [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"extended_bio"];
-            [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"extendedComment"];
-            [BMConfigManager saveSettingsToKeychain];
+    if (![[NSUserDefaults standardUserDefaults] objectForKey:@"BMTikTok_Initialized_v2"]) {
+        [[NSUserDefaults standardUserDefaults] setObject:@YES forKey:@"BMTikTok_Initialized_v2"];
+        
+        // Thử khôi phục cài đặt từ Keychain trước (nếu người dùng cài lại IPA hoặc nâng cấp có cấu hình cũ)
+        BOOL restored = [BMConfigManager restoreSettingsFromKeychain];
+        if (!restored) {
+            // Khi vào app lần đầu: TẮT HẾT TOÀN BỘ 100% CÁC CHỨC NĂNG theo yêu cầu người dùng
+            [BMConfigManager resetAllSettingsToDefault];
         }
     }
     [BMIManager cleanCache];
@@ -186,6 +249,36 @@ static BOOL isAuthenticationShowed = FALSE;
     if ([BMIManager disablePullToRefresh]) return 1;
     return %orig;
 }
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    %orig;
+    if (gPureModeActive) {
+        if ([cell respondsToSelector:@selector(applyPureModeState:animated:)]) {
+            [((id)cell) applyPureModeState:YES animated:NO];
+        }
+        UIButton *btn = (UIButton *)[cell viewWithTag:999];
+        if (btn) {
+            [btn setImage:[UIImage systemImageNamed:@"eye"] forState:UIControlStateNormal];
+            [cell bringSubviewToFront:btn];
+        }
+    }
+}
+%end
+
+%hook AWEAwemeDetailTableViewController
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    %orig;
+    if (gPureModeActive) {
+        if ([cell respondsToSelector:@selector(applyPureModeState:animated:)]) {
+            [((id)cell) applyPureModeState:YES animated:NO];
+        }
+        UIButton *btn = (UIButton *)[cell viewWithTag:999];
+        if (btn) {
+            [btn setImage:[UIImage systemImageNamed:@"eye"] forState:UIControlStateNormal];
+            [cell bringSubviewToFront:btn];
+        }
+    }
+}
 %end
 
 %hook TTKAdsTimerPendantAdapter
@@ -197,6 +290,7 @@ static BOOL isAuthenticationShowed = FALSE;
 }
 %end
 
+%group LegacyFeatures
 %hook AWEMainFeedAnchorView
 - (void)didMoveToSuperview {
     %orig;
@@ -264,6 +358,32 @@ static BOOL isAuthenticationShowed = FALSE;
     }
 }
 - (void)containerDidFullyDisplayWithReason:(NSInteger)arg1 {
+    %orig;
+    if (gPureModeActive) {
+        UIViewController *parentVC = nil;
+        if ([self.container respondsToSelector:@selector(parentViewController)]) {
+            parentVC = [self.container parentViewController];
+        }
+        if ([parentVC respondsToSelector:@selector(setPureMode:animated:)]) {
+            [((id)parentVC) setPureMode:YES animated:NO];
+        }
+        id interCtrl = nil;
+        if ([parentVC respondsToSelector:@selector(interactionController)]) {
+            interCtrl = [((id)parentVC) interactionController];
+        }
+        if (interCtrl) {
+            if ([interCtrl respondsToSelector:@selector(setPureMode:animated:)]) {
+                [((id)interCtrl) setPureMode:YES animated:NO];
+            }
+            if ([interCtrl respondsToSelector:@selector(hideAllElements:exceptArray:)]) {
+                [((id)interCtrl) hideAllElements:YES exceptArray:nil];
+            }
+            if ([interCtrl respondsToSelector:@selector(view)]) {
+                UIView *interView = [((id)interCtrl) view];
+                interView.alpha = 0.0;
+            }
+        }
+    }
     if ([BMIManager skipRecommendations]) {
         UIViewController *parentVC = nil;
         if ([self.container respondsToSelector:@selector(parentViewController)]) {
@@ -278,7 +398,135 @@ static BOOL isAuthenticationShowed = FALSE;
             }
         }
     }
+}
+%end
+
+%hook AWEPlayInteractionViewController
+- (void)viewWillAppear:(BOOL)animated {
     %orig;
+    if (gPureModeActive) {
+        if ([self respondsToSelector:@selector(setPureMode:animated:)]) {
+            [self setPureMode:YES animated:NO];
+        }
+        if ([self respondsToSelector:@selector(hideAllElements:exceptArray:)]) {
+            [self hideAllElements:YES exceptArray:nil];
+        }
+        self.view.alpha = 0.0;
+    }
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    %orig;
+    if (gPureModeActive) {
+        if ([self respondsToSelector:@selector(setPureMode:animated:)]) {
+            [self setPureMode:YES animated:NO];
+        }
+        if ([self respondsToSelector:@selector(hideAllElements:exceptArray:)]) {
+            [self hideAllElements:YES exceptArray:nil];
+        }
+        self.view.alpha = 0.0;
+    }
+}
+
+- (void)hideAllElements:(BOOL)arg1 exceptArray:(id)arg2 {
+    if (gPureModeActive) {
+        %orig(YES, nil);
+        return;
+    }
+    %orig;
+}
+
+- (void)hideAllElements:(BOOL)arg1 animate:(BOOL)arg2 exceptArray:(id)3 {
+    if (gPureModeActive) {
+        %orig(YES, NO, nil);
+        return;
+    }
+    %orig;
+}
+
+- (void)hideAllElements:(BOOL)arg1 animate:(BOOL)arg2 duration:(NSTimeInterval)arg3 exceptArray:(id)arg4 {
+    if (gPureModeActive) {
+        %orig(YES, NO, 0.0, nil);
+        return;
+    }
+    %orig;
+}
+
+- (void)showAllElements {
+    if (gPureModeActive) {
+        return;
+    }
+    %orig;
+}
+
+- (void)showAllComponents {
+    if (gPureModeActive) {
+        return;
+    }
+    %orig;
+}
+
+- (void)setPureMode:(BOOL)arg1 animated:(BOOL)arg2 {
+    if (gPureModeActive) {
+        %orig(YES, NO);
+        return;
+    }
+    %orig;
+}
+%end
+
+%hook AWEAwemeBaseViewController
+- (void)setPureMode:(BOOL)arg1 animated:(BOOL)arg2 {
+    if (gPureModeActive) {
+        %orig(YES, NO);
+        return;
+    }
+    %orig;
+}
+
+- (void)setPureMode:(BOOL)arg1 animation:(BOOL)arg2 {
+    if (gPureModeActive) {
+        %orig(YES, NO);
+        return;
+    }
+    %orig;
+}
+
+- (void)setPureMode:(BOOL)arg1 animateDuration:(NSTimeInterval)arg2 {
+    if (gPureModeActive) {
+        %orig(YES, 0.0);
+        return;
+    }
+    %orig;
+}
+
+- (BOOL)pureMode {
+    if (gPureModeActive) return YES;
+    return %orig;
+}
+
+- (BOOL)isInPureMode {
+    if (gPureModeActive) return YES;
+    return %orig;
+}
+
+- (BOOL)isPureMode {
+    if (gPureModeActive) return YES;
+    return %orig;
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    %orig;
+    if (gPureModeActive) {
+        [self setPureMode:YES animated:NO];
+    }
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    %orig;
+    if (gPureModeActive) {
+        [self setPureMode:YES animated:NO];
+    }
 }
 %end
 
@@ -330,6 +578,58 @@ static BOOL isAuthenticationShowed = FALSE;
     }
     if ([BMIManager hideElementButton]) {
         [self addHideElementButton];
+    }
+}
+
+- (void)cellWillDisplay {
+    %orig;
+    if (gPureModeActive) {
+        self.elementsHidden = YES;
+        [self applyPureModeState:YES animated:NO];
+    }
+    UIButton *btn = (UIButton *)[self viewWithTag:999];
+    if (btn) {
+        [btn setImage:[UIImage systemImageNamed:(gPureModeActive ? @"eye" : @"eye.slash")] forState:UIControlStateNormal];
+        [self bringSubviewToFront:btn];
+    }
+}
+
+- (void)cellDidFullyDisplay {
+    %orig;
+    if (gPureModeActive) {
+        self.elementsHidden = YES;
+        [self applyPureModeState:YES animated:NO];
+    }
+    UIButton *btn = (UIButton *)[self viewWithTag:999];
+    if (btn) {
+        [btn setImage:[UIImage systemImageNamed:(gPureModeActive ? @"eye" : @"eye.slash")] forState:UIControlStateNormal];
+        [self bringSubviewToFront:btn];
+    }
+}
+
+- (void)prepareForReuse {
+    %orig;
+    self.elementsHidden = gPureModeActive;
+    if (gPureModeActive) {
+        [self applyPureModeState:YES animated:NO];
+    }
+    UIButton *btn = (UIButton *)[self viewWithTag:999];
+    if (btn) {
+        [btn setImage:[UIImage systemImageNamed:(gPureModeActive ? @"eye" : @"eye.slash")] forState:UIControlStateNormal];
+        [self bringSubviewToFront:btn];
+    }
+}
+
+- (void)didMoveToWindow {
+    %orig;
+    if (self.window && gPureModeActive) {
+        self.elementsHidden = YES;
+        [self applyPureModeState:YES animated:NO];
+    }
+    UIButton *btn = (UIButton *)[self viewWithTag:999];
+    if (btn) {
+        [btn setImage:[UIImage systemImageNamed:(gPureModeActive ? @"eye" : @"eye.slash")] forState:UIControlStateNormal];
+        [self bringSubviewToFront:btn];
     }
 }
 
@@ -521,19 +821,31 @@ static BOOL isAuthenticationShowed = FALSE;
                                                 image:[UIImage systemImageNamed:@"sparkles.tv"]
                                            identifier:nil
                                               handler:^(__kindof UIAction * _Nonnull action) {
-            [self downloadHDVideo:rootVC];
+            if ([BMIManager downloadConfirmation]) {
+                showConfirmation(^{ [self downloadHDVideo:rootVC]; });
+            } else {
+                [self downloadHDVideo:rootVC];
+            }
         }];
         UIAction *action1 = [UIAction actionWithTitle:@"Tải Video (Gốc)"
                                                 image:[UIImage systemImageNamed:@"film"]
                                            identifier:nil
                                               handler:^(__kindof UIAction * _Nonnull action) {
-            [self downloadVideo:rootVC];
+            if ([BMIManager downloadConfirmation]) {
+                showConfirmation(^{ [self downloadVideo:rootVC]; });
+            } else {
+                [self downloadVideo:rootVC];
+            }
         }];
         UIAction *action2 = [UIAction actionWithTitle:@"Tải Nhạc Nền / MP3"
                                                 image:[UIImage systemImageNamed:@"music.note"]
                                            identifier:nil
                                               handler:^(__kindof UIAction * _Nonnull action) {
-            [self downloadMusic:rootVC];
+            if ([BMIManager downloadConfirmation]) {
+                showConfirmation(^{ [self downloadMusic:rootVC]; });
+            } else {
+                [self downloadMusic:rootVC];
+            }
         }];
         UIAction *action3 = [UIAction actionWithTitle:@"Sao Chép Link Âm Thanh"
                                                 image:[UIImage systemImageNamed:@"link"]
@@ -634,7 +946,30 @@ static BOOL isAuthenticationShowed = FALSE;
 }
 
 %new - (void)applyPureModeState:(BOOL)hide animated:(BOOL)animated {
-    UIViewController *rootVC = self.viewController ?: self.parentViewController;
+    UIViewController *rootVC = nil;
+    if ([self respondsToSelector:@selector(viewController)]) {
+        rootVC = [self performSelector:@selector(viewController)];
+    }
+    if (!rootVC && [self respondsToSelector:@selector(cellViewController)]) {
+        rootVC = [self performSelector:@selector(cellViewController)];
+    }
+    if (!rootVC && [self respondsToSelector:@selector(btd_viewController)]) {
+        rootVC = [self performSelector:@selector(btd_viewController)];
+    }
+    if (!rootVC && [self respondsToSelector:@selector(parentViewController)]) {
+        rootVC = [self performSelector:@selector(parentViewController)];
+    }
+    if (!rootVC) {
+        UIResponder *responder = self;
+        while (responder) {
+            if ([responder isKindOfClass:[UIViewController class]]) {
+                rootVC = (UIViewController *)responder;
+                break;
+            }
+            responder = [responder nextResponder];
+        }
+    }
+    
     if (rootVC) {
         if ([rootVC respondsToSelector:@selector(setPureMode:animated:)]) {
             [((id)rootVC) setPureMode:hide animated:animated];
@@ -682,6 +1017,34 @@ static BOOL isAuthenticationShowed = FALSE;
                 }
             }
         }
+    }
+    
+    // Duyệt trực tiếp subviews trong cell để ẩn/hiện mọi view tương tác
+    void (^processSubviews)(UIView *) = ^(UIView *container) {
+        if (!container) return;
+        for (UIView *v in container.subviews) {
+            if (v.tag == 998 || v.tag == 999) {
+                [container bringSubviewToFront:v];
+                continue;
+            }
+            NSString *cls = NSStringFromClass([v class]);
+            if ([cls containsString:@"Interaction"] || [cls containsString:@"AWEPlayVideoPauseIcon"] || [cls containsString:@"Pendant"]) {
+                if (animated) {
+                    [UIView animateWithDuration:0.25 animations:^{
+                        v.alpha = hide ? 0.0 : 1.0;
+                    }];
+                } else {
+                    v.alpha = hide ? 0.0 : 1.0;
+                }
+            }
+        }
+    };
+    processSubviews(self);
+    processSubviews(self.contentView);
+    
+    UIButton *eyeBtn = (UIButton *)[self viewWithTag:999];
+    if (eyeBtn) {
+        [self bringSubviewToFront:eyeBtn];
     }
 }
 
@@ -770,6 +1133,58 @@ static BOOL isAuthenticationShowed = FALSE;
     }
     if ([BMIManager hideElementButton]) {
         [self addHideElementButton];
+    }
+}
+
+- (void)cellWillDisplay {
+    %orig;
+    if (gPureModeActive) {
+        self.elementsHidden = YES;
+        [self applyPureModeState:YES animated:NO];
+    }
+    UIButton *btn = (UIButton *)[self viewWithTag:999];
+    if (btn) {
+        [btn setImage:[UIImage systemImageNamed:(gPureModeActive ? @"eye" : @"eye.slash")] forState:UIControlStateNormal];
+        [self bringSubviewToFront:btn];
+    }
+}
+
+- (void)cellDidFullyDisplay {
+    %orig;
+    if (gPureModeActive) {
+        self.elementsHidden = YES;
+        [self applyPureModeState:YES animated:NO];
+    }
+    UIButton *btn = (UIButton *)[self viewWithTag:999];
+    if (btn) {
+        [btn setImage:[UIImage systemImageNamed:(gPureModeActive ? @"eye" : @"eye.slash")] forState:UIControlStateNormal];
+        [self bringSubviewToFront:btn];
+    }
+}
+
+- (void)prepareForReuse {
+    %orig;
+    self.elementsHidden = gPureModeActive;
+    if (gPureModeActive) {
+        [self applyPureModeState:YES animated:NO];
+    }
+    UIButton *btn = (UIButton *)[self viewWithTag:999];
+    if (btn) {
+        [btn setImage:[UIImage systemImageNamed:(gPureModeActive ? @"eye" : @"eye.slash")] forState:UIControlStateNormal];
+        [self bringSubviewToFront:btn];
+    }
+}
+
+- (void)didMoveToWindow {
+    %orig;
+    if (self.window && gPureModeActive) {
+        self.elementsHidden = YES;
+        [self applyPureModeState:YES animated:NO];
+    }
+    UIButton *btn = (UIButton *)[self viewWithTag:999];
+    if (btn) {
+        [btn setImage:[UIImage systemImageNamed:(gPureModeActive ? @"eye" : @"eye.slash")] forState:UIControlStateNormal];
+        [self bringSubviewToFront:btn];
     }
 }
 
@@ -920,19 +1335,31 @@ static BOOL isAuthenticationShowed = FALSE;
                                                 image:[UIImage systemImageNamed:@"sparkles.tv"]
                                            identifier:nil
                                               handler:^(__kindof UIAction * _Nonnull action) {
-            [self downloadHDVideo:rootVC];
+            if ([BMIManager downloadConfirmation]) {
+                showConfirmation(^{ [self downloadHDVideo:rootVC]; });
+            } else {
+                [self downloadHDVideo:rootVC];
+            }
         }];
         UIAction *action1 = [UIAction actionWithTitle:@"Tải Video (Gốc)"
                                                 image:[UIImage systemImageNamed:@"film"]
                                            identifier:nil
                                               handler:^(__kindof UIAction * _Nonnull action) {
-            [self downloadVideo:rootVC];
+            if ([BMIManager downloadConfirmation]) {
+                showConfirmation(^{ [self downloadVideo:rootVC]; });
+            } else {
+                [self downloadVideo:rootVC];
+            }
         }];
         UIAction *action2 = [UIAction actionWithTitle:@"Tải Nhạc Nền / MP3"
                                                 image:[UIImage systemImageNamed:@"music.note"]
                                            identifier:nil
                                               handler:^(__kindof UIAction * _Nonnull action) {
-            [self downloadMusic:rootVC];
+            if ([BMIManager downloadConfirmation]) {
+                showConfirmation(^{ [self downloadMusic:rootVC]; });
+            } else {
+                [self downloadMusic:rootVC];
+            }
         }];
         UIAction *action3 = [UIAction actionWithTitle:@"Sao Chép Link Âm Thanh"
                                                 image:[UIImage systemImageNamed:@"link"]
@@ -981,7 +1408,30 @@ static BOOL isAuthenticationShowed = FALSE;
 }
 
 %new - (void)applyPureModeState:(BOOL)hide animated:(BOOL)animated {
-    UIViewController *rootVC = self.viewController ?: self.parentViewController;
+    UIViewController *rootVC = nil;
+    if ([self respondsToSelector:@selector(viewController)]) {
+        rootVC = [self performSelector:@selector(viewController)];
+    }
+    if (!rootVC && [self respondsToSelector:@selector(cellViewController)]) {
+        rootVC = [self performSelector:@selector(cellViewController)];
+    }
+    if (!rootVC && [self respondsToSelector:@selector(btd_viewController)]) {
+        rootVC = [self performSelector:@selector(btd_viewController)];
+    }
+    if (!rootVC && [self respondsToSelector:@selector(parentViewController)]) {
+        rootVC = [self performSelector:@selector(parentViewController)];
+    }
+    if (!rootVC) {
+        UIResponder *responder = self;
+        while (responder) {
+            if ([responder isKindOfClass:[UIViewController class]]) {
+                rootVC = (UIViewController *)responder;
+                break;
+            }
+            responder = [responder nextResponder];
+        }
+    }
+    
     if (rootVC) {
         if ([rootVC respondsToSelector:@selector(setPureMode:animated:)]) {
             [((id)rootVC) setPureMode:hide animated:animated];
@@ -1013,6 +1463,34 @@ static BOOL isAuthenticationShowed = FALSE;
                 }
             }
         }
+    }
+    
+    // Duyệt trực tiếp subviews trong cell để ẩn/hiện mọi view tương tác
+    void (^processSubviews)(UIView *) = ^(UIView *container) {
+        if (!container) return;
+        for (UIView *v in container.subviews) {
+            if (v.tag == 998 || v.tag == 999) {
+                [container bringSubviewToFront:v];
+                continue;
+            }
+            NSString *cls = NSStringFromClass([v class]);
+            if ([cls containsString:@"Interaction"] || [cls containsString:@"AWEPlayVideoPauseIcon"] || [cls containsString:@"Pendant"]) {
+                if (animated) {
+                    [UIView animateWithDuration:0.25 animations:^{
+                        v.alpha = hide ? 0.0 : 1.0;
+                    }];
+                } else {
+                    v.alpha = hide ? 0.0 : 1.0;
+                }
+            }
+        }
+    };
+    processSubviews(self);
+    processSubviews(self.contentView);
+    
+    UIButton *eyeBtn = (UIButton *)[self viewWithTag:999];
+    if (eyeBtn) {
+        [self bringSubviewToFront:eyeBtn];
     }
 }
 
@@ -1186,24 +1664,212 @@ static BOOL isAuthenticationShowed = FALSE;
 
 
 // ═══════════════════════════════════════════════════════════════
-// MARK: - 6. Privacy & Ghost Mode
+// MARK: - 6. Privacy & Ghost Mode (Chế độ ẩn danh toàn diện)
 // ═══════════════════════════════════════════════════════════════
+
+static BOOL bm_isSendingReply = NO;
+
+// 1. Mark Seen on Reply & Anonymous DM Seen
+%hook TIMMessageSender
+- (void)sendMessage:(id)msg conversationType:(long long)type conversationShortID:(long long)shortID conversationID:(id)cid inInbox:(int)inbox clientExt:(id)ext forceUpdateShortID:(BOOL)force sendMediaList:(id)media bizTransientExtra:(id)extra source:(id)src {
+    bm_isSendingReply = YES;
+    %orig;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        bm_isSendingReply = NO;
+    });
+}
+- (void)markConversationAsRead:(id)arg1 {
+    if ([BMIManager anonymousSeen]) {
+        if ([BMIManager markSeenOnReply] && bm_isSendingReply) {
+            %orig;
+            return;
+        }
+        return;
+    }
+    %orig;
+}
+- (void)markConversationAsRead:(id)arg1 tillIndex:(long long)arg2 badgeCount:(long long)arg3 {
+    if ([BMIManager anonymousSeen]) {
+        if ([BMIManager markSeenOnReply] && bm_isSendingReply) {
+            %orig;
+            return;
+        }
+        return;
+    }
+    %orig;
+}
+
+// 2. Disable Typing Status in DM (Ẩn biểu tượng đang soạn tin)
+- (void)sendInputStatusMessageWithStatus:(long long)arg1 extra:(id)arg2 conversationType:(long long)arg3 conversationShortID:(long long)arg4 conversationID:(id)arg5 inInbox:(int)arg6 {
+    if ([BMIManager disableTyping]) return;
+    %orig;
+}
+- (void)sendInputStatusMessageWithInputStatus:(long long)arg1 conversationID:(id)arg2 extra:(id)arg3 completion:(id)arg4 {
+    if ([BMIManager disableTyping]) {
+        if (arg4) {
+            void (^completionBlock)(id, id) = (void (^)(id, id))arg4;
+            completionBlock(nil, nil);
+        }
+        return;
+    }
+    %orig;
+}
+%end
 
 %hook AWEIMMessage
 - (void)markAsRead {
+    if ([BMIManager anonymousSeen]) {
+        if ([BMIManager markSeenOnReply] && bm_isSendingReply) {
+            %orig;
+            return;
+        }
+        return;
+    }
+    %orig;
+}
+%end
+
+%hook AWEIMInputStatusHandler
+- (void)sendInputStatusWithConversationID:(id)arg1 inputStatus:(long long)arg2 {
+    if ([BMIManager disableTyping]) return;
+    %orig;
+}
+- (void)sendInputStatusWithConversationID:(id)arg1 {
+    if ([BMIManager disableTyping]) return;
+    %orig;
+}
+%end
+
+// 3. Anonymous Story Seen (Xem tin & Story ẩn danh)
+%hook TTKStoryNetworkService
++ (void)reportStoryViewedWithStoryID:(id)storyID uid:(id)uid unlocked:(BOOL)unlocked completion:(id)completion {
+    if ([BMIManager anonymousSeen]) {
+        if (completion) {
+            void (^completionBlock)(id, id) = (void (^)(id, id))completion;
+            completionBlock(nil, nil);
+        }
+        return;
+    }
+    %orig;
+}
++ (void)reportStoryViewedWithStoryID:(id)storyID uid:(id)uid completion:(id)completion {
+    if ([BMIManager anonymousSeen]) {
+        if (completion) {
+            void (^completionBlock)(id, id) = (void (^)(id, id))completion;
+            completionBlock(nil, nil);
+        }
+        return;
+    }
+    %orig;
+}
++ (void)reportRevealStorySessionWithType:(long long)type reportTime:(id)time completion:(id)completion {
+    if ([BMIManager anonymousSeen]) {
+        if (completion) {
+            void (^completionBlock)(id, id) = (void (^)(id, id))completion;
+            completionBlock(nil, nil);
+        }
+        return;
+    }
+    %orig;
+}
+%end
+
+%hook TTKSkylightStoryDataController
+- (void)_reportStoryRead:(id)arg1 authorID:(id)arg2 unlocked:(BOOL)arg3 retryCnt:(long long)arg4 {
     if ([BMIManager anonymousSeen]) return;
     %orig;
 }
 %end
 
+// 4. View Profiles Anonymously (Xem hồ sơ ẩn danh, không gửi view record)
+%hook TTKProfileViewsVisitor
+- (void)reportProfileView {
+    if ([BMIManager viewProfilesAnonymous]) return;
+    %orig;
+}
+%end
+
+// 5. Anti Screenshot & Screen Recording Detection (Chống phát hiện chụp / quay màn hình)
 %hook AWEScreenShotTracker
 - (void)userDidTakeScreenshot:(id)arg1 {
     if ([BMIManager disableScreenshotDetection]) return;
     %orig(arg1);
 }
-- (void)trackScreenShotWithParam:(id)arg1 {
+- (void)userDidTakeScreenShot:(id)arg1 {
     if ([BMIManager disableScreenshotDetection]) return;
     %orig(arg1);
+}
+%end
+
+%hook UIScreen
+- (BOOL)isCaptured {
+    if ([BMIManager disableScreenrecordingDetection]) {
+        return NO;
+    }
+    return %orig;
+}
+%end
+
+// 6. Hide Online Activity Status (Luôn ẩn chấm xanh trực tuyến)
+%hook AWEIMActivityStatusSettingManager
+- (BOOL)recordUserActivityStatusEnabled {
+    if ([BMIManager hideActivityStatus]) {
+        return NO;
+    }
+    return %orig;
+}
+%end
+
+%hook AWEIMActivityStatusReportManager
+- (void)p_reportActivityStatusIfNeededWithParams:(id)arg1 {
+    if ([BMIManager hideActivityStatus]) return;
+    %orig;
+}
+- (void)p_reportActivityStatusWithParams:(id)arg1 {
+    if ([BMIManager hideActivityStatus]) return;
+    %orig;
+}
+- (void)p_startReportTimerIfNeeded {
+    if ([BMIManager hideActivityStatus]) return;
+    %orig;
+}
+- (void)requestReportCurrentUserActivityStatusWithType:(long long)arg1 sceneType:(long long)arg2 onCompletion:(id)arg3 {
+    if ([BMIManager hideActivityStatus]) {
+        if (arg3) {
+            void (^completionBlock)(id, id) = (void (^)(id, id))arg3;
+            completionBlock(nil, nil);
+        }
+        return;
+    }
+    %orig;
+}
+- (void)reportActivityStatusForRegularIfNeeded {
+    if ([BMIManager hideActivityStatus]) return;
+    %orig;
+}
+- (void)reportActivityStatusForColdLaunchIfNeeded {
+    if ([BMIManager hideActivityStatus]) return;
+    %orig;
+}
+%end
+
+%hook AWEIMActivityStatusView
+- (void)setHidden:(BOOL)hidden {
+    if ([BMIManager hideActivityStatus]) {
+        %orig(YES);
+        return;
+    }
+    %orig(hidden);
+}
+%end
+
+%hook TTKInboxActivityStatusView
+- (void)setHidden:(BOOL)hidden {
+    if ([BMIManager hideActivityStatus]) {
+        %orig(YES);
+        return;
+    }
+    %orig(hidden);
 }
 %end
 
@@ -1301,7 +1967,11 @@ static BOOL isAuthenticationShowed = FALSE;
 %new - (NSString *)formattedDateStringFromTimestamp:(NSTimeInterval)timestamp {
     NSDate *date = [NSDate dateWithTimeIntervalSince1970:timestamp];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    dateFormatter.dateFormat = @"dd.MM.yy"; 
+    if ([BMIManager showExactDate]) {
+        dateFormatter.dateFormat = @"dd.MM.yyyy HH:mm";
+    } else {
+        dateFormatter.dateFormat = @"dd.MM.yy";
+    }
     return [dateFormatter stringFromDate:date];
 }
 %end
@@ -1487,17 +2157,21 @@ static BOOL isAuthenticationShowed = FALSE;
 }
 %end
 
-%hook AWEPlayInteractionAuthorView
-%new - (NSString *)emojiForCountryCode:(NSString *)countryCode {
-    NSString *uppercaseCountryCode = [countryCode uppercaseString];
-    if (uppercaseCountryCode.length != 2) {
+static NSString *bm_emojiForCountryCode(NSString *countryCode) {
+    if (!countryCode || countryCode.length != 2) {
         return nil;
     }
+    NSString *uppercaseCountryCode = [countryCode uppercaseString];
     uint32_t firstLetter = [uppercaseCountryCode characterAtIndex:0] + 0x1F1E6 - 'A';
     uint32_t secondLetter = [uppercaseCountryCode characterAtIndex:1] + 0x1F1E6 - 'A';
     NSString *flagEmoji = [[NSString alloc] initWithBytes:&firstLetter length:4 encoding:NSUTF32LittleEndianStringEncoding];
     flagEmoji = [flagEmoji stringByAppendingString:[[NSString alloc] initWithBytes:&secondLetter length:4 encoding:NSUTF32LittleEndianStringEncoding]];
     return flagEmoji;
+}
+
+%hook AWEPlayInteractionAuthorView
+%new - (NSString *)emojiForCountryCode:(NSString *)countryCode {
+    return bm_emojiForCountryCode(countryCode);
 }
 
 - (void)layoutSubviews {
@@ -1529,16 +2203,6 @@ static BOOL isAuthenticationShowed = FALSE;
 %end
 
 %hook TTKProfileHeaderView
-- (id)initWithFrame:(CGRect)arg1 {
-    self = %orig;
-    if ([BMIManager profileCopy]) {
-        [self addHandleLongPress];
-    }
-    return self;
-}
-%end
-
-%hook TIKTOKProfileHeaderView
 - (id)initWithFrame:(CGRect)arg1 {
     self = %orig;
     if ([BMIManager profileCopy]) {
@@ -1589,6 +2253,74 @@ static BOOL isAuthenticationShowed = FALSE;
         self.backgroundColor = [UIColor clearColor];
         self.contentView.backgroundColor = [UIColor clearColor];
     }
+    if ([BMIManager copyCommentText]) {
+        BOOL hasGesture = NO;
+        for (UIGestureRecognizer *g in self.gestureRecognizers) {
+            if ([g.name isEqualToString:@"bm_copy_comment"]) {
+                hasGesture = YES;
+                break;
+            }
+        }
+        if (!hasGesture) {
+            UILongPressGestureRecognizer *lp = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(bm_copyCommentAction:)];
+            lp.name = @"bm_copy_comment";
+            lp.minimumPressDuration = 0.5;
+            [self addGestureRecognizer:lp];
+        }
+    }
+}
+- (void)layoutSubviews {
+    %orig;
+    if ([BMIManager colorizeCommentUsernames]) {
+        UILabel *authorLbl = nil;
+        @try {
+            authorLbl = [self valueForKey:@"authorLabel"] ?: [self valueForKey:@"userNameLabel"] ?: [self valueForKey:@"nameLabel"];
+        } @catch (id ex) {}
+        if (authorLbl && [authorLbl isKindOfClass:[UILabel class]]) {
+            authorLbl.textColor = [UIColor colorWithRed:254/255.0 green:44/255.0 blue:85/255.0 alpha:1.0];
+        }
+    }
+    if ([BMIManager enableCommentFlags]) {
+        AWECommentModel *commentModel = nil;
+        @try {
+            commentModel = [self valueForKey:@"commentModel"] ?: [self valueForKey:@"model"];
+        } @catch (id ex) {}
+        if (commentModel) {
+            NSString *region = nil;
+            @try {
+                region = [commentModel valueForKeyPath:@"author.region"] ?: [commentModel valueForKeyPath:@"author.countryCode"] ?: [commentModel valueForKey:@"region"];
+            } @catch (id ex) {}
+            if (region.length == 2) {
+                NSString *flag = bm_emojiForCountryCode(region);
+                UILabel *authorLbl = nil;
+                @try {
+                    authorLbl = [self valueForKey:@"authorLabel"] ?: [self valueForKey:@"userNameLabel"] ?: [self valueForKey:@"nameLabel"];
+                } @catch (id ex) {}
+                if (authorLbl && [authorLbl isKindOfClass:[UILabel class]] && flag.length > 0) {
+                    if (![authorLbl.text containsString:flag]) {
+                        authorLbl.text = [NSString stringWithFormat:@"%@ %@", flag, authorLbl.text ?: @""];
+                    }
+                }
+            }
+        }
+    }
+}
+%new - (void)bm_copyCommentAction:(UILongPressGestureRecognizer *)sender {
+    if (sender.state == UIGestureRecognizerStateBegan) {
+        AWECommentModel *commentModel = nil;
+        @try {
+            commentModel = [self valueForKey:@"commentModel"] ?: [self valueForKey:@"model"];
+        } @catch (id ex) {}
+        NSString *text = nil;
+        @try {
+            text = [commentModel valueForKey:@"content"] ?: [commentModel valueForKey:@"text"];
+        } @catch (id ex) {}
+        if (text.length > 0) {
+            [[UIPasteboard generalPasteboard] setString:text];
+            UIImpactFeedbackGenerator *feedback = [[UIImpactFeedbackGenerator alloc] initWithStyle:UIImpactFeedbackStyleMedium];
+            [feedback impactOccurred];
+        }
+    }
 }
 - (void)onLikeAction:(id)arg1 {
     if ([BMIManager likeCommentConfirmation]) {
@@ -1638,6 +2370,240 @@ static BOOL isAuthenticationShowed = FALSE;
 
 
 // ═══════════════════════════════════════════════════════════════
+// Live Stream Comments Stability (Khắc phục bình luận lúc hiện lúc không)
+// ═══════════════════════════════════════════════════════════════
+
+%hook GBLCommentViewContainerConfig
+- (BOOL)banDismissAnimation {
+    return YES;
+}
+- (BOOL)unlimitedDuration {
+    return YES;
+}
+%end
+
+%hook GBLCommentViewContainer
+- (BOOL)banDismissAnimation {
+    return YES;
+}
+- (void)setHidden:(BOOL)hidden {
+    %orig(NO);
+}
+- (void)setAlpha:(CGFloat)alpha {
+    if (alpha < 0.8) {
+        alpha = 1.0;
+    }
+    %orig(alpha);
+}
+%end
+
+%hook IESLiveMTCleanScreenFragment
+- (void)switchToCleanModeWithType:(unsigned long long)arg1 {
+    // Ngăn chặn chế độ tự động dọn màn hình (ẩn bình luận khi vuốt nhầm)
+    return;
+}
+- (id)cleanScreenCountDownTimer {
+    return nil;
+}
+- (void)setCleanScreenCountDownTimer:(id)arg1 {
+    // Vô hiệu hóa bộ đếm thời gian tự ẩn bình luận
+}
+%end
+
+%hook IESLiveCommentContainerFragment
+- (void)removeCommentContainerPortrait {
+    // Giữ khung bình luận luôn hiển thị ổn định trên màn hình dọc
+    return;
+}
+- (void)commentViewCancel {
+    // Ngăn chặn việc hủy / tắt khung bình luận
+    return;
+}
+%end
+
+
+// ═══════════════════════════════════════════════════════════════
+// Comment Translation to Vietnamese (Dịch toàn bộ bình luận sang Tiếng Việt)
+// ═══════════════════════════════════════════════════════════════
+
+%hook TTKCommentTranslationConfig
+- (id)initWithIsCommentAutoTranslationEnabled:(BOOL)enabled targetLanguageCode:(id)targetLang doNotTranslateLanguageCodes:(id)dntCodes {
+    if ([BMIManager autoTranslateComments]) {
+        enabled = YES;
+        targetLang = @"vi";
+        dntCodes = [NSSet set];
+    }
+    return %orig(enabled, targetLang, dntCodes);
+}
+- (BOOL)isCommentAutoTranslationEnabled {
+    if ([BMIManager autoTranslateComments]) return YES;
+    return %orig;
+}
+- (NSString *)targetLanguageCode {
+    if ([BMIManager autoTranslateComments]) return @"vi";
+    return %orig;
+}
+- (NSSet *)doNotTranslateLanguageCodes {
+    if ([BMIManager autoTranslateComments]) return [NSSet set];
+    return %orig;
+}
+- (NSArray *)sortedDoNotTranslateLanguageCodes {
+    if ([BMIManager autoTranslateComments]) return @[];
+    return %orig;
+}
+%end
+
+%hook AWECommentsTranslationController
+- (BOOL)isCommentEligibleForAutomaticTranslation:(id)comment {
+    if ([BMIManager autoTranslateComments]) return YES;
+    return %orig(comment);
+}
+- (BOOL)isTranslationButtonDisplayEnabled {
+    if ([BMIManager autoTranslateComments]) return YES;
+    return %orig;
+}
+- (BOOL)isCommentInDoNotTranslateCodes:(id)comment {
+    if ([BMIManager autoTranslateComments]) return NO;
+    return %orig(comment);
+}
+- (BOOL)isCommentTranslatable:(id)comment {
+    if ([BMIManager autoTranslateComments]) return YES;
+    return %orig(comment);
+}
+- (BOOL)shouldTranslateComment:(id)comment {
+    if ([BMIManager autoTranslateComments]) return YES;
+    return %orig(comment);
+}
+- (BOOL)_shouldTranslateCommentUsingSessionSnapshot:(id)arg1 {
+    if ([BMIManager autoTranslateComments]) return YES;
+    return %orig(arg1);
+}
+- (BOOL)isEligibleForAutomaticTranslationWithComment:(id)comment config:(id)config {
+    if ([BMIManager autoTranslateComments]) return YES;
+    return %orig(comment, config);
+}
+- (BOOL)shouldShowCommentTranslationLabel {
+    if ([BMIManager autoTranslateComments]) return YES;
+    return %orig;
+}
+%end
+
+%hook TTKTranslationSettingsManager
+- (NSString *)selectedTranslationLanguage {
+    if ([BMIManager autoTranslateComments]) return @"vi";
+    return %orig;
+}
+- (NSString *)p_selectedTranslationLanguage {
+    if ([BMIManager autoTranslateComments]) return @"vi";
+    return %orig;
+}
+- (NSString *)p_refactoredSelectedTranslationLanguage {
+    if ([BMIManager autoTranslateComments]) return @"vi";
+    return %orig;
+}
+- (NSArray *)doNotTranslateList {
+    if ([BMIManager autoTranslateComments]) return @[];
+    return %orig;
+}
+- (NSArray *)p_refactoredSelectedDoNotTranslateLanguages {
+    if ([BMIManager autoTranslateComments]) return @[];
+    return %orig;
+}
+- (NSSet *)selectedDoNotTranslateLanguages {
+    if ([BMIManager autoTranslateComments]) return [NSSet set];
+    return %orig;
+}
+%end
+
+%hook AWEGlobalTranslationManager
+- (void)_fetchTranslationForOriginalContents:(id)contents targetLanguageCode:(id)targetLang additionalParams:(id)params completion:(id)completion {
+    if ([BMIManager autoTranslateComments]) {
+        targetLang = @"vi";
+    }
+    %orig(contents, targetLang, params, completion);
+}
+- (void)_fetchTranslationForOriginalContent:(id)content targetLanguageCode:(id)targetLang additionalParams:(id)params completion:(id)completion {
+    if ([BMIManager autoTranslateComments]) {
+        targetLang = @"vi";
+    }
+    %orig(content, targetLang, params, completion);
+}
+- (void)submitOriginalContentsForTranslation:(id)contents requestingStatus:(long long)status targetLanguageCode:(id)targetLang enableTempCache:(BOOL)cache additionalParams:(id)params {
+    if ([BMIManager autoTranslateComments]) {
+        targetLang = @"vi";
+    }
+    %orig(contents, status, targetLang, cache, params);
+}
+- (void)submitOriginalContentForTranslation:(id)content requestingStatus:(long long)status targetLanguageCode:(id)targetLang additionalParams:(id)params {
+    if ([BMIManager autoTranslateComments]) {
+        targetLang = @"vi";
+    }
+    %orig(content, status, targetLang, params);
+}
+- (void)fetchTranslationForOriginalContent:(id)content targetLanguageCode:(id)targetLang additionalParams:(id)params timeout:(double)timeout completion:(id)completion {
+    if ([BMIManager autoTranslateComments]) {
+        targetLang = @"vi";
+    }
+    %orig(content, targetLang, params, timeout, completion);
+}
+- (void)fetchTranslationForContentsWithTranslationInfo:(id)info targetLanguageCode:(id)targetLang additionalParams:(id)params completion:(id)completion {
+    if ([BMIManager autoTranslateComments]) {
+        targetLang = @"vi";
+    }
+    %orig(info, targetLang, params, completion);
+}
+%end
+
+%hook C24yGlobalTranslationSettingModel
+- (BOOL)autoTranslationEnabled {
+    if ([BMIManager autoTranslateComments]) return YES;
+    return %orig;
+}
+- (NSString *)targetLanguageCode {
+    if ([BMIManager autoTranslateComments]) return @"vi";
+    return %orig;
+}
+- (NSSet *)doNotTranslateLanguages {
+    if ([BMIManager autoTranslateComments]) return [NSSet set];
+    return %orig;
+}
+%end
+
+%hook TTKCLAAlwaysTranslateCommentSettingItemViewModel
+- (BOOL)isSwitchOn {
+    if ([BMIManager autoTranslateComments]) return YES;
+    return %orig;
+}
+- (BOOL)isOn {
+    if ([BMIManager autoTranslateComments]) return YES;
+    return %orig;
+}
+%end
+
+%hook TTKCLAAutoTranslationSettingItemViewModel
+- (BOOL)isSwitchOn {
+    if ([BMIManager autoTranslateComments]) return YES;
+    return %orig;
+}
+- (BOOL)isOn {
+    if ([BMIManager autoTranslateComments]) return YES;
+    return %orig;
+}
+%end
+
+%hook TTKCLATranslationTargetLanguageSettingItemViewModel
+- (NSString *)selectedLanguageCode {
+    if ([BMIManager autoTranslateComments]) return @"vi";
+    return %orig;
+}
+- (NSString *)currentLanguageCode {
+    if ([BMIManager autoTranslateComments]) return @"vi";
+    return %orig;
+}
+%end
+
+
+// ═══════════════════════════════════════════════════════════════
 // MARK: - 9. UI Tweaks & Misc
 // ═══════════════════════════════════════════════════════════════
 
@@ -1674,6 +2640,11 @@ static BOOL isAuthenticationShowed = FALSE;
             %orig;
         };
         showConfirmation(actionBlock);
+    } else if ([BMIManager bookmarkConfirmation] && ([self.imageNameString containsString:@"collect"] || [self.imageNameString containsString:@"fav"] || [self.imageNameString containsString:@"bookmark"])) {
+        void (^actionBlock)(void) = ^{
+            %orig;
+        };
+        showConfirmation(actionBlock);
     } else {
         %orig;
     }
@@ -1686,6 +2657,25 @@ static BOOL isAuthenticationShowed = FALSE;
         return %orig;
     }
     
+    if (!self.originURL) {
+        return %orig;
+    }
+
+    NSString *urlString = [self.originURL absoluteString].lowercaseString;
+    // Tuyệt đối KHÔNG can thiệp vào các luồng xác minh danh tính, captcha, bảo mật, passport, đăng nhập OTP
+    if ([urlString containsString:@"verify"] ||
+        [urlString containsString:@"captcha"] ||
+        [urlString containsString:@"passport"] ||
+        [urlString containsString:@"security"] ||
+        [urlString containsString:@"sec_sdk"] ||
+        [urlString containsString:@"challenge"] ||
+        [urlString containsString:@"two_step"] ||
+        [urlString containsString:@"account"] ||
+        [urlString containsString:@"oauth"] ||
+        [urlString containsString:@"login"]) {
+        return %orig;
+    }
+
     NSURLComponents *components = [NSURLComponents componentsWithURL:self.originURL resolvingAgainstBaseURL:NO];
     NSString *searchParameter = @"url";
     NSString *searchValue = nil;
@@ -1697,7 +2687,15 @@ static BOOL isAuthenticationShowed = FALSE;
         }
     }
 
-    if (searchValue) {
+    if (searchValue && ([searchValue hasPrefix:@"http://"] || [searchValue hasPrefix:@"https://"])) {
+        NSString *searchValLower = searchValue.lowercaseString;
+        if ([searchValLower containsString:@"verify"] ||
+            [searchValLower containsString:@"captcha"] ||
+            [searchValLower containsString:@"passport"] ||
+            [searchValLower containsString:@"security"] ||
+            [searchValLower containsString:@"challenge"]) {
+            return %orig;
+        }
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:searchValue] options:@{} completionHandler:nil];
         [self didTapCloseButton];
     } else {
@@ -1739,6 +2737,82 @@ static BOOL isAuthenticationShowed = FALSE;
             }
         }
     }
+}
+%end
+
+%hook AWEBadgeView
+- (void)setHidden:(BOOL)hidden {
+    if ([BMIManager hideBadgeCounter]) {
+        %orig(YES);
+        return;
+    }
+    %orig(hidden);
+}
+- (void)didMoveToSuperview {
+    %orig;
+    if ([BMIManager hideBadgeCounter]) {
+        [self setHidden:YES];
+    }
+}
+%end
+
+%hook TTKUserEffectTabDataManager
+- (BOOL)p_shouldShowLikeTab {
+    if ([BMIManager hideLikedTab]) return NO;
+    return %orig;
+}
+%end
+
+%hook AWEFeedContainerViewController
+- (void)viewDidAppear:(BOOL)animated {
+    %orig;
+    static BOOL bm_switchedToFollowing = NO;
+    if (!bm_switchedToFollowing && [BMIManager startFYPInFollowing]) {
+        bm_switchedToFollowing = YES;
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            if ([self respondsToSelector:@selector(switchToFollowingTab)]) {
+                [self performSelector:@selector(switchToFollowingTab)];
+            }
+        });
+    }
+}
+%end
+
+%hook AWEAwemeBaseViewController
+- (void)slideToProfileVCWithModel:(id)arg1 referString:(id)arg2 bizScene:(id)arg3 cell:(id)arg4 {
+    if ([BMIManager disableSwipeInFYP]) return;
+    %orig;
+}
+- (void)slideToProfileVCWithModel:(id)arg1 referString:(id)arg2 bizScene:(id)arg3 cell:(id)arg4 logExtraDict:(id)arg5 {
+    if ([BMIManager disableSwipeInFYP]) return;
+    %orig;
+}
+%end
+
+%hook AWEFeedTableViewController
+- (void)slideToProfileVCWithModel:(id)arg1 referString:(id)arg2 bizScene:(id)arg3 cell:(id)arg4 {
+    if ([BMIManager disableSwipeInFYP]) return;
+    %orig;
+}
+- (void)slideToProfileVCWithModel:(id)arg1 referString:(id)arg2 bizScene:(id)arg3 cell:(id)arg4 logExtraDict:(id)arg5 {
+    if ([BMIManager disableSwipeInFYP]) return;
+    %orig;
+}
+%end
+
+%hook TTKFeedInteractionTopView
+- (void)didMoveToSuperview {
+    %orig;
+    if ([BMIManager hideTopItems]) {
+        [self setHidden:YES];
+    }
+}
+- (void)setHidden:(BOOL)hidden {
+    if ([BMIManager hideTopItems]) {
+        %orig(YES);
+        return;
+    }
+    %orig(hidden);
 }
 %end
 
@@ -1878,6 +2952,34 @@ static BOOL isAuthenticationShowed = FALSE;
 }
 %end
 
+%hook UIApplication
+- (BOOL)canOpenURL:(NSURL *)url {
+    if (!url) return %orig;
+    NSString *scheme = [[url scheme] lowercaseString];
+    if ([scheme isEqualToString:@"cydia"] || 
+        [scheme isEqualToString:@"sileo"] || 
+        [scheme isEqualToString:@"zbra"] || 
+        [scheme isEqualToString:@"filza"] || 
+        [scheme isEqualToString:@"undecimus"] ||
+        [scheme isEqualToString:@"santander"]) {
+        return NO;
+    }
+    return %orig;
+}
+%end
+
+%hook MPKitUtilityService
+- (BOOL)deviceIsJailbroken {
+    return NO;
+}
+%end
+
+%hook UIDevice
+- (BOOL)tspk_device_info_btd_isJailBroken {
+    return NO;
+}
+%end
+
 
 // ═══════════════════════════════════════════════════════════════
 // MARK: - 12. Network
@@ -1895,6 +2997,18 @@ static BOOL isAuthenticationShowed = FALSE;
             mut[@"app_language"] = @"ru";
             return mut;
         }
+    } else if ([BMIManager regionChangingEnabled]) {
+        NSDictionary *selectedRegion = [BMIManager selectedRegion];
+        if (selectedRegion && selectedRegion[@"code"]) {
+            NSString *code = [selectedRegion[@"code"] uppercaseString];
+            NSMutableDictionary *mut = [params isKindOfClass:[NSMutableDictionary class]] ? (NSMutableDictionary *)params : [params mutableCopy];
+            if (mut) {
+                mut[@"carrier_region"] = code;
+                mut[@"sys_region"] = code;
+                mut[@"region"] = code;
+                return mut;
+            }
+        }
     }
     return params;
 }
@@ -1911,6 +3025,8 @@ static BOOL isAuthenticationShowed = FALSE;
         @"/Applications/FakeCarrier.app", @"/Applications/Icy.app",
         @"/Applications/IntelliScreen.app", @"/Applications/MxTube.app",
         @"/Applications/RockApp.app", @"/Applications/SBSettings.app", @"/Applications/WinterBoard.app",
+        @"/Applications/Sileo.app", @"/Applications/Zebra.app", @"/Applications/Filza.app",
+        @"/Applications/Dopamine.app",
         @"/.cydia_no_stash", @"/.installed_unc0ver", @"/.bootstrapped_electra",
         @"/usr/libexec/cydia/firmware.sh", @"/usr/libexec/ssh-keysign", @"/usr/libexec/sftp-server",
         @"/usr/bin/ssh", @"/usr/bin/sshd", @"/usr/sbin/sshd",
@@ -1924,6 +3040,9 @@ static BOOL isAuthenticationShowed = FALSE;
         @"/private/var/tmp/cydia.log", @"/private/var/log/syslog",
         @"/private/var/cache/apt/", @"/private/var/lib/apt",
         @"/private/var/Users/", @"/private/var/stash",
+        @"/var/jb", @"/var/jb/usr/bin", @"/var/jb/usr/lib", @"/var/jb/usr/libexec",
+        @"/var/jb/Library", @"/var/jb/Library/MobileSubstrate", @"/var/jb/etc/apt",
+        @"/var/jb/etc/ssh", @"/var/jb/bin/sh", @"/var/jb/bin/bash", @"/var/binpack",
         @"/usr/lib/libjailbreak.dylib", @"/usr/lib/libz.dylib",
         @"/usr/lib/system/introspectionNSZombieEnabled",
         @"/usr/lib/dyld",
@@ -1936,5 +3055,16 @@ static BOOL isAuthenticationShowed = FALSE;
         @"/etc/apt", @"/etc/ssl/certs", @"/etc/ssl/cert.pem",
         @"/bin/sh", @"/bin/bash",
     ];
+
+    // Khắc phục triệt để lỗi Keychain Sideload (-34018 & errSecDuplicateItem) gây lặp Email Login
+    MSHookFunction(SecItemAdd, hook_SecItemAdd, (void **)&orig_SecItemAdd);
+    MSHookFunction(SecItemCopyMatching, hook_SecItemCopyMatching, (void **)&orig_SecItemCopyMatching);
+    MSHookFunction(SecItemUpdate, hook_SecItemUpdate, (void **)&orig_SecItemUpdate);
+    MSHookFunction(SecItemDelete, hook_SecItemDelete, (void **)&orig_SecItemDelete);
+
     %init;
+
+    if (%c(AWEMainFeedAnchorView) || %c(AWEPlayInteractionTakoElement) || %c(AWETakoEntranceView)) {
+        %init(LegacyFeatures);
+    }
 }

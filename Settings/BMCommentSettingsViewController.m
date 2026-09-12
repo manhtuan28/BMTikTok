@@ -45,8 +45,8 @@
         switch (indexPath.row) {
             case 0: return [self createSwitchCellWithTitle:@"Cho phép sao chép bình luận" Detail:@"Chạm giữ vào bất kỳ bình luận nào để sao chép văn bản" Key:@"copy_comment_text"];
             case 1: return [self createSwitchCellWithTitle:@"Hiển thị cờ quốc gia người bình luận" Detail:@"Gắn cờ quốc gia của tác giả bên cạnh tên người bình luận" Key:@"enable_comment_flags"];
-            case 2: return [self createSwitchCellWithTitle:@"Tự động dịch bình luận" Detail:@"Tự động chuyển ngữ các bình luận tiếng nước ngoài sang Tiếng Việt" Key:@"auto_translate_comments"];
-            case 3: return [self createSwitchCellWithTitle:@"Không chuyển hướng sang Safari" Detail:@"Mở các liên kết trong bình luận trực tiếp bằng trình duyệt trong app" Key:@"disable_safari_redirect"];
+            case 2: return [self createSwitchCellWithTitle:@"Tự động dịch sang Tiếng Việt" Detail:@"Tự động dịch toàn bộ bình luận từ mọi ngôn ngữ trên thế giới sang Tiếng Việt" Key:@"auto_translate_comments"];
+            case 3: return [self createSwitchCellWithTitle:@"Mở liên kết bằng Safari" Detail:@"Tự động mở các liên kết web bên ngoài bằng trình duyệt Safari" Key:@"disable_safari_redirect"];
         }
     }
     return [[UITableViewCell alloc] init];

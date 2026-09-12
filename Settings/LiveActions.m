@@ -6,6 +6,7 @@
 //
 
 #import "LiveActions.h"
+#import "BMConfigManager.h"
 
 @interface LiveActions () <UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, strong) NSArray *liveFuncValues;
@@ -75,6 +76,7 @@
     [[NSUserDefaults standardUserDefaults] setValue:selectedValue forKey:@"live_action"];
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"en_livefunc"];
     [[NSUserDefaults standardUserDefaults] synchronize];
+    [BMConfigManager saveSettingsToKeychain];
     
     [self.tableView reloadData];
     

@@ -19,6 +19,9 @@
 /// Khôi phục toàn bộ cài đặt từ Keychain
 + (BOOL)restoreSettingsFromKeychain;
 
+/// Đặt lại toàn bộ cài đặt về mặc định (TẮT hết toàn bộ chức năng)
++ (void)resetAllSettingsToDefault;
+
 /// Xuất toàn bộ cài đặt ra dạng Dictionary
 + (NSDictionary *)exportSettingsDictionary;
 

@@ -18,6 +18,7 @@
 #import "BMThemeSettingsViewController.h"
 #import "BMAboutViewController.h"
 #import "BMIManager.h"
+#import "BMConfigManager.h"
 
 @interface ViewController () <UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic, strong) UITableView *tableView;
@@ -93,7 +94,13 @@
 }
 
 - (void)dismissVC {
+    [BMConfigManager saveSettingsToKeychain];
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [BMConfigManager saveSettingsToKeychain];
 }
 
 - (void)regionSelected:(NSNotification *)notification {

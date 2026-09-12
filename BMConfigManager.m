@@ -57,8 +57,30 @@ static NSString *const kBMKeychainAccount = @"user_settings_backup";
         
         // Giao diện & Tùy biến
         @"oled_keyboard", @"hide_tab_bar_labels", @"hide_badge_counter",
-        @"transparent_status_bar", @"show_exact_date", @"en_livefunc", @"live_action"
+        @"transparent_status_bar", @"show_exact_date", @"en_livefunc", @"live_action",
+        @"video_like_count", @"uploaded_videos", @"en_fake", @"flex_enebaled"
     ];
+}
+
++ (void)resetAllSettingsToDefault {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    for (NSString *key in [self allConfigKeys]) {
+        [defaults setBool:NO forKey:key];
+    }
+    // Xóa các key dạng chuỗi/dict/số
+    [defaults removeObjectForKey:@"fake_follower_count"];
+    [defaults removeObjectForKey:@"fake_following_count"];
+    [defaults removeObjectForKey:@"fake_likes_count"];
+    [defaults removeObjectForKey:@"region"];
+    [defaults removeObjectForKey:@"playback_speed"];
+    [defaults removeObjectForKey:@"live_action"];
+    [defaults removeObjectForKey:@"upload_region"];
+    [defaults removeObjectForKey:@"en_fake"];
+    [defaults removeObjectForKey:@"flex_enebaled"];
+    [defaults synchronize];
+    
+    [self saveSettingsToKeychain];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"RegionSelectedNotification" object:nil];
 }
 
 + (NSDictionary *)exportSettingsDictionary {
@@ -72,7 +94,7 @@ static NSString *const kBMKeychainAccount = @"user_settings_backup";
     }
     dict[@"_meta_app"] = @"BMTikTok";
     dict[@"_meta_author"] = @"Tuancute28 (Bùi Mạnh Tuấn)";
-    dict[@"_meta_version"] = @"46.5.0";
+    dict[@"_meta_version"] = @"46.8.0";
     dict[@"_meta_timestamp"] = [NSString stringWithFormat:@"%.0f", [[NSDate date] timeIntervalSince1970]];
     return [dict copy];
 }
@@ -130,36 +152,55 @@ static NSString *const kBMKeychainAccount = @"user_settings_backup";
     return nil;
 }
 
-#pragma mark - Keychain Services
+#pragma mark - Keychain & Persistent Services
+
+static NSString *settingsBackupFilePath() {
+    NSString *docs = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject;
+    return [docs stringByAppendingPathComponent:@".bmtiktok_settings_backup.json"];
+}
 
 + (BOOL)saveSettingsToKeychain {
     NSDictionary *settings = [self exportSettingsDictionary];
+    if (!settings || settings.count == 0) return NO;
+    
     NSError *error = nil;
     NSData *data = [NSJSONSerialization dataWithJSONObject:settings options:0 error:&error];
     if (!data || error) return NO;
     
-    // Xóa item cũ nếu có
+    // 1. Lưu bản ghi NSUserDefaults Master Record
+    [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"BMTikTok_Master_Settings_Backup"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    // 2. Luôn sao lưu vào file dự phòng trong Documents
+    [data writeToFile:settingsBackupFilePath() atomically:YES];
+    
+    // 3. Lưu vào Keychain (Query tìm kiếm cơ bản, không chứa kSecAttrAccessible)
     NSDictionary *query = @{
         (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
         (__bridge id)kSecAttrService: kBMKeychainService,
         (__bridge id)kSecAttrAccount: kBMKeychainAccount
     };
-    SecItemDelete((__bridge CFDictionaryRef)query);
     
-    // Thêm item mới
-    NSDictionary *attributes = @{
-        (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
-        (__bridge id)kSecAttrService: kBMKeychainService,
-        (__bridge id)kSecAttrAccount: kBMKeychainAccount,
-        (__bridge id)kSecValueData: data,
-        (__bridge id)kSecAttrAccessible: (__bridge id)kSecAttrAccessibleAfterFirstUnlock
+    NSDictionary *attributesToUpdate = @{
+        (__bridge id)kSecValueData: data
     };
     
-    OSStatus status = SecItemAdd((__bridge CFDictionaryRef)attributes, NULL);
-    return status == errSecSuccess;
+    OSStatus status = SecItemUpdate((__bridge CFDictionaryRef)query, (__bridge CFDictionaryRef)attributesToUpdate);
+    if (status != errSecSuccess) {
+        // Xóa trước để tránh lỗi trùng lặp -25299
+        SecItemDelete((__bridge CFDictionaryRef)query);
+        
+        NSMutableDictionary *newAttributes = [query mutableCopy];
+        newAttributes[(__bridge id)kSecValueData] = data;
+        newAttributes[(__bridge id)kSecAttrAccessible] = (__bridge id)kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly;
+        status = SecItemAdd((__bridge CFDictionaryRef)newAttributes, NULL);
+    }
+    
+    return YES;
 }
 
 + (BOOL)restoreSettingsFromKeychain {
+    // 1. Thử lấy từ Keychain
     NSDictionary *query = @{
         (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
         (__bridge id)kSecAttrService: kBMKeychainService,
@@ -178,6 +219,30 @@ static NSString *const kBMKeychainAccount = @"user_settings_backup";
             return [self importSettingsFromDictionary:(NSDictionary *)obj];
         }
     }
+    
+    // 2. Fallback: Khôi phục từ file backup nếu Keychain chưa có hoặc bị hạn chế trên thiết bị
+    NSString *backupPath = settingsBackupFilePath();
+    if ([[NSFileManager defaultManager] fileExistsAtPath:backupPath]) {
+        NSData *backupData = [NSData dataWithContentsOfFile:backupPath];
+        if (backupData) {
+            NSError *error = nil;
+            id obj = [NSJSONSerialization JSONObjectWithData:backupData options:0 error:&error];
+            if ([obj isKindOfClass:[NSDictionary class]] && !error) {
+                return [self importSettingsFromDictionary:(NSDictionary *)obj];
+            }
+        }
+    }
+    
+    // 3. Fallback: Khôi phục từ NSUserDefaults Master Record
+    NSData *masterData = [[NSUserDefaults standardUserDefaults] objectForKey:@"BMTikTok_Master_Settings_Backup"];
+    if (masterData) {
+        NSError *error = nil;
+        id obj = [NSJSONSerialization JSONObjectWithData:masterData options:0 error:&error];
+        if ([obj isKindOfClass:[NSDictionary class]] && !error) {
+            return [self importSettingsFromDictionary:(NSDictionary *)obj];
+        }
+    }
+    
     return NO;
 }
 

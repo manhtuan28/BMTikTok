@@ -43,6 +43,11 @@
 @interface AWECommentListViewController: UIViewController
 @end 
 
+@interface AWEPlayInteractionViewController : UIViewController
+- (void)setPureMode:(BOOL)pureMode animated:(BOOL)animated;
+- (void)hideAllElements:(BOOL)hidden exceptArray:(NSArray *)except;
+@end 
+
 @interface AWEUserNameLabel: UILabel
 - (void)addVerifiedIcon:(BOOL)arg1;
 @end
@@ -404,6 +409,156 @@
 
 @interface FBSDKAppEventsUtility: NSObject
 + (bool)isDebugBuild;
+@end
+
+@interface MPKitUtilityService: NSObject
+- (BOOL)deviceIsJailbroken;
+@end
+
+// MARK: - Live Stream Comments Stability
+@interface GBLCommentViewContainerConfig : NSObject
+- (BOOL)banDismissAnimation;
+- (BOOL)unlimitedDuration;
+@end
+
+@interface GBLCommentViewContainer : UIView
+- (BOOL)banDismissAnimation;
+@end
+
+@interface IESLiveMTCleanScreenFragment : NSObject
+- (void)switchToCleanModeWithType:(unsigned long long)arg1;
+- (id)cleanScreenCountDownTimer;
+- (void)setCleanScreenCountDownTimer:(id)arg1;
+@end
+
+@interface IESLiveCommentContainerFragment : NSObject
+- (void)removeCommentContainerPortrait;
+- (void)commentViewCancel;
+@end
+
+// MARK: - Ghost Mode & Privacy Interfaces
+@interface TTKStoryNetworkService : NSObject
++ (void)reportStoryViewedWithStoryID:(id)storyID uid:(id)uid unlocked:(BOOL)unlocked completion:(id)completion;
++ (void)reportStoryViewedWithStoryID:(id)storyID uid:(id)uid completion:(id)completion;
++ (void)reportRevealStorySessionWithType:(long long)type reportTime:(id)time completion:(id)completion;
+@end
+
+@interface TTKSkylightStoryDataController : NSObject
+- (void)_reportStoryRead:(id)arg1 authorID:(id)arg2 unlocked:(BOOL)arg3 retryCnt:(long long)arg4;
+@end
+
+@interface AWEIMInputStatusHandler : NSObject
+- (void)sendInputStatusWithConversationID:(id)arg1 inputStatus:(long long)arg2;
+- (void)sendInputStatusWithConversationID:(id)arg1;
+@end
+
+@interface TIMMessageSender : NSObject
+- (void)sendMessage:(id)msg conversationType:(long long)type conversationShortID:(long long)shortID conversationID:(id)cid inInbox:(int)inbox clientExt:(id)ext forceUpdateShortID:(BOOL)force sendMediaList:(id)media bizTransientExtra:(id)extra source:(id)src;
+- (void)sendInputStatusMessageWithStatus:(long long)arg1 extra:(id)arg2 conversationType:(long long)arg3 conversationShortID:(long long)arg4 conversationID:(id)arg5 inInbox:(int)inbox;
+- (void)sendInputStatusMessageWithInputStatus:(long long)arg1 conversationID:(id)arg2 extra:(id)arg3 completion:(id)arg4;
+- (void)markConversationAsRead:(id)arg1;
+- (void)markConversationAsRead:(id)arg1 tillIndex:(long long)arg2 badgeCount:(long long)arg3;
+@end
+
+@interface TTKProfileViewsVisitor : NSObject
+- (void)reportProfileView;
+@end
+
+@interface AWEIMActivityStatusSettingManager : NSObject
+- (BOOL)recordUserActivityStatusEnabled;
+@end
+
+@interface AWEIMActivityStatusReportManager : NSObject
+- (void)p_reportActivityStatusIfNeededWithParams:(id)arg1;
+- (void)p_reportActivityStatusWithParams:(id)arg1;
+- (void)p_startReportTimerIfNeeded;
+- (void)requestReportCurrentUserActivityStatusWithType:(long long)arg1 sceneType:(long long)arg2 onCompletion:(id)arg3;
+- (void)reportActivityStatusForRegularIfNeeded;
+- (void)reportActivityStatusForColdLaunchIfNeeded;
+@end
+
+@interface AWEIMActivityStatusView : UIView
+@end
+
+@interface TTKInboxActivityStatusView : UIView
+@end
+
+// MARK: - Comment Translation Interfaces
+@interface TTKCommentTranslationConfig : NSObject
+- (id)initWithIsCommentAutoTranslationEnabled:(BOOL)enabled targetLanguageCode:(id)targetLang doNotTranslateLanguageCodes:(id)dntCodes;
+- (BOOL)isCommentAutoTranslationEnabled;
+- (NSString *)targetLanguageCode;
+- (NSSet *)doNotTranslateLanguageCodes;
+- (NSArray *)sortedDoNotTranslateLanguageCodes;
+@end
+
+@interface AWECommentsTranslationController : NSObject
+- (BOOL)isCommentEligibleForAutomaticTranslation:(id)comment;
+- (BOOL)isTranslationButtonDisplayEnabled;
+- (BOOL)isCommentInDoNotTranslateCodes:(id)comment;
+- (BOOL)isCommentTranslatable:(id)comment;
+- (BOOL)shouldTranslateComment:(id)comment;
+- (BOOL)_shouldTranslateCommentUsingSessionSnapshot:(id)arg1;
+- (BOOL)isEligibleForAutomaticTranslationWithComment:(id)comment config:(id)config;
+- (BOOL)shouldShowCommentTranslationLabel;
+@end
+
+@interface TTKTranslationSettingsManager : NSObject
+- (NSString *)selectedTranslationLanguage;
+- (NSString *)p_selectedTranslationLanguage;
+- (NSString *)p_refactoredSelectedTranslationLanguage;
+- (NSArray *)doNotTranslateList;
+- (NSArray *)p_refactoredSelectedDoNotTranslateLanguages;
+- (NSSet *)selectedDoNotTranslateLanguages;
+@end
+
+@interface TTKCLAAutoTranslationSettingItemViewModel : NSObject
+- (BOOL)isSwitchOn;
+- (BOOL)isOn;
+@end
+
+@interface AWEGlobalTranslationManager : NSObject
+- (void)_fetchTranslationForOriginalContents:(id)contents targetLanguageCode:(id)targetLang additionalParams:(id)params completion:(id)completion;
+- (void)_fetchTranslationForOriginalContent:(id)content targetLanguageCode:(id)targetLang additionalParams:(id)params completion:(id)completion;
+- (void)submitOriginalContentsForTranslation:(id)contents requestingStatus:(long long)status targetLanguageCode:(id)targetLang enableTempCache:(BOOL)cache additionalParams:(id)params;
+- (void)submitOriginalContentForTranslation:(id)content requestingStatus:(long long)status targetLanguageCode:(id)targetLang additionalParams:(id)params;
+- (void)fetchTranslationForOriginalContent:(id)content targetLanguageCode:(id)targetLang additionalParams:(id)params timeout:(double)timeout completion:(id)completion;
+- (void)fetchTranslationForContentsWithTranslationInfo:(id)info targetLanguageCode:(id)targetLang additionalParams:(id)params completion:(id)completion;
+@end
+
+@interface C24yGlobalTranslationSettingModel : NSObject
+- (BOOL)autoTranslationEnabled;
+- (NSString *)targetLanguageCode;
+- (NSSet *)doNotTranslateLanguages;
+@end
+
+@interface TTKCLAAlwaysTranslateCommentSettingItemViewModel : NSObject
+- (BOOL)isSwitchOn;
+- (BOOL)isOn;
+@end
+
+@interface TTKCLATranslationTargetLanguageSettingItemViewModel : NSObject
+- (NSString *)selectedLanguageCode;
+- (NSString *)currentLanguageCode;
+@end
+
+@interface AWEBadgeView : UIView
+@end
+
+@interface TTKUserEffectTabDataManager : NSObject
+- (BOOL)p_shouldShowLikeTab;
+@end
+
+@interface AWEFeedContainerViewController : UIViewController
+- (void)switchToFollowingTab;
+@end
+
+@interface AWEFeedTableViewController : UIViewController
+- (void)slideToProfileVCWithModel:(id)arg1 referString:(id)arg2 bizScene:(id)arg3 cell:(id)arg4;
+- (void)slideToProfileVCWithModel:(id)arg1 referString:(id)arg2 bizScene:(id)arg3 cell:(id)arg4 logExtraDict:(id)arg5;
+@end
+
+@interface TTKFeedInteractionTopView : UIView
 @end
 
 static inline UIViewController * _Nullable topMostController() {

@@ -198,7 +198,12 @@ def repackage_ipa(input_ipa, dylib_path, bundle_path, output_ipa):
     print(f"[*] Đang chèn load dylib vào file thực thi: {main_executable}")
     inject_load_dylib(main_executable, "@rpath/BMTikTok.dylib")
     
-    # 7. Kiểm tra MusicallyCore.framework nếu có
+    # 7. Kiểm tra TikTokCore.framework (TikTok 46.8.0+) hoặc MusicallyCore.framework nếu có
+    tiktok_core = os.path.join(frameworks_dir, "TikTokCore.framework", "TikTokCore")
+    if os.path.exists(tiktok_core):
+        print(f"[*] Phát hiện TikTokCore.framework (TikTok 46.8.0+), đang chèn load dylib...")
+        inject_load_dylib(tiktok_core, "@rpath/BMTikTok.dylib")
+
     musically_core = os.path.join(frameworks_dir, "MusicallyCore.framework", "MusicallyCore")
     if os.path.exists(musically_core):
         print(f"[*] Phát hiện MusicallyCore.framework, đang chèn load dylib...")

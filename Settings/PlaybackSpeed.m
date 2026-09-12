@@ -6,6 +6,7 @@
 //
 
 #import "PlaybackSpeed.h"
+#import "BMConfigManager.h"
 
 @interface PlaybackSpeed () <UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, strong) UITableView *staticTable;
@@ -73,6 +74,7 @@
     [[NSUserDefaults standardUserDefaults] setValue:selectedSpeed forKey:@"playback_speed"];
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"playback_en"];
     [[NSUserDefaults standardUserDefaults] synchronize];
+    [BMConfigManager saveSettingsToKeychain];
     
     [self.staticTable reloadData];
     

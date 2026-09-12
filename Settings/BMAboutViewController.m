@@ -249,14 +249,11 @@
         }
     } else if (indexPath.section == 3) {
         UIAlertController *confirm = [UIAlertController alertControllerWithTitle:@"Khôi phục cài đặt gốc"
-                                                                         message:@"Bạn có chắc chắn muốn đặt lại tất cả các tùy chọn BMTikTok về mặc định?"
+                                                                         message:@"Bạn có chắc chắn muốn đặt lại tất cả các tùy chọn BMTikTok về mặc định (TẮT toàn bộ chức năng)?"
                                                                   preferredStyle:UIAlertControllerStyleActionSheet];
         [confirm addAction:[UIAlertAction actionWithTitle:@"Đặt lại ngay" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
-            for (NSString *k in [BMConfigManager allConfigKeys]) {
-                [[NSUserDefaults standardUserDefaults] removeObjectForKey:k];
-            }
-            [[NSUserDefaults standardUserDefaults] synchronize];
-            [self showAlertWithTitle:@"Thành công" message:@"Đã đặt lại toàn bộ cài đặt BMTikTok về mặc định."];
+            [BMConfigManager resetAllSettingsToDefault];
+            [self showAlertWithTitle:@"Thành công" message:@"Đã đặt lại toàn bộ cài đặt BMTikTok về mặc định (Toàn bộ tính năng đã được TẮT)."];
         }]];
         [confirm addAction:[UIAlertAction actionWithTitle:@"Hủy" style:UIAlertActionStyleCancel handler:nil]];
         [self presentViewController:confirm animated:YES completion:nil];

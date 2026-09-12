@@ -6,6 +6,7 @@
 //
 
 #import "BMProfileSettingsViewController.h"
+#import "BMConfigManager.h"
 
 @implementation BMProfileSettingsViewController
 
@@ -125,6 +126,7 @@
             [[NSUserDefaults standardUserDefaults] setBool:NO forKey:enableKey];
         }
         [[NSUserDefaults standardUserDefaults] synchronize];
+        [BMConfigManager saveSettingsToKeychain];
         [self.tableView reloadData];
     }];
     
