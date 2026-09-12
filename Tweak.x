@@ -59,6 +59,9 @@ static OSStatus hook_SecItemAdd(CFDictionaryRef attributes, CFTypeRef *result) {
         }
         status = orig_SecItemAdd((__bridge CFDictionaryRef)clean, result);
     }
+    NSString *account = clean[(__bridge id)kSecAttrAccount];
+    NSString *service = clean[(__bridge id)kSecAttrService];
+    [BMLogger log:@"[KEYCHAIN] SecItemAdd -> status: %d | account: %@ | service: %@", (int)status, account ?: @"none", service ?: @"none"];
     return status;
 }
 
@@ -66,10 +69,16 @@ static OSStatus hook_SecItemCopyMatching(CFDictionaryRef query, CFTypeRef *resul
     if (!query) return errSecParam;
     NSMutableDictionary *clean = BMCleanKeychainQuery(query);
     [clean removeObjectForKey:(__bridge id)kSecAttrAccessible];
+    OSStatus status = errSecItemNotFound;
     if (orig_SecItemCopyMatching) {
-        return orig_SecItemCopyMatching((__bridge CFDictionaryRef)clean, result);
+        status = orig_SecItemCopyMatching((__bridge CFDictionaryRef)clean, result);
     }
-    return errSecItemNotFound;
+    NSString *account = clean[(__bridge id)kSecAttrAccount];
+    NSString *service = clean[(__bridge id)kSecAttrService];
+    if (status != errSecSuccess && status != errSecItemNotFound) {
+        [BMLogger log:@"[KEYCHAIN] SecItemCopyMatching -> status: %d | account: %@ | service: %@", (int)status, account ?: @"none", service ?: @"none"];
+    }
+    return status;
 }
 
 static OSStatus hook_SecItemUpdate(CFDictionaryRef query, CFDictionaryRef attributesToUpdate) {
@@ -3116,6 +3125,29 @@ static NSString *bm_emojiForCountryCode(NSString *countryCode) {
     }
     return params;
 }
+
+- (id)requestForJSONWithResponse:(id)url
+                          params:(id)params
+                          method:(id)method
+                needCommonParams:(BOOL)needCommonParams
+                        callback:(void (^)(NSError *error, id jsonObj, id response))callback {
+    NSString *urlStr = [NSString stringWithFormat:@"%@", url];
+    void (^wrappedCallback)(NSError *error, id jsonObj, id response) = ^(NSError *error, id jsonObj, id response) {
+        NSInteger code = 0;
+        if ([response respondsToSelector:@selector(statusCode)]) {
+            code = (NSInteger)[response statusCode];
+        }
+        [BMLogger logNetworkURL:urlStr
+                         method:method ?: @"POST"
+                        headers:nil
+                         params:params
+                     statusCode:code
+                   responseBody:jsonObj
+                          error:error];
+        if (callback) callback(error, jsonObj, response);
+    };
+    return %orig(url, params, method, needCommonParams, wrappedCallback);
+}
 %end
 
 %hook AWEPassportNetworkManager
@@ -3126,6 +3158,44 @@ static NSString *bm_emojiForCountryCode(NSString *countryCode) {
     params[@"app_name"] = @"musical_ly";
     params[@"channel"] = @"App Store";
     return params;
+}
+
+- (id)processWithURL:(id)url originalParams:(id)params response:(id)response rawData:(id)rawData mappingError:(id)error completionBlock:(id)block {
+    NSInteger code = 0;
+    if ([response respondsToSelector:@selector(statusCode)]) {
+        code = (NSInteger)[response statusCode];
+    }
+    [BMLogger logNetworkURL:[NSString stringWithFormat:@"%@", url ?: @"passport_url"]
+                     method:@"POST"
+                    headers:nil
+                     params:params
+                 statusCode:code
+               responseBody:rawData
+                      error:error];
+    return %orig;
+}
+
+- (void)_monitorNetworking:(id)url parameters:(id)params error:(id)error response:(id)response {
+    %orig;
+    NSInteger code = 0;
+    if ([response respondsToSelector:@selector(statusCode)]) {
+        code = (NSInteger)[response statusCode];
+    }
+    [BMLogger logNetworkURL:[NSString stringWithFormat:@"%@", url ?: @"monitor_url"]
+                     method:@"POST"
+                    headers:nil
+                     params:params
+                 statusCode:code
+               responseBody:nil
+                      error:error];
+}
+
+- (id)transferJSON:(id)json modelClass:(Class)modelClass error:(NSError **)error {
+    id result = %orig;
+    if (error && *error) {
+        [BMLogger log:@"[PASSPORT-MODEL-ERR] transferJSON class: %@ | error: %@", NSStringFromClass(modelClass), *error];
+    }
+    return result;
 }
 %end
 
@@ -3171,6 +3241,7 @@ static NSString *bm_emojiForCountryCode(NSString *countryCode) {
 %hook UIAlertController
 - (void)viewWillAppear:(BOOL)animated {
     %orig;
+    [BMLogger log:@"[UI-ALERT] Title: '%@' | Message: '%@'", self.title, self.message];
     NSString *msg = self.message;
     if (msg && ([msg containsString:@"quá thường xuyên"] || 
                 [msg containsString:@"too frequently"] || 
@@ -3193,6 +3264,18 @@ static NSString *bm_emojiForCountryCode(NSString *countryCode) {
             [self addAction:resetAction];
         }
     }
+}
+%end
+
+%hook UIViewController
+- (void)presentViewController:(UIViewController *)viewControllerToPresent animated:(BOOL)flag completion:(void (^)(void))completion {
+    if (viewControllerToPresent) {
+        NSString *clsName = NSStringFromClass([viewControllerToPresent class]);
+        if ([clsName containsString:@"Passport"] || [clsName containsString:@"Login"] || [clsName containsString:@"Verify"] || [clsName containsString:@"Alert"] || [clsName containsString:@"Auth"]) {
+            [BMLogger log:@"[UI-SCREEN] Đang hiển thị màn hình: %@", clsName];
+        }
+    }
+    %orig;
 }
 %end
 

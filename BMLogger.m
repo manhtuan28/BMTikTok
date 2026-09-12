@@ -65,14 +65,122 @@ static NSDateFormatter *gDateFormatter = nil;
     
     [self log:@"[INIT] BMLogger đã khởi động thành công. File log: %@", path];
     
-    // Đăng ký nhận thông báo mạng từ FLEX để lưu log request/response
+    // Đăng ký nhận thông báo mạng từ ByteDance TTNetworkManager & FLEX
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(handleFLEXNetworkTransaction:)
                                                      name:@"FLEXNetworkRecorderTransactionUpdatedNotification"
                                                    object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(handleTTNetworkFinishNotification:)
+                                                     name:@"kTTNetworkManagerMonitorFinishNotification"
+                                                   object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(handleTTNetworkStartNotification:)
+                                                     name:@"kTTNetworkManagerMonitorStartNotification"
+                                                   object:nil];
     });
+}
+
++ (void)handleTTNetworkStartNotification:(NSNotification *)note {
+    NSDictionary *userInfo = note.userInfo;
+    if (![userInfo isKindOfClass:[NSDictionary class]]) return;
+    id request = userInfo[@"kTTNetworkManagerMonitorRequestKey"];
+    if (!request) return;
+    
+    NSString *url = nil;
+    NSString *method = nil;
+    @try {
+        if ([request respondsToSelector:@selector(URL)]) {
+            url = [[request performSelector:@selector(URL)] absoluteString];
+        } else if ([request valueForKey:@"URL"]) {
+            url = [[request valueForKey:@"URL"] absoluteString];
+        }
+        if ([request respondsToSelector:@selector(HTTPMethod)]) {
+            method = [request performSelector:@selector(HTTPMethod)];
+        } else if ([request valueForKey:@"HTTPMethod"]) {
+            method = [request valueForKey:@"HTTPMethod"];
+        }
+    } @catch (NSException *e) {}
+    
+    if (url) {
+        NSString *lower = [url lowercaseString];
+        if ([lower containsString:@"passport"] || [lower containsString:@"login"] || [lower containsString:@"auth"] || [lower containsString:@"device_register"]) {
+            [self log:@"[TTNET-START] %@ %@", method ?: @"POST", url];
+        }
+    }
+}
+
++ (void)handleTTNetworkFinishNotification:(NSNotification *)note {
+    NSDictionary *userInfo = note.userInfo;
+    if (![userInfo isKindOfClass:[NSDictionary class]]) return;
+    
+    id request = userInfo[@"kTTNetworkManagerMonitorRequestKey"];
+    id response = userInfo[@"kTTNetworkManagerMonitorResponseKey"];
+    id responseData = userInfo[@"kTTNetworkManagerMonitorResponseDataKey"];
+    id error = userInfo[@"kTTNetworkManagerMonitorErrorKey"];
+    
+    NSString *url = nil;
+    NSString *method = nil;
+    NSDictionary *headers = nil;
+    id body = nil;
+    
+    if (request) {
+        @try {
+            if ([request respondsToSelector:@selector(URL)]) {
+                url = [[request performSelector:@selector(URL)] absoluteString];
+            } else if ([request valueForKey:@"URL"]) {
+                url = [[request valueForKey:@"URL"] absoluteString];
+            }
+            if ([request respondsToSelector:@selector(HTTPMethod)]) {
+                method = [request performSelector:@selector(HTTPMethod)];
+            } else if ([request valueForKey:@"HTTPMethod"]) {
+                method = [request valueForKey:@"HTTPMethod"];
+            }
+            if ([request respondsToSelector:@selector(allHTTPHeaderFields)]) {
+                headers = [request performSelector:@selector(allHTTPHeaderFields)];
+            }
+            if ([request respondsToSelector:@selector(HTTPBody)]) {
+                body = [request performSelector:@selector(HTTPBody)];
+            }
+        } @catch (NSException *e) {}
+    }
+    
+    NSInteger statusCode = 0;
+    if (response) {
+        @try {
+            if ([response respondsToSelector:@selector(statusCode)]) {
+                statusCode = (NSInteger)[response performSelector:@selector(statusCode)];
+            }
+        } @catch (NSException *e) {}
+    }
+    
+    if (!url) url = [NSString stringWithFormat:@"%@", request ?: @"unknown_request"];
+    
+    NSString *lowerURL = [url lowercaseString];
+    BOOL isCritical = [lowerURL containsString:@"passport"] ||
+                      [lowerURL containsString:@"login"] ||
+                      [lowerURL containsString:@"auth"] ||
+                      [lowerURL containsString:@"token"] ||
+                      [lowerURL containsString:@"code"] ||
+                      [lowerURL containsString:@"device_register"] ||
+                      [lowerURL containsString:@"risk"] ||
+                      [lowerURL containsString:@"user/info"] ||
+                      [lowerURL containsString:@"sec_uid"] ||
+                      [lowerURL containsString:@"app_log"];
+                      
+    if (isCritical || statusCode >= 400 || error) {
+        [self logNetworkURL:url
+                     method:method ?: @"POST"
+                    headers:headers
+                     params:body
+                 statusCode:statusCode
+               responseBody:responseData
+                      error:error];
+    } else {
+        [self log:@"[TTNET] %ld %@ %@", (long)statusCode, method ?: @"GET", url];
+    }
 }
 
 + (void)handleFLEXNetworkTransaction:(NSNotification *)note {
