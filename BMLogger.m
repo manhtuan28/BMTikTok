@@ -7,6 +7,7 @@
 
 #import "BMLogger.h"
 #import <sys/utsname.h>
+#import <os/log.h>
 
 static NSFileHandle *gLogFileHandle = nil;
 static NSLock *gLogLock = nil;
@@ -264,7 +265,8 @@ static NSDateFormatter *gDateFormatter = nil;
     NSString *timestamp = [gDateFormatter stringFromDate:[NSDate date]];
     NSString *logLine = [NSString stringWithFormat:@"[%@] %@\n", timestamp, msg];
     
-    NSLog(@"[BMTikTok] %@", msg);
+    os_log(OS_LOG_DEFAULT, "[BMTikTok] %{public}s", [msg UTF8String]);
+    printf("[BMTikTok] %s\n", [msg UTF8String]);
     
     [gLogLock lock];
     if (gLogFileHandle) {

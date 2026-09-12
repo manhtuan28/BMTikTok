@@ -250,11 +250,53 @@ static NSString *settingsBackupFilePath() {
 
 #pragma mark - Login Fix & Device ID Reset
 
++ (NSString *)persistentDeviceID {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *did = [defaults stringForKey:@"bmtiktok_persistent_device_id"];
+    if (!did || did.length < 10 || [did isEqualToString:@"0"] || [did isEqualToString:@"unknown"]) {
+        uint64_t base = 7410000000000000000ULL;
+        uint64_t r1 = (uint64_t)arc4random();
+        uint64_t r2 = (uint64_t)arc4random();
+        uint64_t didNum = base + ((r1 * 1000000000ULL + r2) % 80000000000000000ULL);
+        did = [NSString stringWithFormat:@"%llu", didNum];
+        [defaults setObject:did forKey:@"bmtiktok_persistent_device_id"];
+        [defaults setObject:did forKey:@"kDeviceIDStorageKey"];
+        [defaults setObject:did forKey:@"tt_device_id"];
+        [defaults setObject:did forKey:@"did"];
+        [defaults setObject:did forKey:@"com.ss.iphone.ugc.Awe.device_id"];
+        [defaults synchronize];
+        [BMLogger log:@"[DEVICE-ID] Đã tạo Device ID cố định mới: %@", did];
+    }
+    return did;
+}
+
++ (NSString *)persistentInstallID {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *iid = [defaults stringForKey:@"bmtiktok_persistent_install_id"];
+    if (!iid || iid.length < 10 || [iid isEqualToString:@"0"] || [iid isEqualToString:@"unknown"]) {
+        uint64_t base = 7410000000000000000ULL;
+        uint64_t r1 = (uint64_t)arc4random();
+        uint64_t r2 = (uint64_t)arc4random();
+        uint64_t iidNum = base + ((r1 * 1000000000ULL + r2) % 80000000000000000ULL);
+        iid = [NSString stringWithFormat:@"%llu", iidNum];
+        [defaults setObject:iid forKey:@"bmtiktok_persistent_install_id"];
+        [defaults setObject:iid forKey:@"kInstallIDStorageKey"];
+        [defaults setObject:iid forKey:@"tt_install_id"];
+        [defaults setObject:iid forKey:@"iid"];
+        [defaults setObject:iid forKey:@"com.ss.iphone.ugc.Awe.install_id"];
+        [defaults synchronize];
+        [BMLogger log:@"[DEVICE-ID] Đã tạo Install ID cố định mới: %@", iid];
+    }
+    return iid;
+}
+
 + (BOOL)fixLoginRateLimitAndResetDeviceID {
     [BMLogger log:@"[DEVICE-RESET] Bắt đầu quá trình xóa cache Device ID & làm mới thiết bị..."];
     // 1. Xóa các khóa lưu cache Device ID / Install ID trong NSUserDefaults
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSArray *keysToRemove = @[
+        @"bmtiktok_persistent_device_id",
+        @"bmtiktok_persistent_install_id",
         @"kInstallIDStorageKey",
         @"kDeviceIDStorageKey",
         @"kClientDIDStorageKey",
@@ -284,6 +326,11 @@ static NSString *settingsBackupFilePath() {
     [defaults setBool:YES forKey:@"kTTResetedInstallID"];
     [defaults setBool:YES forKey:@"kTTResetNewUser"];
     [defaults synchronize];
+    
+    // Tạo ngay cặp Device ID và Install ID mới
+    NSString *newDid = [self persistentDeviceID];
+    NSString *newIid = [self persistentInstallID];
+    [BMLogger log:@"[DEVICE-RESET] Đã sinh cặp ID mới: DID=%@ | IID=%@", newDid, newIid];
     
     // 2. Xóa các tệp plist lưu cache ID thiết bị trong sandbox ứng dụng
     NSFileManager *fm = [NSFileManager defaultManager];

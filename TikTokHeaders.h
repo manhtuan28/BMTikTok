@@ -430,6 +430,19 @@
 + (bool)isJailBroken;
 @end
 
+@interface TTInstallIDManager: NSObject
++ (id)sharedManager;
++ (id)defaultManager;
+- (id)deviceID;
+- (id)installID;
+- (id)clientDID;
+@end
+
+@interface TTInstallService: NSObject
+- (id)deviceID;
+- (id)installID;
+@end
+
 @interface AppsFlyerUtils: NSObject
 + (bool)isJailbrokenWithSkipAdvancedJailbreakValidation:(bool)arg2;
 @end

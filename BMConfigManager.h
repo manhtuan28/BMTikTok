@@ -40,4 +40,10 @@
 /// Sửa lỗi đăng nhập "Bạn đã truy cập dịch vụ của chúng tôi quá thường xuyên" bằng cách làm mới Device ID & Install ID
 + (BOOL)fixLoginRateLimitAndResetDeviceID;
 
+/// Lấy hoặc sinh mới Device ID hợp lệ (19 chữ số)
++ (NSString *)persistentDeviceID;
+
+/// Lấy hoặc sinh mới Install ID hợp lệ (19 chữ số)
++ (NSString *)persistentInstallID;
+
 @end

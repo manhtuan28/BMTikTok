@@ -409,17 +409,11 @@ static BOOL isAuthenticationShowed = FALSE;
         if ([self.container respondsToSelector:@selector(parentViewController)]) {
             parentVC = [self.container parentViewController];
         }
-        if ([parentVC respondsToSelector:@selector(setPureMode:animated:)]) {
-            [((id)parentVC) setPureMode:YES animated:NO];
-        }
         id interCtrl = nil;
         if ([parentVC respondsToSelector:@selector(interactionController)]) {
             interCtrl = [((id)parentVC) interactionController];
         }
         if (interCtrl) {
-            if ([interCtrl respondsToSelector:@selector(setPureMode:animated:)]) {
-                [((id)interCtrl) setPureMode:YES animated:NO];
-            }
             if ([interCtrl respondsToSelector:@selector(hideAllElements:exceptArray:)]) {
                 [((id)interCtrl) hideAllElements:YES exceptArray:nil];
             }
@@ -454,9 +448,6 @@ static BOOL isAuthenticationShowed = FALSE;
 - (void)viewWillAppear:(BOOL)animated {
     %orig;
     if (gPureModeActive) {
-        if ([self respondsToSelector:@selector(setPureMode:animated:)]) {
-            [self setPureMode:YES animated:NO];
-        }
         if ([self respondsToSelector:@selector(hideAllElements:exceptArray:)]) {
             [self hideAllElements:YES exceptArray:nil];
         }
@@ -471,9 +462,6 @@ static BOOL isAuthenticationShowed = FALSE;
 - (void)viewDidAppear:(BOOL)animated {
     %orig;
     if (gPureModeActive) {
-        if ([self respondsToSelector:@selector(setPureMode:animated:)]) {
-            [self setPureMode:YES animated:NO];
-        }
         if ([self respondsToSelector:@selector(hideAllElements:exceptArray:)]) {
             [self hideAllElements:YES exceptArray:nil];
         }
@@ -521,69 +509,6 @@ static BOOL isAuthenticationShowed = FALSE;
         return;
     }
     %orig;
-}
-
-- (void)setPureMode:(BOOL)arg1 animated:(BOOL)arg2 {
-    if (gPureModeActive) {
-        %orig(YES, NO);
-        return;
-    }
-    %orig;
-}
-%end
-
-%hook AWEAwemeBaseViewController
-- (void)setPureMode:(BOOL)arg1 animated:(BOOL)arg2 {
-    if (gPureModeActive) {
-        %orig(YES, NO);
-        return;
-    }
-    %orig;
-}
-
-- (void)setPureMode:(BOOL)arg1 animation:(BOOL)arg2 {
-    if (gPureModeActive) {
-        %orig(YES, NO);
-        return;
-    }
-    %orig;
-}
-
-- (void)setPureMode:(BOOL)arg1 animateDuration:(NSTimeInterval)arg2 {
-    if (gPureModeActive) {
-        %orig(YES, 0.0);
-        return;
-    }
-    %orig;
-}
-
-- (BOOL)pureMode {
-    if (gPureModeActive) return YES;
-    return %orig;
-}
-
-- (BOOL)isInPureMode {
-    if (gPureModeActive) return YES;
-    return %orig;
-}
-
-- (BOOL)isPureMode {
-    if (gPureModeActive) return YES;
-    return %orig;
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-    %orig;
-    if (gPureModeActive) {
-        [self setPureMode:YES animated:NO];
-    }
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    %orig;
-    if (gPureModeActive) {
-        [self setPureMode:YES animated:NO];
-    }
 }
 %end
 
@@ -1028,20 +953,11 @@ static BOOL isAuthenticationShowed = FALSE;
     }
     
     if (rootVC) {
-        if ([rootVC respondsToSelector:@selector(setPureMode:animated:)]) {
-            [((id)rootVC) setPureMode:hide animated:animated];
-        }
-        if ([rootVC respondsToSelector:@selector(setNeedsSetPureMode:)]) {
-            [((id)rootVC) setNeedsSetPureMode:hide];
-        }
         id interactionController = nil;
         if ([rootVC respondsToSelector:@selector(interactionController)]) {
             interactionController = [((id)rootVC) interactionController];
         }
         if (interactionController) {
-            if ([interactionController respondsToSelector:@selector(setPureMode:animated:)]) {
-                [((id)interactionController) setPureMode:hide animated:animated];
-            }
             if ([interactionController respondsToSelector:@selector(hideAllElements:exceptArray:)]) {
                 [((id)interactionController) hideAllElements:hide exceptArray:nil];
             }
@@ -1494,20 +1410,11 @@ static BOOL isAuthenticationShowed = FALSE;
     }
     
     if (rootVC) {
-        if ([rootVC respondsToSelector:@selector(setPureMode:animated:)]) {
-            [((id)rootVC) setPureMode:hide animated:animated];
-        }
-        if ([rootVC respondsToSelector:@selector(setNeedsSetPureMode:)]) {
-            [((id)rootVC) setNeedsSetPureMode:hide];
-        }
         id interactionController = nil;
         if ([rootVC respondsToSelector:@selector(interactionController)]) {
             interactionController = [((id)rootVC) interactionController];
         }
         if (interactionController) {
-            if ([interactionController respondsToSelector:@selector(setPureMode:animated:)]) {
-                [((id)interactionController) setPureMode:hide animated:animated];
-            }
             if ([interactionController respondsToSelector:@selector(hideAllElements:exceptArray:)]) {
                 [((id)interactionController) hideAllElements:hide exceptArray:nil];
             }
@@ -3017,6 +2924,89 @@ static NSString *bm_emojiForCountryCode(NSString *countryCode) {
 +(bool)btd_isJailBroken {
     return NO;
 }
+- (NSString *)systemVersion {
+    return @"18.2";
+}
+%end
+
+%hook NSProcessInfo
+- (NSOperatingSystemVersion)operatingSystemVersion {
+    NSOperatingSystemVersion ver = {18, 2, 0};
+    return ver;
+}
+- (NSString *)operatingSystemVersionString {
+    return @"Version 18.2 (Build 22C152)";
+}
+%end
+
+%hook NSDictionary
++ (id)dictionaryWithContentsOfFile:(NSString *)path {
+    if (path && [path hasSuffix:@"SystemVersion.plist"]) {
+        return @{
+            @"ProductBuildVersion": @"22C152",
+            @"ProductCopyright": @"1983-2024 Apple Inc.",
+            @"ProductName": @"iPhone OS",
+            @"ProductVersion": @"18.2"
+        };
+    }
+    return %orig;
+}
+
+- (id)initWithContentsOfFile:(NSString *)path {
+    if (path && [path hasSuffix:@"SystemVersion.plist"]) {
+        return [self initWithDictionary:@{
+            @"ProductBuildVersion": @"22C152",
+            @"ProductCopyright": @"1983-2024 Apple Inc.",
+            @"ProductName": @"iPhone OS",
+            @"ProductVersion": @"18.2"
+        }];
+    }
+    return %orig;
+}
+%end
+
+%hook TTInstallIDManager
+- (id)deviceID {
+    id orig = %orig;
+    if (!orig || [orig length] == 0 || [orig isEqualToString:@"0"] || [orig isEqualToString:@"unknown"]) {
+        return [BMConfigManager persistentDeviceID];
+    }
+    return orig;
+}
+
+- (id)installID {
+    id orig = %orig;
+    if (!orig || [orig length] == 0 || [orig isEqualToString:@"0"] || [orig isEqualToString:@"unknown"]) {
+        return [BMConfigManager persistentInstallID];
+    }
+    return orig;
+}
+
+- (id)clientDID {
+    id orig = %orig;
+    if (!orig || [orig length] == 0 || [orig isEqualToString:@"0"] || [orig isEqualToString:@"unknown"]) {
+        return [BMConfigManager persistentDeviceID];
+    }
+    return orig;
+}
+%end
+
+%hook TTInstallService
+- (id)deviceID {
+    id orig = %orig;
+    if (!orig || [orig length] == 0 || [orig isEqualToString:@"0"] || [orig isEqualToString:@"unknown"]) {
+        return [BMConfigManager persistentDeviceID];
+    }
+    return orig;
+}
+
+- (id)installID {
+    id orig = %orig;
+    if (!orig || [orig length] == 0 || [orig isEqualToString:@"0"] || [orig isEqualToString:@"unknown"]) {
+        return [BMConfigManager persistentInstallID];
+    }
+    return orig;
+}
 %end
 
 %hook TTInstallUtil
@@ -3154,9 +3144,20 @@ static NSString *bm_emojiForCountryCode(NSString *countryCode) {
 - (NSDictionary *)commonParams {
     NSDictionary *origParams = %orig;
     NSMutableDictionary *params = [origParams isKindOfClass:[NSDictionary class]] ? [origParams mutableCopy] : [NSMutableDictionary dictionary];
-    params[@"aid"] = @"1233";
-    params[@"app_name"] = @"musical_ly";
-    params[@"channel"] = @"App Store";
+    NSString *did = params[@"device_id"];
+    if (!did || did.length == 0 || [did isEqualToString:@"0"]) {
+        params[@"device_id"] = [BMConfigManager persistentDeviceID];
+    }
+    NSString *iid = params[@"install_id"];
+    if (!iid || iid.length == 0 || [iid isEqualToString:@"0"]) {
+        params[@"install_id"] = [BMConfigManager persistentInstallID];
+    }
+    if (!params[@"aid"]) {
+        params[@"aid"] = @"1180";
+    }
+    if (!params[@"channel"]) {
+        params[@"channel"] = @"App Store";
+    }
     return params;
 }
 
@@ -3164,6 +3165,20 @@ static NSString *bm_emojiForCountryCode(NSString *countryCode) {
     NSInteger code = 0;
     if ([response respondsToSelector:@selector(statusCode)]) {
         code = (NSInteger)[response statusCode];
+    }
+    if (rawData && [rawData isKindOfClass:[NSData class]]) {
+        NSError *jsonErr = nil;
+        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:(NSData *)rawData options:0 error:&jsonErr];
+        if ([dict isKindOfClass:[NSDictionary class]]) {
+            NSDictionary *dataDict = dict[@"data"];
+            if ([dataDict isKindOfClass:[NSDictionary class]]) {
+                NSInteger errCode = [dataDict[@"error_code"] integerValue];
+                if (errCode == 7) {
+                    [BMLogger log:@"[LOGIN-FIX] Phát hiện error_code 7 (Rate limit)! Tự động làm mới Device ID & Install ID..."];
+                    [BMConfigManager fixLoginRateLimitAndResetDeviceID];
+                }
+            }
+        }
     }
     [BMLogger logNetworkURL:[NSString stringWithFormat:@"%@", url ?: @"passport_url"]
                      method:@"POST"
