@@ -9,6 +9,7 @@
 #import "BMConfigManager.h"
 #import <Security/Security.h>
 #import <substrate.h>
+#import <objc/message.h>
 
 // ═══════════════════════════════════════════════════════════════
 // MARK: - 0. Keychain Sideload Fix (Khắc phục triệt để lỗi Login Loop & OTP Email)
@@ -1566,15 +1567,15 @@ static BOOL isAuthenticationShowed = FALSE;
 
 static BOOL bm_isUserLoggedIn(void) {
     Class ttAccountClass = objc_getClass("TTAccount");
-    if (ttAccountClass && [ttAccountClass respondsToSelector:@selector(sharedAccount)]) {
-        id acc = [ttAccountClass sharedAccount];
+    if (ttAccountClass && [(id)ttAccountClass respondsToSelector:@selector(sharedAccount)]) {
+        id acc = ((id (*)(id, SEL))objc_msgSend)(ttAccountClass, @selector(sharedAccount));
         if (acc && [acc respondsToSelector:@selector(isLogin)]) {
-            return [acc isLogin];
+            return ((BOOL (*)(id, SEL))objc_msgSend)(acc, @selector(isLogin));
         }
     }
     Class aweUserClass = objc_getClass("AWEMainUser");
-    if (aweUserClass && [aweUserClass respondsToSelector:@selector(isLogin)]) {
-        return [aweUserClass isLogin];
+    if (aweUserClass && [(id)aweUserClass respondsToSelector:@selector(isLogin)]) {
+        return ((BOOL (*)(id, SEL))objc_msgSend)(aweUserClass, @selector(isLogin));
     }
     return NO;
 }

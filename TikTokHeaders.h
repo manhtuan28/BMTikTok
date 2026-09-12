@@ -27,6 +27,16 @@
 @class AWEURLModel;
 @class AWECommentModel;
 
+@interface TTAccount : NSObject
++ (instancetype)sharedAccount;
+- (BOOL)isLogin;
+@end
+
+@interface AWEMainUser : NSObject
++ (BOOL)isLogin;
+- (BOOL)isLogin;
+@end
+
 @interface AWECommentModel : NSObject
 @property (nonatomic, copy) NSString *content;
 @property (nonatomic, copy) NSString *text;

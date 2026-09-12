@@ -321,10 +321,10 @@ static NSString *settingsBackupFilePath() {
         SEL selShared = NSSelectorFromString(@"sharedManager");
         SEL selDefault = NSSelectorFromString(@"defaultManager");
         id manager = nil;
-        if ([installManagerClass respondsToSelector:selShared]) {
-            manager = [installManagerClass performSelector:selShared];
-        } else if ([installManagerClass respondsToSelector:selDefault]) {
-            manager = [installManagerClass performSelector:selDefault];
+        if ([(id)installManagerClass respondsToSelector:selShared]) {
+            manager = [(id)installManagerClass performSelector:selShared];
+        } else if ([(id)installManagerClass respondsToSelector:selDefault]) {
+            manager = [(id)installManagerClass performSelector:selDefault];
         }
         if (manager) {
             SEL reRegisterSel = NSSelectorFromString(@"reRegisterDeviceWithSceneStatus:triggerFrom:registerSuccessObserver:completion:");
