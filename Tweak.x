@@ -437,7 +437,7 @@ static BOOL isAuthenticationShowed = FALSE;
     %orig;
 }
 
-- (void)hideAllElements:(BOOL)arg1 animate:(BOOL)arg2 exceptArray:(id)3 {
+- (void)hideAllElements:(BOOL)arg1 animate:(BOOL)arg2 exceptArray:(id)arg3 {
     if (gPureModeActive) {
         %orig(YES, NO, nil);
         return;
@@ -2282,7 +2282,7 @@ static NSString *bm_emojiForCountryCode(NSString *countryCode) {
         }
     }
     if ([BMIManager enableCommentFlags]) {
-        AWECommentModel *commentModel = nil;
+        id commentModel = nil;
         @try {
             commentModel = [self valueForKey:@"commentModel"] ?: [self valueForKey:@"model"];
         } @catch (id ex) {}
@@ -2308,7 +2308,7 @@ static NSString *bm_emojiForCountryCode(NSString *countryCode) {
 }
 %new - (void)bm_copyCommentAction:(UILongPressGestureRecognizer *)sender {
     if (sender.state == UIGestureRecognizerStateBegan) {
-        AWECommentModel *commentModel = nil;
+        id commentModel = nil;
         @try {
             commentModel = [self valueForKey:@"commentModel"] ?: [self valueForKey:@"model"];
         } @catch (id ex) {}

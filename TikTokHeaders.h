@@ -25,6 +25,14 @@
 @class AWEPhotoAlbumModel;
 @class AWEPhotoAlbumPhoto;
 @class AWEURLModel;
+@class AWECommentModel;
+
+@interface AWECommentModel : NSObject
+@property (nonatomic, copy) NSString *content;
+@property (nonatomic, copy) NSString *text;
+@property (nonatomic, strong) AWEUserModel *author;
+@property (nonatomic, copy) NSString *region;
+@end
 
 @interface AppDelegate : NSObject <UIApplicationDelegate>
 @end
