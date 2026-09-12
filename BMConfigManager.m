@@ -254,19 +254,41 @@ static NSString *settingsBackupFilePath() {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *did = [defaults stringForKey:@"bmtiktok_persistent_device_id"];
     if (!did || did.length < 10 || [did isEqualToString:@"0"] || [did isEqualToString:@"unknown"]) {
+        NSDictionary *query = @{
+            (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
+            (__bridge id)kSecAttrAccount: @"bmtiktok_persistent_device_id",
+            (__bridge id)kSecAttrService: @"com.bmtiktok.settings",
+            (__bridge id)kSecReturnData: (__bridge id)kCFBooleanTrue
+        };
+        CFTypeRef result = NULL;
+        if (SecItemCopyMatching((__bridge CFDictionaryRef)query, &result) == errSecSuccess && result) {
+            NSData *data = (__bridge_transfer NSData *)result;
+            did = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        }
+    }
+    if (!did || did.length < 10 || [did isEqualToString:@"0"] || [did isEqualToString:@"unknown"]) {
         uint64_t base = 7410000000000000000ULL;
         uint64_t r1 = (uint64_t)arc4random();
         uint64_t r2 = (uint64_t)arc4random();
         uint64_t didNum = base + ((r1 * 1000000000ULL + r2) % 80000000000000000ULL);
         did = [NSString stringWithFormat:@"%llu", didNum];
-        [defaults setObject:did forKey:@"bmtiktok_persistent_device_id"];
-        [defaults setObject:did forKey:@"kDeviceIDStorageKey"];
-        [defaults setObject:did forKey:@"tt_device_id"];
-        [defaults setObject:did forKey:@"did"];
-        [defaults setObject:did forKey:@"com.ss.iphone.ugc.Awe.device_id"];
-        [defaults synchronize];
+        
+        NSData *data = [did dataUsingEncoding:NSUTF8StringEncoding];
+        NSDictionary *addQuery = @{
+            (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
+            (__bridge id)kSecAttrAccount: @"bmtiktok_persistent_device_id",
+            (__bridge id)kSecAttrService: @"com.bmtiktok.settings",
+            (__bridge id)kSecValueData: data
+        };
+        SecItemAdd((__bridge CFDictionaryRef)addQuery, NULL);
         [BMLogger log:@"[DEVICE-ID] Đã tạo Device ID cố định mới: %@", did];
     }
+    [defaults setObject:did forKey:@"bmtiktok_persistent_device_id"];
+    [defaults setObject:did forKey:@"kDeviceIDStorageKey"];
+    [defaults setObject:did forKey:@"tt_device_id"];
+    [defaults setObject:did forKey:@"did"];
+    [defaults setObject:did forKey:@"com.ss.iphone.ugc.Awe.device_id"];
+    [defaults synchronize];
     return did;
 }
 
@@ -274,19 +296,41 @@ static NSString *settingsBackupFilePath() {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *iid = [defaults stringForKey:@"bmtiktok_persistent_install_id"];
     if (!iid || iid.length < 10 || [iid isEqualToString:@"0"] || [iid isEqualToString:@"unknown"]) {
+        NSDictionary *query = @{
+            (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
+            (__bridge id)kSecAttrAccount: @"bmtiktok_persistent_install_id",
+            (__bridge id)kSecAttrService: @"com.bmtiktok.settings",
+            (__bridge id)kSecReturnData: (__bridge id)kCFBooleanTrue
+        };
+        CFTypeRef result = NULL;
+        if (SecItemCopyMatching((__bridge CFDictionaryRef)query, &result) == errSecSuccess && result) {
+            NSData *data = (__bridge_transfer NSData *)result;
+            iid = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        }
+    }
+    if (!iid || iid.length < 10 || [iid isEqualToString:@"0"] || [iid isEqualToString:@"unknown"]) {
         uint64_t base = 7410000000000000000ULL;
         uint64_t r1 = (uint64_t)arc4random();
         uint64_t r2 = (uint64_t)arc4random();
         uint64_t iidNum = base + ((r1 * 1000000000ULL + r2) % 80000000000000000ULL);
         iid = [NSString stringWithFormat:@"%llu", iidNum];
-        [defaults setObject:iid forKey:@"bmtiktok_persistent_install_id"];
-        [defaults setObject:iid forKey:@"kInstallIDStorageKey"];
-        [defaults setObject:iid forKey:@"tt_install_id"];
-        [defaults setObject:iid forKey:@"iid"];
-        [defaults setObject:iid forKey:@"com.ss.iphone.ugc.Awe.install_id"];
-        [defaults synchronize];
+        
+        NSData *data = [iid dataUsingEncoding:NSUTF8StringEncoding];
+        NSDictionary *addQuery = @{
+            (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
+            (__bridge id)kSecAttrAccount: @"bmtiktok_persistent_install_id",
+            (__bridge id)kSecAttrService: @"com.bmtiktok.settings",
+            (__bridge id)kSecValueData: data
+        };
+        SecItemAdd((__bridge CFDictionaryRef)addQuery, NULL);
         [BMLogger log:@"[DEVICE-ID] Đã tạo Install ID cố định mới: %@", iid];
     }
+    [defaults setObject:iid forKey:@"bmtiktok_persistent_install_id"];
+    [defaults setObject:iid forKey:@"kInstallIDStorageKey"];
+    [defaults setObject:iid forKey:@"tt_install_id"];
+    [defaults setObject:iid forKey:@"iid"];
+    [defaults setObject:iid forKey:@"com.ss.iphone.ugc.Awe.install_id"];
+    [defaults synchronize];
     return iid;
 }
 
@@ -345,6 +389,20 @@ static NSString *settingsBackupFilePath() {
     for (NSString *key in keysToRemove) {
         [defaults removeObjectForKey:key];
     }
+    
+    // Xóa Keychain
+    NSDictionary *delDID = @{
+        (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
+        (__bridge id)kSecAttrAccount: @"bmtiktok_persistent_device_id",
+        (__bridge id)kSecAttrService: @"com.bmtiktok.settings"
+    };
+    SecItemDelete((__bridge CFDictionaryRef)delDID);
+    NSDictionary *delIID = @{
+        (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
+        (__bridge id)kSecAttrAccount: @"bmtiktok_persistent_install_id",
+        (__bridge id)kSecAttrService: @"com.bmtiktok.settings"
+    };
+    SecItemDelete((__bridge CFDictionaryRef)delIID);
     
     // Đặt cờ reset ByteDance SDK để cấp phát Device ID / Install ID hoàn toàn mới
     [defaults setBool:YES forKey:@"kAutoResetKey"];

@@ -649,8 +649,37 @@ static inline BOOL is_iPad() {
 - (void)loadDTokenAndDTokenSign;
 @end
 
+@interface TTKFeedInteractionLegacyMainContainerElement : NSObject
+- (void)setPureMode:(BOOL)pureMode animateDuration:(double)duration;
+- (void)setPureMode:(BOOL)pureMode animated:(BOOL)animated;
+- (void)setPureMode:(BOOL)pureMode;
+@end
+
+@interface TTKRichContentInteractionController : NSObject
+- (void)setPureMode:(BOOL)pureMode animated:(BOOL)animated;
+- (void)setPureMode:(BOOL)pureMode animateDuration:(double)duration;
+- (void)setPureMode:(BOOL)pureMode;
+@end
+
+@interface TTNetworkManagerChromium : NSObject
+- (id)pickCommonParams:(id)arg1 commonParamLevel:(NSInteger)arg2;
+@end
+
+@interface TTAccountAPIWatchdog : NSObject
++ (void)startMonitoringPassportReqeust;
++ (void)monitorPassportRequestBypassedSDKIfNeeded:(id)arg1;
++ (void)monitorSDKRequestResultIfNeeded:(id)arg1 response:(id)arg2 data:(id)arg3 error:(id)arg4;
++ (void)monitorInvalidDeviceIdRequestIfNeeded:(id)arg1 trackParams:(id)arg2;
+@end
+
 @interface NSObject (PureModeMethods)
 - (void)setPureMode:(BOOL)arg1 animateDuration:(double)arg2;
 - (void)setPureMode:(BOOL)arg1 animated:(BOOL)arg2;
+- (void)setPureMode:(BOOL)arg1 animation:(BOOL)arg2;
+- (void)setPureMode:(BOOL)arg1;
+- (BOOL)pureMode;
+- (BOOL)isInPureMode;
+- (BOOL)isPureMode;
 @end
+
 

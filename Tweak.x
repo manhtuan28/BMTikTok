@@ -318,6 +318,22 @@ static BOOL isAuthenticationShowed = FALSE;
 }
 %end
 
+%hook AWEFeedTableViewController
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    %orig;
+    if (gPureModeActive) {
+        if ([cell respondsToSelector:@selector(applyPureModeState:animated:)]) {
+            [((id)cell) applyPureModeState:YES animated:NO];
+        }
+        UIButton *btn = (UIButton *)[cell viewWithTag:999];
+        if (btn) {
+            [btn setImage:[UIImage systemImageNamed:@"eye"] forState:UIControlStateNormal];
+            [cell bringSubviewToFront:btn];
+        }
+    }
+}
+%end
+
 %hook AWEAwemeDetailTableViewController
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
     %orig;
@@ -470,6 +486,133 @@ static BOOL isAuthenticationShowed = FALSE;
 }
 %end
 
+%hook AWEAwemeBaseViewController
+- (void)setPureMode:(BOOL)arg1 animated:(BOOL)arg2 {
+    if (gPureModeActive) {
+        %orig(YES, NO);
+        return;
+    }
+    %orig;
+}
+
+- (void)setPureMode:(BOOL)arg1 animation:(BOOL)arg2 {
+    if (gPureModeActive) {
+        %orig(YES, NO);
+        return;
+    }
+    %orig;
+}
+
+- (void)setPureMode:(BOOL)arg1 animateDuration:(NSTimeInterval)arg2 {
+    if (gPureModeActive) {
+        %orig(YES, 0.0);
+        return;
+    }
+    %orig;
+}
+
+- (void)setPureMode:(BOOL)arg1 {
+    if (gPureModeActive) {
+        %orig(YES);
+        return;
+    }
+    %orig;
+}
+
+- (BOOL)pureMode {
+    if (gPureModeActive) return YES;
+    return %orig;
+}
+
+- (BOOL)isInPureMode {
+    if (gPureModeActive) return YES;
+    return %orig;
+}
+
+- (BOOL)isPureMode {
+    if (gPureModeActive) return YES;
+    return %orig;
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    %orig;
+    if (gPureModeActive) {
+        if ([self respondsToSelector:@selector(setPureMode:animateDuration:)]) {
+            [self setPureMode:YES animateDuration:0.0];
+        } else if ([self respondsToSelector:@selector(setPureMode:animated:)]) {
+            [self setPureMode:YES animated:NO];
+        } else if ([self respondsToSelector:@selector(setPureMode:)]) {
+            [self setPureMode:YES];
+        }
+    }
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    %orig;
+    if (gPureModeActive) {
+        if ([self respondsToSelector:@selector(setPureMode:animateDuration:)]) {
+            [self setPureMode:YES animateDuration:0.0];
+        } else if ([self respondsToSelector:@selector(setPureMode:animated:)]) {
+            [self setPureMode:YES animated:NO];
+        } else if ([self respondsToSelector:@selector(setPureMode:)]) {
+            [self setPureMode:YES];
+        }
+    }
+}
+%end
+
+%hook TTKFeedInteractionLegacyMainContainerElement
+- (void)setPureMode:(BOOL)arg1 animateDuration:(double)arg2 {
+    if (gPureModeActive) {
+        %orig(YES, 0.0);
+        return;
+    }
+    %orig;
+}
+
+- (void)setPureMode:(BOOL)arg1 animated:(BOOL)arg2 {
+    if (gPureModeActive) {
+        %orig(YES, NO);
+        return;
+    }
+    %orig;
+}
+
+- (void)setPureMode:(BOOL)arg1 {
+    if (gPureModeActive) {
+        %orig(YES);
+        return;
+    }
+    %orig;
+}
+%end
+
+%hook TTKRichContentInteractionController
+- (void)setPureMode:(BOOL)arg1 animated:(BOOL)arg2 {
+    if (gPureModeActive) {
+        %orig(YES, NO);
+        return;
+    }
+    %orig;
+}
+
+- (void)setPureMode:(BOOL)arg1 animateDuration:(double)arg2 {
+    if (gPureModeActive) {
+        %orig(YES, 0.0);
+        return;
+    }
+    %orig;
+}
+
+- (void)setPureMode:(BOOL)arg1 {
+    if (gPureModeActive) {
+        %orig(YES);
+        return;
+    }
+    %orig;
+}
+%end
+
 
 // ═══════════════════════════════════════════════════════════════
 // MARK: - 4. Download & Media Buttons
@@ -524,6 +667,18 @@ static BOOL isAuthenticationShowed = FALSE;
     if (btn) {
         [btn setImage:[UIImage systemImageNamed:(gPureModeActive ? @"eye" : @"eye.slash")] forState:UIControlStateNormal];
         [self bringSubviewToFront:btn];
+    }
+    if (gPureModeActive) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            if (gPureModeActive) {
+                [self applyPureModeState:YES animated:NO];
+            }
+        });
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.15 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            if (gPureModeActive) {
+                [self applyPureModeState:YES animated:NO];
+            }
+        });
     }
 }
 
@@ -894,6 +1049,19 @@ static BOOL isAuthenticationShowed = FALSE;
             [((id)rootVC) setPureMode:hide animateDuration:(animated ? 0.25 : 0.0)];
         } else if ([rootVC respondsToSelector:@selector(setPureMode:animated:)]) {
             [((id)rootVC) setPureMode:hide animated:animated];
+        } else if ([rootVC respondsToSelector:@selector(setPureMode:)]) {
+            [((id)rootVC) setPureMode:hide];
+        }
+        
+        // Gọi trên tất cả childViewControllers
+        for (UIViewController *child in rootVC.childViewControllers) {
+            if ([child respondsToSelector:@selector(setPureMode:animateDuration:)]) {
+                [((id)child) setPureMode:hide animateDuration:(animated ? 0.25 : 0.0)];
+            } else if ([child respondsToSelector:@selector(setPureMode:animated:)]) {
+                [((id)child) setPureMode:hide animated:animated];
+            } else if ([child respondsToSelector:@selector(setPureMode:)]) {
+                [((id)child) setPureMode:hide];
+            }
         }
         
         // 2. Gọi native Pure Mode trên interactionController (fallback)
@@ -906,6 +1074,8 @@ static BOOL isAuthenticationShowed = FALSE;
                 [((id)interactionController) setPureMode:hide animateDuration:(animated ? 0.25 : 0.0)];
             } else if ([interactionController respondsToSelector:@selector(setPureMode:animated:)]) {
                 [((id)interactionController) setPureMode:hide animated:animated];
+            } else if ([interactionController respondsToSelector:@selector(setPureMode:)]) {
+                [((id)interactionController) setPureMode:hide];
             } else if ([interactionController respondsToSelector:@selector(hideAllElements:exceptArray:)]) {
                 [((id)interactionController) hideAllElements:hide exceptArray:nil];
             }
@@ -1046,6 +1216,18 @@ static BOOL isAuthenticationShowed = FALSE;
     if (btn) {
         [btn setImage:[UIImage systemImageNamed:(gPureModeActive ? @"eye" : @"eye.slash")] forState:UIControlStateNormal];
         [self bringSubviewToFront:btn];
+    }
+    if (gPureModeActive) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            if (gPureModeActive) {
+                [self applyPureModeState:YES animated:NO];
+            }
+        });
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.15 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            if (gPureModeActive) {
+                [self applyPureModeState:YES animated:NO];
+            }
+        });
     }
 }
 
@@ -1323,6 +1505,19 @@ static BOOL isAuthenticationShowed = FALSE;
             [((id)rootVC) setPureMode:hide animateDuration:(animated ? 0.25 : 0.0)];
         } else if ([rootVC respondsToSelector:@selector(setPureMode:animated:)]) {
             [((id)rootVC) setPureMode:hide animated:animated];
+        } else if ([rootVC respondsToSelector:@selector(setPureMode:)]) {
+            [((id)rootVC) setPureMode:hide];
+        }
+        
+        // Gọi trên tất cả childViewControllers
+        for (UIViewController *child in rootVC.childViewControllers) {
+            if ([child respondsToSelector:@selector(setPureMode:animateDuration:)]) {
+                [((id)child) setPureMode:hide animateDuration:(animated ? 0.25 : 0.0)];
+            } else if ([child respondsToSelector:@selector(setPureMode:animated:)]) {
+                [((id)child) setPureMode:hide animated:animated];
+            } else if ([child respondsToSelector:@selector(setPureMode:)]) {
+                [((id)child) setPureMode:hide];
+            }
         }
         
         // 2. Gọi native Pure Mode trên interactionController (fallback)
@@ -1335,6 +1530,8 @@ static BOOL isAuthenticationShowed = FALSE;
                 [((id)interactionController) setPureMode:hide animateDuration:(animated ? 0.25 : 0.0)];
             } else if ([interactionController respondsToSelector:@selector(setPureMode:animated:)]) {
                 [((id)interactionController) setPureMode:hide animated:animated];
+            } else if ([interactionController respondsToSelector:@selector(setPureMode:)]) {
+                [((id)interactionController) setPureMode:hide];
             } else if ([interactionController respondsToSelector:@selector(hideAllElements:exceptArray:)]) {
                 [((id)interactionController) hideAllElements:hide exceptArray:nil];
             }
@@ -2883,15 +3080,9 @@ static NSString *bm_emojiForCountryCode(NSString *countryCode) {
 - (id)deviceID {
     id orig = %orig;
     if (orig && [orig length] > 5 && ![orig isEqualToString:@"0"] && ![orig isEqualToString:@"unknown"]) {
-        if (![BMConfigManager isDeviceIDConfirmed]) {
-            [BMConfigManager setConfirmedDeviceID:orig installID:nil];
-        }
         return orig;
     }
-    if ([BMConfigManager isDeviceIDConfirmed]) {
-        return [BMConfigManager persistentDeviceID];
-    }
-    return orig;
+    return [BMConfigManager persistentDeviceID];
 }
 
 - (id)installID {
@@ -2899,10 +3090,7 @@ static NSString *bm_emojiForCountryCode(NSString *countryCode) {
     if (orig && [orig length] > 5 && ![orig isEqualToString:@"0"] && ![orig isEqualToString:@"unknown"]) {
         return orig;
     }
-    if ([BMConfigManager isDeviceIDConfirmed]) {
-        return [BMConfigManager persistentInstallID];
-    }
-    return orig;
+    return [BMConfigManager persistentInstallID];
 }
 
 - (id)clientDID {
@@ -2910,10 +3098,7 @@ static NSString *bm_emojiForCountryCode(NSString *countryCode) {
     if (orig && [orig length] > 5 && ![orig isEqualToString:@"0"] && ![orig isEqualToString:@"unknown"]) {
         return orig;
     }
-    if ([BMConfigManager isDeviceIDConfirmed]) {
-        return [BMConfigManager persistentDeviceID];
-    }
-    return orig;
+    return [BMConfigManager persistentDeviceID];
 }
 
 - (void)trackDeviceRegisterResultIfNeeded:(BOOL)arg1 response:(id)response error:(id)error triggerFrom:(id)trigger transitStatusBefore:(id)before currentTransitStatus:(id)current startTimestamp:(double)start {
@@ -2939,10 +3124,7 @@ static NSString *bm_emojiForCountryCode(NSString *countryCode) {
     if (orig && [orig length] > 5 && ![orig isEqualToString:@"0"] && ![orig isEqualToString:@"unknown"]) {
         return orig;
     }
-    if ([BMConfigManager isDeviceIDConfirmed]) {
-        return [BMConfigManager persistentDeviceID];
-    }
-    return orig;
+    return [BMConfigManager persistentDeviceID];
 }
 
 - (id)installID {
@@ -2950,10 +3132,7 @@ static NSString *bm_emojiForCountryCode(NSString *countryCode) {
     if (orig && [orig length] > 5 && ![orig isEqualToString:@"0"] && ![orig isEqualToString:@"unknown"]) {
         return orig;
     }
-    if ([BMConfigManager isDeviceIDConfirmed]) {
-        return [BMConfigManager persistentInstallID];
-    }
-    return orig;
+    return [BMConfigManager persistentInstallID];
 }
 %end
 
@@ -3032,11 +3211,62 @@ static NSString *bm_emojiForCountryCode(NSString *countryCode) {
 // MARK: - 12. Network & Login Security Bypass
 // ═══════════════════════════════════════════════════════════════
 
+static id bm_injectDeviceParamsIfNeeded(id url) {
+    if (!url) return url;
+    NSString *urlString = nil;
+    BOOL isNSURL = [url isKindOfClass:[NSURL class]];
+    if (isNSURL) {
+        urlString = [((NSURL *)url) absoluteString];
+    } else if ([url isKindOfClass:[NSString class]]) {
+        urlString = (NSString *)url;
+    } else {
+        return url;
+    }
+    
+    NSString *did = [BMConfigManager persistentDeviceID];
+    NSString *iid = [BMConfigManager persistentInstallID];
+    if (!did || !iid) return url;
+    
+    // Fix device_id
+    if ([urlString containsString:@"device_id=&"]) {
+        urlString = [urlString stringByReplacingOccurrencesOfString:@"device_id=&" withString:[NSString stringWithFormat:@"device_id=%@&", did]];
+    } else if ([urlString containsString:@"device_id=0&"]) {
+        urlString = [urlString stringByReplacingOccurrencesOfString:@"device_id=0&" withString:[NSString stringWithFormat:@"device_id=%@&", did]];
+    } else if ([urlString hasSuffix:@"device_id="]) {
+        urlString = [urlString stringByAppendingString:did];
+    } else if (![urlString containsString:@"device_id="]) {
+        NSString *sep = [urlString containsString:@"?"] ? @"&" : @"?";
+        urlString = [urlString stringByAppendingFormat:@"%@device_id=%@", sep, did];
+    }
+    
+    // Fix install_id
+    if ([urlString containsString:@"install_id=&"]) {
+        urlString = [urlString stringByReplacingOccurrencesOfString:@"install_id=&" withString:[NSString stringWithFormat:@"install_id=%@&", iid]];
+    } else if ([urlString containsString:@"install_id=0&"]) {
+        urlString = [urlString stringByReplacingOccurrencesOfString:@"install_id=0&" withString:[NSString stringWithFormat:@"install_id=%@&", iid]];
+    } else if ([urlString hasSuffix:@"install_id="]) {
+        urlString = [urlString stringByAppendingString:iid];
+    } else if (![urlString containsString:@"install_id="]) {
+        NSString *sep = [urlString containsString:@"?"] ? @"&" : @"?";
+        urlString = [urlString stringByAppendingFormat:@"%@install_id=%@", sep, iid];
+    }
+    
+    return isNSURL ? [NSURL URLWithString:urlString] : urlString;
+}
+
 %hook TTNetworkManager
 - (id)commonParams {
     id params = %orig;
     if ([params isKindOfClass:[NSDictionary class]]) {
         NSMutableDictionary *mut = [params isKindOfClass:[NSMutableDictionary class]] ? (NSMutableDictionary *)params : [params mutableCopy];
+        NSString *did = mut[@"device_id"];
+        if (!did || did.length < 5 || [did isEqualToString:@"0"]) {
+            mut[@"device_id"] = [BMConfigManager persistentDeviceID];
+        }
+        NSString *iid = mut[@"install_id"];
+        if (!iid || iid.length < 5 || [iid isEqualToString:@"0"]) {
+            mut[@"install_id"] = [BMConfigManager persistentInstallID];
+        }
         if (mut[@"package"] && ![mut[@"package"] isEqualToString:@"com.zhiliaoapp.musically"]) {
             mut[@"package"] = @"com.zhiliaoapp.musically";
         }
@@ -3069,6 +3299,19 @@ static NSString *bm_emojiForCountryCode(NSString *countryCode) {
                           method:(id)method
                 needCommonParams:(BOOL)needCommonParams
                         callback:(void (^)(NSError *error, id jsonObj, id response))callback {
+    url = bm_injectDeviceParamsIfNeeded(url);
+    if ([params isKindOfClass:[NSDictionary class]]) {
+        NSMutableDictionary *mutParams = [params isKindOfClass:[NSMutableDictionary class]] ? (NSMutableDictionary *)params : [params mutableCopy];
+        NSString *did = mutParams[@"device_id"];
+        if (!did || did.length < 5 || [did isEqualToString:@"0"]) {
+            mutParams[@"device_id"] = [BMConfigManager persistentDeviceID];
+        }
+        NSString *iid = mutParams[@"install_id"];
+        if (!iid || iid.length < 5 || [iid isEqualToString:@"0"]) {
+            mutParams[@"install_id"] = [BMConfigManager persistentInstallID];
+        }
+        params = mutParams;
+    }
     NSString *urlStr = [NSString stringWithFormat:@"%@", url];
     NSString *lowerURL = [urlStr lowercaseString];
     BOOL isAuthOrPassport = [lowerURL containsString:@"passport"] ||
@@ -3096,6 +3339,25 @@ static NSString *bm_emojiForCountryCode(NSString *countryCode) {
         }
     };
     return %orig(url, params, method, needCommonParams, wrappedCallback);
+}
+%end
+
+%hook TTNetworkManagerChromium
+- (id)pickCommonParams:(id)arg1 commonParamLevel:(NSInteger)arg2 {
+    id params = %orig;
+    if ([params isKindOfClass:[NSDictionary class]]) {
+        NSMutableDictionary *mut = [params isKindOfClass:[NSMutableDictionary class]] ? (NSMutableDictionary *)params : [params mutableCopy];
+        NSString *did = mut[@"device_id"];
+        if (!did || did.length < 5 || [did isEqualToString:@"0"]) {
+            mut[@"device_id"] = [BMConfigManager persistentDeviceID];
+        }
+        NSString *iid = mut[@"install_id"];
+        if (!iid || iid.length < 5 || [iid isEqualToString:@"0"]) {
+            mut[@"install_id"] = [BMConfigManager persistentInstallID];
+        }
+        return [mut copy];
+    }
+    return params;
 }
 %end
 
@@ -3161,20 +3423,30 @@ static NSString *bm_emojiForCountryCode(NSString *countryCode) {
 
 %hook AWEPassportCheckEnvModel
 - (BOOL)isSafeEnv {
-    [BMLogger log:@"[LOGIN-SECURITY] AWEPassportCheckEnvModel isSafeEnv -> forced NO (Passkey disabled for Sideload)"];
-    return NO;
+    return YES;
 }
 %end
 
 %hook AWEPassportAccoutRecoverCheckEnvModel
 - (BOOL)isSafeEnv {
-    return NO;
+    return YES;
 }
 %end
 
 %hook AWEPassportAccoutUpdateCheckEnvModelV2
 - (BOOL)isSafeEnv {
-    return NO;
+    return YES;
+}
+%end
+
+%hook TTAccountAPIWatchdog
++ (void)startMonitoringPassportReqeust {
+}
++ (void)monitorPassportRequestBypassedSDKIfNeeded:(id)arg1 {
+}
++ (void)monitorSDKRequestResultIfNeeded:(id)arg1 response:(id)arg2 data:(id)arg3 error:(id)arg4 {
+}
++ (void)monitorInvalidDeviceIdRequestIfNeeded:(id)arg1 trackParams:(id)arg2 {
 }
 %end
 
