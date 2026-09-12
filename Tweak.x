@@ -317,6 +317,7 @@ static BOOL isAuthenticationShowed = FALSE;
     }
 }
 %end
+%end // LegacyFeatures
 
 %hook AWEAwemePlayVideoPauseIcon
 - (void)didMoveToSuperview {
