@@ -156,6 +156,24 @@ static void showConfirmation(void (^okHandler)(void)) {
     return true;
 }
 
+static BOOL isAuthenticationShowed = FALSE;
+- (void)applicationDidBecomeActive:(id)arg1 {
+    %orig;
+    if ([BMIManager appLock] && !isAuthenticationShowed) {
+        UIViewController *rootController = [[self window] rootViewController];
+        SecurityViewController *securityViewController = [SecurityViewController new];
+        securityViewController.modalPresentationStyle = UIModalPresentationOverFullScreen;
+        [rootController presentViewController:securityViewController animated:YES completion:nil];
+        isAuthenticationShowed = TRUE;
+    }
+}
+
+- (void)applicationWillEnterForeground:(id)arg1 {
+    %orig;
+    isAuthenticationShowed = FALSE;
+}
+%end
+
 %hook UIWindow
 - (void)becomeKeyWindow {
     %orig;
@@ -177,24 +195,6 @@ static void showConfirmation(void (^okHandler)(void)) {
             [mgr performSelector:NSSelectorFromString(@"toggleExplorer")];
         }
     }
-}
-%end
-
-static BOOL isAuthenticationShowed = FALSE;
-- (void)applicationDidBecomeActive:(id)arg1 {
-    %orig;
-    if ([BMIManager appLock] && !isAuthenticationShowed) {
-        UIViewController *rootController = [[self window] rootViewController];
-        SecurityViewController *securityViewController = [SecurityViewController new];
-        securityViewController.modalPresentationStyle = UIModalPresentationOverFullScreen;
-        [rootController presentViewController:securityViewController animated:YES completion:nil];
-        isAuthenticationShowed = TRUE;
-    }
-}
-
-- (void)applicationWillEnterForeground:(id)arg1 {
-    %orig;
-    isAuthenticationShowed = FALSE;
 }
 %end
 
