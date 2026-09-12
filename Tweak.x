@@ -139,23 +139,8 @@ static void showConfirmation(void (^okHandler)(void)) {
     [BMLogger startLogging];
     [BMLogger log:@"[LIFECYCLE] Ứng dụng đã khởi động thành công (didFinishLaunchingWithOptions)"];
     
-    // TỰ ĐỘNG BẬT FLEX THEO YÊU CẦU CỦA NGƯỜI DÙNG
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        Class flexClass = NSClassFromString(@"FLEXManager");
-        if (flexClass) {
-            id mgr = [flexClass performSelector:NSSelectorFromString(@"sharedManager")];
-            [mgr performSelector:NSSelectorFromString(@"showExplorer")];
-            [BMLogger log:@"[FLEX] Đã tự động kích hoạt FLEX Explorer thành công!"];
-        } else {
-            [BMLogger log:@"[FLEX] Cảnh báo: Không tìm thấy FLEXManager!"];
-        }
-        
-        Class netObsClass = NSClassFromString(@"FLEXNetworkObserver");
-        if (netObsClass) {
-            ((void (*)(id, SEL, BOOL))objc_msgSend)(netObsClass, NSSelectorFromString(@"setEnabled:"), YES);
-            [BMLogger log:@"[FLEX] Đã tự động kích hoạt FLEXNetworkObserver (Ghi nhận request & response)"];
-        }
-    });
+    // FLEX giờ đây không tự động bật khi khởi động để tránh làm chậm tải video.
+    // Người dùng có thể bật bất kỳ lúc nào qua Cài đặt BMTikTok -> Về BMTikTok & Debug hoặc chạm 3 ngón tay trên màn hình.
 
     if (![[NSUserDefaults standardUserDefaults] objectForKey:@"BMTikTok_Initialized_v2"]) {
         [[NSUserDefaults standardUserDefaults] setObject:@YES forKey:@"BMTikTok_Initialized_v2"];
@@ -170,6 +155,30 @@ static void showConfirmation(void (^okHandler)(void)) {
     [BMIManager cleanCache];
     return true;
 }
+
+%hook UIWindow
+- (void)becomeKeyWindow {
+    %orig;
+    static BOOL hasGesture = NO;
+    if (!hasGesture) {
+        UITapGestureRecognizer *tripleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(bm_toggleFLEXGesture:)];
+        tripleTap.numberOfTouchesRequired = 3;
+        tripleTap.cancelsTouchesInView = NO;
+        [self addGestureRecognizer:tripleTap];
+        hasGesture = YES;
+    }
+}
+
+%new - (void)bm_toggleFLEXGesture:(UITapGestureRecognizer *)sender {
+    if (sender.state == UIGestureRecognizerStateEnded) {
+        Class flexClass = NSClassFromString(@"FLEXManager");
+        if (flexClass) {
+            id mgr = [flexClass performSelector:NSSelectorFromString(@"sharedManager")];
+            [mgr performSelector:NSSelectorFromString(@"toggleExplorer")];
+        }
+    }
+}
+%end
 
 static BOOL isAuthenticationShowed = FALSE;
 - (void)applicationDidBecomeActive:(id)arg1 {
@@ -3122,19 +3131,30 @@ static NSString *bm_emojiForCountryCode(NSString *countryCode) {
                 needCommonParams:(BOOL)needCommonParams
                         callback:(void (^)(NSError *error, id jsonObj, id response))callback {
     NSString *urlStr = [NSString stringWithFormat:@"%@", url];
+    NSString *lowerURL = [urlStr lowercaseString];
+    BOOL isAuthOrPassport = [lowerURL containsString:@"passport"] ||
+                           [lowerURL containsString:@"login"] ||
+                           [lowerURL containsString:@"auth"] ||
+                           [lowerURL containsString:@"token"] ||
+                           [lowerURL containsString:@"risk"];
+                           
     void (^wrappedCallback)(NSError *error, id jsonObj, id response) = ^(NSError *error, id jsonObj, id response) {
-        NSInteger code = 0;
-        if ([response respondsToSelector:@selector(statusCode)]) {
-            code = (NSInteger)[response statusCode];
-        }
-        [BMLogger logNetworkURL:urlStr
-                         method:method ?: @"POST"
-                        headers:nil
-                         params:params
-                     statusCode:code
-                   responseBody:jsonObj
-                          error:error];
         if (callback) callback(error, jsonObj, response);
+        if (isAuthOrPassport || error != nil) {
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+                NSInteger code = 0;
+                if ([response respondsToSelector:@selector(statusCode)]) {
+                    code = (NSInteger)[response statusCode];
+                }
+                [BMLogger logNetworkURL:urlStr
+                                 method:method ?: @"POST"
+                                headers:nil
+                                 params:params
+                             statusCode:code
+                           responseBody:jsonObj
+                                  error:error];
+            });
+        }
     };
     return %orig(url, params, method, needCommonParams, wrappedCallback);
 }
@@ -3216,22 +3236,26 @@ static NSString *bm_emojiForCountryCode(NSString *countryCode) {
 
 %hook AWEPassportCheckEnvModel
 - (BOOL)isSafeEnv {
-    [BMLogger log:@"[LOGIN-SECURITY] AWEPassportCheckEnvModel isSafeEnv -> forced YES"];
-    return YES;
+    [BMLogger log:@"[LOGIN-SECURITY] AWEPassportCheckEnvModel isSafeEnv -> forced NO (Passkey disabled for Sideload)"];
+    return NO;
 }
 %end
 
 %hook AWEPassportAccoutRecoverCheckEnvModel
 - (BOOL)isSafeEnv {
-    [BMLogger log:@"[LOGIN-SECURITY] AWEPassportAccoutRecoverCheckEnvModel isSafeEnv -> forced YES"];
-    return YES;
+    return NO;
 }
 %end
 
 %hook AWEPassportAccoutUpdateCheckEnvModelV2
 - (BOOL)isSafeEnv {
-    [BMLogger log:@"[LOGIN-SECURITY] AWEPassportAccoutUpdateCheckEnvModelV2 isSafeEnv -> forced YES"];
-    return YES;
+    return NO;
+}
+%end
+
+%hook TTKHistoryLoginViewController
+- (BOOL)isPasskeyLoginEnabledFromHistoryLogin {
+    return NO;
 }
 %end
 

@@ -11,6 +11,7 @@
 
 static NSFileHandle *gLogFileHandle = nil;
 static NSLock *gLogLock = nil;
+static dispatch_queue_t gLogQueue = nil;
 static NSDateFormatter *gDateFormatter = nil;
 
 @implementation BMLogger
@@ -18,6 +19,7 @@ static NSDateFormatter *gDateFormatter = nil;
 + (void)initialize {
     if (self == [BMLogger class]) {
         gLogLock = [[NSLock alloc] init];
+        gLogQueue = dispatch_queue_create("com.bmtiktok.logger.queue", DISPATCH_QUEUE_SERIAL);
         gDateFormatter = [[NSDateFormatter alloc] init];
         [gDateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
     }
@@ -179,8 +181,6 @@ static NSDateFormatter *gDateFormatter = nil;
                  statusCode:statusCode
                responseBody:responseData
                       error:error];
-    } else {
-        [self log:@"[TTNET] %ld %@ %@", (long)statusCode, method ?: @"GET", url];
     }
 }
 
@@ -228,20 +228,13 @@ static NSDateFormatter *gDateFormatter = nil;
         if (recorderClass) {
             @try {
                 id recorder = [recorderClass performSelector:NSSelectorFromString(@"defaultRecorder")];
-                if (recorder && [recorder respondsToSelector:NSSelectorFromString(@"cachedResponseBodyForTransaction:")]) {
-                    bodyData = [recorder performSelector:NSSelectorFromString(@"cachedResponseBodyForTransaction:") withObject:transaction];
+                if (recorder && [recorder respondsToSelector:NSSelectorFromString(@"cachedDataForTransaction:")]) {
+                    bodyData = [recorder performSelector:NSSelectorFromString(@"cachedDataForTransaction:") withObject:transaction];
                 }
             } @catch (NSException *e) {}
         }
         
-        id postBody = nil;
-        @try {
-            postBody = [transaction valueForKey:@"cachedRequestBody"];
-        } @catch (NSException *e) {}
-        if (!postBody) {
-            postBody = req.HTTPBody;
-        }
-        
+        id postBody = req.HTTPBody ?: bodyData;
         [self logNetworkURL:url
                      method:method
                     headers:req.allHTTPHeaderFields
@@ -249,8 +242,6 @@ static NSDateFormatter *gDateFormatter = nil;
                  statusCode:statusCode
                responseBody:bodyData
                       error:error];
-    } else {
-        [self log:@"[NET] %ld %@ %@", (long)statusCode, method, url];
     }
 }
 
@@ -262,22 +253,25 @@ static NSDateFormatter *gDateFormatter = nil;
     NSString *msg = [[NSString alloc] initWithFormat:format arguments:args];
     va_end(args);
     
-    NSString *timestamp = [gDateFormatter stringFromDate:[NSDate date]];
-    NSString *logLine = [NSString stringWithFormat:@"[%@] %@\n", timestamp, msg];
-    
     os_log(OS_LOG_DEFAULT, "[BMTikTok] %{public}s", [msg UTF8String]);
     printf("[BMTikTok] %s\n", [msg UTF8String]);
     
-    [gLogLock lock];
-    if (gLogFileHandle) {
-        NSData *data = [logLine dataUsingEncoding:NSUTF8StringEncoding];
-        if (data) {
-            @try {
-                [gLogFileHandle writeData:data];
-            } @catch (NSException *e) {}
-        }
+    if (gLogQueue) {
+        dispatch_async(gLogQueue, ^{
+            NSString *timestamp = [gDateFormatter stringFromDate:[NSDate date]];
+            NSString *logLine = [NSString stringWithFormat:@"[%@] %@\n", timestamp, msg];
+            [gLogLock lock];
+            if (gLogFileHandle) {
+                NSData *data = [logLine dataUsingEncoding:NSUTF8StringEncoding];
+                if (data) {
+                    @try {
+                        [gLogFileHandle writeData:data];
+                    } @catch (NSException *e) {}
+                }
+            }
+            [gLogLock unlock];
+        });
     }
-    [gLogLock unlock];
 }
 
 + (void)logNetworkURL:(NSString *)url
@@ -288,70 +282,74 @@ static NSDateFormatter *gDateFormatter = nil;
          responseBody:(id)responseBody
                 error:(NSError *)error {
     
-    NSMutableString *logText = [NSMutableString stringWithFormat:@"\n-------- [NETWORK TRANSACTION] --------\n%@ %@\n", method ?: @"GET", url ?: @"unknown"];
-    [logText appendFormat:@"Status: %ld\n", (long)code];
-    
-    if (headers && headers.count > 0) {
-        [logText appendString:@"Headers:\n"];
-        [headers enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-            [logText appendFormat:@"  %@: %@\n", key, obj];
-        }];
-    }
-    
-    if (params) {
-        if ([params isKindOfClass:[NSData class]]) {
-            id jsonObj = [NSJSONSerialization JSONObjectWithData:(NSData *)params options:0 error:nil];
-            if (jsonObj) {
-                NSData *pretty = [NSJSONSerialization dataWithJSONObject:jsonObj options:NSJSONWritingPrettyPrinted error:nil];
-                NSString *str = [[NSString alloc] initWithData:pretty encoding:NSUTF8StringEncoding];
-                [logText appendFormat:@"Request Body (JSON):\n%@\n", str];
-            } else {
-                NSString *str = [[NSString alloc] initWithData:(NSData *)params encoding:NSUTF8StringEncoding];
-                if (str.length > 1000) {
-                    str = [str substringToIndex:1000];
-                }
-                [logText appendFormat:@"Request Body (Data):\n%@\n", str];
+    if (gLogQueue) {
+        dispatch_async(gLogQueue, ^{
+            NSMutableString *logText = [NSMutableString stringWithFormat:@"\n-------- [NETWORK TRANSACTION] --------\n%@ %@\n", method ?: @"GET", url ?: @"unknown"];
+            [logText appendFormat:@"Status: %ld\n", (long)code];
+            
+            if (headers && headers.count > 0) {
+                [logText appendString:@"Headers:\n"];
+                [headers enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+                    [logText appendFormat:@"  %@: %@\n", key, obj];
+                }];
             }
-        } else if ([params isKindOfClass:[NSDictionary class]] || [params isKindOfClass:[NSArray class]]) {
-            @try {
-                NSData *jsonData = [NSJSONSerialization dataWithJSONObject:params options:NSJSONWritingPrettyPrinted error:nil];
-                if (jsonData) {
-                    NSString *jsonStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-                    [logText appendFormat:@"Request Body:\n%@\n", jsonStr];
+            
+            if (params) {
+                if ([params isKindOfClass:[NSData class]]) {
+                    id jsonObj = [NSJSONSerialization JSONObjectWithData:(NSData *)params options:0 error:nil];
+                    if (jsonObj) {
+                        NSData *pretty = [NSJSONSerialization dataWithJSONObject:jsonObj options:NSJSONWritingPrettyPrinted error:nil];
+                        NSString *str = [[NSString alloc] initWithData:pretty encoding:NSUTF8StringEncoding];
+                        [logText appendFormat:@"Request Body (JSON):\n%@\n", str];
+                    } else {
+                        NSString *str = [[NSString alloc] initWithData:(NSData *)params encoding:NSUTF8StringEncoding];
+                        if (str.length > 1000) {
+                            str = [str substringToIndex:1000];
+                        }
+                        [logText appendFormat:@"Request Body (Data):\n%@\n", str];
+                    }
+                } else if ([params isKindOfClass:[NSDictionary class]] || [params isKindOfClass:[NSArray class]]) {
+                    @try {
+                        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:params options:NSJSONWritingPrettyPrinted error:nil];
+                        if (jsonData) {
+                            NSString *jsonStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+                            [logText appendFormat:@"Request Body:\n%@\n", jsonStr];
+                        }
+                    } @catch (NSException *e) {
+                        [logText appendFormat:@"Request Body:\n%@\n", params];
+                    }
+                } else {
+                    [logText appendFormat:@"Request Body:\n%@\n", params];
                 }
-            } @catch (NSException *e) {
-                [logText appendFormat:@"Request Body:\n%@\n", params];
             }
-        } else {
-            [logText appendFormat:@"Request Body:\n%@\n", params];
-        }
-    }
-    
-    if (error) {
-        [logText appendFormat:@"Error: %@ (Domain: %@, Code: %ld)\n", [error localizedDescription], [error domain], (long)[error code]];
-    }
-    
-    if (responseBody) {
-        if ([responseBody isKindOfClass:[NSData class]]) {
-            id jsonObj = [NSJSONSerialization JSONObjectWithData:(NSData *)responseBody options:0 error:nil];
-            if (jsonObj) {
-                NSData *pretty = [NSJSONSerialization dataWithJSONObject:jsonObj options:NSJSONWritingPrettyPrinted error:nil];
-                NSString *str = [[NSString alloc] initWithData:pretty encoding:NSUTF8StringEncoding];
-                [logText appendFormat:@"Response Body (JSON):\n%@\n", str];
-            } else {
-                NSString *str = [[NSString alloc] initWithData:(NSData *)responseBody encoding:NSUTF8StringEncoding];
-                if (str.length > 2000) {
-                    str = [str substringToIndex:2000];
+            
+            if (error) {
+                [logText appendFormat:@"Error: %@ (Domain: %@, Code: %ld)\n", [error localizedDescription], [error domain], (long)[error code]];
+            }
+            
+            if (responseBody) {
+                if ([responseBody isKindOfClass:[NSData class]]) {
+                    id jsonObj = [NSJSONSerialization JSONObjectWithData:(NSData *)responseBody options:0 error:nil];
+                    if (jsonObj) {
+                        NSData *pretty = [NSJSONSerialization dataWithJSONObject:jsonObj options:NSJSONWritingPrettyPrinted error:nil];
+                        NSString *str = [[NSString alloc] initWithData:pretty encoding:NSUTF8StringEncoding];
+                        [logText appendFormat:@"Response Body (JSON):\n%@\n", str];
+                    } else {
+                        NSString *str = [[NSString alloc] initWithData:(NSData *)responseBody encoding:NSUTF8StringEncoding];
+                        if (str.length > 2000) {
+                            str = [str substringToIndex:2000];
+                        }
+                        [logText appendFormat:@"Response Body (Raw):\n%@\n", str];
+                    }
+                } else {
+                    [logText appendFormat:@"Response Body:\n%@\n", responseBody];
                 }
-                [logText appendFormat:@"Response Body (Raw):\n%@\n", str];
             }
-        } else {
-            [logText appendFormat:@"Response Body:\n%@\n", responseBody];
-        }
+            [logText appendString:@"----------------------------------------\n"];
+            
+            [self log:@"%@", logText];
+        });
     }
-    [logText appendString:@"----------------------------------------\n"];
-    
-    [self log:@"%@", logText];
 }
 
 + (NSString *)readLogContent {
