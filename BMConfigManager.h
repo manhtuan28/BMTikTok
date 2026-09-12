@@ -46,4 +46,10 @@
 /// Lấy hoặc sinh mới Install ID hợp lệ (19 chữ số)
 + (NSString *)persistentInstallID;
 
+/// Kiểm tra xem Device ID đã được máy chủ ByteDance xác nhận đăng ký hay chưa
++ (BOOL)isDeviceIDConfirmed;
+
+/// Cập nhật Device ID và Install ID chính thức từ máy chủ TikTok
++ (void)setConfirmedDeviceID:(NSString *)did installID:(NSString *)iid;
+
 @end

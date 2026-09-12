@@ -418,20 +418,21 @@ static BOOL isAuthenticationShowed = FALSE;
         if ([self.container respondsToSelector:@selector(parentViewController)]) {
             parentVC = [self.container parentViewController];
         }
-        id interCtrl = nil;
-        if ([parentVC respondsToSelector:@selector(interactionController)]) {
-            interCtrl = [((id)parentVC) interactionController];
-        }
-        if (interCtrl) {
-            if ([interCtrl respondsToSelector:@selector(hideAllElements:exceptArray:)]) {
-                [((id)interCtrl) hideAllElements:YES exceptArray:nil];
+        if (parentVC) {
+            if ([parentVC respondsToSelector:@selector(setPureMode:animateDuration:)]) {
+                [((id)parentVC) setPureMode:YES animateDuration:0.0];
+            } else if ([parentVC respondsToSelector:@selector(setPureMode:animated:)]) {
+                [((id)parentVC) setPureMode:YES animated:NO];
             }
-            // Ẩn từng subview overlay thay vì ẩn toàn bộ view (tránh mất video)
-            if ([interCtrl respondsToSelector:@selector(view)]) {
-                UIView *interView = [((id)interCtrl) view];
-                for (UIView *subview in interView.subviews) {
-                    if (subview.tag == 998 || subview.tag == 999) continue;
-                    subview.alpha = 0.0;
+            id interCtrl = nil;
+            if ([parentVC respondsToSelector:@selector(interactionController)]) {
+                interCtrl = [((id)parentVC) interactionController];
+            }
+            if (interCtrl) {
+                if ([interCtrl respondsToSelector:@selector(setPureMode:animateDuration:)]) {
+                    [((id)interCtrl) setPureMode:YES animateDuration:0.0];
+                } else if ([interCtrl respondsToSelector:@selector(setPureMode:animated:)]) {
+                    [((id)interCtrl) setPureMode:YES animated:NO];
                 }
             }
         }
@@ -450,74 +451,6 @@ static BOOL isAuthenticationShowed = FALSE;
             }
         }
     }
-}
-%end
-
-%hook AWEPlayInteractionViewController
-- (void)viewWillAppear:(BOOL)animated {
-    %orig;
-    if (gPureModeActive) {
-        if ([self respondsToSelector:@selector(hideAllElements:exceptArray:)]) {
-            [self hideAllElements:YES exceptArray:nil];
-        }
-        // Ẩn từng subview overlay, không ẩn toàn bộ self.view (tránh mất video)
-        for (UIView *subview in self.view.subviews) {
-            if (subview.tag == 998 || subview.tag == 999) continue;
-            subview.alpha = 0.0;
-        }
-    }
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    %orig;
-    if (gPureModeActive) {
-        if ([self respondsToSelector:@selector(hideAllElements:exceptArray:)]) {
-            [self hideAllElements:YES exceptArray:nil];
-        }
-        // Ẩn từng subview overlay, không ẩn toàn bộ self.view (tránh mất video)
-        for (UIView *subview in self.view.subviews) {
-            if (subview.tag == 998 || subview.tag == 999) continue;
-            subview.alpha = 0.0;
-        }
-    }
-}
-
-- (void)hideAllElements:(BOOL)arg1 exceptArray:(id)arg2 {
-    if (gPureModeActive) {
-        %orig(YES, nil);
-        return;
-    }
-    %orig;
-}
-
-- (void)hideAllElements:(BOOL)arg1 animate:(BOOL)arg2 exceptArray:(id)arg3 {
-    if (gPureModeActive) {
-        %orig(YES, NO, nil);
-        return;
-    }
-    %orig;
-}
-
-- (void)hideAllElements:(BOOL)arg1 animate:(BOOL)arg2 duration:(NSTimeInterval)arg3 exceptArray:(id)arg4 {
-    if (gPureModeActive) {
-        %orig(YES, NO, 0.0, nil);
-        return;
-    }
-    %orig;
-}
-
-- (void)showAllElements {
-    if (gPureModeActive) {
-        return;
-    }
-    %orig;
-}
-
-- (void)showAllComponents {
-    if (gPureModeActive) {
-        return;
-    }
-    %orig;
 }
 %end
 
@@ -574,10 +507,8 @@ static BOOL isAuthenticationShowed = FALSE;
 
 - (void)cellWillDisplay {
     %orig;
-    if (gPureModeActive) {
-        self.elementsHidden = YES;
-        [self applyPureModeState:YES animated:NO];
-    }
+    self.elementsHidden = gPureModeActive;
+    [self applyPureModeState:gPureModeActive animated:NO];
     UIButton *btn = (UIButton *)[self viewWithTag:999];
     if (btn) {
         [btn setImage:[UIImage systemImageNamed:(gPureModeActive ? @"eye" : @"eye.slash")] forState:UIControlStateNormal];
@@ -587,10 +518,8 @@ static BOOL isAuthenticationShowed = FALSE;
 
 - (void)cellDidFullyDisplay {
     %orig;
-    if (gPureModeActive) {
-        self.elementsHidden = YES;
-        [self applyPureModeState:YES animated:NO];
-    }
+    self.elementsHidden = gPureModeActive;
+    [self applyPureModeState:gPureModeActive animated:NO];
     UIButton *btn = (UIButton *)[self viewWithTag:999];
     if (btn) {
         [btn setImage:[UIImage systemImageNamed:(gPureModeActive ? @"eye" : @"eye.slash")] forState:UIControlStateNormal];
@@ -601,9 +530,7 @@ static BOOL isAuthenticationShowed = FALSE;
 - (void)prepareForReuse {
     %orig;
     self.elementsHidden = gPureModeActive;
-    if (gPureModeActive) {
-        [self applyPureModeState:YES animated:NO];
-    }
+    [self applyPureModeState:gPureModeActive animated:NO];
     UIButton *btn = (UIButton *)[self viewWithTag:999];
     if (btn) {
         [btn setImage:[UIImage systemImageNamed:(gPureModeActive ? @"eye" : @"eye.slash")] forState:UIControlStateNormal];
@@ -613,9 +540,9 @@ static BOOL isAuthenticationShowed = FALSE;
 
 - (void)didMoveToWindow {
     %orig;
-    if (self.window && gPureModeActive) {
-        self.elementsHidden = YES;
-        [self applyPureModeState:YES animated:NO];
+    if (self.window) {
+        self.elementsHidden = gPureModeActive;
+        [self applyPureModeState:gPureModeActive animated:NO];
     }
     UIButton *btn = (UIButton *)[self viewWithTag:999];
     if (btn) {
@@ -962,33 +889,29 @@ static BOOL isAuthenticationShowed = FALSE;
     }
     
     if (rootVC) {
+        // 1. Gọi trực tiếp native Pure Mode trên rootVC (AWEAwemeBaseViewController)
+        if ([rootVC respondsToSelector:@selector(setPureMode:animateDuration:)]) {
+            [((id)rootVC) setPureMode:hide animateDuration:(animated ? 0.25 : 0.0)];
+        } else if ([rootVC respondsToSelector:@selector(setPureMode:animated:)]) {
+            [((id)rootVC) setPureMode:hide animated:animated];
+        }
+        
+        // 2. Gọi native Pure Mode trên interactionController (fallback)
         id interactionController = nil;
         if ([rootVC respondsToSelector:@selector(interactionController)]) {
             interactionController = [((id)rootVC) interactionController];
         }
         if (interactionController) {
-            if ([interactionController respondsToSelector:@selector(hideAllElements:exceptArray:)]) {
+            if ([interactionController respondsToSelector:@selector(setPureMode:animateDuration:)]) {
+                [((id)interactionController) setPureMode:hide animateDuration:(animated ? 0.25 : 0.0)];
+            } else if ([interactionController respondsToSelector:@selector(setPureMode:animated:)]) {
+                [((id)interactionController) setPureMode:hide animated:animated];
+            } else if ([interactionController respondsToSelector:@selector(hideAllElements:exceptArray:)]) {
                 [((id)interactionController) hideAllElements:hide exceptArray:nil];
-            }
-            // Ẩn từng subview overlay thay vì ẩn toàn bộ view (tránh mất video)
-            if ([interactionController respondsToSelector:@selector(view)]) {
-                UIView *interView = [((id)interactionController) view];
-                if (interView) {
-                    for (UIView *subview in interView.subviews) {
-                        if (subview.tag == 998 || subview.tag == 999) continue;
-                        if (animated) {
-                            [UIView animateWithDuration:0.25 animations:^{
-                                subview.alpha = hide ? 0.0 : 1.0;
-                            }];
-                        } else {
-                            subview.alpha = hide ? 0.0 : 1.0;
-                        }
-                    }
-                }
             }
         }
         
-        // Ẩn thanh Tab Bar trên cùng (Following, For You, Live, Search)
+        // 3. Ẩn thanh Tab Bar trên cùng (Following, For You, Live, Search)
         UIViewController *parentContainer = rootVC.parentViewController ?: rootVC;
         if (parentContainer.view) {
             for (UIView *v in parentContainer.view.subviews) {
@@ -1005,32 +928,14 @@ static BOOL isAuthenticationShowed = FALSE;
         }
     }
     
-    // Duyệt trực tiếp subviews trong cell để ẩn/hiện mọi view tương tác
-    void (^processSubviews)(UIView *) = ^(UIView *container) {
-        if (!container) return;
-        for (UIView *v in container.subviews) {
-            if (v.tag == 998 || v.tag == 999) {
-                [container bringSubviewToFront:v];
-                continue;
-            }
-            NSString *cls = NSStringFromClass([v class]);
-            if ([cls containsString:@"Interaction"] || [cls containsString:@"AWEPlayVideoPauseIcon"] || [cls containsString:@"Pendant"]) {
-                if (animated) {
-                    [UIView animateWithDuration:0.25 animations:^{
-                        v.alpha = hide ? 0.0 : 1.0;
-                    }];
-                } else {
-                    v.alpha = hide ? 0.0 : 1.0;
-                }
-            }
-        }
-    };
-    processSubviews(self);
-    processSubviews(self.contentView);
-    
     UIButton *eyeBtn = (UIButton *)[self viewWithTag:999];
     if (eyeBtn) {
+        [eyeBtn setImage:[UIImage systemImageNamed:(hide ? @"eye" : @"eye.slash")] forState:UIControlStateNormal];
         [self bringSubviewToFront:eyeBtn];
+    }
+    UIButton *downBtn = (UIButton *)[self viewWithTag:998];
+    if (downBtn) {
+        [self bringSubviewToFront:downBtn];
     }
 }
 
@@ -1124,10 +1029,8 @@ static BOOL isAuthenticationShowed = FALSE;
 
 - (void)cellWillDisplay {
     %orig;
-    if (gPureModeActive) {
-        self.elementsHidden = YES;
-        [self applyPureModeState:YES animated:NO];
-    }
+    self.elementsHidden = gPureModeActive;
+    [self applyPureModeState:gPureModeActive animated:NO];
     UIButton *btn = (UIButton *)[self viewWithTag:999];
     if (btn) {
         [btn setImage:[UIImage systemImageNamed:(gPureModeActive ? @"eye" : @"eye.slash")] forState:UIControlStateNormal];
@@ -1137,10 +1040,8 @@ static BOOL isAuthenticationShowed = FALSE;
 
 - (void)cellDidFullyDisplay {
     %orig;
-    if (gPureModeActive) {
-        self.elementsHidden = YES;
-        [self applyPureModeState:YES animated:NO];
-    }
+    self.elementsHidden = gPureModeActive;
+    [self applyPureModeState:gPureModeActive animated:NO];
     UIButton *btn = (UIButton *)[self viewWithTag:999];
     if (btn) {
         [btn setImage:[UIImage systemImageNamed:(gPureModeActive ? @"eye" : @"eye.slash")] forState:UIControlStateNormal];
@@ -1151,9 +1052,7 @@ static BOOL isAuthenticationShowed = FALSE;
 - (void)prepareForReuse {
     %orig;
     self.elementsHidden = gPureModeActive;
-    if (gPureModeActive) {
-        [self applyPureModeState:YES animated:NO];
-    }
+    [self applyPureModeState:gPureModeActive animated:NO];
     UIButton *btn = (UIButton *)[self viewWithTag:999];
     if (btn) {
         [btn setImage:[UIImage systemImageNamed:(gPureModeActive ? @"eye" : @"eye.slash")] forState:UIControlStateNormal];
@@ -1163,9 +1062,9 @@ static BOOL isAuthenticationShowed = FALSE;
 
 - (void)didMoveToWindow {
     %orig;
-    if (self.window && gPureModeActive) {
-        self.elementsHidden = YES;
-        [self applyPureModeState:YES animated:NO];
+    if (self.window) {
+        self.elementsHidden = gPureModeActive;
+        [self applyPureModeState:gPureModeActive animated:NO];
     }
     UIButton *btn = (UIButton *)[self viewWithTag:999];
     if (btn) {
@@ -1419,59 +1318,37 @@ static BOOL isAuthenticationShowed = FALSE;
     }
     
     if (rootVC) {
+        // 1. Gọi trực tiếp native Pure Mode trên rootVC (AWEAwemeBaseViewController)
+        if ([rootVC respondsToSelector:@selector(setPureMode:animateDuration:)]) {
+            [((id)rootVC) setPureMode:hide animateDuration:(animated ? 0.25 : 0.0)];
+        } else if ([rootVC respondsToSelector:@selector(setPureMode:animated:)]) {
+            [((id)rootVC) setPureMode:hide animated:animated];
+        }
+        
+        // 2. Gọi native Pure Mode trên interactionController (fallback)
         id interactionController = nil;
         if ([rootVC respondsToSelector:@selector(interactionController)]) {
             interactionController = [((id)rootVC) interactionController];
         }
         if (interactionController) {
-            if ([interactionController respondsToSelector:@selector(hideAllElements:exceptArray:)]) {
+            if ([interactionController respondsToSelector:@selector(setPureMode:animateDuration:)]) {
+                [((id)interactionController) setPureMode:hide animateDuration:(animated ? 0.25 : 0.0)];
+            } else if ([interactionController respondsToSelector:@selector(setPureMode:animated:)]) {
+                [((id)interactionController) setPureMode:hide animated:animated];
+            } else if ([interactionController respondsToSelector:@selector(hideAllElements:exceptArray:)]) {
                 [((id)interactionController) hideAllElements:hide exceptArray:nil];
-            }
-            // Ẩn từng subview overlay thay vì ẩn toàn bộ view (tránh mất video)
-            if ([interactionController respondsToSelector:@selector(view)]) {
-                UIView *interView = [((id)interactionController) view];
-                if (interView) {
-                    for (UIView *subview in interView.subviews) {
-                        if (subview.tag == 998 || subview.tag == 999) continue;
-                        if (animated) {
-                            [UIView animateWithDuration:0.25 animations:^{
-                                subview.alpha = hide ? 0.0 : 1.0;
-                            }];
-                        } else {
-                            subview.alpha = hide ? 0.0 : 1.0;
-                        }
-                    }
-                }
             }
         }
     }
     
-    // Duyệt trực tiếp subviews trong cell để ẩn/hiện mọi view tương tác
-    void (^processSubviews)(UIView *) = ^(UIView *container) {
-        if (!container) return;
-        for (UIView *v in container.subviews) {
-            if (v.tag == 998 || v.tag == 999) {
-                [container bringSubviewToFront:v];
-                continue;
-            }
-            NSString *cls = NSStringFromClass([v class]);
-            if ([cls containsString:@"Interaction"] || [cls containsString:@"AWEPlayVideoPauseIcon"] || [cls containsString:@"Pendant"]) {
-                if (animated) {
-                    [UIView animateWithDuration:0.25 animations:^{
-                        v.alpha = hide ? 0.0 : 1.0;
-                    }];
-                } else {
-                    v.alpha = hide ? 0.0 : 1.0;
-                }
-            }
-        }
-    };
-    processSubviews(self);
-    processSubviews(self.contentView);
-    
     UIButton *eyeBtn = (UIButton *)[self viewWithTag:999];
     if (eyeBtn) {
+        [eyeBtn setImage:[UIImage systemImageNamed:(hide ? @"eye" : @"eye.slash")] forState:UIControlStateNormal];
         [self bringSubviewToFront:eyeBtn];
+    }
+    UIButton *downBtn = (UIButton *)[self viewWithTag:998];
+    if (downBtn) {
+        [self bringSubviewToFront:downBtn];
     }
 }
 
@@ -2974,10 +2851,44 @@ static NSString *bm_emojiForCountryCode(NSString *countryCode) {
 }
 %end
 
+%hook TTInstallDeviceZTIManager
++ (void)addDTokenToRequestIfNeeded:(id)request {
+    id mgr = nil;
+    if ([self respondsToSelector:@selector(sharedManager)]) {
+        mgr = [self performSelector:@selector(sharedManager)];
+    } else if ([self respondsToSelector:@selector(defaultManager)]) {
+        mgr = [self performSelector:@selector(defaultManager)];
+    }
+    NSString *dtoken = nil;
+    if (mgr && [mgr respondsToSelector:@selector(dtoken)]) {
+        dtoken = [mgr performSelector:@selector(dtoken)];
+    }
+    if (!dtoken || [dtoken length] == 0) {
+        [BMLogger log:@"[DEVICE-ZTI] Bỏ qua addDTokenToRequestIfNeeded vì dtoken rỗng (ngăn chặn lỗi error_code 7)"];
+        return;
+    }
+    %orig(request);
+}
+
+- (void)saveDToken:(NSString *)dtoken dtokenSign:(NSString *)dtokenSign forDeviceId:(NSString *)did forInstallId:(NSString *)iid {
+    [BMLogger log:@"[DEVICE-ZTI] saveDToken: %@ | did: %@ | iid: %@", dtoken ?: @"nil", did, iid];
+    if (did && did.length > 5 && ![did isEqualToString:@"0"]) {
+        [BMConfigManager setConfirmedDeviceID:did installID:iid];
+    }
+    %orig;
+}
+%end
+
 %hook TTInstallIDManager
 - (id)deviceID {
     id orig = %orig;
-    if (!orig || [orig length] == 0 || [orig isEqualToString:@"0"] || [orig isEqualToString:@"unknown"]) {
+    if (orig && [orig length] > 5 && ![orig isEqualToString:@"0"] && ![orig isEqualToString:@"unknown"]) {
+        if (![BMConfigManager isDeviceIDConfirmed]) {
+            [BMConfigManager setConfirmedDeviceID:orig installID:nil];
+        }
+        return orig;
+    }
+    if ([BMConfigManager isDeviceIDConfirmed]) {
         return [BMConfigManager persistentDeviceID];
     }
     return orig;
@@ -2985,7 +2896,10 @@ static NSString *bm_emojiForCountryCode(NSString *countryCode) {
 
 - (id)installID {
     id orig = %orig;
-    if (!orig || [orig length] == 0 || [orig isEqualToString:@"0"] || [orig isEqualToString:@"unknown"]) {
+    if (orig && [orig length] > 5 && ![orig isEqualToString:@"0"] && ![orig isEqualToString:@"unknown"]) {
+        return orig;
+    }
+    if ([BMConfigManager isDeviceIDConfirmed]) {
         return [BMConfigManager persistentInstallID];
     }
     return orig;
@@ -2993,17 +2907,39 @@ static NSString *bm_emojiForCountryCode(NSString *countryCode) {
 
 - (id)clientDID {
     id orig = %orig;
-    if (!orig || [orig length] == 0 || [orig isEqualToString:@"0"] || [orig isEqualToString:@"unknown"]) {
+    if (orig && [orig length] > 5 && ![orig isEqualToString:@"0"] && ![orig isEqualToString:@"unknown"]) {
+        return orig;
+    }
+    if ([BMConfigManager isDeviceIDConfirmed]) {
         return [BMConfigManager persistentDeviceID];
     }
     return orig;
+}
+
+- (void)trackDeviceRegisterResultIfNeeded:(BOOL)arg1 response:(id)response error:(id)error triggerFrom:(id)trigger transitStatusBefore:(id)before currentTransitStatus:(id)current startTimestamp:(double)start {
+    %orig;
+    if ([response isKindOfClass:[NSDictionary class]]) {
+        id did = response[@"device_id"];
+        id iid = response[@"install_id"];
+        NSString *didStr = [did isKindOfClass:[NSNumber class]] ? [did stringValue] : (NSString *)did;
+        NSString *iidStr = [iid isKindOfClass:[NSNumber class]] ? [iid stringValue] : (NSString *)iid;
+        if (didStr && didStr.length > 5 && ![didStr isEqualToString:@"0"]) {
+            [BMLogger log:@"[DEVICE-REGISTER] Máy chủ TikTok đã cấp Device ID mới: DID=%@ | IID=%@", didStr, iidStr ?: @"0"];
+            [BMConfigManager setConfirmedDeviceID:didStr installID:iidStr];
+        } else {
+            [BMLogger log:@"[DEVICE-REGISTER] Đăng ký thiết bị: response=%@ | error=%@", response, error];
+        }
+    }
 }
 %end
 
 %hook TTInstallService
 - (id)deviceID {
     id orig = %orig;
-    if (!orig || [orig length] == 0 || [orig isEqualToString:@"0"] || [orig isEqualToString:@"unknown"]) {
+    if (orig && [orig length] > 5 && ![orig isEqualToString:@"0"] && ![orig isEqualToString:@"unknown"]) {
+        return orig;
+    }
+    if ([BMConfigManager isDeviceIDConfirmed]) {
         return [BMConfigManager persistentDeviceID];
     }
     return orig;
@@ -3011,7 +2947,10 @@ static NSString *bm_emojiForCountryCode(NSString *countryCode) {
 
 - (id)installID {
     id orig = %orig;
-    if (!orig || [orig length] == 0 || [orig isEqualToString:@"0"] || [orig isEqualToString:@"unknown"]) {
+    if (orig && [orig length] > 5 && ![orig isEqualToString:@"0"] && ![orig isEqualToString:@"unknown"]) {
+        return orig;
+    }
+    if ([BMConfigManager isDeviceIDConfirmed]) {
         return [BMConfigManager persistentInstallID];
     }
     return orig;
@@ -3185,20 +3124,6 @@ static NSString *bm_emojiForCountryCode(NSString *countryCode) {
     NSInteger code = 0;
     if ([response respondsToSelector:@selector(statusCode)]) {
         code = (NSInteger)[response statusCode];
-    }
-    if (rawData && [rawData isKindOfClass:[NSData class]]) {
-        NSError *jsonErr = nil;
-        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:(NSData *)rawData options:0 error:&jsonErr];
-        if ([dict isKindOfClass:[NSDictionary class]]) {
-            NSDictionary *dataDict = dict[@"data"];
-            if ([dataDict isKindOfClass:[NSDictionary class]]) {
-                NSInteger errCode = [dataDict[@"error_code"] integerValue];
-                if (errCode == 7) {
-                    [BMLogger log:@"[LOGIN-FIX] Phát hiện error_code 7 (Rate limit)! Tự động làm mới Device ID & Install ID..."];
-                    [BMConfigManager fixLoginRateLimitAndResetDeviceID];
-                }
-            }
-        }
     }
     [BMLogger logNetworkURL:[NSString stringWithFormat:@"%@", url ?: @"passport_url"]
                      method:@"POST"

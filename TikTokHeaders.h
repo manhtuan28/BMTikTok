@@ -638,3 +638,21 @@ static inline UIViewController * _Nullable topMostController() {
 static inline BOOL is_iPad() {
     return [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad;
 }
+
+@interface TTInstallDeviceZTIManager : NSObject
++ (id)sharedManager;
++ (id)defaultManager;
++ (void)addDTokenToRequestIfNeeded:(id)request;
+@property(copy, nonatomic) NSString *dtoken;
+@property(copy, nonatomic) NSString *dtokenSign;
+- (void)saveDToken:(NSString *)dtoken dtokenSign:(NSString *)dtokenSign forDeviceId:(NSString *)did forInstallId:(NSString *)iid;
+- (void)loadDTokenAndDTokenSign;
+@end
+
+@interface TTInstallIDManager : NSObject
++ (id)sharedManager;
++ (id)defaultManager;
+- (NSString *)deviceID;
+- (NSString *)installID;
+- (NSString *)clientDID;
+@end

@@ -290,6 +290,31 @@ static NSString *settingsBackupFilePath() {
     return iid;
 }
 
++ (BOOL)isDeviceIDConfirmed {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"bmtiktok_device_id_confirmed"];
+}
+
++ (void)setConfirmedDeviceID:(NSString *)did installID:(NSString *)iid {
+    if (!did || did.length < 5 || [did isEqualToString:@"0"]) return;
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:did forKey:@"bmtiktok_persistent_device_id"];
+    [defaults setObject:did forKey:@"kDeviceIDStorageKey"];
+    [defaults setObject:did forKey:@"tt_device_id"];
+    [defaults setObject:did forKey:@"did"];
+    [defaults setObject:did forKey:@"com.ss.iphone.ugc.Awe.device_id"];
+    
+    if (iid && iid.length >= 5 && ![iid isEqualToString:@"0"]) {
+        [defaults setObject:iid forKey:@"bmtiktok_persistent_install_id"];
+        [defaults setObject:iid forKey:@"kInstallIDStorageKey"];
+        [defaults setObject:iid forKey:@"tt_install_id"];
+        [defaults setObject:iid forKey:@"iid"];
+        [defaults setObject:iid forKey:@"com.ss.iphone.ugc.Awe.install_id"];
+    }
+    [defaults setBool:YES forKey:@"bmtiktok_device_id_confirmed"];
+    [defaults synchronize];
+    [BMLogger log:@"[DEVICE-ID] Đã lưu Device ID chính thức từ máy chủ: DID=%@ | IID=%@", did, iid ?: @"none"];
+}
+
 + (BOOL)fixLoginRateLimitAndResetDeviceID {
     [BMLogger log:@"[DEVICE-RESET] Bắt đầu quá trình xóa cache Device ID & làm mới thiết bị..."];
     // 1. Xóa các khóa lưu cache Device ID / Install ID trong NSUserDefaults
@@ -297,6 +322,7 @@ static NSString *settingsBackupFilePath() {
     NSArray *keysToRemove = @[
         @"bmtiktok_persistent_device_id",
         @"bmtiktok_persistent_install_id",
+        @"bmtiktok_device_id_confirmed",
         @"kInstallIDStorageKey",
         @"kDeviceIDStorageKey",
         @"kClientDIDStorageKey",
