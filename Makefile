@@ -6,7 +6,7 @@ include $(THEOS)/makefiles/common.mk
 
 TWEAK_NAME = BMTikTok
 
-BMTikTok_FILES = Tweak.x $(wildcard *.m JGProgressHUD/*.m Settings/*.m)
+BMTikTok_FILES = Tweak.x fishhook/fishhook.c $(wildcard *.m JGProgressHUD/*.m Settings/*.m)
 BMTikTok_FRAMEWORKS = UIKit Foundation CoreGraphics Photos CoreServices SystemConfiguration SafariServices Security QuartzCore
 BMTikTok_CFLAGS = -fobjc-arc -Wno-unused-variable -Wno-unused-value -Wno-deprecated-declarations -Wno-nullability-completeness -Wno-unused-function -Wno-incompatible-pointer-types -Wno-error
 
