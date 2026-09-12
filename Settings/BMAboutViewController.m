@@ -16,19 +16,18 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"Thông Tin Tác Giả & Hỗ Trợ";
+    self.title = @"Thông Tin Tác Giả";
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 4;
+    return 3;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     switch (section) {
         case 0: return @"TÁC GIẢ & LIÊN KẾT XÃ HỘI";
         case 1: return @"SAO LƯU & XUẤT/NHẬP CẤU HÌNH";
-        case 2: return @"HỖ TRỢ & HƯỚNG DẪN";
-        case 3: return @"QUẢN TRỊ HỆ THỐNG";
+        case 2: return @"QUẢN TRỊ HỆ THỐNG";
         default: return @"";
     }
 }
@@ -38,7 +37,6 @@
         case 0: return 6;
         case 1: return 6; // Xuất JSON, Nhập File, Copy Clipboard, Dán Clipboard, Lưu Keychain, Khôi phục Keychain
         case 2: return 2;
-        case 3: return 2;
         default: return 0;
     }
 }
@@ -130,23 +128,6 @@
         }
         return cell;
     } else if (indexPath.section == 2) {
-        static NSString *guideCellId = @"GuideCell";
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:guideCellId];
-        if (!cell) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:guideCellId];
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        }
-        if (indexPath.row == 0) {
-            cell.textLabel.text = @"Sửa lỗi Đăng nhập / SMS OTP";
-            cell.detailTextLabel.text = @"Xem các mẹo đăng nhập khi bị báo 'gửi quá nhiều lần'";
-            cell.imageView.image = [UIImage systemImageNamed:@"questionmark.circle.fill"];
-        } else {
-            cell.textLabel.text = @"Kho Lưu Trữ Dự Án BMTikTok";
-            cell.detailTextLabel.text = @"Mã nguồn mở và các bản phát hành mới nhất";
-            cell.imageView.image = [UIImage systemImageNamed:@"folder.fill"];
-        }
-        return cell;
-    } else if (indexPath.section == 3) {
         if (indexPath.row == 0) {
             static NSString *fixLoginCellId = @"FixLoginCell";
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:fixLoginCellId];
@@ -256,16 +237,6 @@
             }
         }
     } else if (indexPath.section == 2) {
-        if (indexPath.row == 0) {
-            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Mẹo Đăng Nhập Tài Khoản"
-                                                                           message:@"Nếu gặp lỗi 'Gửi quá nhiều lần' khi nhận mã SMS:\n\n1. Sử dụng Tên người dùng / Email & Mật khẩu để vào thẳng.\n\n2. Hoặc đăng nhập trên máy tính / Safari rồi dùng app quét mã QR.\n\n3. Tắt công tắc 'Bật đổi vùng' trong mục Khu Vực & Đổi Quốc Gia trước khi gửi mã SMS."
-                                                                    preferredStyle:UIAlertControllerStyleAlert];
-            [alert addAction:[UIAlertAction actionWithTitle:@"Đã hiểu" style:UIAlertActionStyleDefault handler:nil]];
-            [self presentViewController:alert animated:YES completion:nil];
-        } else {
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://github.com/manhtuan28/BMTikTok"] options:@{} completionHandler:nil];
-        }
-    } else if (indexPath.section == 3) {
         if (indexPath.row == 0) {
             UIAlertController *confirm = [UIAlertController alertControllerWithTitle:@"Làm mới Device ID & Sửa lỗi Đăng nhập"
                                                                              message:@"Chức năng này sẽ xóa mã máy bị TikTok chặn do 'truy cập quá thường xuyên', cấp phát Device ID mới hoàn toàn để bạn đăng nhập bình thường.\n\nBạn có muốn tiếp tục không?"

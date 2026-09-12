@@ -379,9 +379,13 @@ static BOOL isAuthenticationShowed = FALSE;
             if ([interCtrl respondsToSelector:@selector(hideAllElements:exceptArray:)]) {
                 [((id)interCtrl) hideAllElements:YES exceptArray:nil];
             }
+            // Ẩn từng subview overlay thay vì ẩn toàn bộ view (tránh mất video)
             if ([interCtrl respondsToSelector:@selector(view)]) {
                 UIView *interView = [((id)interCtrl) view];
-                interView.alpha = 0.0;
+                for (UIView *subview in interView.subviews) {
+                    if (subview.tag == 998 || subview.tag == 999) continue;
+                    subview.alpha = 0.0;
+                }
             }
         }
     }
@@ -412,7 +416,11 @@ static BOOL isAuthenticationShowed = FALSE;
         if ([self respondsToSelector:@selector(hideAllElements:exceptArray:)]) {
             [self hideAllElements:YES exceptArray:nil];
         }
-        self.view.alpha = 0.0;
+        // Ẩn từng subview overlay, không ẩn toàn bộ self.view (tránh mất video)
+        for (UIView *subview in self.view.subviews) {
+            if (subview.tag == 998 || subview.tag == 999) continue;
+            subview.alpha = 0.0;
+        }
     }
 }
 
@@ -425,7 +433,11 @@ static BOOL isAuthenticationShowed = FALSE;
         if ([self respondsToSelector:@selector(hideAllElements:exceptArray:)]) {
             [self hideAllElements:YES exceptArray:nil];
         }
-        self.view.alpha = 0.0;
+        // Ẩn từng subview overlay, không ẩn toàn bộ self.view (tránh mất video)
+        for (UIView *subview in self.view.subviews) {
+            if (subview.tag == 998 || subview.tag == 999) continue;
+            subview.alpha = 0.0;
+        }
     }
 }
 
@@ -989,15 +1001,19 @@ static BOOL isAuthenticationShowed = FALSE;
             if ([interactionController respondsToSelector:@selector(hideAllElements:exceptArray:)]) {
                 [((id)interactionController) hideAllElements:hide exceptArray:nil];
             }
+            // Ẩn từng subview overlay thay vì ẩn toàn bộ view (tránh mất video)
             if ([interactionController respondsToSelector:@selector(view)]) {
                 UIView *interView = [((id)interactionController) view];
                 if (interView) {
-                    if (animated) {
-                        [UIView animateWithDuration:0.25 animations:^{
-                            interView.alpha = hide ? 0.0 : 1.0;
-                        }];
-                    } else {
-                        interView.alpha = hide ? 0.0 : 1.0;
+                    for (UIView *subview in interView.subviews) {
+                        if (subview.tag == 998 || subview.tag == 999) continue;
+                        if (animated) {
+                            [UIView animateWithDuration:0.25 animations:^{
+                                subview.alpha = hide ? 0.0 : 1.0;
+                            }];
+                        } else {
+                            subview.alpha = hide ? 0.0 : 1.0;
+                        }
                     }
                 }
             }
@@ -1451,15 +1467,19 @@ static BOOL isAuthenticationShowed = FALSE;
             if ([interactionController respondsToSelector:@selector(hideAllElements:exceptArray:)]) {
                 [((id)interactionController) hideAllElements:hide exceptArray:nil];
             }
+            // Ẩn từng subview overlay thay vì ẩn toàn bộ view (tránh mất video)
             if ([interactionController respondsToSelector:@selector(view)]) {
                 UIView *interView = [((id)interactionController) view];
                 if (interView) {
-                    if (animated) {
-                        [UIView animateWithDuration:0.25 animations:^{
-                            interView.alpha = hide ? 0.0 : 1.0;
-                        }];
-                    } else {
-                        interView.alpha = hide ? 0.0 : 1.0;
+                    for (UIView *subview in interView.subviews) {
+                        if (subview.tag == 998 || subview.tag == 999) continue;
+                        if (animated) {
+                            [UIView animateWithDuration:0.25 animations:^{
+                                subview.alpha = hide ? 0.0 : 1.0;
+                            }];
+                        } else {
+                            subview.alpha = hide ? 0.0 : 1.0;
+                        }
                     }
                 }
             }
