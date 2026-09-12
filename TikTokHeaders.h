@@ -67,6 +67,7 @@
 @end
 
 @interface TTNetworkManagerChromium : NSObject
+- (id)pickCommonParams:(id)arg1 commonParamLevel:(NSInteger)arg2;
 @end
 
 @interface AppDelegate : NSObject <UIApplicationDelegate>
@@ -661,9 +662,6 @@ static inline BOOL is_iPad() {
 - (void)setPureMode:(BOOL)pureMode;
 @end
 
-@interface TTNetworkManagerChromium : NSObject
-- (id)pickCommonParams:(id)arg1 commonParamLevel:(NSInteger)arg2;
-@end
 
 @interface TTAccountAPIWatchdog : NSObject
 + (void)startMonitoringPassportReqeust;
