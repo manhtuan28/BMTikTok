@@ -429,14 +429,54 @@
 
 @interface TTInstallUtil: NSObject
 + (bool)isJailBroken;
++ (id)onTheFlyParameter;
++ (id)commonURLParameters;
+@end
+
+@interface TTTrackerUtil: NSObject
++ (id)onTheFlyParameter;
+@end
+
+@interface BDInstall: NSObject
++ (id)deviceID;
++ (id)installID;
++ (id)clientDID;
+- (id)deviceID;
+- (id)installID;
+- (id)clientDID;
 @end
 
 @interface TTInstallIDManager: NSObject
 + (id)sharedManager;
 + (id)defaultManager;
++ (id)deviceID;
++ (id)installID;
++ (id)clientDID;
 - (id)deviceID;
 - (id)installID;
 - (id)clientDID;
+- (void)setDeviceID:(id)did;
+- (void)setInstallID:(id)iid;
+- (void)registerDeviceWithCompletionHandler:(id)handler;
+- (void)trackDeviceRegisterResultIfNeeded:(BOOL)arg1 response:(id)response error:(id)error triggerFrom:(id)trigger transitStatusBefore:(id)before currentTransitStatus:(id)current startTimestamp:(double)start;
+@end
+
+@interface TTAccountConfiguration: NSObject
+- (id)tta_deviceID;
+- (id)tta_installID;
+@end
+
+@interface TTHttpRequestChromium: NSObject
+@property(copy, nonatomic) NSURL *URL;
+@property(copy, nonatomic) NSString *HTTPMethod;
+@property(copy, nonatomic) NSDictionary *allHTTPHeaderFields;
+@property(copy, nonatomic) NSData *HTTPBody;
+@end
+
+@interface TTHttpTaskChromium: NSObject
+@property(retain, nonatomic) TTHttpRequestChromium *request;
+- (void)runRequestFiltersAndStart;
+- (void)resume;
 @end
 
 @interface TTInstallService: NSObject

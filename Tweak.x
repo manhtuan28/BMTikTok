@@ -3077,6 +3077,43 @@ static NSString *bm_emojiForCountryCode(NSString *countryCode) {
 %end
 
 %hook TTInstallIDManager
++ (id)deviceID {
+    id orig = %orig;
+    if (orig && [orig length] > 5 && ![orig isEqualToString:@"0"] && ![orig isEqualToString:@"unknown"]) {
+        return orig;
+    }
+    return [BMConfigManager persistentDeviceID];
+}
+
++ (id)installID {
+    id orig = %orig;
+    if (orig && [orig length] > 5 && ![orig isEqualToString:@"0"] && ![orig isEqualToString:@"unknown"]) {
+        return orig;
+    }
+    return [BMConfigManager persistentInstallID];
+}
+
++ (id)clientDID {
+    id orig = %orig;
+    if (orig && [orig length] > 5 && ![orig isEqualToString:@"0"] && ![orig isEqualToString:@"unknown"]) {
+        return orig;
+    }
+    return [BMConfigManager persistentDeviceID];
+}
+
+- (id)init {
+    id instance = %orig;
+    NSString *did = [BMConfigManager persistentDeviceID];
+    NSString *iid = [BMConfigManager persistentInstallID];
+    if ([instance respondsToSelector:@selector(setDeviceID:)]) {
+        [instance setDeviceID:did];
+    }
+    if ([instance respondsToSelector:@selector(setInstallID:)]) {
+        [instance setInstallID:iid];
+    }
+    return instance;
+}
+
 - (id)deviceID {
     id orig = %orig;
     if (orig && [orig length] > 5 && ![orig isEqualToString:@"0"] && ![orig isEqualToString:@"unknown"]) {
@@ -3101,20 +3138,94 @@ static NSString *bm_emojiForCountryCode(NSString *countryCode) {
     return [BMConfigManager persistentDeviceID];
 }
 
+- (void)registerDeviceWithCompletionHandler:(void (^)(NSError *error, NSString *did, NSString *iid))handler {
+    NSString *did = [BMConfigManager persistentDeviceID];
+    NSString *iid = [BMConfigManager persistentInstallID];
+    
+    if ([self respondsToSelector:@selector(setDeviceID:)]) {
+        [self setDeviceID:did];
+    }
+    if ([self respondsToSelector:@selector(setInstallID:)]) {
+        [self setInstallID:iid];
+    }
+    
+    void (^wrappedHandler)(NSError *error, NSString *resDid, NSString *resIid) = ^(NSError *error, NSString *resDid, NSString *resIid) {
+        if (!resDid || resDid.length < 5 || [resDid isEqualToString:@"0"]) {
+            resDid = did;
+            resIid = iid;
+            error = nil;
+            if ([self respondsToSelector:@selector(setDeviceID:)]) {
+                [self setDeviceID:did];
+            }
+            if ([self respondsToSelector:@selector(setInstallID:)]) {
+                [self setInstallID:iid];
+            }
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"TTInstallDeviceDidRegisteredNotification" object:self userInfo:@{@"device_id": did, @"install_id": iid}];
+        }
+        if (handler) {
+            handler(error, resDid, resIid);
+        }
+    };
+    
+    %orig(wrappedHandler);
+}
+
 - (void)trackDeviceRegisterResultIfNeeded:(BOOL)arg1 response:(id)response error:(id)error triggerFrom:(id)trigger transitStatusBefore:(id)before currentTransitStatus:(id)current startTimestamp:(double)start {
     %orig;
-    if ([response isKindOfClass:[NSDictionary class]]) {
-        id did = response[@"device_id"];
-        id iid = response[@"install_id"];
-        NSString *didStr = [did isKindOfClass:[NSNumber class]] ? [did stringValue] : (NSString *)did;
-        NSString *iidStr = [iid isKindOfClass:[NSNumber class]] ? [iid stringValue] : (NSString *)iid;
-        if (didStr && didStr.length > 5 && ![didStr isEqualToString:@"0"]) {
-            [BMLogger log:@"[DEVICE-REGISTER] Máy chủ TikTok đã cấp Device ID mới: DID=%@ | IID=%@", didStr, iidStr ?: @"0"];
-            [BMConfigManager setConfirmedDeviceID:didStr installID:iidStr];
-        } else {
-            [BMLogger log:@"[DEVICE-REGISTER] Đăng ký thiết bị: response=%@ | error=%@", response, error];
-        }
+    NSString *did = [BMConfigManager persistentDeviceID];
+    NSString *iid = [BMConfigManager persistentInstallID];
+    if ([self respondsToSelector:@selector(setDeviceID:)]) {
+        [self setDeviceID:did];
     }
+    if ([self respondsToSelector:@selector(setInstallID:)]) {
+        [self setInstallID:iid];
+    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"TTInstallDeviceDidRegisteredNotification" object:self userInfo:@{@"device_id": did, @"install_id": iid}];
+}
+%end
+
+%hook BDInstall
++ (id)deviceID {
+    id orig = %orig;
+    if (orig && [orig length] > 5 && ![orig isEqualToString:@"0"] && ![orig isEqualToString:@"unknown"]) {
+        return orig;
+    }
+    return [BMConfigManager persistentDeviceID];
+}
++ (id)installID {
+    id orig = %orig;
+    if (orig && [orig length] > 5 && ![orig isEqualToString:@"0"] && ![orig isEqualToString:@"unknown"]) {
+        return orig;
+    }
+    return [BMConfigManager persistentInstallID];
+}
++ (id)clientDID {
+    id orig = %orig;
+    if (orig && [orig length] > 5 && ![orig isEqualToString:@"0"] && ![orig isEqualToString:@"unknown"]) {
+        return orig;
+    }
+    return [BMConfigManager persistentDeviceID];
+}
+- (id)deviceID {
+    id orig = %orig;
+    if (orig && [orig length] > 5 && ![orig isEqualToString:@"0"] && ![orig isEqualToString:@"unknown"]) {
+        return orig;
+    }
+    return [BMConfigManager persistentDeviceID];
+}
+- (id)installID {
+    id orig = %orig;
+    if (orig && [orig length] > 5 && ![orig isEqualToString:@"0"] && ![orig isEqualToString:@"unknown"]) {
+        return orig;
+    }
+    return [BMConfigManager persistentInstallID];
+}
+- (id)clientDID {
+    id orig = %orig;
+    if (orig && [orig length] > 5 && ![orig isEqualToString:@"0"] && ![orig isEqualToString:@"unknown"]) {
+        return orig;
+    }
+    return [BMConfigManager persistentDeviceID];
 }
 %end
 
@@ -3139,6 +3250,70 @@ static NSString *bm_emojiForCountryCode(NSString *countryCode) {
 %hook TTInstallUtil
 +(bool)isJailBroken {
     return NO;
+}
++ (id)onTheFlyParameter {
+    id res = %orig;
+    if ([res isKindOfClass:[NSDictionary class]]) {
+        NSMutableDictionary *mut = [res isKindOfClass:[NSMutableDictionary class]] ? (NSMutableDictionary *)res : [res mutableCopy];
+        NSString *did = mut[@"device_id"];
+        if (!did || did.length < 5 || [did isEqualToString:@"0"]) {
+            mut[@"device_id"] = [BMConfigManager persistentDeviceID];
+        }
+        NSString *iid = mut[@"install_id"];
+        if (!iid || iid.length < 5 || [iid isEqualToString:@"0"]) {
+            mut[@"install_id"] = [BMConfigManager persistentInstallID];
+        }
+        return [mut copy];
+    }
+    return res;
+}
++ (id)commonURLParameters {
+    id res = %orig;
+    if ([res isKindOfClass:[NSDictionary class]]) {
+        NSMutableDictionary *mut = [res isKindOfClass:[NSMutableDictionary class]] ? (NSMutableDictionary *)res : [res mutableCopy];
+        NSString *did = mut[@"device_id"];
+        if (!did || did.length < 5 || [did isEqualToString:@"0"]) {
+            mut[@"device_id"] = [BMConfigManager persistentDeviceID];
+        }
+        NSString *iid = mut[@"install_id"];
+        if (!iid || iid.length < 5 || [iid isEqualToString:@"0"]) {
+            mut[@"install_id"] = [BMConfigManager persistentInstallID];
+        }
+        return [mut copy];
+    }
+    return res;
+}
+%end
+
+%hook TTTrackerUtil
++ (id)onTheFlyParameter {
+    id res = %orig;
+    if ([res isKindOfClass:[NSDictionary class]]) {
+        NSMutableDictionary *mut = [res isKindOfClass:[NSMutableDictionary class]] ? (NSMutableDictionary *)res : [res mutableCopy];
+        NSString *did = mut[@"device_id"];
+        if (!did || did.length < 5 || [did isEqualToString:@"0"]) {
+            mut[@"device_id"] = [BMConfigManager persistentDeviceID];
+        }
+        NSString *iid = mut[@"install_id"];
+        if (!iid || iid.length < 5 || [iid isEqualToString:@"0"]) {
+            mut[@"install_id"] = [BMConfigManager persistentInstallID];
+        }
+        return [mut copy];
+    }
+    return res;
+}
+%end
+
+%hook TTAccountConfiguration
+- (id)tta_deviceID {
+    id orig = %orig;
+    if (orig && [orig length] > 5 && ![orig isEqualToString:@"0"]) return orig;
+    return [BMConfigManager persistentDeviceID];
+}
+- (id)tta_installID {
+    id orig = %orig;
+    if (orig && [orig length] > 5 && ![orig isEqualToString:@"0"]) return orig;
+    return [BMConfigManager persistentInstallID];
 }
 %end
 
@@ -3223,36 +3398,165 @@ static id bm_injectDeviceParamsIfNeeded(id url) {
         return url;
     }
     
+    // Không can thiệp CDN ảnh, video hoặc URL đã ký
+    if ([urlString containsString:@"tiktokcdn.com"] || 
+        [urlString containsString:@"byteoversea.com"] || 
+        [urlString containsString:@"ibyteimg.com"] ||
+        [urlString containsString:@"x-signature="]) {
+        return url;
+    }
+    
     NSString *did = [BMConfigManager persistentDeviceID];
     NSString *iid = [BMConfigManager persistentInstallID];
     if (!did || !iid) return url;
     
-    // Fix device_id
+    BOOL modified = NO;
+    
+    // Fix device_id nếu đã có nhưng rỗng hoặc = 0
     if ([urlString containsString:@"device_id=&"]) {
         urlString = [urlString stringByReplacingOccurrencesOfString:@"device_id=&" withString:[NSString stringWithFormat:@"device_id=%@&", did]];
+        modified = YES;
     } else if ([urlString containsString:@"device_id=0&"]) {
         urlString = [urlString stringByReplacingOccurrencesOfString:@"device_id=0&" withString:[NSString stringWithFormat:@"device_id=%@&", did]];
+        modified = YES;
     } else if ([urlString hasSuffix:@"device_id="]) {
         urlString = [urlString stringByAppendingString:did];
-    } else if (![urlString containsString:@"device_id="]) {
-        NSString *sep = [urlString containsString:@"?"] ? @"&" : @"?";
-        urlString = [urlString stringByAppendingFormat:@"%@device_id=%@", sep, did];
+        modified = YES;
+    } else if ([urlString hasSuffix:@"device_id=0"]) {
+        urlString = [urlString substringToIndex:urlString.length - 1];
+        urlString = [urlString stringByAppendingString:did];
+        modified = YES;
     }
     
-    // Fix install_id
+    // Fix install_id nếu đã có nhưng rỗng hoặc = 0
     if ([urlString containsString:@"install_id=&"]) {
         urlString = [urlString stringByReplacingOccurrencesOfString:@"install_id=&" withString:[NSString stringWithFormat:@"install_id=%@&", iid]];
+        modified = YES;
     } else if ([urlString containsString:@"install_id=0&"]) {
         urlString = [urlString stringByReplacingOccurrencesOfString:@"install_id=0&" withString:[NSString stringWithFormat:@"install_id=%@&", iid]];
+        modified = YES;
     } else if ([urlString hasSuffix:@"install_id="]) {
         urlString = [urlString stringByAppendingString:iid];
-    } else if (![urlString containsString:@"install_id="]) {
-        NSString *sep = [urlString containsString:@"?"] ? @"&" : @"?";
-        urlString = [urlString stringByAppendingFormat:@"%@install_id=%@", sep, iid];
+        modified = YES;
+    } else if ([urlString hasSuffix:@"install_id=0"]) {
+        urlString = [urlString substringToIndex:urlString.length - 1];
+        urlString = [urlString stringByAppendingString:iid];
+        modified = YES;
     }
     
+    // Nếu là request passport / auth / login / account mà hoàn toàn chưa có device_id / install_id:
+    NSString *lower = [urlString lowercaseString];
+    BOOL isPassportOrAuth = [lower containsString:@"/passport/"] || 
+                            [lower containsString:@"/auth/"] || 
+                            [lower containsString:@"/account_lookup/"] ||
+                            [lower containsString:@"only_login"];
+    if (isPassportOrAuth) {
+        if (![urlString containsString:@"device_id="]) {
+            NSString *sep = [urlString containsString:@"?"] ? @"&" : @"?";
+            urlString = [urlString stringByAppendingFormat:@"%@device_id=%@", sep, did];
+            modified = YES;
+        }
+        if (![urlString containsString:@"install_id="]) {
+            NSString *sep = [urlString containsString:@"?"] ? @"&" : @"?";
+            urlString = [urlString stringByAppendingFormat:@"%@install_id=%@", sep, iid];
+            modified = YES;
+        }
+    }
+    
+    if (!modified) return url;
     return isNSURL ? [NSURL URLWithString:urlString] : urlString;
 }
+
+%hook TTHttpTaskChromium
+- (void)runRequestFiltersAndStart {
+    @try {
+        id req = nil;
+        if ([self respondsToSelector:@selector(request)]) {
+            req = [self request];
+        }
+        if (!req) {
+            @try { req = [self valueForKey:@"request"]; } @catch (NSException *e) {}
+        }
+        if (req) {
+            NSURL *currentURL = nil;
+            if ([req respondsToSelector:@selector(URL)]) {
+                currentURL = [req URL];
+            } else {
+                @try { currentURL = [req valueForKey:@"URL"]; } @catch (NSException *e) {}
+            }
+            if (currentURL) {
+                NSURL *newURL = bm_injectDeviceParamsIfNeeded(currentURL);
+                if (newURL && ![newURL isEqual:currentURL]) {
+                    if ([req respondsToSelector:@selector(setURL:)]) {
+                        [req setURL:newURL];
+                    } else {
+                        @try { [req setValue:newURL forKey:@"URL"]; } @catch (NSException *e) {}
+                    }
+                    [BMLogger log:@"[TTHttpTask] Đã tiêm DID & IID vào URL: %@", [newURL absoluteString]];
+                }
+            }
+            
+            // Xử lý HTTPBody nếu có device_id=&
+            NSData *bodyData = nil;
+            if ([req respondsToSelector:@selector(HTTPBody)]) {
+                bodyData = [req HTTPBody];
+            } else {
+                @try { bodyData = [req valueForKey:@"HTTPBody"]; } @catch (NSException *e) {}
+            }
+            if (bodyData && [bodyData length] > 0) {
+                NSString *bodyStr = [[NSString alloc] initWithData:bodyData encoding:NSUTF8StringEncoding];
+                if (bodyStr && ([bodyStr containsString:@"device_id=&"] || [bodyStr containsString:@"device_id=0&"])) {
+                    NSString *did = [BMConfigManager persistentDeviceID];
+                    NSString *iid = [BMConfigManager persistentInstallID];
+                    bodyStr = [bodyStr stringByReplacingOccurrencesOfString:@"device_id=&" withString:[NSString stringWithFormat:@"device_id=%@&", did]];
+                    bodyStr = [bodyStr stringByReplacingOccurrencesOfString:@"device_id=0&" withString:[NSString stringWithFormat:@"device_id=%@&", did]];
+                    bodyStr = [bodyStr stringByReplacingOccurrencesOfString:@"install_id=&" withString:[NSString stringWithFormat:@"install_id=%@&", iid]];
+                    bodyStr = [bodyStr stringByReplacingOccurrencesOfString:@"install_id=0&" withString:[NSString stringWithFormat:@"install_id=%@&", iid]];
+                    NSData *newBodyData = [bodyStr dataUsingEncoding:NSUTF8StringEncoding];
+                    if ([req respondsToSelector:@selector(setHTTPBody:)]) {
+                        [req setHTTPBody:newBodyData];
+                    } else {
+                        @try { [req setValue:newBodyData forKey:@"HTTPBody"]; } @catch (NSException *e) {}
+                    }
+                }
+            }
+        }
+    } @catch (NSException *e) {}
+    %orig;
+}
+
+- (void)resume {
+    @try {
+        id req = nil;
+        if ([self respondsToSelector:@selector(request)]) {
+            req = [self request];
+        }
+        if (!req) {
+            @try { req = [self valueForKey:@"request"]; } @catch (NSException *e) {}
+        }
+        if (req) {
+            NSURL *currentURL = nil;
+            if ([req respondsToSelector:@selector(URL)]) {
+                currentURL = [req URL];
+            } else {
+                @try { currentURL = [req valueForKey:@"URL"]; } @catch (NSException *e) {}
+            }
+            if (currentURL) {
+                NSURL *newURL = bm_injectDeviceParamsIfNeeded(currentURL);
+                if (newURL && ![newURL isEqual:currentURL]) {
+                    if ([req respondsToSelector:@selector(setURL:)]) {
+                        [req setURL:newURL];
+                    } else {
+                        @try { [req setValue:newURL forKey:@"URL"]; } @catch (NSException *e) {}
+                    }
+                    [BMLogger log:@"[TTHttpTask] Đã tiêm DID & IID vào URL: %@", [newURL absoluteString]];
+                }
+            }
+        }
+    } @catch (NSException *e) {}
+    %orig;
+}
+%end
 
 %hook TTNetworkManager
 - (id)commonParams {
@@ -3564,6 +3868,10 @@ static id bm_injectDeviceParamsIfNeeded(id url) {
         MSHookFunction(SecItemUpdate, hook_SecItemUpdate, (void **)&orig_SecItemUpdate);
         MSHookFunction(SecItemDelete, hook_SecItemDelete, (void **)&orig_SecItemDelete);
     }
+
+    NSString *did = [BMConfigManager persistentDeviceID];
+    NSString *iid = [BMConfigManager persistentInstallID];
+    [BMLogger log:@"[INIT] BMTikTok nạp Persistent Device ID: DID=%@ | IID=%@", did, iid];
 
     %init;
 
