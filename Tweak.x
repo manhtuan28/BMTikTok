@@ -3050,20 +3050,10 @@ static NSString *bm_emojiForCountryCode(NSString *countryCode) {
 
 %hook TTInstallDeviceZTIManager
 + (void)addDTokenToRequestIfNeeded:(id)request {
-    id mgr = nil;
-    if ([self respondsToSelector:@selector(sharedManager)]) {
-        mgr = [self performSelector:@selector(sharedManager)];
-    } else if ([self respondsToSelector:@selector(defaultManager)]) {
-        mgr = [self performSelector:@selector(defaultManager)];
-    }
-    NSString *dtoken = nil;
-    if (mgr && [mgr respondsToSelector:@selector(dtoken)]) {
-        dtoken = [mgr performSelector:@selector(dtoken)];
-    }
-    if (!dtoken || [dtoken length] == 0) {
-        [BMLogger log:@"[DEVICE-ZTI] Bỏ qua addDTokenToRequestIfNeeded vì dtoken rỗng (ngăn chặn lỗi error_code 7)"];
-        return;
-    }
+    // QUAN TRỌNG: LUÔN gọi %orig để cho phép TikTok gắn dtoken vào request.
+    // Trước đây hook chặn (return) khi dtoken rỗng theo kiểm tra riêng,
+    // nhưng TikTok nội bộ có thể lấy dtoken từ nơi khác (static storage, dctoken cache...).
+    // Thiếu dtoken trên request → server trả error_code 7 ("quá thường xuyên").
     %orig(request);
 }
 
