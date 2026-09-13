@@ -105,18 +105,84 @@ static NSString *const kBMKeychainAccount = @"user_settings_backup";
 }
 
 + (BOOL)importSettingsFromDictionary:(NSDictionary *)dict {
-    if (![dict isKindOfClass:[NSDictionary class]]) return NO;
+    if (![dict isKindOfClass:[NSDictionary class]] || dict.count == 0) return NO;
+    
+    // Hỗ trợ trường hợp dictionary được bọc trong các root key thông dụng
+    if (dict[@"settings"] && [dict[@"settings"] isKindOfClass:[NSDictionary class]]) {
+        dict = dict[@"settings"];
+    } else if (dict[@"config"] && [dict[@"config"] isKindOfClass:[NSDictionary class]]) {
+        dict = dict[@"config"];
+    } else if (dict[@"data"] && [dict[@"data"] isKindOfClass:[NSDictionary class]]) {
+        dict = dict[@"data"];
+    } else if (dict[@"bmtiktok"] && [dict[@"bmtiktok"] isKindOfClass:[NSDictionary class]]) {
+        dict = dict[@"bmtiktok"];
+    }
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    BOOL importedAny = NO;
     for (NSString *key in [self allConfigKeys]) {
         id val = dict[key];
-        if (val != nil) {
+        if (val != nil && val != [NSNull null]) {
+            if ([val isKindOfClass:[NSString class]]) {
+                NSString *strVal = [(NSString *)val lowercaseString];
+                if ([strVal isEqualToString:@"true"]) {
+                    [defaults setBool:YES forKey:key];
+                    importedAny = YES;
+                    continue;
+                } else if ([strVal isEqualToString:@"false"]) {
+                    [defaults setBool:NO forKey:key];
+                    importedAny = YES;
+                    continue;
+                }
+            }
             [defaults setObject:val forKey:key];
+            importedAny = YES;
         }
     }
     [defaults synchronize];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"RegionSelectedNotification" object:nil];
-    return YES;
+    return importedAny;
+}
+
++ (BOOL)importSettingsFromData:(NSData *)data {
+    if (!data || data.length == 0) return NO;
+    
+    // Tự động loại bỏ UTF-8 BOM nếu có
+    if (data.length >= 3) {
+        const unsigned char *bytes = (const unsigned char *)data.bytes;
+        if (bytes[0] == 0xEF && bytes[1] == 0xBB && bytes[2] == 0xBF) {
+            data = [data subdataWithRange:NSMakeRange(3, data.length - 3)];
+        }
+    }
+    
+    NSError *error = nil;
+    id obj = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&error];
+    if ([obj isKindOfClass:[NSDictionary class]] && !error) {
+        return [self importSettingsFromDictionary:(NSDictionary *)obj];
+    }
+    
+    // Thử giải mã bằng nhiều bảng mã khác nhau phòng trường hợp file lưu từ Windows/web
+    NSArray<NSNumber *> *encodings = @[
+        @(NSUTF8StringEncoding),
+        @(NSISOLatin1StringEncoding),
+        @(NSWindowsCP1252StringEncoding),
+        @(NSUTF16StringEncoding)
+    ];
+    for (NSNumber *encNum in encodings) {
+        NSString *str = [[NSString alloc] initWithData:data encoding:[encNum unsignedIntegerValue]];
+        if (str && str.length > 0) {
+            str = [str stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+            NSData *cleanedData = [str dataUsingEncoding:NSUTF8StringEncoding];
+            if (cleanedData) {
+                id cleanObj = [NSJSONSerialization JSONObjectWithData:cleanedData options:0 error:nil];
+                if ([cleanObj isKindOfClass:[NSDictionary class]]) {
+                    return [self importSettingsFromDictionary:(NSDictionary *)cleanObj];
+                }
+            }
+        }
+    }
+    
+    return NO;
 }
 
 + (NSString *)exportSettingsToJSONString {
@@ -132,12 +198,8 @@ static NSString *const kBMKeychainAccount = @"user_settings_backup";
 + (BOOL)importSettingsFromJSONString:(NSString *)jsonString {
     if (!jsonString || !jsonString.length) return NO;
     NSData *data = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
-    if (!data) return NO;
-    
-    NSError *error = nil;
-    id obj = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
-    if ([obj isKindOfClass:[NSDictionary class]] && !error) {
-        return [self importSettingsFromDictionary:(NSDictionary *)obj];
+    if (data) {
+        return [self importSettingsFromData:data];
     }
     return NO;
 }
@@ -217,10 +279,8 @@ static NSString *settingsBackupFilePath() {
     OSStatus status = SecItemCopyMatching((__bridge CFDictionaryRef)query, &result);
     if (status == errSecSuccess && result) {
         NSData *data = (__bridge_transfer NSData *)result;
-        NSError *error = nil;
-        id obj = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
-        if ([obj isKindOfClass:[NSDictionary class]] && !error) {
-            return [self importSettingsFromDictionary:(NSDictionary *)obj];
+        if ([self importSettingsFromData:data]) {
+            return YES;
         }
     }
     
@@ -228,23 +288,15 @@ static NSString *settingsBackupFilePath() {
     NSString *backupPath = settingsBackupFilePath();
     if ([[NSFileManager defaultManager] fileExistsAtPath:backupPath]) {
         NSData *backupData = [NSData dataWithContentsOfFile:backupPath];
-        if (backupData) {
-            NSError *error = nil;
-            id obj = [NSJSONSerialization JSONObjectWithData:backupData options:0 error:&error];
-            if ([obj isKindOfClass:[NSDictionary class]] && !error) {
-                return [self importSettingsFromDictionary:(NSDictionary *)obj];
-            }
+        if (backupData && [self importSettingsFromData:backupData]) {
+            return YES;
         }
     }
     
     // 3. Fallback: Khôi phục từ NSUserDefaults Master Record
     NSData *masterData = [[NSUserDefaults standardUserDefaults] objectForKey:@"BMTikTok_Master_Settings_Backup"];
-    if (masterData) {
-        NSError *error = nil;
-        id obj = [NSJSONSerialization JSONObjectWithData:masterData options:0 error:&error];
-        if ([obj isKindOfClass:[NSDictionary class]] && !error) {
-            return [self importSettingsFromDictionary:(NSDictionary *)obj];
-        }
+    if (masterData && [self importSettingsFromData:masterData]) {
+        return YES;
     }
     
     return NO;

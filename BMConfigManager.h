@@ -28,6 +28,9 @@
 /// Nhập cài đặt từ Dictionary
 + (BOOL)importSettingsFromDictionary:(NSDictionary *)dict;
 
+/// Nhập cài đặt từ NSData (hỗ trợ BOM, mọi encoding và cấu trúc lồng)
++ (BOOL)importSettingsFromData:(NSData *)data;
+
 /// Xuất toàn bộ cấu hình ra chuỗi JSON
 + (NSString *)exportSettingsToJSONString;
 

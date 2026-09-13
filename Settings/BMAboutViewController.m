@@ -166,12 +166,24 @@
             case 1: { // Nhập File JSON
                 UIDocumentPickerViewController *picker = nil;
                 if (@available(iOS 14.0, *)) {
-                    picker = [[UIDocumentPickerViewController alloc] initForOpeningContentTypes:@[UTTypeJSON, UTTypePlainText]];
+                    NSMutableArray<UTType *> *contentTypes = [NSMutableArray array];
+                    UTType *jsonType = [UTType typeWithFilenameExtension:@"json"];
+                    if (jsonType) [contentTypes addObject:jsonType];
+                    UTType *txtType = [UTType typeWithFilenameExtension:@"txt"];
+                    if (txtType) [contentTypes addObject:txtType];
+                    [contentTypes addObject:UTTypeJSON];
+                    [contentTypes addObject:UTTypePlainText];
+                    [contentTypes addObject:UTTypeData];
+                    [contentTypes addObject:UTTypeItem];
+                    [contentTypes addObject:UTTypeContent];
+                    
+                    picker = [[UIDocumentPickerViewController alloc] initForOpeningContentTypes:contentTypes asCopy:YES];
                 } else {
-                    picker = [[UIDocumentPickerViewController alloc] initWithDocumentTypes:@[@"public.json", @"public.plain-text"] inMode:UIDocumentPickerModeImport];
+                    picker = [[UIDocumentPickerViewController alloc] initWithDocumentTypes:@[@"public.json", @"public.plain-text", @"public.data", @"public.item", @"public.content"] inMode:UIDocumentPickerModeImport];
                 }
                 picker.delegate = self;
                 picker.allowsMultipleSelection = NO;
+                picker.modalPresentationStyle = UIModalPresentationFormSheet;
                 if (UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad) {
                     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
                     picker.popoverPresentationController.sourceView = cell ?: self.view;
@@ -222,22 +234,50 @@
 #pragma mark - UIDocumentPickerDelegate
 
 - (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentsAtURLs:(NSArray<NSURL *> *)urls {
-    if (urls.count > 0) {
-        NSURL *url = urls.firstObject;
-        BOOL accessed = [url startAccessingSecurityScopedResource];
-        NSData *data = [NSData dataWithContentsOfURL:url];
-        if (accessed) {
-            [url stopAccessingSecurityScopedResource];
-        }
-        
-        if (data) {
+    if (urls.count == 0) return;
+    
+    NSURL *url = urls.firstObject;
+    BOOL accessed = [url startAccessingSecurityScopedResource];
+    
+    NSData *data = [NSData dataWithContentsOfURL:url options:0 error:nil];
+    if (!data && url.path) {
+        data = [NSData dataWithContentsOfFile:url.path];
+    }
+    
+    if (accessed) {
+        [url stopAccessingSecurityScopedResource];
+    }
+    
+    BOOL success = NO;
+    if (data && data.length > 0) {
+        success = [BMConfigManager importSettingsFromData:data];
+        if (!success) {
             NSString *content = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-            if (content && [BMConfigManager importSettingsFromJSONString:content]) {
-                [self showAlertWithTitle:@"Thành công" message:@"Đã nhập và áp dụng cấu hình từ tệp JSON thành công!"];
-                return;
+            if (content) {
+                success = [BMConfigManager importSettingsFromJSONString:content];
             }
         }
-        [self showAlertWithTitle:@"Lỗi" message:@"Tệp đã chọn không phải file cấu hình BMTikTok hợp lệ."];
+    }
+    
+    // Dọn dẹp file tạm nếu UIDocumentPicker (asCopy:YES) copy vào thư mục tmp của app
+    if (url.path && [url.path hasPrefix:NSTemporaryDirectory()]) {
+        [[NSFileManager defaultManager] removeItemAtURL:url error:nil];
+    }
+    
+    void (^showAlertBlock)(void) = ^{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.35 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            if (success) {
+                [self showAlertWithTitle:@"Thành công" message:@"Đã nhập và áp dụng cấu hình từ tệp JSON thành công!"];
+            } else {
+                [self showAlertWithTitle:@"Lỗi" message:@"Tệp đã chọn không phải file cấu hình BMTikTok hợp lệ hoặc không thể đọc được."];
+            }
+        });
+    };
+    
+    if (self.presentedViewController == controller) {
+        [controller dismissViewControllerAnimated:YES completion:showAlertBlock];
+    } else {
+        showAlertBlock();
     }
 }
 
@@ -247,10 +287,20 @@
     }
 }
 
+- (void)documentPickerWasCancelled:(UIDocumentPickerViewController *)controller {
+    [controller dismissViewControllerAnimated:YES completion:nil];
+}
+
 - (void)showAlertWithTitle:(NSString *)title message:(NSString *)message {
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
-    [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
-    [self presentViewController:alert animated:YES completion:nil];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIViewController *presenter = self;
+        while (presenter.presentedViewController && !presenter.presentedViewController.isBeingDismissed) {
+            presenter = presenter.presentedViewController;
+        }
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+        [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
+        [presenter presentViewController:alert animated:YES completion:nil];
+    });
 }
 
 @end

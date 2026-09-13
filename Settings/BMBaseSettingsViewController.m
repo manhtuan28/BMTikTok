@@ -29,6 +29,11 @@
     ]];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.tableView reloadData];
+}
+
 - (UITableViewCell *)createSwitchCellWithTitle:(NSString *)title Detail:(NSString *)detail Key:(NSString *)key {
     NSString *cellId = [NSString stringWithFormat:@"SwitchCell_%@", key];
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellId];
