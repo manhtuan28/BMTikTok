@@ -94,13 +94,11 @@
 }
 
 - (void)dismissVC {
-    [BMConfigManager saveSettingsToKeychain];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    [BMConfigManager saveSettingsToKeychain];
 }
 
 - (void)regionSelected:(NSNotification *)notification {

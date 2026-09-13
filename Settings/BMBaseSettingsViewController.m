@@ -105,9 +105,6 @@
         [[NSUserDefaults standardUserDefaults] setBool:sender.isOn forKey:key];
         [[NSUserDefaults standardUserDefaults] synchronize];
         
-        // Đồng bộ vào Keychain để tránh bị reset khi cài lại app
-        [BMConfigManager saveSettingsToKeychain];
-        
         // Haptic feedback nhẹ nhàng
         UIImpactFeedbackGenerator *feedback = [[UIImpactFeedbackGenerator alloc] initWithStyle:UIImpactFeedbackStyleLight];
         [feedback impactOccurred];

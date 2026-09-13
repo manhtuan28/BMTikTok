@@ -172,14 +172,12 @@
 - (void)regionSwitchChanged:(UISwitch *)sender {
     [[NSUserDefaults standardUserDefaults] setBool:sender.isOn forKey:@"en_region"];
     [[NSUserDefaults standardUserDefaults] synchronize];
-    [BMConfigManager saveSettingsToKeychain];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"RegionSelectedNotification" object:nil];
 }
 
 - (void)russianFixChanged:(UISwitch *)sender {
     [[NSUserDefaults standardUserDefaults] setBool:sender.isOn forKey:@"russian_fix"];
     [[NSUserDefaults standardUserDefaults] synchronize];
-    [BMConfigManager saveSettingsToKeychain];
 }
 
 #pragma mark - UITableView Delegate
@@ -192,7 +190,6 @@
     [[NSUserDefaults standardUserDefaults] setObject:selectedRegion forKey:@"region"];
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"en_region"];
     [[NSUserDefaults standardUserDefaults] synchronize];
-    [BMConfigManager saveSettingsToKeychain];
     
     [self.tableView reloadData];
     

@@ -7,7 +7,7 @@
 
 #import "BMAboutViewController.h"
 #import "BMConfigManager.h"
-#import "BMLogger.h"
+
 #import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
 
 @interface BMAboutViewController () <UIDocumentPickerDelegate>
@@ -21,14 +21,13 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 3;
+    return 2;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     switch (section) {
         case 0: return @"TÁC GIẢ & LIÊN KẾT XÃ HỘI";
         case 1: return @"SAO LƯU & XUẤT/NHẬP CẤU HÌNH";
-        case 2: return @"QUẢN TRỊ & GỠ LỖI (DEBUG)";
         default: return @"";
     }
 }
@@ -37,7 +36,6 @@
     switch (section) {
         case 0: return 6;
         case 1: return 6; // Xuất JSON, Nhập File, Copy Clipboard, Dán Clipboard, Lưu Keychain, Khôi phục Keychain
-        case 2: return 5; // Reset DID, Mở FLEX, Xuất Log, Xóa Log, Reset All
         default: return 0;
     }
 }
@@ -128,59 +126,6 @@
                 break;
         }
         return cell;
-    } else if (indexPath.section == 2) {
-        static NSString *debugCellId = @"DebugActionCell";
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:debugCellId];
-        if (!cell) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:debugCellId];
-        }
-        cell.textLabel.textColor = [UIColor labelColor];
-        cell.textLabel.textAlignment = NSTextAlignmentNatural;
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        cell.detailTextLabel.textColor = [UIColor secondaryLabelColor];
-        
-        switch (indexPath.row) {
-            case 0:
-                cell.textLabel.text = @"Sửa lỗi Đăng nhập (Làm mới Device ID)";
-                cell.textLabel.textColor = [UIColor systemOrangeColor];
-                cell.textLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightSemibold];
-                cell.detailTextLabel.text = @"Xóa mã máy bị TikTok chặn 'quá thường xuyên', cấp mã mới";
-                cell.imageView.image = [UIImage systemImageNamed:@"arrow.triangle.2.circlepath.circle.fill"];
-                cell.imageView.tintColor = [UIColor systemOrangeColor];
-                break;
-            case 1:
-                cell.textLabel.text = @"Mở Trình Gỡ Lỗi FLEX Explorer";
-                cell.textLabel.textColor = [UIColor systemBlueColor];
-                cell.textLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightSemibold];
-                cell.detailTextLabel.text = @"Mở thanh công cụ soi View, Network, Controller, Database";
-                cell.imageView.image = [UIImage systemImageNamed:@"hammer.fill"];
-                cell.imageView.tintColor = [UIColor systemBlueColor];
-                break;
-            case 2:
-                cell.textLabel.text = @"Xuất File Log Debug (BMTikTok_Debug_Log.txt)";
-                cell.textLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightSemibold];
-                cell.detailTextLabel.text = @"Gửi/Lưu toàn bộ log mạng và lỗi đăng nhập";
-                cell.imageView.image = [UIImage systemImageNamed:@"doc.text.magnifyingglass"];
-                cell.imageView.tintColor = [UIColor systemTealColor];
-                break;
-            case 3:
-                cell.textLabel.text = @"Xóa Lịch Sử Log Debug";
-                cell.textLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightMedium];
-                cell.detailTextLabel.text = @"Làm trống file log hiện tại để ghi phiên mới";
-                cell.imageView.image = [UIImage systemImageNamed:@"trash.fill"];
-                cell.imageView.tintColor = [UIColor systemGrayColor];
-                break;
-            case 4:
-                cell.textLabel.text = @"Khôi phục tất cả cài đặt BMTikTok";
-                cell.textLabel.textColor = [UIColor systemRedColor];
-                cell.textLabel.textAlignment = NSTextAlignmentCenter;
-                cell.textLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightSemibold];
-                cell.detailTextLabel.text = nil;
-                cell.imageView.image = nil;
-                cell.accessoryType = UITableViewCellAccessoryNone;
-                break;
-        }
-        return cell;
     }
     return [[UITableViewCell alloc] init];
 }
@@ -191,8 +136,8 @@
     if (indexPath.section == 0) {
         NSString *urlString = nil;
         switch (indexPath.row) {
-            case 0: urlString = @"https://github.com/manhtuan28/BMTikTok"; break;
-            case 1: urlString = @"https://www.facebook.com/b.manhtuan.028"; break;
+            case 0: urlString = @"https://github.com/manhtuan28"; break;
+            case 1: urlString = @"https://www.facebook.com/b.manhtuan.028/"; break;
             case 2: urlString = @"https://www.tiktok.com/@capyboiii_28"; break;
             case 3: urlString = @"https://www.instagram.com/bmanhtuan282/"; break;
             case 4: urlString = @"https://x.com/buituan282"; break;
@@ -208,10 +153,13 @@
                 if (fileURL) {
                     UIActivityViewController *act = [[UIActivityViewController alloc] initWithActivityItems:@[fileURL] applicationActivities:nil];
                     if (UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad) {
-                        act.popoverPresentationController.sourceView = self.view;
-                        act.popoverPresentationController.sourceRect = CGRectMake(self.view.bounds.size.width/2, self.view.bounds.size.height/2, 0, 0);
+                        UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+                        act.popoverPresentationController.sourceView = cell ?: self.view;
+                        act.popoverPresentationController.sourceRect = cell ? cell.bounds : CGRectMake(self.view.bounds.size.width/2, self.view.bounds.size.height/2, 0, 0);
                     }
                     [self presentViewController:act animated:YES completion:nil];
+                } else {
+                    [self showAlertWithTitle:@"Lỗi" message:@"Không thể tạo tệp cấu hình JSON."];
                 }
                 break;
             }
@@ -224,29 +172,36 @@
                 }
                 picker.delegate = self;
                 picker.allowsMultipleSelection = NO;
+                if (UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+                    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+                    picker.popoverPresentationController.sourceView = cell ?: self.view;
+                    picker.popoverPresentationController.sourceRect = cell ? cell.bounds : CGRectMake(self.view.bounds.size.width/2, self.view.bounds.size.height/2, 0, 0);
+                }
                 [self presentViewController:picker animated:YES completion:nil];
                 break;
             }
             case 2: { // Copy Clipboard
                 NSString *json = [BMConfigManager exportSettingsToJSONString];
-                if (json) {
+                if (json && json.length > 0) {
                     [UIPasteboard generalPasteboard].string = json;
-                    [self showAlertWithTitle:@"Đã sao chép" message:@"Cấu hình JSON đã được lưu vào bộ nhớ tạm."];
+                    [self showAlertWithTitle:@"Đã sao chép" message:@"Cấu hình JSON đã được lưu vào bộ nhớ tạm (Clipboard)."];
+                } else {
+                    [self showAlertWithTitle:@"Lỗi" message:@"Không thể tạo chuỗi JSON từ cấu hình hiện tại."];
                 }
                 break;
             }
             case 3: { // Dán Clipboard
                 NSString *clipboard = [UIPasteboard generalPasteboard].string;
-                if (clipboard && [BMConfigManager importSettingsFromJSONString:clipboard]) {
-                    [self showAlertWithTitle:@"Thành công" message:@"Đã nạp và áp dụng cấu hình từ Clipboard!"];
+                if (clipboard && clipboard.length > 0 && [BMConfigManager importSettingsFromJSONString:clipboard]) {
+                    [self showAlertWithTitle:@"Thành công" message:@"Đã nạp và áp dụng cấu hình từ Clipboard thành công!"];
                 } else {
-                    [self showAlertWithTitle:@"Lỗi" message:@"Nội dung trong bộ nhớ tạm không phải định dạng JSON cấu hình BMTikTok hợp lệ."];
+                    [self showAlertWithTitle:@"Lỗi" message:@"Nội dung trong Clipboard không phải định dạng JSON cấu hình BMTikTok hợp lệ."];
                 }
                 break;
             }
             case 4: { // Lưu Keychain
                 if ([BMConfigManager saveSettingsToKeychain]) {
-                    [self showAlertWithTitle:@"Đã lưu Keychain" message:@"Cấu hình đã được lưu an toàn vào Keychain của iOS. Khi bạn cài lại app hoặc nâng cấp IPA, cài đặt sẽ không bị mất."];
+                    [self showAlertWithTitle:@"Đã lưu Keychain" message:@"Cấu hình đã được lưu an toàn vào Keychain của iOS. Khi bạn cài lại app hoặc nâng cấp IPA, bạn có thể bấm 'Khôi phục cấu hình từ Keychain' để lấy lại cấu hình."];
                 } else {
                     [self showAlertWithTitle:@"Lỗi" message:@"Không thể ghi cấu hình vào Keychain."];
                 }
@@ -261,54 +216,6 @@
                 break;
             }
         }
-    } else if (indexPath.section == 2) {
-        switch (indexPath.row) {
-            case 0: { // Sửa lỗi Đăng nhập (Làm mới Device ID)
-                UIAlertController *confirm = [UIAlertController alertControllerWithTitle:@"Làm mới Device ID & Sửa lỗi Đăng nhập"
-                                                                                 message:@"Chức năng này sẽ xóa mã máy bị TikTok chặn do 'truy cập quá thường xuyên', cấp phát Device ID mới hoàn toàn để bạn đăng nhập bình thường.\n\nBạn có muốn tiếp tục không?"
-                                                                          preferredStyle:UIAlertControllerStyleAlert];
-                [confirm addAction:[UIAlertAction actionWithTitle:@"Làm mới ngay" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                    [BMConfigManager fixLoginRateLimitAndResetDeviceID];
-                    [self showAlertWithTitle:@"Đã làm mới Device ID thành công!" message:@"Mã thiết bị đã được làm mới sạch sẽ. Hãy mở màn hình Đăng nhập để đăng nhập tài khoản ngay bây giờ."];
-                }]];
-                [confirm addAction:[UIAlertAction actionWithTitle:@"Hủy" style:UIAlertActionStyleCancel handler:nil]];
-                [self presentViewController:confirm animated:YES completion:nil];
-                break;
-            }
-            case 1: { // Mở FLEX Explorer
-                Class flexClass = NSClassFromString(@"FLEXManager");
-                if (flexClass) {
-                    id mgr = [flexClass performSelector:NSSelectorFromString(@"sharedManager")];
-                    [mgr performSelector:NSSelectorFromString(@"showExplorer")];
-                    [self showAlertWithTitle:@"FLEX Explorer" message:@"Đã kích hoạt thanh công cụ gỡ lỗi FLEX trên màn hình!"];
-                } else {
-                    [self showAlertWithTitle:@"Lỗi" message:@"Không tìm thấy thư viện FLEX trong ứng dụng."];
-                }
-                break;
-            }
-            case 2: { // Xuất File Log Debug
-                UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-                [BMLogger shareLogFromViewController:self sender:cell ?: self.view];
-                break;
-            }
-            case 3: { // Xóa Lịch Sử Log Debug
-                [BMLogger clearLog];
-                [self showAlertWithTitle:@"Thành công" message:@"Đã xóa sạch dữ liệu log và khởi tạo phiên log mới."];
-                break;
-            }
-            case 4: { // Khôi phục cài đặt gốc
-                UIAlertController *confirm = [UIAlertController alertControllerWithTitle:@"Khôi phục cài đặt gốc"
-                                                                                 message:@"Bạn có chắc chắn muốn đặt lại tất cả các tùy chọn BMTikTok về mặc định (TẮT toàn bộ chức năng)?"
-                                                                          preferredStyle:UIAlertControllerStyleActionSheet];
-                [confirm addAction:[UIAlertAction actionWithTitle:@"Đặt lại ngay" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
-                    [BMConfigManager resetAllSettingsToDefault];
-                    [self showAlertWithTitle:@"Thành công" message:@"Đã đặt lại toàn bộ cài đặt BMTikTok về mặc định (Toàn bộ tính năng đã được TẮT)."];
-                }]];
-                [confirm addAction:[UIAlertAction actionWithTitle:@"Hủy" style:UIAlertActionStyleCancel handler:nil]];
-                [self presentViewController:confirm animated:YES completion:nil];
-                break;
-            }
-        }
     }
 }
 
@@ -317,16 +224,26 @@
 - (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentsAtURLs:(NSArray<NSURL *> *)urls {
     if (urls.count > 0) {
         NSURL *url = urls.firstObject;
-        [url startAccessingSecurityScopedResource];
-        NSError *error = nil;
-        NSString *content = [NSString stringWithContentsOfURL:url encoding:NSUTF8StringEncoding error:&error];
-        [url stopAccessingSecurityScopedResource];
-        
-        if (content && [BMConfigManager importSettingsFromJSONString:content]) {
-            [self showAlertWithTitle:@"Thành công" message:@"Đã nhập và áp dụng cấu hình từ tệp JSON thành công!"];
-        } else {
-            [self showAlertWithTitle:@"Lỗi" message:@"Tệp đã chọn không phải file cấu hình BMTikTok hợp lệ."];
+        BOOL accessed = [url startAccessingSecurityScopedResource];
+        NSData *data = [NSData dataWithContentsOfURL:url];
+        if (accessed) {
+            [url stopAccessingSecurityScopedResource];
         }
+        
+        if (data) {
+            NSString *content = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+            if (content && [BMConfigManager importSettingsFromJSONString:content]) {
+                [self showAlertWithTitle:@"Thành công" message:@"Đã nhập và áp dụng cấu hình từ tệp JSON thành công!"];
+                return;
+            }
+        }
+        [self showAlertWithTitle:@"Lỗi" message:@"Tệp đã chọn không phải file cấu hình BMTikTok hợp lệ."];
+    }
+}
+
+- (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentAtURL:(NSURL *)url {
+    if (url) {
+        [self documentPicker:controller didPickDocumentsAtURLs:@[url]];
     }
 }
 

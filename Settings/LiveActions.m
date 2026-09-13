@@ -72,11 +72,9 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    NSNumber *selectedValue = self.liveFuncValues[indexPath.row];
     [[NSUserDefaults standardUserDefaults] setValue:selectedValue forKey:@"live_action"];
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"en_livefunc"];
     [[NSUserDefaults standardUserDefaults] synchronize];
-    [BMConfigManager saveSettingsToKeychain];
     
     [self.tableView reloadData];
     

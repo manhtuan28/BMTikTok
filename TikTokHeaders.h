@@ -73,10 +73,7 @@
 @interface AppDelegate : NSObject <UIApplicationDelegate>
 @end
 
-@interface FLEXManager : NSObject
-+ (instancetype)sharedManager;
-- (void)showExplorer;
-@end
+
 
 @interface TTKProfileHomeViewController : UIViewController
 @end

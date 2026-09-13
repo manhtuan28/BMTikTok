@@ -68,9 +68,7 @@ jobs:
           if [ -f "tools/deps/libsubstrate.dylib" ]; then
             ldid -S tools/deps/libsubstrate.dylib || true
           fi
-          if [ -f "tools/deps/FLEX.dylib" ]; then
-            ldid -S tools/deps/FLEX.dylib || true
-          fi
+
           if [ -f "tools/deps/sideloadKeychainFix.dylib" ]; then
             ldid -S tools/deps/sideloadKeychainFix.dylib || true
           fi

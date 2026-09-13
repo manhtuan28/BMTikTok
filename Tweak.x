@@ -7,177 +7,12 @@
 
 #import "TikTokHeaders.h"
 #import "BMConfigManager.h"
-#import "BMLogger.h"
+
 #import <Security/Security.h>
 #import <substrate.h>
 #import <objc/message.h>
 
-// ═══════════════════════════════════════════════════════════════
-// MARK: - 0. Keychain Sideload Fix (Retry Pattern — Giữ ZTI hoạt động)
-// ═══════════════════════════════════════════════════════════════
 
-// Dynamic Sideload Keychain Access Group Discovery & Patching
-static NSString *gSideloadAccessGroup = nil;
-
-static NSString *BMGetSideloadAccessGroup(void) {
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        NSDictionary *query = @{
-            (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
-            (__bridge id)kSecAttrAccount: @"bundleSeedID",
-            (__bridge id)kSecAttrService: @"",
-            (__bridge id)kSecReturnAttributes: (__bridge id)kCFBooleanTrue
-        };
-        CFTypeRef result = NULL;
-        OSStatus status = SecItemCopyMatching((__bridge CFDictionaryRef)query, &result);
-        if (status == errSecItemNotFound) {
-            status = SecItemAdd((__bridge CFDictionaryRef)query, &result);
-        }
-        if (status == errSecSuccess && result) {
-            NSDictionary *attr = (__bridge_transfer NSDictionary *)result;
-            gSideloadAccessGroup = [attr[(__bridge id)kSecAttrAccessGroup] copy];
-            [BMLogger log:@"[KEYCHAIN-FIX] Sideload Access Group: %@", gSideloadAccessGroup];
-        }
-    });
-    return gSideloadAccessGroup;
-}
-
-static NSMutableDictionary *BMCopyKeychainQuery(CFDictionaryRef dict) {
-    if (!dict) return nil;
-    return [(__bridge NSDictionary *)dict mutableCopy];
-}
-
-static NSMutableDictionary *BMPatchAccessGroup(NSMutableDictionary *query) {
-    NSMutableDictionary *patched = [query mutableCopy];
-    NSString *sideloadAG = BMGetSideloadAccessGroup();
-    if (sideloadAG && sideloadAG.length > 0) {
-        patched[(__bridge id)kSecAttrAccessGroup] = sideloadAG;
-    } else {
-        [patched removeObjectForKey:(__bridge id)kSecAttrAccessGroup];
-    }
-    return patched;
-}
-
-static OSStatus (*orig_SecItemAdd)(CFDictionaryRef attributes, CFTypeRef *result) = NULL;
-static OSStatus (*orig_SecItemCopyMatching)(CFDictionaryRef query, CFTypeRef *result) = NULL;
-static OSStatus (*orig_SecItemUpdate)(CFDictionaryRef query, CFDictionaryRef attributesToUpdate) = NULL;
-static OSStatus (*orig_SecItemDelete)(CFDictionaryRef query) = NULL;
-
-static OSStatus hook_SecItemAdd(CFDictionaryRef attributes, CFTypeRef *result) {
-    if (!attributes) return errSecParam;
-    OSStatus (*real_SecItemAdd)(CFDictionaryRef, CFTypeRef *) = orig_SecItemAdd ?: SecItemAdd;
-    NSMutableDictionary *clean = BMCopyKeychainQuery(attributes);
-    clean[(__bridge id)kSecAttrAccessible] = (__bridge id)kSecAttrAccessibleAfterFirstUnlock;
-
-    // Bước 1: Thử với access group gốc
-    OSStatus status = real_SecItemAdd((__bridge CFDictionaryRef)clean, result);
-
-    // Bước 2: Nếu fail do thiếu entitlement (-34018), thay bằng sideload access group
-    if (status == errSecMissingEntitlement || status == -34018) {
-        NSMutableDictionary *fallback = BMPatchAccessGroup(clean);
-        status = real_SecItemAdd((__bridge CFDictionaryRef)fallback, result);
-    }
-
-    // Nếu bị trùng lặp khóa cũ (errSecDuplicateItem = -25299), xóa key cũ và ghi đè lại
-    if (status == errSecDuplicateItem || status == -25299) {
-        NSMutableDictionary *deleteQuery = [clean mutableCopy];
-        [deleteQuery removeObjectForKey:(__bridge id)kSecValueData];
-        [deleteQuery removeObjectForKey:(__bridge id)kSecValueRef];
-        [deleteQuery removeObjectForKey:(__bridge id)kSecValuePersistentRef];
-        [deleteQuery removeObjectForKey:(__bridge id)kSecAttrAccessible];
-        [deleteQuery removeObjectForKey:(__bridge id)kSecAttrCreationDate];
-        [deleteQuery removeObjectForKey:(__bridge id)kSecAttrModificationDate];
-        [deleteQuery removeObjectForKey:(__bridge id)kSecAttrDescription];
-        [deleteQuery removeObjectForKey:(__bridge id)kSecAttrComment];
-        [deleteQuery removeObjectForKey:(__bridge id)kSecAttrCreator];
-        [deleteQuery removeObjectForKey:(__bridge id)kSecAttrType];
-        [deleteQuery removeObjectForKey:(__bridge id)kSecAttrLabel];
-        [deleteQuery removeObjectForKey:(__bridge id)kSecAttrIsInvisible];
-        [deleteQuery removeObjectForKey:(__bridge id)kSecAttrIsNegative];
-        [deleteQuery removeObjectForKey:(__bridge id)kSecReturnData];
-        [deleteQuery removeObjectForKey:(__bridge id)kSecReturnAttributes];
-        [deleteQuery removeObjectForKey:(__bridge id)kSecReturnRef];
-        [deleteQuery removeObjectForKey:(__bridge id)kSecReturnPersistentRef];
-        OSStatus (*real_SecItemDelete)(CFDictionaryRef) = orig_SecItemDelete ?: SecItemDelete;
-        OSStatus delStatus = real_SecItemDelete((__bridge CFDictionaryRef)deleteQuery);
-        if (delStatus == errSecMissingEntitlement || delStatus == -34018) {
-            NSMutableDictionary *delFallback = BMPatchAccessGroup(deleteQuery);
-            real_SecItemDelete((__bridge CFDictionaryRef)delFallback);
-        }
-        status = real_SecItemAdd((__bridge CFDictionaryRef)clean, result);
-        if (status == errSecMissingEntitlement || status == -34018) {
-            NSMutableDictionary *fallback = BMPatchAccessGroup(clean);
-            status = real_SecItemAdd((__bridge CFDictionaryRef)fallback, result);
-        }
-    }
-    NSString *account = clean[(__bridge id)kSecAttrAccount];
-    NSString *service = clean[(__bridge id)kSecAttrService];
-    [BMLogger log:@"[KEYCHAIN] SecItemAdd -> status: %d | account: %@ | service: %@", (int)status, account ?: @"none", service ?: @"none"];
-    return status;
-}
-
-static OSStatus hook_SecItemCopyMatching(CFDictionaryRef query, CFTypeRef *result) {
-    if (!query) return errSecParam;
-    OSStatus (*real_SecItemCopyMatching)(CFDictionaryRef, CFTypeRef *) = orig_SecItemCopyMatching ?: SecItemCopyMatching;
-    NSMutableDictionary *clean = BMCopyKeychainQuery(query);
-    [clean removeObjectForKey:(__bridge id)kSecAttrAccessible];
-
-    OSStatus status = errSecItemNotFound;
-    if (real_SecItemCopyMatching) {
-        // Bước 1: Thử với access group gốc
-        status = real_SecItemCopyMatching((__bridge CFDictionaryRef)clean, result);
-
-        // Bước 2: Nếu fail do thiếu entitlement (-34018), thay bằng sideload access group
-        if (status == errSecMissingEntitlement || status == -34018) {
-            NSMutableDictionary *fallback = BMPatchAccessGroup(clean);
-            status = real_SecItemCopyMatching((__bridge CFDictionaryRef)fallback, result);
-        }
-    }
-    NSString *account = clean[(__bridge id)kSecAttrAccount];
-    NSString *service = clean[(__bridge id)kSecAttrService];
-    if (status != errSecSuccess && status != errSecItemNotFound) {
-        [BMLogger log:@"[KEYCHAIN] SecItemCopyMatching -> status: %d | account: %@ | service: %@", (int)status, account ?: @"none", service ?: @"none"];
-    }
-    return status;
-}
-
-static OSStatus hook_SecItemUpdate(CFDictionaryRef query, CFDictionaryRef attributesToUpdate) {
-    if (!query || !attributesToUpdate) return errSecParam;
-    OSStatus (*real_SecItemUpdate)(CFDictionaryRef, CFDictionaryRef) = orig_SecItemUpdate ?: SecItemUpdate;
-    NSMutableDictionary *cleanQuery = BMCopyKeychainQuery(query);
-    [cleanQuery removeObjectForKey:(__bridge id)kSecAttrAccessible];
-    NSMutableDictionary *cleanAttr = BMCopyKeychainQuery(attributesToUpdate);
-
-    if (real_SecItemUpdate) {
-        OSStatus status = real_SecItemUpdate((__bridge CFDictionaryRef)cleanQuery, (__bridge CFDictionaryRef)cleanAttr);
-
-        if (status == errSecMissingEntitlement || status == -34018) {
-            NSMutableDictionary *fallbackQuery = BMPatchAccessGroup(cleanQuery);
-            NSMutableDictionary *fallbackAttr = BMPatchAccessGroup(cleanAttr);
-            status = real_SecItemUpdate((__bridge CFDictionaryRef)fallbackQuery, (__bridge CFDictionaryRef)fallbackAttr);
-        }
-        return status;
-    }
-    return errSecSuccess;
-}
-
-static OSStatus hook_SecItemDelete(CFDictionaryRef query) {
-    if (!query) return errSecParam;
-    OSStatus (*real_SecItemDelete)(CFDictionaryRef) = orig_SecItemDelete ?: SecItemDelete;
-    NSMutableDictionary *clean = BMCopyKeychainQuery(query);
-    [clean removeObjectForKey:(__bridge id)kSecAttrAccessible];
-
-    if (real_SecItemDelete) {
-        OSStatus status = real_SecItemDelete((__bridge CFDictionaryRef)clean);
-
-        if (status == errSecMissingEntitlement || status == -34018) {
-            NSMutableDictionary *fallback = BMPatchAccessGroup(clean);
-            status = real_SecItemDelete((__bridge CFDictionaryRef)fallback);
-        }
-        return status;
-    }
-    return errSecSuccess;
-}
 
 @interface UIViewController (BMPureMode)
 - (void)setPureMode:(BOOL)pureMode animated:(BOOL)animated;
@@ -213,21 +48,13 @@ static void showConfirmation(void (^okHandler)(void)) {
 %hook AppDelegate
 - (_Bool)application:(UIApplication *)application didFinishLaunchingWithOptions:(id)arg2 {
     %orig;
-    [BMLogger startLogging];
-    [BMLogger log:@"[LIFECYCLE] Ứng dụng đã khởi động thành công (didFinishLaunchingWithOptions)"];
-    
-    // FLEX giờ đây không tự động bật khi khởi động để tránh làm chậm tải video.
-    // Người dùng có thể bật bất kỳ lúc nào qua Cài đặt BMTikTok -> Về BMTikTok & Debug hoặc chạm 3 ngón tay trên màn hình.
 
-    if (![[NSUserDefaults standardUserDefaults] objectForKey:@"BMTikTok_Initialized_v2"]) {
-        [[NSUserDefaults standardUserDefaults] setObject:@YES forKey:@"BMTikTok_Initialized_v2"];
-        
-        // Thử khôi phục cài đặt từ Keychain trước (nếu người dùng cài lại IPA hoặc nâng cấp có cấu hình cũ)
-        BOOL restored = [BMConfigManager restoreSettingsFromKeychain];
-        if (!restored) {
-            // Khi vào app lần đầu: TẮT HẾT TOÀN BỘ 100% CÁC CHỨC NĂNG theo yêu cầu người dùng
-            [BMConfigManager resetAllSettingsToDefault];
-        }
+
+    if (![[NSUserDefaults standardUserDefaults] objectForKey:@"BMTikTok_Initialized_v3"]) {
+        [[NSUserDefaults standardUserDefaults] setObject:@YES forKey:@"BMTikTok_Initialized_v3"];
+        // Lần đầu vào app: TẮT HẾT toàn bộ chức năng.
+        // Người dùng phải tự nhập cấu hình từ Keychain, JSON, hoặc bật tay.
+        [BMConfigManager resetAllSettingsToDefault];
     }
     [BMIManager cleanCache];
     return true;
@@ -251,29 +78,7 @@ static BOOL isAuthenticationShowed = FALSE;
 }
 %end
 
-%hook UIWindow
-- (void)becomeKeyWindow {
-    %orig;
-    static BOOL hasGesture = NO;
-    if (!hasGesture) {
-        UITapGestureRecognizer *tripleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(bm_toggleFLEXGesture:)];
-        tripleTap.numberOfTouchesRequired = 3;
-        tripleTap.cancelsTouchesInView = NO;
-        [self addGestureRecognizer:tripleTap];
-        hasGesture = YES;
-    }
-}
 
-%new - (void)bm_toggleFLEXGesture:(UITapGestureRecognizer *)sender {
-    if (sender.state == UIGestureRecognizerStateEnded) {
-        Class flexClass = NSClassFromString(@"FLEXManager");
-        if (flexClass) {
-            id mgr = [flexClass performSelector:NSSelectorFromString(@"sharedManager")];
-            [mgr performSelector:NSSelectorFromString(@"toggleExplorer")];
-        }
-    }
-}
-%end
 
 %hook TTKSettingsBaseCellPlugin
 - (void)didSelectItemAtIndex:(NSInteger)index {
@@ -3079,23 +2884,7 @@ static NSString *bm_emojiForCountryCode(NSString *countryCode) {
     return %orig;
 }
 
-- (NSURL *)containerURLForSecurityApplicationGroupIdentifier:(NSString *)groupIdentifier {
-    if (!groupIdentifier || [groupIdentifier isEqualToString:@""]) {
-        return %orig;
-    }
-    NSURL *origURL = %orig;
-    if (origURL) {
-        return origURL;
-    }
-    // Sideload fix: Nếu hệ điều hành trả về nil do thiếu App Group entitlement,
-    // chuyển hướng sang thư mục trong Documents sandbox để TikTok có thể ghi ttinstall_ids.plist và ZTI cache.
-    NSURL *docURL = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
-    NSURL *groupURL = [docURL URLByAppendingPathComponent:[NSString stringWithFormat:@"AppGroup_%@", groupIdentifier]];
-    if (![[NSFileManager defaultManager] fileExistsAtPath:[groupURL path]]) {
-        [[NSFileManager defaultManager] createDirectoryAtURL:groupURL withIntermediateDirectories:YES attributes:nil error:nil];
-    }
-    return groupURL;
-}
+
 %end
 
 %hook NSBundle
@@ -3142,212 +2931,9 @@ static NSString *bm_emojiForCountryCode(NSString *countryCode) {
 +(bool)btd_isJailBroken {
     return NO;
 }
-- (NSString *)systemVersion {
-    return @"18.2";
-}
 %end
 
-%hook NSProcessInfo
-- (NSOperatingSystemVersion)operatingSystemVersion {
-    NSOperatingSystemVersion ver = {18, 2, 0};
-    return ver;
-}
-- (NSString *)operatingSystemVersionString {
-    return @"Version 18.2 (Build 22C152)";
-}
-%end
-
-%hook NSDictionary
-+ (id)dictionaryWithContentsOfFile:(NSString *)path {
-    if (path && [path hasSuffix:@"SystemVersion.plist"]) {
-        return @{
-            @"ProductBuildVersion": @"22C152",
-            @"ProductCopyright": @"1983-2024 Apple Inc.",
-            @"ProductName": @"iPhone OS",
-            @"ProductVersion": @"18.2"
-        };
-    }
-    return %orig;
-}
-
-- (id)initWithContentsOfFile:(NSString *)path {
-    if (path && [path hasSuffix:@"SystemVersion.plist"]) {
-        return [self initWithDictionary:@{
-            @"ProductBuildVersion": @"22C152",
-            @"ProductCopyright": @"1983-2024 Apple Inc.",
-            @"ProductName": @"iPhone OS",
-            @"ProductVersion": @"18.2"
-        }];
-    }
-    return %orig;
-}
-%end
-
-%hook TTInstallDeviceZTIManager
-+ (void)addDTokenToRequestIfNeeded:(id)request {
-    // LUÔN gọi %orig để TikTok gắn dtoken thật từ ByteDance vào request
-    %orig(request);
-}
-
-- (void)saveDToken:(NSString *)dtoken dtokenSign:(NSString *)dtokenSign forDeviceId:(NSString *)did forInstallId:(NSString *)iid {
-    [BMLogger log:@"[DEVICE-ZTI] saveDToken: %@ | did: %@ | iid: %@", dtoken ?: @"nil", did, iid];
-    if (did && did.length > 5 && ![did isEqualToString:@"0"]) {
-        [BMConfigManager setConfirmedDeviceID:did installID:iid];
-    }
-    %orig;
-}
-%end
-
-%hook TTInstallIDManager
-+ (id)deviceID {
-    id orig = %orig;
-    if (orig && [orig length] > 5 && ![orig isEqualToString:@"0"] && ![orig isEqualToString:@"unknown"]) {
-        return orig;
-    }
-    return [BMConfigManager persistentDeviceID];
-}
-
-+ (id)installID {
-    id orig = %orig;
-    if (orig && [orig length] > 5 && ![orig isEqualToString:@"0"] && ![orig isEqualToString:@"unknown"]) {
-        return orig;
-    }
-    return [BMConfigManager persistentInstallID];
-}
-
-+ (id)clientDID {
-    id orig = %orig;
-    if (orig && [orig length] > 5 && ![orig isEqualToString:@"0"] && ![orig isEqualToString:@"unknown"]) {
-        return orig;
-    }
-    return [BMConfigManager persistentDeviceID];
-}
-
-- (id)deviceID {
-    id orig = %orig;
-    if (orig && [orig length] > 5 && ![orig isEqualToString:@"0"] && ![orig isEqualToString:@"unknown"]) {
-        return orig;
-    }
-    return [BMConfigManager persistentDeviceID];
-}
-
-- (id)installID {
-    id orig = %orig;
-    if (orig && [orig length] > 5 && ![orig isEqualToString:@"0"] && ![orig isEqualToString:@"unknown"]) {
-        return orig;
-    }
-    return [BMConfigManager persistentInstallID];
-}
-
-- (id)clientDID {
-    id orig = %orig;
-    if (orig && [orig length] > 5 && ![orig isEqualToString:@"0"] && ![orig isEqualToString:@"unknown"]) {
-        return orig;
-    }
-    return [BMConfigManager persistentDeviceID];
-}
-
-- (void)trackDeviceRegisterResultIfNeeded:(BOOL)success response:(id)response error:(id)error triggerFrom:(id)trigger transitStatusBefore:(id)before currentTransitStatus:(id)current startTimestamp:(double)start {
-    %orig;
-    [BMLogger log:@"[DEVICE-REG] trackDeviceRegisterResultIfNeeded: success=%d | trigger=%@ | resp=%@ | err=%@", success, trigger, response, error];
-    if (success && response && [response isKindOfClass:[NSDictionary class]]) {
-        NSDictionary *resp = (NSDictionary *)response;
-        NSString *did = [NSString stringWithFormat:@"%@", resp[@"device_id"] ?: @"0"];
-        NSString *iid = [NSString stringWithFormat:@"%@", resp[@"install_id"] ?: @"0"];
-        if (did && ![did isEqualToString:@"0"] && did.length > 5) {
-            [BMConfigManager setConfirmedDeviceID:did installID:iid];
-            [BMLogger log:@"[DEVICE-REG] Đã xác nhận & lưu Device ID từ server: DID=%@ | IID=%@", did, iid];
-        }
-    }
-}
-%end
-
-%hook BDInstall
-+ (id)deviceID {
-    id orig = %orig;
-    if (orig && [orig length] > 5 && ![orig isEqualToString:@"0"] && ![orig isEqualToString:@"unknown"]) {
-        return orig;
-    }
-    return [BMConfigManager persistentDeviceID];
-}
-
-+ (id)installID {
-    id orig = %orig;
-    if (orig && [orig length] > 5 && ![orig isEqualToString:@"0"] && ![orig isEqualToString:@"unknown"]) {
-        return orig;
-    }
-    return [BMConfigManager persistentInstallID];
-}
-
-+ (id)clientDID {
-    id orig = %orig;
-    if (orig && [orig length] > 5 && ![orig isEqualToString:@"0"] && ![orig isEqualToString:@"unknown"]) {
-        return orig;
-    }
-    return [BMConfigManager persistentDeviceID];
-}
-
-- (id)deviceID {
-    id orig = %orig;
-    if (orig && [orig length] > 5 && ![orig isEqualToString:@"0"] && ![orig isEqualToString:@"unknown"]) {
-        return orig;
-    }
-    return [BMConfigManager persistentDeviceID];
-}
-
-- (id)installID {
-    id orig = %orig;
-    if (orig && [orig length] > 5 && ![orig isEqualToString:@"0"] && ![orig isEqualToString:@"unknown"]) {
-        return orig;
-    }
-    return [BMConfigManager persistentInstallID];
-}
-
-- (id)clientDID {
-    id orig = %orig;
-    if (orig && [orig length] > 5 && ![orig isEqualToString:@"0"] && ![orig isEqualToString:@"unknown"]) {
-        return orig;
-    }
-    return [BMConfigManager persistentDeviceID];
-}
-%end
-
-%hook TTAccountConfiguration
-- (id)tta_deviceID {
-    id orig = %orig;
-    if (orig && [orig length] > 5 && ![orig isEqualToString:@"0"] && ![orig isEqualToString:@"unknown"]) {
-        return orig;
-    }
-    return [BMConfigManager persistentDeviceID];
-}
-
-- (id)tta_installID {
-    id orig = %orig;
-    if (orig && [orig length] > 5 && ![orig isEqualToString:@"0"] && ![orig isEqualToString:@"unknown"]) {
-        return orig;
-    }
-    return [BMConfigManager persistentInstallID];
-}
-%end
-
-%hook TTInstallService
-- (id)deviceID {
-    id orig = %orig;
-    if (orig && [orig length] > 5 && ![orig isEqualToString:@"0"] && ![orig isEqualToString:@"unknown"]) {
-        return orig;
-    }
-    return [BMConfigManager persistentDeviceID];
-}
-
-- (id)installID {
-    id orig = %orig;
-    if (orig && [orig length] > 5 && ![orig isEqualToString:@"0"] && ![orig isEqualToString:@"unknown"]) {
-        return orig;
-    }
-    return [BMConfigManager persistentInstallID];
-}
-%end
-
+// Anti-jailbreak detection hooks (giữ nguyên, cần cho sideload)
 %hook TTInstallUtil
 +(bool)isJailBroken {
     return NO;
@@ -3437,42 +3023,11 @@ static NSString *bm_emojiForCountryCode(NSString *countryCode) {
 }
 %end
 
-%hook TTNetworkManagerChromium
-- (id)pickCommonParams:(id)arg1 commonParamLevel:(NSInteger)arg2 {
-    id params = %orig;
-    if ([params isKindOfClass:[NSDictionary class]]) {
-        NSMutableDictionary *mut = [params isKindOfClass:[NSMutableDictionary class]] ? (NSMutableDictionary *)params : [params mutableCopy];
-        NSString *did = mut[@"device_id"];
-        if (!did || did.length < 5 || [did isEqualToString:@"0"]) {
-            NSString *savedDid = [BMConfigManager persistentDeviceID];
-            if (savedDid) mut[@"device_id"] = savedDid;
-        }
-        NSString *iid = mut[@"install_id"];
-        if (!iid || iid.length < 5 || [iid isEqualToString:@"0"]) {
-            NSString *savedIid = [BMConfigManager persistentInstallID];
-            if (savedIid) mut[@"install_id"] = savedIid;
-        }
-        return [mut copy];
-    }
-    return params;
-}
-%end
-
 %hook TTNetworkManager
 - (id)commonParams {
     id params = %orig;
     if ([params isKindOfClass:[NSDictionary class]]) {
         NSMutableDictionary *mut = [params isKindOfClass:[NSMutableDictionary class]] ? (NSMutableDictionary *)params : [params mutableCopy];
-        NSString *did = mut[@"device_id"];
-        if (!did || did.length < 5 || [did isEqualToString:@"0"]) {
-            NSString *savedDid = [BMConfigManager persistentDeviceID];
-            if (savedDid) mut[@"device_id"] = savedDid;
-        }
-        NSString *iid = mut[@"install_id"];
-        if (!iid || iid.length < 5 || [iid isEqualToString:@"0"]) {
-            NSString *savedIid = [BMConfigManager persistentInstallID];
-            if (savedIid) mut[@"install_id"] = savedIid;
-        }
         if (mut[@"package"] && ![mut[@"package"] isEqualToString:@"com.zhiliaoapp.musically"]) {
             mut[@"package"] = @"com.zhiliaoapp.musically";
         }
@@ -3499,176 +3054,9 @@ static NSString *bm_emojiForCountryCode(NSString *countryCode) {
     }
     return params;
 }
-
-- (id)requestForJSONWithResponse:(id)url
-                          params:(id)params
-                          method:(id)method
-                needCommonParams:(BOOL)needCommonParams
-                        callback:(void (^)(NSError *error, id jsonObj, id response))callback {
-    NSString *urlStr = [NSString stringWithFormat:@"%@", url];
-    NSString *lowerURL = [urlStr lowercaseString];
-    BOOL isAuthOrPassport = [lowerURL containsString:@"passport"] ||
-                           [lowerURL containsString:@"login"] ||
-                           [lowerURL containsString:@"auth"] ||
-                           [lowerURL containsString:@"token"] ||
-                           [lowerURL containsString:@"risk"];
-                           
-    void (^wrappedCallback)(NSError *error, id jsonObj, id response) = ^(NSError *error, id jsonObj, id response) {
-        if (callback) callback(error, jsonObj, response);
-        if (isAuthOrPassport || error != nil) {
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-                NSInteger code = 0;
-                if ([response respondsToSelector:@selector(statusCode)]) {
-                    code = (NSInteger)[response statusCode];
-                }
-                [BMLogger logNetworkURL:urlStr
-                                 method:method ?: @"POST"
-                                headers:nil
-                                 params:params
-                             statusCode:code
-                           responseBody:jsonObj
-                                  error:error];
-            });
-        }
-    };
-    return %orig(url, params, method, needCommonParams, wrappedCallback);
-}
 %end
 
-%hook AWEPassportNetworkManager
 
-- (id)processWithURL:(id)url originalParams:(id)params response:(id)response rawData:(id)rawData mappingError:(id)error completionBlock:(id)block {
-    NSInteger code = 0;
-    if ([response respondsToSelector:@selector(statusCode)]) {
-        code = (NSInteger)[response statusCode];
-    }
-    [BMLogger logNetworkURL:[NSString stringWithFormat:@"%@", url ?: @"passport_url"]
-                     method:@"POST"
-                    headers:nil
-                     params:params
-                 statusCode:code
-               responseBody:rawData
-                      error:error];
-    return %orig;
-}
-
-- (void)_monitorNetworking:(id)url parameters:(id)params error:(id)error response:(id)response {
-    %orig;
-    NSInteger code = 0;
-    if ([response respondsToSelector:@selector(statusCode)]) {
-        code = (NSInteger)[response statusCode];
-    }
-    [BMLogger logNetworkURL:[NSString stringWithFormat:@"%@", url ?: @"monitor_url"]
-                     method:@"POST"
-                    headers:nil
-                     params:params
-                 statusCode:code
-               responseBody:nil
-                      error:error];
-}
-
-- (id)transferJSON:(id)json modelClass:(Class)modelClass error:(NSError **)error {
-    id result = %orig;
-    if (error && *error) {
-        [BMLogger log:@"[PASSPORT-MODEL-ERR] transferJSON class: %@ | error: %@", NSStringFromClass(modelClass), *error];
-    }
-    return result;
-}
-%end
-
-%hook AWEPassportCheckEnvModel
-- (BOOL)isSafeEnv {
-    return YES;
-}
-%end
-
-%hook AWEPassportAccoutRecoverCheckEnvModel
-- (BOOL)isSafeEnv {
-    return YES;
-}
-%end
-
-%hook AWEPassportAccoutUpdateCheckEnvModelV2
-- (BOOL)isSafeEnv {
-    return YES;
-}
-%end
-
-%hook TTAccountAPIWatchdog
-+ (void)startMonitoringPassportReqeust {
-}
-+ (void)monitorPassportRequestBypassedSDKIfNeeded:(id)arg1 {
-}
-+ (void)monitorSDKRequestResultIfNeeded:(id)arg1 response:(id)arg2 data:(id)arg3 error:(id)arg4 {
-}
-+ (void)monitorInvalidDeviceIdRequestIfNeeded:(id)arg1 trackParams:(id)arg2 {
-}
-%end
-
-%hook TTKHistoryLoginViewController
-- (BOOL)isPasskeyLoginEnabledFromHistoryLogin {
-    return NO;
-}
-%end
-
-%hook AWERiskModel
-- (BOOL)isUnderRiskControl {
-    [BMLogger log:@"[LOGIN-SECURITY] AWERiskModel isUnderRiskControl -> forced NO"];
-    return NO;
-}
-%end
-
-%hook AWEPassportAntiSpamManager
-- (BOOL)isUnusable {
-    [BMLogger log:@"[LOGIN-SECURITY] AWEPassportAntiSpamManager isUnusable -> forced NO"];
-    return NO;
-}
-%end
-
-// ═══════════════════════════════════════════════════════════════
-// MARK: - 12.1 Device ID Reset Helper for Risk Rate Limit
-// ═══════════════════════════════════════════════════════════════
-
-%hook UIAlertController
-- (void)viewWillAppear:(BOOL)animated {
-    %orig;
-    [BMLogger log:@"[UI-ALERT] Title: '%@' | Message: '%@'", self.title, self.message];
-    NSString *msg = self.message;
-    if (msg && ([msg containsString:@"quá thường xuyên"] || 
-                [msg containsString:@"too frequently"] || 
-                [msg containsString:@"quá nhiều lần"] ||
-                [msg containsString:@"1009"])) {
-        BOOL alreadyHasResetAction = NO;
-        for (UIAlertAction *act in self.actions) {
-            if ([act.title containsString:@"Device ID"] || [act.title containsString:@"Sửa lỗi"]) {
-                alreadyHasResetAction = YES;
-                break;
-            }
-        }
-        if (!alreadyHasResetAction) {
-            UIAlertAction *resetAction = [UIAlertAction actionWithTitle:@"Sửa lỗi (Làm mới Device ID)" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
-                [BMConfigManager fixLoginRateLimitAndResetDeviceID];
-                UIAlertController *doneAlert = [UIAlertController alertControllerWithTitle:@"Đã làm mới Device ID!" message:@"Mã thiết bị đã được làm mới thành công. Hãy bấm thử đăng nhập lại ngay bây giờ." preferredStyle:UIAlertControllerStyleAlert];
-                [doneAlert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
-                [topMostController() presentViewController:doneAlert animated:YES completion:nil];
-            }];
-            [self addAction:resetAction];
-        }
-    }
-}
-%end
-
-%hook UIViewController
-- (void)presentViewController:(UIViewController *)viewControllerToPresent animated:(BOOL)flag completion:(void (^)(void))completion {
-    if (viewControllerToPresent) {
-        NSString *clsName = NSStringFromClass([viewControllerToPresent class]);
-        if ([clsName containsString:@"Passport"] || [clsName containsString:@"Login"] || [clsName containsString:@"Verify"] || [clsName containsString:@"Alert"] || [clsName containsString:@"Auth"]) {
-            [BMLogger log:@"[UI-SCREEN] Đang hiển thị màn hình: %@", clsName];
-        }
-    }
-    %orig;
-}
-%end
 
 
 // ═══════════════════════════════════════════════════════════════
@@ -3712,16 +3100,9 @@ static NSString *bm_emojiForCountryCode(NSString *countryCode) {
         @"/bin/sh", @"/bin/bash",
     ];
 
-    // Khắc phục lỗi Keychain Sideload (-34018 & errSecDuplicateItem)
-    if (orig_SecItemAdd == NULL) {
-        MSHookFunction(SecItemAdd, hook_SecItemAdd, (void **)&orig_SecItemAdd);
-        MSHookFunction(SecItemCopyMatching, hook_SecItemCopyMatching, (void **)&orig_SecItemCopyMatching);
-        MSHookFunction(SecItemUpdate, hook_SecItemUpdate, (void **)&orig_SecItemUpdate);
-        MSHookFunction(SecItemDelete, hook_SecItemDelete, (void **)&orig_SecItemDelete);
-    }
 
-    // Tự động kiểm tra và dọn dẹp Device ID giả mạo cũ (nếu có) để ByteDance cấp phát ID thật
-    [BMConfigManager cleanOldFakeDeviceIDIfNeeded];
+
+
 
     %init;
 
