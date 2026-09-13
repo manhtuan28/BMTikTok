@@ -13,14 +13,21 @@
 #import <objc/message.h>
 
 // ═══════════════════════════════════════════════════════════════
-// MARK: - 0. Keychain Sideload Fix (Khắc phục triệt để lỗi Login Loop & OTP Email)
+// MARK: - 0. Keychain Sideload Fix (Retry Pattern — Giữ ZTI hoạt động)
 // ═══════════════════════════════════════════════════════════════
 
-static NSMutableDictionary *BMCleanKeychainQuery(CFDictionaryRef dict) {
+// Tạo bản sao query Keychain mà KHÔNG xóa `kSecAttrAccessGroup`.
+// Việc xóa access group chỉ được thực hiện trong retry khi gặp lỗi `-34018`.
+static NSMutableDictionary *BMCopyKeychainQuery(CFDictionaryRef dict) {
     if (!dict) return nil;
-    NSMutableDictionary *query = [(__bridge NSDictionary *)dict mutableCopy];
-    [query removeObjectForKey:(__bridge id)kSecAttrAccessGroup];
-    return query;
+    return [(__bridge NSDictionary *)dict mutableCopy];
+}
+
+// Tạo bản sao query đã loại bỏ `kSecAttrAccessGroup` — dùng cho retry fallback.
+static NSMutableDictionary *BMStripAccessGroup(NSMutableDictionary *query) {
+    NSMutableDictionary *stripped = [query mutableCopy];
+    [stripped removeObjectForKey:(__bridge id)kSecAttrAccessGroup];
+    return stripped;
 }
 
 static OSStatus (*orig_SecItemAdd)(CFDictionaryRef attributes, CFTypeRef *result) = NULL;
@@ -30,11 +37,20 @@ static OSStatus (*orig_SecItemDelete)(CFDictionaryRef query) = NULL;
 
 static OSStatus hook_SecItemAdd(CFDictionaryRef attributes, CFTypeRef *result) {
     if (!attributes) return errSecParam;
-    NSMutableDictionary *clean = BMCleanKeychainQuery(attributes);
-    clean[(__bridge id)kSecAttrAccessible] = (__bridge id)kSecAttrAccessibleAfterFirstUnlock;
     if (!orig_SecItemAdd) return errSecSuccess;
+    NSMutableDictionary *clean = BMCopyKeychainQuery(attributes);
+    clean[(__bridge id)kSecAttrAccessible] = (__bridge id)kSecAttrAccessibleAfterFirstUnlock;
+
+    // Bước 1: Thử với access group gốc (cần thiết cho ZTI keys)
     OSStatus status = orig_SecItemAdd((__bridge CFDictionaryRef)clean, result);
-    // Nếu bị trùng lặp khóa cũ trong keychain cá nhân (errSecDuplicateItem = -25299), xóa key cũ và ghi đè lại
+
+    // Bước 2: Nếu fail do thiếu entitlement (-34018), retry không có access group
+    if (status == errSecMissingEntitlement || status == -34018) {
+        NSMutableDictionary *fallback = BMStripAccessGroup(clean);
+        status = orig_SecItemAdd((__bridge CFDictionaryRef)fallback, result);
+    }
+
+    // Nếu bị trùng lặp khóa cũ (errSecDuplicateItem = -25299), xóa key cũ và ghi đè lại
     if (status == errSecDuplicateItem || status == -25299) {
         NSMutableDictionary *deleteQuery = [clean mutableCopy];
         [deleteQuery removeObjectForKey:(__bridge id)kSecValueData];
@@ -55,9 +71,19 @@ static OSStatus hook_SecItemAdd(CFDictionaryRef attributes, CFTypeRef *result) {
         [deleteQuery removeObjectForKey:(__bridge id)kSecReturnRef];
         [deleteQuery removeObjectForKey:(__bridge id)kSecReturnPersistentRef];
         if (orig_SecItemDelete) {
-            orig_SecItemDelete((__bridge CFDictionaryRef)deleteQuery);
+            // Xóa cũng dùng retry pattern
+            OSStatus delStatus = orig_SecItemDelete((__bridge CFDictionaryRef)deleteQuery);
+            if (delStatus == errSecMissingEntitlement || delStatus == -34018) {
+                NSMutableDictionary *delFallback = BMStripAccessGroup(deleteQuery);
+                orig_SecItemDelete((__bridge CFDictionaryRef)delFallback);
+            }
         }
         status = orig_SecItemAdd((__bridge CFDictionaryRef)clean, result);
+        // Retry lần nữa nếu vẫn bị -34018 sau khi xóa
+        if (status == errSecMissingEntitlement || status == -34018) {
+            NSMutableDictionary *fallback = BMStripAccessGroup(clean);
+            status = orig_SecItemAdd((__bridge CFDictionaryRef)fallback, result);
+        }
     }
     NSString *account = clean[(__bridge id)kSecAttrAccount];
     NSString *service = clean[(__bridge id)kSecAttrService];
@@ -67,11 +93,19 @@ static OSStatus hook_SecItemAdd(CFDictionaryRef attributes, CFTypeRef *result) {
 
 static OSStatus hook_SecItemCopyMatching(CFDictionaryRef query, CFTypeRef *result) {
     if (!query) return errSecParam;
-    NSMutableDictionary *clean = BMCleanKeychainQuery(query);
+    NSMutableDictionary *clean = BMCopyKeychainQuery(query);
     [clean removeObjectForKey:(__bridge id)kSecAttrAccessible];
+
     OSStatus status = errSecItemNotFound;
     if (orig_SecItemCopyMatching) {
+        // Bước 1: Thử với access group gốc (cần thiết để ZTI tìm được key đúng)
         status = orig_SecItemCopyMatching((__bridge CFDictionaryRef)clean, result);
+
+        // Bước 2: Nếu fail do thiếu entitlement (-34018), retry không có access group
+        if (status == errSecMissingEntitlement || status == -34018) {
+            NSMutableDictionary *fallback = BMStripAccessGroup(clean);
+            status = orig_SecItemCopyMatching((__bridge CFDictionaryRef)fallback, result);
+        }
     }
     NSString *account = clean[(__bridge id)kSecAttrAccount];
     NSString *service = clean[(__bridge id)kSecAttrService];
@@ -83,21 +117,40 @@ static OSStatus hook_SecItemCopyMatching(CFDictionaryRef query, CFTypeRef *resul
 
 static OSStatus hook_SecItemUpdate(CFDictionaryRef query, CFDictionaryRef attributesToUpdate) {
     if (!query || !attributesToUpdate) return errSecParam;
-    NSMutableDictionary *cleanQuery = BMCleanKeychainQuery(query);
+    NSMutableDictionary *cleanQuery = BMCopyKeychainQuery(query);
     [cleanQuery removeObjectForKey:(__bridge id)kSecAttrAccessible];
-    NSMutableDictionary *cleanAttr = BMCleanKeychainQuery(attributesToUpdate);
+    NSMutableDictionary *cleanAttr = BMCopyKeychainQuery(attributesToUpdate);
+
     if (orig_SecItemUpdate) {
-        return orig_SecItemUpdate((__bridge CFDictionaryRef)cleanQuery, (__bridge CFDictionaryRef)cleanAttr);
+        // Bước 1: Thử với access group gốc
+        OSStatus status = orig_SecItemUpdate((__bridge CFDictionaryRef)cleanQuery, (__bridge CFDictionaryRef)cleanAttr);
+
+        // Bước 2: Retry không có access group nếu lỗi `-34018`
+        if (status == errSecMissingEntitlement || status == -34018) {
+            NSMutableDictionary *fallbackQuery = BMStripAccessGroup(cleanQuery);
+            NSMutableDictionary *fallbackAttr = BMStripAccessGroup(cleanAttr);
+            status = orig_SecItemUpdate((__bridge CFDictionaryRef)fallbackQuery, (__bridge CFDictionaryRef)fallbackAttr);
+        }
+        return status;
     }
     return errSecSuccess;
 }
 
 static OSStatus hook_SecItemDelete(CFDictionaryRef query) {
     if (!query) return errSecParam;
-    NSMutableDictionary *clean = BMCleanKeychainQuery(query);
+    NSMutableDictionary *clean = BMCopyKeychainQuery(query);
     [clean removeObjectForKey:(__bridge id)kSecAttrAccessible];
+
     if (orig_SecItemDelete) {
-        return orig_SecItemDelete((__bridge CFDictionaryRef)clean);
+        // Bước 1: Thử với access group gốc
+        OSStatus status = orig_SecItemDelete((__bridge CFDictionaryRef)clean);
+
+        // Bước 2: Retry không có access group nếu lỗi `-34018`
+        if (status == errSecMissingEntitlement || status == -34018) {
+            NSMutableDictionary *fallback = BMStripAccessGroup(clean);
+            status = orig_SecItemDelete((__bridge CFDictionaryRef)fallback);
+        }
+        return status;
     }
     return errSecSuccess;
 }
@@ -3060,6 +3113,25 @@ static NSString *bm_emojiForCountryCode(NSString *countryCode) {
         [BMConfigManager setConfirmedDeviceID:did installID:iid];
     }
     %orig;
+}
+%end
+
+// Backup hook: Bắt `device_id` từ response của `device_register` API
+// trong trường hợp `saveDToken` không được gọi.
+%hook TTInstallIDManager
+- (void)trackDeviceRegisterResultIfNeeded:(BOOL)success response:(id)response error:(id)error triggerFrom:(id)trigger transitStatusBefore:(id)before currentTransitStatus:(id)current startTimestamp:(double)start {
+    %orig;
+    if (success && response && [response isKindOfClass:[NSDictionary class]]) {
+        NSDictionary *resp = (NSDictionary *)response;
+        NSString *did = [NSString stringWithFormat:@"%@", resp[@"device_id"] ?: @"0"];
+        NSString *iid = [NSString stringWithFormat:@"%@", resp[@"install_id"] ?: @"0"];
+        if (did && ![did isEqualToString:@"0"] && did.length > 5) {
+            [BMConfigManager setConfirmedDeviceID:did installID:iid];
+            [BMLogger log:@"[DEVICE-REG] Nhận Device ID từ server: DID=%@ | IID=%@", did, iid];
+        } else {
+            [BMLogger log:@"[DEVICE-REG] Server trả device_id không hợp lệ: %@ (response: %@)", did, resp];
+        }
+    }
 }
 %end
 
