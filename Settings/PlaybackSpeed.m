@@ -69,7 +69,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
+    NSNumber *selectedSpeed = self.speeds[indexPath.row];
     [[NSUserDefaults standardUserDefaults] setValue:selectedSpeed forKey:@"playback_speed"];
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"playback_en"];
     [[NSUserDefaults standardUserDefaults] synchronize];
