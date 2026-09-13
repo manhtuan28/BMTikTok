@@ -16,18 +16,46 @@
 // MARK: - 0. Keychain Sideload Fix (Retry Pattern — Giữ ZTI hoạt động)
 // ═══════════════════════════════════════════════════════════════
 
-// Tạo bản sao query Keychain mà KHÔNG xóa `kSecAttrAccessGroup`.
-// Việc xóa access group chỉ được thực hiện trong retry khi gặp lỗi `-34018`.
+// Dynamic Sideload Keychain Access Group Discovery & Patching
+static NSString *gSideloadAccessGroup = nil;
+
+static NSString *BMGetSideloadAccessGroup(void) {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSDictionary *query = @{
+            (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
+            (__bridge id)kSecAttrAccount: @"bundleSeedID",
+            (__bridge id)kSecAttrService: @"",
+            (__bridge id)kSecReturnAttributes: (__bridge id)kCFBooleanTrue
+        };
+        CFTypeRef result = NULL;
+        OSStatus status = SecItemCopyMatching((__bridge CFDictionaryRef)query, &result);
+        if (status == errSecItemNotFound) {
+            status = SecItemAdd((__bridge CFDictionaryRef)query, &result);
+        }
+        if (status == errSecSuccess && result) {
+            NSDictionary *attr = (__bridge_transfer NSDictionary *)result;
+            gSideloadAccessGroup = [attr[(__bridge id)kSecAttrAccessGroup] copy];
+            [BMLogger log:@"[KEYCHAIN-FIX] Sideload Access Group: %@", gSideloadAccessGroup];
+        }
+    });
+    return gSideloadAccessGroup;
+}
+
 static NSMutableDictionary *BMCopyKeychainQuery(CFDictionaryRef dict) {
     if (!dict) return nil;
     return [(__bridge NSDictionary *)dict mutableCopy];
 }
 
-// Tạo bản sao query đã loại bỏ `kSecAttrAccessGroup` — dùng cho retry fallback.
-static NSMutableDictionary *BMStripAccessGroup(NSMutableDictionary *query) {
-    NSMutableDictionary *stripped = [query mutableCopy];
-    [stripped removeObjectForKey:(__bridge id)kSecAttrAccessGroup];
-    return stripped;
+static NSMutableDictionary *BMPatchAccessGroup(NSMutableDictionary *query) {
+    NSMutableDictionary *patched = [query mutableCopy];
+    NSString *sideloadAG = BMGetSideloadAccessGroup();
+    if (sideloadAG && sideloadAG.length > 0) {
+        patched[(__bridge id)kSecAttrAccessGroup] = sideloadAG;
+    } else {
+        [patched removeObjectForKey:(__bridge id)kSecAttrAccessGroup];
+    }
+    return patched;
 }
 
 static OSStatus (*orig_SecItemAdd)(CFDictionaryRef attributes, CFTypeRef *result) = NULL;
@@ -41,12 +69,12 @@ static OSStatus hook_SecItemAdd(CFDictionaryRef attributes, CFTypeRef *result) {
     NSMutableDictionary *clean = BMCopyKeychainQuery(attributes);
     clean[(__bridge id)kSecAttrAccessible] = (__bridge id)kSecAttrAccessibleAfterFirstUnlock;
 
-    // Bước 1: Thử với access group gốc (cần thiết cho ZTI keys)
+    // Bước 1: Thử với access group gốc
     OSStatus status = real_SecItemAdd((__bridge CFDictionaryRef)clean, result);
 
-    // Bước 2: Nếu fail do thiếu entitlement (-34018), retry không có access group
+    // Bước 2: Nếu fail do thiếu entitlement (-34018), thay bằng sideload access group
     if (status == errSecMissingEntitlement || status == -34018) {
-        NSMutableDictionary *fallback = BMStripAccessGroup(clean);
+        NSMutableDictionary *fallback = BMPatchAccessGroup(clean);
         status = real_SecItemAdd((__bridge CFDictionaryRef)fallback, result);
     }
 
@@ -73,13 +101,12 @@ static OSStatus hook_SecItemAdd(CFDictionaryRef attributes, CFTypeRef *result) {
         OSStatus (*real_SecItemDelete)(CFDictionaryRef) = orig_SecItemDelete ?: SecItemDelete;
         OSStatus delStatus = real_SecItemDelete((__bridge CFDictionaryRef)deleteQuery);
         if (delStatus == errSecMissingEntitlement || delStatus == -34018) {
-            NSMutableDictionary *delFallback = BMStripAccessGroup(deleteQuery);
+            NSMutableDictionary *delFallback = BMPatchAccessGroup(deleteQuery);
             real_SecItemDelete((__bridge CFDictionaryRef)delFallback);
         }
         status = real_SecItemAdd((__bridge CFDictionaryRef)clean, result);
-        // Retry lần nữa nếu vẫn bị -34018 sau khi xóa
         if (status == errSecMissingEntitlement || status == -34018) {
-            NSMutableDictionary *fallback = BMStripAccessGroup(clean);
+            NSMutableDictionary *fallback = BMPatchAccessGroup(clean);
             status = real_SecItemAdd((__bridge CFDictionaryRef)fallback, result);
         }
     }
@@ -97,12 +124,12 @@ static OSStatus hook_SecItemCopyMatching(CFDictionaryRef query, CFTypeRef *resul
 
     OSStatus status = errSecItemNotFound;
     if (real_SecItemCopyMatching) {
-        // Bước 1: Thử với access group gốc (cần thiết để ZTI tìm được key đúng)
+        // Bước 1: Thử với access group gốc
         status = real_SecItemCopyMatching((__bridge CFDictionaryRef)clean, result);
 
-        // Bước 2: Nếu fail do thiếu entitlement (-34018), retry không có access group
+        // Bước 2: Nếu fail do thiếu entitlement (-34018), thay bằng sideload access group
         if (status == errSecMissingEntitlement || status == -34018) {
-            NSMutableDictionary *fallback = BMStripAccessGroup(clean);
+            NSMutableDictionary *fallback = BMPatchAccessGroup(clean);
             status = real_SecItemCopyMatching((__bridge CFDictionaryRef)fallback, result);
         }
     }
@@ -122,13 +149,11 @@ static OSStatus hook_SecItemUpdate(CFDictionaryRef query, CFDictionaryRef attrib
     NSMutableDictionary *cleanAttr = BMCopyKeychainQuery(attributesToUpdate);
 
     if (real_SecItemUpdate) {
-        // Bước 1: Thử với access group gốc
         OSStatus status = real_SecItemUpdate((__bridge CFDictionaryRef)cleanQuery, (__bridge CFDictionaryRef)cleanAttr);
 
-        // Bước 2: Retry không có access group nếu lỗi `-34018`
         if (status == errSecMissingEntitlement || status == -34018) {
-            NSMutableDictionary *fallbackQuery = BMStripAccessGroup(cleanQuery);
-            NSMutableDictionary *fallbackAttr = BMStripAccessGroup(cleanAttr);
+            NSMutableDictionary *fallbackQuery = BMPatchAccessGroup(cleanQuery);
+            NSMutableDictionary *fallbackAttr = BMPatchAccessGroup(cleanAttr);
             status = real_SecItemUpdate((__bridge CFDictionaryRef)fallbackQuery, (__bridge CFDictionaryRef)fallbackAttr);
         }
         return status;
@@ -143,12 +168,10 @@ static OSStatus hook_SecItemDelete(CFDictionaryRef query) {
     [clean removeObjectForKey:(__bridge id)kSecAttrAccessible];
 
     if (real_SecItemDelete) {
-        // Bước 1: Thử với access group gốc
         OSStatus status = real_SecItemDelete((__bridge CFDictionaryRef)clean);
 
-        // Bước 2: Retry không có access group nếu lỗi `-34018`
         if (status == errSecMissingEntitlement || status == -34018) {
-            NSMutableDictionary *fallback = BMStripAccessGroup(clean);
+            NSMutableDictionary *fallback = BMPatchAccessGroup(clean);
             status = real_SecItemDelete((__bridge CFDictionaryRef)fallback);
         }
         return status;
@@ -3054,6 +3077,24 @@ static NSString *bm_emojiForCountryCode(NSString *countryCode) {
         }
     }
     return %orig;
+}
+
+- (NSURL *)containerURLForSecurityApplicationGroupIdentifier:(NSString *)groupIdentifier {
+    if (!groupIdentifier || [groupIdentifier isEqualToString:@""]) {
+        return %orig;
+    }
+    NSURL *origURL = %orig;
+    if (origURL) {
+        return origURL;
+    }
+    // Sideload fix: Nếu hệ điều hành trả về nil do thiếu App Group entitlement,
+    // chuyển hướng sang thư mục trong Documents sandbox để TikTok có thể ghi ttinstall_ids.plist và ZTI cache.
+    NSURL *docURL = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+    NSURL *groupURL = [docURL URLByAppendingPathComponent:[NSString stringWithFormat:@"AppGroup_%@", groupIdentifier]];
+    if (![[NSFileManager defaultManager] fileExistsAtPath:[groupURL path]]) {
+        [[NSFileManager defaultManager] createDirectoryAtURL:groupURL withIntermediateDirectories:YES attributes:nil error:nil];
+    }
+    return groupURL;
 }
 %end
 

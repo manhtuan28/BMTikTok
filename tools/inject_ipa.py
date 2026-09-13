@@ -201,7 +201,21 @@ def repackage_ipa(input_ipa, dylib_path, bundle_path, output_ipa):
     else:
         print("[!] Không tìm thấy FLEX.dylib trong tools/deps!")
 
-    # 4.2 Bật UIFileSharingEnabled và LSSupportsOpeningDocumentsInPlace trong Info.plist
+    # 4.2 Copy sideloadKeychainFix.dylib vào Frameworks (Sửa lỗi Keychain & App Groups cho Sideload)
+    keychain_src = os.path.join(os.path.dirname(__file__), "deps", "sideloadKeychainFix.dylib")
+    if not os.path.exists(keychain_src):
+        keychain_src = "tools/deps/sideloadKeychainFix.dylib"
+        
+    has_keychain_fix = False
+    if os.path.exists(keychain_src):
+        dest_keychain = os.path.join(frameworks_dir, "sideloadKeychainFix.dylib")
+        shutil.copy(keychain_src, dest_keychain)
+        print(f"[+] Đã sao chép sideloadKeychainFix.dylib -> {dest_keychain}")
+        has_keychain_fix = True
+    else:
+        print("[!] Không tìm thấy sideloadKeychainFix.dylib trong tools/deps!")
+
+    # 4.3 Bật UIFileSharingEnabled và LSSupportsOpeningDocumentsInPlace trong Info.plist
     info_plist_path = os.path.join(app_path, "Info.plist")
     if os.path.exists(info_plist_path):
         try:
@@ -226,6 +240,8 @@ def repackage_ipa(input_ipa, dylib_path, bundle_path, output_ipa):
         
     # 6. Patch LC_LOAD_DYLIB vào file thực thi
     print(f"[*] Đang chèn load dylib vào file thực thi: {main_executable}")
+    if has_keychain_fix:
+        inject_load_dylib(main_executable, "@rpath/sideloadKeychainFix.dylib")
     inject_load_dylib(main_executable, "@rpath/BMTikTok.dylib")
     if has_flex:
         inject_load_dylib(main_executable, "@rpath/FLEX.dylib")
@@ -234,6 +250,8 @@ def repackage_ipa(input_ipa, dylib_path, bundle_path, output_ipa):
     tiktok_core = os.path.join(frameworks_dir, "TikTokCore.framework", "TikTokCore")
     if os.path.exists(tiktok_core):
         print(f"[*] Phát hiện TikTokCore.framework (TikTok 46.8.0+), đang chèn load dylib...")
+        if has_keychain_fix:
+            inject_load_dylib(tiktok_core, "@rpath/sideloadKeychainFix.dylib")
         inject_load_dylib(tiktok_core, "@rpath/BMTikTok.dylib")
         if has_flex:
             inject_load_dylib(tiktok_core, "@rpath/FLEX.dylib")
@@ -241,6 +259,8 @@ def repackage_ipa(input_ipa, dylib_path, bundle_path, output_ipa):
     musically_core = os.path.join(frameworks_dir, "MusicallyCore.framework", "MusicallyCore")
     if os.path.exists(musically_core):
         print(f"[*] Phát hiện MusicallyCore.framework, đang chèn load dylib...")
+        if has_keychain_fix:
+            inject_load_dylib(musically_core, "@rpath/sideloadKeychainFix.dylib")
         inject_load_dylib(musically_core, "@rpath/BMTikTok.dylib")
         if has_flex:
             inject_load_dylib(musically_core, "@rpath/FLEX.dylib")
