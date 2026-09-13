@@ -37,17 +37,17 @@ static OSStatus (*orig_SecItemDelete)(CFDictionaryRef query) = NULL;
 
 static OSStatus hook_SecItemAdd(CFDictionaryRef attributes, CFTypeRef *result) {
     if (!attributes) return errSecParam;
-    if (!orig_SecItemAdd) return errSecSuccess;
+    OSStatus (*real_SecItemAdd)(CFDictionaryRef, CFTypeRef *) = orig_SecItemAdd ?: SecItemAdd;
     NSMutableDictionary *clean = BMCopyKeychainQuery(attributes);
     clean[(__bridge id)kSecAttrAccessible] = (__bridge id)kSecAttrAccessibleAfterFirstUnlock;
 
     // Bước 1: Thử với access group gốc (cần thiết cho ZTI keys)
-    OSStatus status = orig_SecItemAdd((__bridge CFDictionaryRef)clean, result);
+    OSStatus status = real_SecItemAdd((__bridge CFDictionaryRef)clean, result);
 
     // Bước 2: Nếu fail do thiếu entitlement (-34018), retry không có access group
     if (status == errSecMissingEntitlement || status == -34018) {
         NSMutableDictionary *fallback = BMStripAccessGroup(clean);
-        status = orig_SecItemAdd((__bridge CFDictionaryRef)fallback, result);
+        status = real_SecItemAdd((__bridge CFDictionaryRef)fallback, result);
     }
 
     // Nếu bị trùng lặp khóa cũ (errSecDuplicateItem = -25299), xóa key cũ và ghi đè lại
@@ -70,19 +70,17 @@ static OSStatus hook_SecItemAdd(CFDictionaryRef attributes, CFTypeRef *result) {
         [deleteQuery removeObjectForKey:(__bridge id)kSecReturnAttributes];
         [deleteQuery removeObjectForKey:(__bridge id)kSecReturnRef];
         [deleteQuery removeObjectForKey:(__bridge id)kSecReturnPersistentRef];
-        if (orig_SecItemDelete) {
-            // Xóa cũng dùng retry pattern
-            OSStatus delStatus = orig_SecItemDelete((__bridge CFDictionaryRef)deleteQuery);
-            if (delStatus == errSecMissingEntitlement || delStatus == -34018) {
-                NSMutableDictionary *delFallback = BMStripAccessGroup(deleteQuery);
-                orig_SecItemDelete((__bridge CFDictionaryRef)delFallback);
-            }
+        OSStatus (*real_SecItemDelete)(CFDictionaryRef) = orig_SecItemDelete ?: SecItemDelete;
+        OSStatus delStatus = real_SecItemDelete((__bridge CFDictionaryRef)deleteQuery);
+        if (delStatus == errSecMissingEntitlement || delStatus == -34018) {
+            NSMutableDictionary *delFallback = BMStripAccessGroup(deleteQuery);
+            real_SecItemDelete((__bridge CFDictionaryRef)delFallback);
         }
-        status = orig_SecItemAdd((__bridge CFDictionaryRef)clean, result);
+        status = real_SecItemAdd((__bridge CFDictionaryRef)clean, result);
         // Retry lần nữa nếu vẫn bị -34018 sau khi xóa
         if (status == errSecMissingEntitlement || status == -34018) {
             NSMutableDictionary *fallback = BMStripAccessGroup(clean);
-            status = orig_SecItemAdd((__bridge CFDictionaryRef)fallback, result);
+            status = real_SecItemAdd((__bridge CFDictionaryRef)fallback, result);
         }
     }
     NSString *account = clean[(__bridge id)kSecAttrAccount];
@@ -93,18 +91,19 @@ static OSStatus hook_SecItemAdd(CFDictionaryRef attributes, CFTypeRef *result) {
 
 static OSStatus hook_SecItemCopyMatching(CFDictionaryRef query, CFTypeRef *result) {
     if (!query) return errSecParam;
+    OSStatus (*real_SecItemCopyMatching)(CFDictionaryRef, CFTypeRef *) = orig_SecItemCopyMatching ?: SecItemCopyMatching;
     NSMutableDictionary *clean = BMCopyKeychainQuery(query);
     [clean removeObjectForKey:(__bridge id)kSecAttrAccessible];
 
     OSStatus status = errSecItemNotFound;
-    if (orig_SecItemCopyMatching) {
+    if (real_SecItemCopyMatching) {
         // Bước 1: Thử với access group gốc (cần thiết để ZTI tìm được key đúng)
-        status = orig_SecItemCopyMatching((__bridge CFDictionaryRef)clean, result);
+        status = real_SecItemCopyMatching((__bridge CFDictionaryRef)clean, result);
 
         // Bước 2: Nếu fail do thiếu entitlement (-34018), retry không có access group
         if (status == errSecMissingEntitlement || status == -34018) {
             NSMutableDictionary *fallback = BMStripAccessGroup(clean);
-            status = orig_SecItemCopyMatching((__bridge CFDictionaryRef)fallback, result);
+            status = real_SecItemCopyMatching((__bridge CFDictionaryRef)fallback, result);
         }
     }
     NSString *account = clean[(__bridge id)kSecAttrAccount];
@@ -117,19 +116,20 @@ static OSStatus hook_SecItemCopyMatching(CFDictionaryRef query, CFTypeRef *resul
 
 static OSStatus hook_SecItemUpdate(CFDictionaryRef query, CFDictionaryRef attributesToUpdate) {
     if (!query || !attributesToUpdate) return errSecParam;
+    OSStatus (*real_SecItemUpdate)(CFDictionaryRef, CFDictionaryRef) = orig_SecItemUpdate ?: SecItemUpdate;
     NSMutableDictionary *cleanQuery = BMCopyKeychainQuery(query);
     [cleanQuery removeObjectForKey:(__bridge id)kSecAttrAccessible];
     NSMutableDictionary *cleanAttr = BMCopyKeychainQuery(attributesToUpdate);
 
-    if (orig_SecItemUpdate) {
+    if (real_SecItemUpdate) {
         // Bước 1: Thử với access group gốc
-        OSStatus status = orig_SecItemUpdate((__bridge CFDictionaryRef)cleanQuery, (__bridge CFDictionaryRef)cleanAttr);
+        OSStatus status = real_SecItemUpdate((__bridge CFDictionaryRef)cleanQuery, (__bridge CFDictionaryRef)cleanAttr);
 
         // Bước 2: Retry không có access group nếu lỗi `-34018`
         if (status == errSecMissingEntitlement || status == -34018) {
             NSMutableDictionary *fallbackQuery = BMStripAccessGroup(cleanQuery);
             NSMutableDictionary *fallbackAttr = BMStripAccessGroup(cleanAttr);
-            status = orig_SecItemUpdate((__bridge CFDictionaryRef)fallbackQuery, (__bridge CFDictionaryRef)fallbackAttr);
+            status = real_SecItemUpdate((__bridge CFDictionaryRef)fallbackQuery, (__bridge CFDictionaryRef)fallbackAttr);
         }
         return status;
     }
@@ -138,17 +138,18 @@ static OSStatus hook_SecItemUpdate(CFDictionaryRef query, CFDictionaryRef attrib
 
 static OSStatus hook_SecItemDelete(CFDictionaryRef query) {
     if (!query) return errSecParam;
+    OSStatus (*real_SecItemDelete)(CFDictionaryRef) = orig_SecItemDelete ?: SecItemDelete;
     NSMutableDictionary *clean = BMCopyKeychainQuery(query);
     [clean removeObjectForKey:(__bridge id)kSecAttrAccessible];
 
-    if (orig_SecItemDelete) {
+    if (real_SecItemDelete) {
         // Bước 1: Thử với access group gốc
-        OSStatus status = orig_SecItemDelete((__bridge CFDictionaryRef)clean);
+        OSStatus status = real_SecItemDelete((__bridge CFDictionaryRef)clean);
 
         // Bước 2: Retry không có access group nếu lỗi `-34018`
         if (status == errSecMissingEntitlement || status == -34018) {
             NSMutableDictionary *fallback = BMStripAccessGroup(clean);
-            status = orig_SecItemDelete((__bridge CFDictionaryRef)fallback);
+            status = real_SecItemDelete((__bridge CFDictionaryRef)fallback);
         }
         return status;
     }
@@ -3033,6 +3034,9 @@ static NSString *bm_emojiForCountryCode(NSString *countryCode) {
 
 %hook NSFileManager
 -(BOOL)fileExistsAtPath:(id)arg1 {
+    if (arg1 && [arg1 isKindOfClass:[NSString class]] && [(NSString *)arg1 containsString:@"mobileprovision"]) {
+        return NO;
+    }
     for (NSString *file in jailbreakPaths) {
         if ([arg1 isEqualToString:file]) {
             return NO;
@@ -3041,12 +3045,49 @@ static NSString *bm_emojiForCountryCode(NSString *countryCode) {
     return %orig;
 }
 -(BOOL)fileExistsAtPath:(id)arg1 isDirectory:(BOOL*)arg2 {
+    if (arg1 && [arg1 isKindOfClass:[NSString class]] && [(NSString *)arg1 containsString:@"mobileprovision"]) {
+        return NO;
+    }
     for (NSString *file in jailbreakPaths) {
         if ([arg1 isEqualToString:file]) {
             return NO;
         }
     }
     return %orig;
+}
+%end
+
+%hook NSBundle
+- (NSString *)pathForResource:(NSString *)name ofType:(NSString *)ext {
+    if (ext && [ext isEqualToString:@"mobileprovision"]) {
+        return nil;
+    }
+    return %orig;
+}
+
+- (NSURL *)URLForResource:(NSString *)name withExtension:(NSString *)ext {
+    if (ext && [ext isEqualToString:@"mobileprovision"]) {
+        return nil;
+    }
+    return %orig;
+}
+%end
+
+%hook GULAppEnvironmentUtil
++ (BOOL)isFromAppStore {
+    return YES;
+}
++ (BOOL)isAppStoreReceiptSandbox {
+    return NO;
+}
++ (BOOL)isAppExtension {
+    return NO;
+}
+%end
+
+%hook AWEAPMManager
++ (id)signInfo {
+    return @"AppStore";
 }
 %end
 
@@ -3116,22 +3157,153 @@ static NSString *bm_emojiForCountryCode(NSString *countryCode) {
 }
 %end
 
-// Backup hook: Bắt `device_id` từ response của `device_register` API
-// trong trường hợp `saveDToken` không được gọi.
 %hook TTInstallIDManager
++ (id)deviceID {
+    id orig = %orig;
+    if (orig && [orig length] > 5 && ![orig isEqualToString:@"0"] && ![orig isEqualToString:@"unknown"]) {
+        return orig;
+    }
+    return [BMConfigManager persistentDeviceID];
+}
+
++ (id)installID {
+    id orig = %orig;
+    if (orig && [orig length] > 5 && ![orig isEqualToString:@"0"] && ![orig isEqualToString:@"unknown"]) {
+        return orig;
+    }
+    return [BMConfigManager persistentInstallID];
+}
+
++ (id)clientDID {
+    id orig = %orig;
+    if (orig && [orig length] > 5 && ![orig isEqualToString:@"0"] && ![orig isEqualToString:@"unknown"]) {
+        return orig;
+    }
+    return [BMConfigManager persistentDeviceID];
+}
+
+- (id)deviceID {
+    id orig = %orig;
+    if (orig && [orig length] > 5 && ![orig isEqualToString:@"0"] && ![orig isEqualToString:@"unknown"]) {
+        return orig;
+    }
+    return [BMConfigManager persistentDeviceID];
+}
+
+- (id)installID {
+    id orig = %orig;
+    if (orig && [orig length] > 5 && ![orig isEqualToString:@"0"] && ![orig isEqualToString:@"unknown"]) {
+        return orig;
+    }
+    return [BMConfigManager persistentInstallID];
+}
+
+- (id)clientDID {
+    id orig = %orig;
+    if (orig && [orig length] > 5 && ![orig isEqualToString:@"0"] && ![orig isEqualToString:@"unknown"]) {
+        return orig;
+    }
+    return [BMConfigManager persistentDeviceID];
+}
+
 - (void)trackDeviceRegisterResultIfNeeded:(BOOL)success response:(id)response error:(id)error triggerFrom:(id)trigger transitStatusBefore:(id)before currentTransitStatus:(id)current startTimestamp:(double)start {
     %orig;
+    [BMLogger log:@"[DEVICE-REG] trackDeviceRegisterResultIfNeeded: success=%d | trigger=%@ | resp=%@ | err=%@", success, trigger, response, error];
     if (success && response && [response isKindOfClass:[NSDictionary class]]) {
         NSDictionary *resp = (NSDictionary *)response;
         NSString *did = [NSString stringWithFormat:@"%@", resp[@"device_id"] ?: @"0"];
         NSString *iid = [NSString stringWithFormat:@"%@", resp[@"install_id"] ?: @"0"];
         if (did && ![did isEqualToString:@"0"] && did.length > 5) {
             [BMConfigManager setConfirmedDeviceID:did installID:iid];
-            [BMLogger log:@"[DEVICE-REG] Nhận Device ID từ server: DID=%@ | IID=%@", did, iid];
-        } else {
-            [BMLogger log:@"[DEVICE-REG] Server trả device_id không hợp lệ: %@ (response: %@)", did, resp];
+            [BMLogger log:@"[DEVICE-REG] Đã xác nhận & lưu Device ID từ server: DID=%@ | IID=%@", did, iid];
         }
     }
+}
+%end
+
+%hook BDInstall
++ (id)deviceID {
+    id orig = %orig;
+    if (orig && [orig length] > 5 && ![orig isEqualToString:@"0"] && ![orig isEqualToString:@"unknown"]) {
+        return orig;
+    }
+    return [BMConfigManager persistentDeviceID];
+}
+
++ (id)installID {
+    id orig = %orig;
+    if (orig && [orig length] > 5 && ![orig isEqualToString:@"0"] && ![orig isEqualToString:@"unknown"]) {
+        return orig;
+    }
+    return [BMConfigManager persistentInstallID];
+}
+
++ (id)clientDID {
+    id orig = %orig;
+    if (orig && [orig length] > 5 && ![orig isEqualToString:@"0"] && ![orig isEqualToString:@"unknown"]) {
+        return orig;
+    }
+    return [BMConfigManager persistentDeviceID];
+}
+
+- (id)deviceID {
+    id orig = %orig;
+    if (orig && [orig length] > 5 && ![orig isEqualToString:@"0"] && ![orig isEqualToString:@"unknown"]) {
+        return orig;
+    }
+    return [BMConfigManager persistentDeviceID];
+}
+
+- (id)installID {
+    id orig = %orig;
+    if (orig && [orig length] > 5 && ![orig isEqualToString:@"0"] && ![orig isEqualToString:@"unknown"]) {
+        return orig;
+    }
+    return [BMConfigManager persistentInstallID];
+}
+
+- (id)clientDID {
+    id orig = %orig;
+    if (orig && [orig length] > 5 && ![orig isEqualToString:@"0"] && ![orig isEqualToString:@"unknown"]) {
+        return orig;
+    }
+    return [BMConfigManager persistentDeviceID];
+}
+%end
+
+%hook TTAccountConfiguration
+- (id)tta_deviceID {
+    id orig = %orig;
+    if (orig && [orig length] > 5 && ![orig isEqualToString:@"0"] && ![orig isEqualToString:@"unknown"]) {
+        return orig;
+    }
+    return [BMConfigManager persistentDeviceID];
+}
+
+- (id)tta_installID {
+    id orig = %orig;
+    if (orig && [orig length] > 5 && ![orig isEqualToString:@"0"] && ![orig isEqualToString:@"unknown"]) {
+        return orig;
+    }
+    return [BMConfigManager persistentInstallID];
+}
+%end
+
+%hook TTInstallService
+- (id)deviceID {
+    id orig = %orig;
+    if (orig && [orig length] > 5 && ![orig isEqualToString:@"0"] && ![orig isEqualToString:@"unknown"]) {
+        return orig;
+    }
+    return [BMConfigManager persistentDeviceID];
+}
+
+- (id)installID {
+    id orig = %orig;
+    if (orig && [orig length] > 5 && ![orig isEqualToString:@"0"] && ![orig isEqualToString:@"unknown"]) {
+        return orig;
+    }
+    return [BMConfigManager persistentInstallID];
 }
 %end
 
@@ -3205,25 +3377,74 @@ static NSString *bm_emojiForCountryCode(NSString *countryCode) {
 }
 %end
 
+%hook TTHttpRequestChromium
+- (NSDictionary *)allHTTPHeaderFields {
+    NSDictionary *headers = %orig;
+    if (headers && headers[@"x-metasec-tspk-non-native"]) {
+        NSMutableDictionary *mut = [headers mutableCopy];
+        [mut removeObjectForKey:@"x-metasec-tspk-non-native"];
+        return [mut copy];
+    }
+    return headers;
+}
+
+- (void)setValue:(id)value forHTTPHeaderField:(id)field {
+    if ([field isKindOfClass:[NSString class]] && [field isEqualToString:@"x-metasec-tspk-non-native"]) {
+        return;
+    }
+    %orig(value, field);
+}
+%end
+
+%hook TTNetworkManagerChromium
+- (id)pickCommonParams:(id)arg1 commonParamLevel:(NSInteger)arg2 {
+    id params = %orig;
+    if ([params isKindOfClass:[NSDictionary class]]) {
+        NSMutableDictionary *mut = [params isKindOfClass:[NSMutableDictionary class]] ? (NSMutableDictionary *)params : [params mutableCopy];
+        NSString *did = mut[@"device_id"];
+        if (!did || did.length < 5 || [did isEqualToString:@"0"]) {
+            NSString *savedDid = [BMConfigManager persistentDeviceID];
+            if (savedDid) mut[@"device_id"] = savedDid;
+        }
+        NSString *iid = mut[@"install_id"];
+        if (!iid || iid.length < 5 || [iid isEqualToString:@"0"]) {
+            NSString *savedIid = [BMConfigManager persistentInstallID];
+            if (savedIid) mut[@"install_id"] = savedIid;
+        }
+        return [mut copy];
+    }
+    return params;
+}
+%end
 
 %hook TTNetworkManager
 - (id)commonParams {
     id params = %orig;
     if ([params isKindOfClass:[NSDictionary class]]) {
         NSMutableDictionary *mut = [params isKindOfClass:[NSMutableDictionary class]] ? (NSMutableDictionary *)params : [params mutableCopy];
+        NSString *did = mut[@"device_id"];
+        if (!did || did.length < 5 || [did isEqualToString:@"0"]) {
+            NSString *savedDid = [BMConfigManager persistentDeviceID];
+            if (savedDid) mut[@"device_id"] = savedDid;
+        }
+        NSString *iid = mut[@"install_id"];
+        if (!iid || iid.length < 5 || [iid isEqualToString:@"0"]) {
+            NSString *savedIid = [BMConfigManager persistentInstallID];
+            if (savedIid) mut[@"install_id"] = savedIid;
+        }
         if (mut[@"package"] && ![mut[@"package"] isEqualToString:@"com.zhiliaoapp.musically"]) {
             mut[@"package"] = @"com.zhiliaoapp.musically";
         }
         if (mut[@"bundle_id"] && ![mut[@"bundle_id"] isEqualToString:@"com.zhiliaoapp.musically"]) {
             mut[@"bundle_id"] = @"com.zhiliaoapp.musically";
         }
-        if ([BMIManager russianFix]) {
+        if ([BMIManager russianFix] && !bm_isLoginOrAuthFlowActive()) {
             mut[@"carrier_region"] = @"RU";
             mut[@"sys_region"] = @"RU";
             mut[@"region"] = @"RU";
             mut[@"app_language"] = @"ru";
             return mut;
-        } else if (bm_shouldSpoofRegion()) {
+        } else if (bm_shouldSpoofRegion() && !bm_isLoginOrAuthFlowActive()) {
             NSDictionary *selectedRegion = [BMIManager selectedRegion];
             if (selectedRegion && selectedRegion[@"code"]) {
                 NSString *code = [selectedRegion[@"code"] uppercaseString];

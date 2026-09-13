@@ -508,6 +508,16 @@
 + (bool)isDebugBuild;
 @end
 
+@interface GULAppEnvironmentUtil : NSObject
++ (BOOL)isFromAppStore;
++ (BOOL)isAppStoreReceiptSandbox;
++ (BOOL)isAppExtension;
+@end
+
+@interface AWEAPMManager : NSObject
++ (id)signInfo;
+@end
+
 @interface MPKitUtilityService: NSObject
 - (BOOL)deviceIsJailbroken;
 @end

@@ -256,6 +256,10 @@ static NSDateFormatter *gDateFormatter = nil;
     os_log(OS_LOG_DEFAULT, "[BMTikTok] %{public}s", [msg UTF8String]);
     printf("[BMTikTok] %s\n", [msg UTF8String]);
     
+    if (!gLogQueue) {
+        [self startLogging];
+    }
+    
     if (gLogQueue) {
         dispatch_async(gLogQueue, ^{
             NSString *timestamp = [gDateFormatter stringFromDate:[NSDate date]];
@@ -281,6 +285,10 @@ static NSDateFormatter *gDateFormatter = nil;
            statusCode:(NSInteger)code
          responseBody:(id)responseBody
                 error:(NSError *)error {
+    
+    if (!gLogQueue) {
+        [self startLogging];
+    }
     
     if (gLogQueue) {
         dispatch_async(gLogQueue, ^{

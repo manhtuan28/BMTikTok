@@ -252,23 +252,21 @@ static NSString *settingsBackupFilePath() {
 
 + (void)cleanOldFakeDeviceIDIfNeeded {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    // Loại bỏ triệt để các cờ reset độc hại khiến ByteDance SDK chặn cấp phát ID
+    [defaults removeObjectForKey:@"kAutoResetKey"];
+    [defaults removeObjectForKey:@"kTTResetedDeviceID"];
+    [defaults removeObjectForKey:@"kTTResetedInstallID"];
+    [defaults removeObjectForKey:@"kTTResetNewUser"];
+    
     NSString *did = [defaults stringForKey:@"bmtiktok_persistent_device_id"];
-    if (!did || did.length == 0) {
-        did = [defaults stringForKey:@"kDeviceIDStorageKey"];
-    }
-    if (!did || did.length == 0) {
-        did = [defaults stringForKey:@"tt_device_id"];
-    }
-    
     BOOL isFake = (did && ([did hasPrefix:@"741000"] || [did isEqualToString:@"7471290553514378232"]));
-    BOOL isCleanedBefore = [defaults boolForKey:@"bmtiktok_cleaned_fake_did_v3"];
-    
-    if (isFake || !isCleanedBefore) {
-        [BMLogger log:@"[DEVICE-CLEAN] Phát hiện Device ID giả mạo cũ (%@) hoặc chưa dọn dẹp. Đang dọn dẹp sạch sẽ để ByteDance cấp phát ID & DToken thật...", did ?: @"none"];
-        [self fixLoginRateLimitAndResetDeviceID];
-        [defaults setBool:YES forKey:@"bmtiktok_cleaned_fake_did_v3"];
-        [defaults synchronize];
+    if (isFake) {
+        [defaults removeObjectForKey:@"bmtiktok_persistent_device_id"];
+        [defaults removeObjectForKey:@"bmtiktok_persistent_install_id"];
+        [defaults removeObjectForKey:@"bmtiktok_device_id_confirmed"];
+        [BMLogger log:@"[DEVICE-CLEAN] Đã gỡ bỏ Device ID giả mạo cũ: %@", did];
     }
+    [defaults synchronize];
 }
 
 + (NSString *)persistentDeviceID {
@@ -283,6 +281,49 @@ static NSString *settingsBackupFilePath() {
     if (!did || did.length < 5 || [did isEqualToString:@"0"]) {
         did = [defaults stringForKey:@"bmtiktok_persistent_device_id"];
     }
+    
+    // Thử đọc từ ttinstall_ids.plist nếu TikTok đã lưu trước đó
+    if (!did || did.length < 5 || [did isEqualToString:@"0"]) {
+        NSArray *searchPaths = @[
+            NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES).firstObject,
+            [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES).firstObject stringByAppendingPathComponent:@"Preferences"],
+            NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject
+        ];
+        for (NSString *dir in searchPaths) {
+            if (!dir) continue;
+            NSString *plistPath = [dir stringByAppendingPathComponent:@"ttinstall_ids.plist"];
+            NSDictionary *plist = [NSDictionary dictionaryWithContentsOfFile:plistPath];
+            if (plist && plist[@"device_id"]) {
+                NSString *fileDid = [NSString stringWithFormat:@"%@", plist[@"device_id"]];
+                if (fileDid && fileDid.length >= 5 && ![fileDid isEqualToString:@"0"]) {
+                    did = fileDid;
+                    break;
+                }
+            }
+        }
+    }
+    
+    // Thử đọc từ Keychain nếu có
+    if (!did || did.length < 5 || [did isEqualToString:@"0"]) {
+        NSArray *kcServices = @[@"com.ss.iphone.ugc.Awe.device_id", @"com.bytedance.ttinstallservice", @"kBDInstallOldDidKeychainService"];
+        for (NSString *svc in kcServices) {
+            NSDictionary *query = @{
+                (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
+                (__bridge id)kSecAttrService: svc,
+                (__bridge id)kSecReturnData: (__bridge id)kCFBooleanTrue
+            };
+            CFTypeRef result = NULL;
+            if (SecItemCopyMatching((__bridge CFDictionaryRef)query, &result) == errSecSuccess && result) {
+                NSData *data = (__bridge_transfer NSData *)result;
+                NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                if (str && str.length >= 5 && ![str isEqualToString:@"0"]) {
+                    did = str;
+                    break;
+                }
+            }
+        }
+    }
+    
     if (did && ([did hasPrefix:@"741000"] || [did isEqualToString:@"7471290553514378232"])) {
         return nil;
     }
@@ -301,6 +342,28 @@ static NSString *settingsBackupFilePath() {
     if (!iid || iid.length < 5 || [iid isEqualToString:@"0"]) {
         iid = [defaults stringForKey:@"bmtiktok_persistent_install_id"];
     }
+    
+    // Thử đọc từ ttinstall_ids.plist
+    if (!iid || iid.length < 5 || [iid isEqualToString:@"0"]) {
+        NSArray *searchPaths = @[
+            NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES).firstObject,
+            [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES).firstObject stringByAppendingPathComponent:@"Preferences"],
+            NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject
+        ];
+        for (NSString *dir in searchPaths) {
+            if (!dir) continue;
+            NSString *plistPath = [dir stringByAppendingPathComponent:@"ttinstall_ids.plist"];
+            NSDictionary *plist = [NSDictionary dictionaryWithContentsOfFile:plistPath];
+            if (plist && plist[@"install_id"]) {
+                NSString *fileIid = [NSString stringWithFormat:@"%@", plist[@"install_id"]];
+                if (fileIid && fileIid.length >= 5 && ![fileIid isEqualToString:@"0"]) {
+                    iid = fileIid;
+                    break;
+                }
+            }
+        }
+    }
+    
     if (iid && ([iid hasPrefix:@"741000"] || [iid isEqualToString:@"7465653952132769861"])) {
         return nil;
     }
@@ -335,104 +398,44 @@ static NSString *settingsBackupFilePath() {
 }
 
 + (BOOL)fixLoginRateLimitAndResetDeviceID {
-    [BMLogger log:@"[DEVICE-RESET] Bắt đầu quá trình xóa cache Device ID, ZTI token & làm sạch thiết bị..."];
-    // 1. Xóa các khóa lưu cache Device ID / Install ID / ZTI trong NSUserDefaults
+    [BMLogger log:@"[DEVICE-RESET] Bắt đầu quá trình làm sạch phiên đăng nhập & cookie bị chặn..."];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+    // 1. Dọn dẹp cờ reset & ID giả nếu có
     NSArray *keysToRemove = @[
         @"bmtiktok_persistent_device_id",
         @"bmtiktok_persistent_install_id",
         @"bmtiktok_device_id_confirmed",
-        @"kInstallIDStorageKey",
-        @"kDeviceIDStorageKey",
-        @"kClientDIDStorageKey",
-        @"kDeviceTokenStorageKey",
-        @"kOldDeviceIDStorageKey",
-        @"tt_install_id",
-        @"tt_device_id",
-        @"did",
-        @"iid",
-        @"cdid",
-        @"openudid",
-        @"clientudid",
-        @"kInstallClientDIDStorageKey",
-        @"kEnableDeviceIDStorageKey",
-        @"kTTInstallServiceIsActivated",
-        @"kTTInstallServiceLastRequestTime",
-        @"com.ss.iphone.ugc.Awe.install_id",
-        @"com.ss.iphone.ugc.Awe.device_id",
-        @"kTTInstallDeviceZTIDTokenAndSignStorageKey",
-        @"kTTInstallDeviceZTIPublicKeyStorageKey",
-        @"kTTInstallDeviceZTIDevicePropertiesStorageKey",
-        @"kTTInstallDeviceZTILFTUStorageKey",
-        @"storage_keys_for_zti_private_key_recreate_skip"
+        @"kAutoResetKey",
+        @"kTTResetedDeviceID",
+        @"kTTResetedInstallID",
+        @"kTTResetNewUser"
     ];
     for (NSString *key in keysToRemove) {
         [defaults removeObjectForKey:key];
     }
-    
-    // Xóa Keychain lưu ID giả
-    NSDictionary *delDID = @{
-        (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
-        (__bridge id)kSecAttrAccount: @"bmtiktok_persistent_device_id",
-        (__bridge id)kSecAttrService: @"com.bmtiktok.settings"
-    };
-    SecItemDelete((__bridge CFDictionaryRef)delDID);
-    NSDictionary *delIID = @{
-        (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
-        (__bridge id)kSecAttrAccount: @"bmtiktok_persistent_install_id",
-        (__bridge id)kSecAttrService: @"com.bmtiktok.settings"
-    };
-    SecItemDelete((__bridge CFDictionaryRef)delIID);
-    
-    // Đặt cờ reset ByteDance SDK để yêu cầu máy chủ cấp phát Device ID / Install ID hoàn toàn mới
-    [defaults setBool:YES forKey:@"kAutoResetKey"];
-    [defaults setBool:YES forKey:@"kTTResetedDeviceID"];
-    [defaults setBool:YES forKey:@"kTTResetedInstallID"];
-    [defaults setBool:YES forKey:@"kTTResetNewUser"];
     [defaults synchronize];
     
-    // 2. Xóa các tệp plist lưu cache ID thiết bị trong sandbox ứng dụng
-    NSFileManager *fm = [NSFileManager defaultManager];
-    NSArray *searchPaths = @[
-        NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES).firstObject,
-        NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject,
-        NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES).firstObject,
-        [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES).firstObject stringByAppendingPathComponent:@"Preferences"],
-        [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES).firstObject stringByAppendingPathComponent:@"Application Support"]
-    ];
-    
-    for (NSString *dir in searchPaths) {
-        if (!dir) continue;
-        NSString *plistPath = [dir stringByAppendingPathComponent:@"ttinstall_ids.plist"];
-        if ([fm fileExistsAtPath:plistPath]) {
-            [fm removeItemAtPath:plistPath error:nil];
-        }
-        NSString *appGroupsPlist = [dir stringByAppendingPathComponent:@"install_app_groups.plist"];
-        if ([fm fileExistsAtPath:appGroupsPlist]) {
-            [fm removeItemAtPath:appGroupsPlist error:nil];
+    // 2. Xóa sạch HTTP Cookies bị ByteDance gắn cờ giới hạn (odin_tt, msToken...)
+    NSHTTPCookieStorage *cookieStorage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+    NSArray *cookies = [cookieStorage.cookies copy];
+    for (NSHTTPCookie *cookie in cookies) {
+        NSString *name = [cookie.name lowercaseString];
+        NSString *dom = [cookie.domain lowercaseString];
+        if ([dom containsString:@"tiktok"] || [dom containsString:@"bytedance"] || [dom containsString:@"musical"] || [name isEqualToString:@"odin_tt"] || [name isEqualToString:@"mstoken"]) {
+            [cookieStorage deleteCookie:cookie];
         }
     }
+    [BMLogger log:@"[DEVICE-RESET] Đã xóa toàn bộ cookie theo dõi odin_tt & msToken."];
     
-    // 3. Xóa các khóa Keychain lưu ID cũ nếu có
-    NSArray *kcServices = @[@"kBDInstallOldDidKeychainService", @"com.bytedance.ttinstallservice", @"com.ss.iphone.ugc.Awe.device_id"];
-    for (NSString *svc in kcServices) {
-        NSDictionary *kcQuery = @{
-            (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
-            (__bridge id)kSecAttrService: svc
-        };
-        SecItemDelete((__bridge CFDictionaryRef)kcQuery);
-    }
-    
-    // 4. Kích hoạt TTInstallIDManager reRegisterDevice để TikTok gửi device_id=0 lên máy chủ và nhận về DID/DToken thật
+    // 3. Kích hoạt TTInstallIDManager reRegisterDevice sạch (không truyền custom trigger để tránh bị PumbaaPro gắn cờ non-native)
     Class installManagerClass = objc_getClass("TTInstallIDManager");
     if (installManagerClass) {
-        SEL selShared = NSSelectorFromString(@"sharedManager");
-        SEL selDefault = NSSelectorFromString(@"defaultManager");
         id manager = nil;
-        if ([(id)installManagerClass respondsToSelector:selShared]) {
-            manager = [(id)installManagerClass performSelector:selShared];
-        } else if ([(id)installManagerClass respondsToSelector:selDefault]) {
-            manager = [(id)installManagerClass performSelector:selDefault];
+        if ([(id)installManagerClass respondsToSelector:@selector(sharedManager)]) {
+            manager = [(id)installManagerClass performSelector:@selector(sharedManager)];
+        } else if ([(id)installManagerClass respondsToSelector:@selector(defaultManager)]) {
+            manager = [(id)installManagerClass performSelector:@selector(defaultManager)];
         }
         if (manager) {
             SEL reRegisterSel = NSSelectorFromString(@"reRegisterDeviceWithSceneStatus:triggerFrom:registerSuccessObserver:completion:");
@@ -440,13 +443,13 @@ static NSString *settingsBackupFilePath() {
                 typedef void (*ReRegisterFunc)(id, SEL, id, id, id, id);
                 ReRegisterFunc func = (ReRegisterFunc)[manager methodForSelector:reRegisterSel];
                 if (func) {
-                    func(manager, reRegisterSel, nil, @"BMTikTok_RateLimitFix", nil, nil);
+                    func(manager, reRegisterSel, nil, nil, nil, nil);
                 }
             }
         }
     }
     
-    [BMLogger log:@"[DEVICE-RESET] Đã hoàn tất làm sạch cache & kích hoạt reRegisterDevice sạch lên máy chủ."];
+    [BMLogger log:@"[DEVICE-RESET] Đã hoàn tất làm sạch cookie & kích hoạt reRegisterDevice sạch lên máy chủ."];
     return YES;
 }
 
