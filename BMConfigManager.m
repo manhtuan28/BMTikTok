@@ -250,88 +250,61 @@ static NSString *settingsBackupFilePath() {
 
 #pragma mark - Login Fix & Device ID Reset
 
-+ (NSString *)persistentDeviceID {
++ (void)cleanOldFakeDeviceIDIfNeeded {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *did = [defaults stringForKey:@"bmtiktok_persistent_device_id"];
-    if (!did || did.length < 10 || [did isEqualToString:@"0"] || [did isEqualToString:@"unknown"]) {
-        NSDictionary *query = @{
-            (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
-            (__bridge id)kSecAttrAccount: @"bmtiktok_persistent_device_id",
-            (__bridge id)kSecAttrService: @"com.bmtiktok.settings",
-            (__bridge id)kSecReturnData: (__bridge id)kCFBooleanTrue
-        };
-        CFTypeRef result = NULL;
-        if (SecItemCopyMatching((__bridge CFDictionaryRef)query, &result) == errSecSuccess && result) {
-            NSData *data = (__bridge_transfer NSData *)result;
-            did = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-        }
+    if (!did || did.length == 0) {
+        did = [defaults stringForKey:@"kDeviceIDStorageKey"];
     }
-    if (!did || did.length < 10 || [did isEqualToString:@"0"] || [did isEqualToString:@"unknown"]) {
-        uint64_t base = 7410000000000000000ULL;
-        uint64_t r1 = (uint64_t)arc4random();
-        uint64_t r2 = (uint64_t)arc4random();
-        uint64_t didNum = base + ((r1 * 1000000000ULL + r2) % 80000000000000000ULL);
-        did = [NSString stringWithFormat:@"%llu", didNum];
-        
-        NSData *data = [did dataUsingEncoding:NSUTF8StringEncoding];
-        NSDictionary *addQuery = @{
-            (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
-            (__bridge id)kSecAttrAccount: @"bmtiktok_persistent_device_id",
-            (__bridge id)kSecAttrService: @"com.bmtiktok.settings",
-            (__bridge id)kSecValueData: data
-        };
-        SecItemAdd((__bridge CFDictionaryRef)addQuery, NULL);
-        [BMLogger log:@"[DEVICE-ID] Đã tạo Device ID cố định mới: %@", did];
+    if (!did || did.length == 0) {
+        did = [defaults stringForKey:@"tt_device_id"];
     }
-    [defaults setObject:did forKey:@"bmtiktok_persistent_device_id"];
-    [defaults setObject:did forKey:@"kDeviceIDStorageKey"];
-    [defaults setObject:did forKey:@"tt_device_id"];
-    [defaults setObject:did forKey:@"did"];
-    [defaults setObject:did forKey:@"com.ss.iphone.ugc.Awe.device_id"];
-    [defaults synchronize];
-    return did;
+    
+    BOOL isFake = (did && ([did hasPrefix:@"741000"] || [did isEqualToString:@"7471290553514378232"]));
+    BOOL isCleanedBefore = [defaults boolForKey:@"bmtiktok_cleaned_fake_did_v3"];
+    
+    if (isFake || !isCleanedBefore) {
+        [BMLogger log:@"[DEVICE-CLEAN] Phát hiện Device ID giả mạo cũ (%@) hoặc chưa dọn dẹp. Đang dọn dẹp sạch sẽ để ByteDance cấp phát ID & DToken thật...", did ?: @"none"];
+        [self fixLoginRateLimitAndResetDeviceID];
+        [defaults setBool:YES forKey:@"bmtiktok_cleaned_fake_did_v3"];
+        [defaults synchronize];
+    }
+}
+
++ (NSString *)persistentDeviceID {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *did = [defaults stringForKey:@"tt_device_id"];
+    if (!did || did.length < 5 || [did isEqualToString:@"0"]) {
+        did = [defaults stringForKey:@"kDeviceIDStorageKey"];
+    }
+    if (!did || did.length < 5 || [did isEqualToString:@"0"]) {
+        did = [defaults stringForKey:@"did"];
+    }
+    if (!did || did.length < 5 || [did isEqualToString:@"0"]) {
+        did = [defaults stringForKey:@"bmtiktok_persistent_device_id"];
+    }
+    if (did && ([did hasPrefix:@"741000"] || [did isEqualToString:@"7471290553514378232"])) {
+        return nil;
+    }
+    return (did && did.length >= 5 && ![did isEqualToString:@"0"]) ? did : nil;
 }
 
 + (NSString *)persistentInstallID {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *iid = [defaults stringForKey:@"bmtiktok_persistent_install_id"];
-    if (!iid || iid.length < 10 || [iid isEqualToString:@"0"] || [iid isEqualToString:@"unknown"]) {
-        NSDictionary *query = @{
-            (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
-            (__bridge id)kSecAttrAccount: @"bmtiktok_persistent_install_id",
-            (__bridge id)kSecAttrService: @"com.bmtiktok.settings",
-            (__bridge id)kSecReturnData: (__bridge id)kCFBooleanTrue
-        };
-        CFTypeRef result = NULL;
-        if (SecItemCopyMatching((__bridge CFDictionaryRef)query, &result) == errSecSuccess && result) {
-            NSData *data = (__bridge_transfer NSData *)result;
-            iid = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-        }
+    NSString *iid = [defaults stringForKey:@"tt_install_id"];
+    if (!iid || iid.length < 5 || [iid isEqualToString:@"0"]) {
+        iid = [defaults stringForKey:@"kInstallIDStorageKey"];
     }
-    if (!iid || iid.length < 10 || [iid isEqualToString:@"0"] || [iid isEqualToString:@"unknown"]) {
-        uint64_t base = 7410000000000000000ULL;
-        uint64_t r1 = (uint64_t)arc4random();
-        uint64_t r2 = (uint64_t)arc4random();
-        uint64_t iidNum = base + ((r1 * 1000000000ULL + r2) % 80000000000000000ULL);
-        iid = [NSString stringWithFormat:@"%llu", iidNum];
-        
-        NSData *data = [iid dataUsingEncoding:NSUTF8StringEncoding];
-        NSDictionary *addQuery = @{
-            (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
-            (__bridge id)kSecAttrAccount: @"bmtiktok_persistent_install_id",
-            (__bridge id)kSecAttrService: @"com.bmtiktok.settings",
-            (__bridge id)kSecValueData: data
-        };
-        SecItemAdd((__bridge CFDictionaryRef)addQuery, NULL);
-        [BMLogger log:@"[DEVICE-ID] Đã tạo Install ID cố định mới: %@", iid];
+    if (!iid || iid.length < 5 || [iid isEqualToString:@"0"]) {
+        iid = [defaults stringForKey:@"iid"];
     }
-    [defaults setObject:iid forKey:@"bmtiktok_persistent_install_id"];
-    [defaults setObject:iid forKey:@"kInstallIDStorageKey"];
-    [defaults setObject:iid forKey:@"tt_install_id"];
-    [defaults setObject:iid forKey:@"iid"];
-    [defaults setObject:iid forKey:@"com.ss.iphone.ugc.Awe.install_id"];
-    [defaults synchronize];
-    return iid;
+    if (!iid || iid.length < 5 || [iid isEqualToString:@"0"]) {
+        iid = [defaults stringForKey:@"bmtiktok_persistent_install_id"];
+    }
+    if (iid && ([iid hasPrefix:@"741000"] || [iid isEqualToString:@"7465653952132769861"])) {
+        return nil;
+    }
+    return (iid && iid.length >= 5 && ![iid isEqualToString:@"0"]) ? iid : nil;
 }
 
 + (BOOL)isDeviceIDConfirmed {
@@ -340,6 +313,8 @@ static NSString *settingsBackupFilePath() {
 
 + (void)setConfirmedDeviceID:(NSString *)did installID:(NSString *)iid {
     if (!did || did.length < 5 || [did isEqualToString:@"0"]) return;
+    if ([did hasPrefix:@"741000"] || [did isEqualToString:@"7471290553514378232"]) return;
+    
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setObject:did forKey:@"bmtiktok_persistent_device_id"];
     [defaults setObject:did forKey:@"kDeviceIDStorageKey"];
@@ -347,7 +322,7 @@ static NSString *settingsBackupFilePath() {
     [defaults setObject:did forKey:@"did"];
     [defaults setObject:did forKey:@"com.ss.iphone.ugc.Awe.device_id"];
     
-    if (iid && iid.length >= 5 && ![iid isEqualToString:@"0"]) {
+    if (iid && iid.length >= 5 && ![iid isEqualToString:@"0"] && ![iid hasPrefix:@"741000"]) {
         [defaults setObject:iid forKey:@"bmtiktok_persistent_install_id"];
         [defaults setObject:iid forKey:@"kInstallIDStorageKey"];
         [defaults setObject:iid forKey:@"tt_install_id"];
@@ -360,8 +335,8 @@ static NSString *settingsBackupFilePath() {
 }
 
 + (BOOL)fixLoginRateLimitAndResetDeviceID {
-    [BMLogger log:@"[DEVICE-RESET] Bắt đầu quá trình xóa cache Device ID & làm mới thiết bị..."];
-    // 1. Xóa các khóa lưu cache Device ID / Install ID trong NSUserDefaults
+    [BMLogger log:@"[DEVICE-RESET] Bắt đầu quá trình xóa cache Device ID, ZTI token & làm sạch thiết bị..."];
+    // 1. Xóa các khóa lưu cache Device ID / Install ID / ZTI trong NSUserDefaults
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSArray *keysToRemove = @[
         @"bmtiktok_persistent_device_id",
@@ -384,13 +359,18 @@ static NSString *settingsBackupFilePath() {
         @"kTTInstallServiceIsActivated",
         @"kTTInstallServiceLastRequestTime",
         @"com.ss.iphone.ugc.Awe.install_id",
-        @"com.ss.iphone.ugc.Awe.device_id"
+        @"com.ss.iphone.ugc.Awe.device_id",
+        @"kTTInstallDeviceZTIDTokenAndSignStorageKey",
+        @"kTTInstallDeviceZTIPublicKeyStorageKey",
+        @"kTTInstallDeviceZTIDevicePropertiesStorageKey",
+        @"kTTInstallDeviceZTILFTUStorageKey",
+        @"storage_keys_for_zti_private_key_recreate_skip"
     ];
     for (NSString *key in keysToRemove) {
         [defaults removeObjectForKey:key];
     }
     
-    // Xóa Keychain
+    // Xóa Keychain lưu ID giả
     NSDictionary *delDID = @{
         (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
         (__bridge id)kSecAttrAccount: @"bmtiktok_persistent_device_id",
@@ -404,17 +384,12 @@ static NSString *settingsBackupFilePath() {
     };
     SecItemDelete((__bridge CFDictionaryRef)delIID);
     
-    // Đặt cờ reset ByteDance SDK để cấp phát Device ID / Install ID hoàn toàn mới
+    // Đặt cờ reset ByteDance SDK để yêu cầu máy chủ cấp phát Device ID / Install ID hoàn toàn mới
     [defaults setBool:YES forKey:@"kAutoResetKey"];
     [defaults setBool:YES forKey:@"kTTResetedDeviceID"];
     [defaults setBool:YES forKey:@"kTTResetedInstallID"];
     [defaults setBool:YES forKey:@"kTTResetNewUser"];
     [defaults synchronize];
-    
-    // Tạo ngay cặp Device ID và Install ID mới
-    NSString *newDid = [self persistentDeviceID];
-    NSString *newIid = [self persistentInstallID];
-    [BMLogger log:@"[DEVICE-RESET] Đã sinh cặp ID mới: DID=%@ | IID=%@", newDid, newIid];
     
     // 2. Xóa các tệp plist lưu cache ID thiết bị trong sandbox ứng dụng
     NSFileManager *fm = [NSFileManager defaultManager];
@@ -448,7 +423,7 @@ static NSString *settingsBackupFilePath() {
         SecItemDelete((__bridge CFDictionaryRef)kcQuery);
     }
     
-    // 4. Nếu TTInstallIDManager tồn tại trong runtime, kích hoạt cấp lại Device ID ngay lập tức
+    // 4. Kích hoạt TTInstallIDManager reRegisterDevice để TikTok gửi device_id=0 lên máy chủ và nhận về DID/DToken thật
     Class installManagerClass = objc_getClass("TTInstallIDManager");
     if (installManagerClass) {
         SEL selShared = NSSelectorFromString(@"sharedManager");
@@ -471,7 +446,7 @@ static NSString *settingsBackupFilePath() {
         }
     }
     
-    [BMLogger log:@"[DEVICE-RESET] Đã hoàn tất làm mới Device ID & kích hoạt reRegisterDevice."];
+    [BMLogger log:@"[DEVICE-RESET] Đã hoàn tất làm sạch cache & kích hoạt reRegisterDevice sạch lên máy chủ."];
     return YES;
 }
 
