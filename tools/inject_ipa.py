@@ -17,6 +17,132 @@ import zipfile
 import struct
 import argparse
 
+# ═══════════════════════════════════════════════════════════════
+# Mach-O Code Signature Stripping
+# Fix TrollStore ldid crash: "target.sputn(data, writ) == writ"
+# ═══════════════════════════════════════════════════════════════
+
+LC_CODE_SIGNATURE = 0x1d
+
+def _strip_macho_slice_signature(f, base_offset):
+    """Tìm và xóa `LC_CODE_SIGNATURE` trong một Mach-O 64-bit slice, cắt bỏ dữ liệu chữ ký cuối file."""
+    f.seek(base_offset)
+    header = f.read(32)
+    magic, cputype, cpusubtype, filetype, ncmds, sizeofcmds, flags, reserved = struct.unpack('<IIIIIIII', header)
+
+    offset_cursor = base_offset + 32
+    codesig_cmd_offset = None
+    codesig_dataoff = None
+
+    for i in range(ncmds):
+        f.seek(offset_cursor)
+        cmd_hdr = f.read(8)
+        if len(cmd_hdr) < 8:
+            break
+        cmd, cmdsize = struct.unpack('<II', cmd_hdr)
+
+        if cmd == LC_CODE_SIGNATURE:
+            # LC_CODE_SIGNATURE payload: dataoff (4 bytes) + datasize (4 bytes)
+            sig_payload = f.read(8)
+            dataoff, datasize = struct.unpack('<II', sig_payload)
+            codesig_cmd_offset = offset_cursor
+            codesig_dataoff = dataoff
+            codesig_cmdsize = cmdsize
+
+            # 1. Ghi đè load command bằng toàn bộ zero (biến nó thành padding)
+            f.seek(codesig_cmd_offset)
+            f.write(b'\x00' * codesig_cmdsize)
+
+            # 2. Giảm ncmds và sizeofcmds trong Mach-O header
+            f.seek(base_offset + 16)
+            f.write(struct.pack('<II', ncmds - 1, sizeofcmds - codesig_cmdsize))
+
+            return codesig_dataoff  # Trả về vị trí bắt đầu code signature data để truncate
+
+        offset_cursor += cmdsize
+
+    return None  # Không tìm thấy `LC_CODE_SIGNATURE`
+
+def strip_code_signature(binary_path):
+    """
+    Xóa hoàn toàn chữ ký code signature từ file Mach-O (64-bit hoặc FAT).
+    Sau khi xóa, TrollStore/ldid có thể ký lại sạch từ đầu.
+    """
+    try:
+        with open(binary_path, 'r+b') as f:
+            data = f.read(8)
+            if len(data) < 4:
+                return
+            magic = struct.unpack('<I', data[:4])[0]
+            truncate_at = None
+
+            if magic == 0xbebafeca or magic == 0xcafebabe:  # FAT Mach-O
+                nfat_arch = struct.unpack('>I', data[4:8])[0]
+                for i in range(nfat_arch):
+                    f.seek(8 + i * 20)
+                    arch_data = f.read(20)
+                    cputype, cpusubtype, offset, size, align = struct.unpack('>IIIII', arch_data)
+                    # Kiểm tra từng slice
+                    f.seek(offset)
+                    slice_magic = struct.unpack('<I', f.read(4))[0]
+                    if slice_magic == 0xfeedfacf:
+                        result = _strip_macho_slice_signature(f, offset)
+                        if result is not None and (truncate_at is None or result < truncate_at):
+                            truncate_at = result
+            elif magic == 0xfeedfacf:  # Mach-O 64-bit
+                truncate_at = _strip_macho_slice_signature(f, 0)
+
+            # Cắt bỏ phần dữ liệu chữ ký thừa ở cuối file
+            if truncate_at is not None:
+                f.truncate(truncate_at)
+                return True
+    except Exception as e:
+        print(f"[!] Không thể strip code signature từ {os.path.basename(binary_path)}: {e}")
+    return False
+
+def strip_all_signatures(app_path):
+    """
+    Duyệt toàn bộ .app bundle và xóa code signature của MỌI binary Mach-O.
+    Bao gồm: file thực thi chính, tất cả .dylib trong Frameworks/, và .appex trong PlugIns/.
+    """
+    count = 0
+    for root, dirs, files in os.walk(app_path):
+        for fname in files:
+            fpath = os.path.join(root, fname)
+            # Chỉ xử lý file binary (không có phần mở rộng hoặc .dylib/.appex)
+            _, ext = os.path.splitext(fname)
+            if ext in ('.dylib', '.so', ''):
+                try:
+                    with open(fpath, 'rb') as f:
+                        magic_bytes = f.read(4)
+                        if len(magic_bytes) < 4:
+                            continue
+                        magic = struct.unpack('<I', magic_bytes)[0]
+                        if magic in (0xfeedfacf, 0xbebafeca, 0xcafebabe, 0xfeedface):
+                            if strip_code_signature(fpath):
+                                count += 1
+                except Exception:
+                    pass
+        # Xử lý riêng các file thực thi trong .appex (không có extension)
+        for dname in dirs:
+            if dname.endswith('.appex') or dname.endswith('.framework'):
+                appex_dir = os.path.join(root, dname)
+                for sub_f in os.listdir(appex_dir):
+                    sub_path = os.path.join(appex_dir, sub_f)
+                    if os.path.isfile(sub_path) and '.' not in sub_f:
+                        try:
+                            with open(sub_path, 'rb') as f:
+                                magic_bytes = f.read(4)
+                                if len(magic_bytes) < 4:
+                                    continue
+                                magic = struct.unpack('<I', magic_bytes)[0]
+                                if magic in (0xfeedfacf, 0xbebafeca, 0xcafebabe, 0xfeedface):
+                                    if strip_code_signature(sub_path):
+                                        count += 1
+                        except Exception:
+                            pass
+    return count
+
 def validate_dylib(dylib_path):
     """
     Kiểm tra file dylib có phải là Mach-O MH_DYLIB (filetype 6) hợp lệ không,
@@ -251,7 +377,20 @@ def repackage_ipa(input_ipa, dylib_path, bundle_path, output_ipa, strip_plugins=
     inject_load_dylib(main_executable, "@rpath/BMTikTok.dylib")
     if has_keychain_fix:
         inject_load_dylib(main_executable, "@rpath/sideloadKeychainFix.dylib")
-        
+
+    # 7. Xóa toàn bộ code signature cũ của Apple để TrollStore/ldid có thể ký lại sạch
+    # Fix lỗi: ldid.cpp(2817): _assert(): target.sputn(data, writ) == writ
+    print("[*] Đang xóa toàn bộ chữ ký Apple code signature cũ (để TrollStore/ldid ký lại được)...")
+    stripped_count = strip_all_signatures(app_path)
+    print(f"[+] Đã strip code signature thành công từ {stripped_count} binary Mach-O.")
+
+    # Xóa _CodeSignature trong PlugIns nếu còn sót
+    plugins_dir = os.path.join(app_path, "PlugIns")
+    if os.path.exists(plugins_dir):
+        for root, dirs, files in os.walk(plugins_dir):
+            if "_CodeSignature" in dirs:
+                shutil.rmtree(os.path.join(root, "_CodeSignature"))
+
     # 8. Đóng gói lại thành file IPA mới
     print(f"[*] Đang nén thành phẩm IPA: {output_ipa}")
     with zipfile.ZipFile(output_ipa, 'w', zipfile.ZIP_DEFLATED) as zip_out:
