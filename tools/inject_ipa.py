@@ -94,9 +94,18 @@ def _patch_macho_slice(f, base_offset, dylib_payload_path):
     header = f.read(32)
     magic, cputype, cpusubtype, filetype, ncmds, sizeofcmds, flags, reserved = struct.unpack('<IIIIIIII', header)
     
-    # Chuẩn bị Load Command LC_LOAD_DYLIB (0x0c) hoặc LC_LOAD_WEAK_DYLIB (0x80000018)
-    cmd_type = 0x0c # LC_LOAD_DYLIB
+    # Sử dụng Load Command LC_LOAD_WEAK_DYLIB (0x80000018) giống VibeTok
+    # để dyld nạp nhẹ nhàng không bị crash hay strict sandbox abort
+    cmd_type = 0x80000018 # LC_LOAD_WEAK_DYLIB
     encoded_path = dylib_payload_path.encode('utf-8') + b'\x00'
+    
+    # Kiểm tra xem load command đã tồn tại trong binary chưa (tránh chèn trùng)
+    f.seek(base_offset + 32)
+    existing_cmds = f.read(sizeofcmds)
+    if encoded_path in existing_cmds:
+        print(f"[*] Load command {dylib_payload_path} đã tồn tại trong binary, bỏ qua.")
+        return
+
     # Padding cho đủ bội số của 8 bytes
     pad_len = (8 - ((24 + len(encoded_path)) % 8)) % 8
     cmd_size = 24 + len(encoded_path) + pad_len
@@ -115,9 +124,9 @@ def _patch_macho_slice(f, base_offset, dylib_payload_path):
     # Cập nhật Mach-O header (tăng ncmds lên 1 và sizeofcmds lên cmd_size)
     f.seek(base_offset + 16)
     f.write(struct.pack('<II', ncmds + 1, sizeofcmds + cmd_size))
-    print(f"[+] Đã chèn thành công LC_LOAD_DYLIB: {dylib_payload_path}")
+    print(f"[+] Đã chèn thành công LC_LOAD_WEAK_DYLIB: {dylib_payload_path}")
 
-def repackage_ipa(input_ipa, dylib_path, bundle_path, output_ipa):
+def repackage_ipa(input_ipa, dylib_path, bundle_path, output_ipa, strip_plugins=False, testflight_mode=False):
     # Validate dylib
     validate_dylib(dylib_path)
     
@@ -144,12 +153,19 @@ def repackage_ipa(input_ipa, dylib_path, bundle_path, output_ipa):
     
     print(f"[*] Mục tiêu ứng dụng: {app_path}")
     
-    # 1. Loại bỏ các PlugIns, Extensions, Watch để Sideloadly / AltStore chỉ cần duy nhất 1 App ID
-    strip_folders = ["PlugIns", "Watch", "Extensions", "AppExtensions"]
+    # 1. Chỉ loại bỏ Watch và AppExtensions thừa.
+    # GIỮ NGUYÊN PlugIns (đặc biệt WalletAuthExtension.appex) để TikTok không bị lỗi Auth/Login.
+    strip_folders = ["Watch", "AppExtensions"]
+    if strip_plugins:
+        strip_folders.append("PlugIns")
+        print("[!] Đang loại bỏ PlugIns theo yêu cầu người dùng...")
+    else:
+        print("[*] Giữ nguyên PlugIns/ (chứa WalletAuthExtension xử lý đăng nhập & Auth)...")
+
     for folder in strip_folders:
         folder_path = os.path.join(app_path, folder)
         if os.path.exists(folder_path):
-            print(f"[*] Đang loại bỏ {folder}/ để giảm số lượng App ID...")
+            print(f"[*] Đang loại bỏ {folder}/...")
             shutil.rmtree(folder_path)
             
     # 2. Xóa các chứng chỉ và profile ký cũ
@@ -186,8 +202,6 @@ def repackage_ipa(input_ipa, dylib_path, bundle_path, output_ipa):
     # Vá dependency CydiaSubstrate trong BMTikTok.dylib
     patch_dylib_dependency(dest_dylib, "/Library/Frameworks/CydiaSubstrate.framework/CydiaSubstrate", "@rpath/libsubstrate.dylib")
     
-
-
     # 4.2 Copy sideloadKeychainFix.dylib vào Frameworks (Sửa lỗi Keychain & App Groups cho Sideload)
     keychain_src = os.path.join(os.path.dirname(__file__), "deps", "sideloadKeychainFix.dylib")
     if not os.path.exists(keychain_src):
@@ -202,7 +216,7 @@ def repackage_ipa(input_ipa, dylib_path, bundle_path, output_ipa):
     else:
         print("[!] Không tìm thấy sideloadKeychainFix.dylib trong tools/deps!")
 
-    # 4.3 Bật UIFileSharingEnabled và LSSupportsOpeningDocumentsInPlace trong Info.plist
+    # 4.3 Cập nhật Info.plist
     info_plist_path = os.path.join(app_path, "Info.plist")
     if os.path.exists(info_plist_path):
         try:
@@ -211,9 +225,16 @@ def repackage_ipa(input_ipa, dylib_path, bundle_path, output_ipa):
                 plist_obj = plistlib.load(fp)
             plist_obj["UIFileSharingEnabled"] = True
             plist_obj["LSSupportsOpeningDocumentsInPlace"] = True
+            
+            if testflight_mode:
+                print("[+] Đang áp dụng cấu hình TestFlight (CHANNEL_NAME=TestFlight_online, SSAppID=1233)...")
+                plist_obj["CHANNEL_NAME"] = "TestFlight_online"
+                plist_obj["SSAppID"] = "1233"
+                plist_obj["beta-reports-active"] = True
+
             with open(info_plist_path, 'wb') as fp:
                 plistlib.dump(plist_obj, fp)
-            print("[+] Đã kích hoạt UIFileSharingEnabled & LSSupportsOpeningDocumentsInPlace trong Info.plist (Tệp debug log sẽ xuất hiện trong ứng dụng Tệp/Files)")
+            print("[+] Đã cập nhật Info.plist (kích hoạt UIFileSharingEnabled cho Documents)")
         except Exception as e:
             print(f"[!] Cảnh báo không thể sửa Info.plist: {e}")
         
@@ -225,15 +246,11 @@ def repackage_ipa(input_ipa, dylib_path, bundle_path, output_ipa):
         shutil.copytree(bundle_path, dest_bundle)
         print(f"[+] Đã sao chép BMTikTok.bundle -> {dest_bundle}")
         
-    # 6. Patch LC_LOAD_DYLIB vào file thực thi
+    # 6. Patch LC_LOAD_WEAK_DYLIB vào file thực thi
     print(f"[*] Đang chèn load dylib vào file thực thi: {main_executable}")
+    inject_load_dylib(main_executable, "@rpath/BMTikTok.dylib")
     if has_keychain_fix:
         inject_load_dylib(main_executable, "@rpath/sideloadKeychainFix.dylib")
-    inject_load_dylib(main_executable, "@rpath/BMTikTok.dylib")
-
-    
-
-
         
     # 8. Đóng gói lại thành file IPA mới
     print(f"[*] Đang nén thành phẩm IPA: {output_ipa}")
@@ -255,6 +272,8 @@ if __name__ == "__main__":
     parser.add_argument("-d", "--dylib", required=True, help="Đường dẫn file BMTikTok.dylib đã build")
     parser.add_argument("-b", "--bundle", required=True, help="Đường dẫn BMTikTok.bundle")
     parser.add_argument("-o", "--output", default="BMTikTok_Modded.ipa", help="Đường dẫn file IPA đầu ra")
+    parser.add_argument("--strip-plugins", action="store_true", help="Loại bỏ PlugIns/ (chỉ dùng nếu bị giới hạn 3 App ID của Apple ID miễn phí)")
+    parser.add_argument("--testflight", action="store_true", help="Kích hoạt TestFlight mode trong Info.plist để nới lỏng kiểm tra App Store receipt")
     
     args = parser.parse_args()
-    repackage_ipa(args.input, args.dylib, args.bundle, args.output)
+    repackage_ipa(args.input, args.dylib, args.bundle, args.output, strip_plugins=args.strip_plugins, testflight_mode=args.testflight)

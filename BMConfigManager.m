@@ -99,7 +99,7 @@ static NSString *const kBMKeychainAccount = @"user_settings_backup";
     }
     dict[@"_meta_app"] = @"BMTikTok";
     dict[@"_meta_author"] = @"Tuancute28 (Bùi Mạnh Tuấn)";
-    dict[@"_meta_version"] = @"46.8.0";
+    dict[@"_meta_version"] = @"46.9.0";
     dict[@"_meta_timestamp"] = [NSString stringWithFormat:@"%.0f", [[NSDate date] timeIntervalSince1970]];
     return [dict copy];
 }

@@ -4,17 +4,22 @@ on:
   workflow_dispatch:
     inputs:
       ipa_url:
-        description: 'Đường link tải file TikTok IPA gốc (Google Drive, Direct Link, Dropbox...)'
+        description: "Đường link tải file TikTok IPA gốc (Google Drive, Direct Link, Dropbox...)"
         required: true
         type: string
-        default: 'https://drive.google.com/file/d/1_ZSgApEvgE9GnecZNE6rqyKpROd5SEqp/view?usp=drive_link'
+        default: "https://drive.google.com/file/d/1hB9e2_nIP0kASEotzCRLvZqjk4726-QQ/view?usp=sharing"
       tiktok_version:
-        description: 'Phiên bản TikTok (Ví dụ: 46.8.0)'
+        description: "Phiên bản TikTok (Ví dụ: 46.9.0)"
         required: false
-        default: '46.8.0'
+        default: "46.9.0"
         type: string
       create_release:
-        description: 'Tạo GitHub Release để tải trực tiếp từ tab Releases'
+        description: "Tạo GitHub Release để tải trực tiếp từ tab Releases"
+        required: false
+        default: true
+        type: boolean
+      testflight_mode:
+        description: "Bật chế độ TestFlight (giúp login mượt, vượt kiểm tra biên lai App Store DRM)"
         required: false
         default: true
         type: boolean
@@ -37,11 +42,11 @@ jobs:
         run: |
           echo "Installing ldid & dpkg..."
           brew install ldid dpkg || true
-          
+
           echo "Cloning Theos..."
           git clone --recursive https://github.com/theos/theos.git ~/theos
           echo "THEOS=$HOME/theos" >> $GITHUB_ENV
-          
+
           echo "Downloading iOS SDKs..."
           mkdir -p /tmp/sdks
           curl -sL https://github.com/theos/sdks/archive/refs/heads/master.tar.gz | tar -xz -C /tmp/sdks --strip-components=1
@@ -53,18 +58,18 @@ jobs:
           export THEOS=$HOME/theos
           make clean
           make package FINALPACKAGE=1
-          
+
           # Tìm đúng file dylib nhị phân (loại trừ các file debug symbol .dSYM)
           DYLIB_PATH=$(find .theos/_/Library/MobileSubstrate/DynamicLibraries -name "BMTikTok.dylib" 2>/dev/null | head -n 1)
           if [ -z "$DYLIB_PATH" ] || [ ! -f "$DYLIB_PATH" ]; then
             DYLIB_PATH=$(find .theos -name "BMTikTok.dylib" ! -path "*.dSYM*" | head -n 1)
           fi
-          
+
           # Sửa dependency CydiaSubstrate sang @rpath/libsubstrate.dylib cho máy không Jailbreak (Sideloading)
           install_name_tool -change /Library/Frameworks/CydiaSubstrate.framework/CydiaSubstrate @rpath/libsubstrate.dylib "$DYLIB_PATH" || true
           install_name_tool -id @rpath/BMTikTok.dylib "$DYLIB_PATH" || true
           ldid -S "$DYLIB_PATH" || true
-          
+
           if [ -f "tools/deps/libsubstrate.dylib" ]; then
             ldid -S tools/deps/libsubstrate.dylib || true
           fi
@@ -72,7 +77,7 @@ jobs:
           if [ -f "tools/deps/sideloadKeychainFix.dylib" ]; then
             ldid -S tools/deps/sideloadKeychainFix.dylib || true
           fi
-          
+
           echo "DYLIB_PATH=$DYLIB_PATH" >> $GITHUB_ENV
           echo "✅ Đã tìm thấy và patch dylib thành phẩm: $DYLIB_PATH"
           file "$DYLIB_PATH"
@@ -81,7 +86,7 @@ jobs:
       - name: 📦 Tải File TikTok IPA Gốc
         run: |
           python3 tools/download_ipa.py -u "${{ inputs.ipa_url }}" -o input_tiktok.ipa
-          
+
           if [ ! -f "input_tiktok.ipa" ] || [ ! -s "input_tiktok.ipa" ]; then
             echo "❌ Lỗi: Không thể tải file IPA gốc!"
             exit 1
@@ -90,7 +95,11 @@ jobs:
       - name: 💉 Chèn BMTikTok Vào TikTok IPA
         run: |
           OUTPUT_IPA="BMTikTok_${{ inputs.tiktok_version }}.ipa"
-          python3 tools/inject_ipa.py -i input_tiktok.ipa -d "$DYLIB_PATH" -b BMTikTok.bundle -o "$OUTPUT_IPA"
+          EXTRA_FLAGS=""
+          if [ "${{ inputs.testflight_mode }}" = "true" ]; then
+            EXTRA_FLAGS="--testflight"
+          fi
+          python3 tools/inject_ipa.py -i input_tiktok.ipa -d "$DYLIB_PATH" -b BMTikTok.bundle -o "$OUTPUT_IPA" $EXTRA_FLAGS
           echo "OUTPUT_IPA=$OUTPUT_IPA" >> $GITHUB_ENV
 
       - name: 📤 Upload Artifact (File IPA & DEB)
@@ -112,7 +121,7 @@ jobs:
             * **Phiên bản TikTok:** ${{ inputs.tiktok_version }}
             * **Tác giả:** Tuancute28 (Bùi Mạnh Tuấn)
             * **Ngày phát hành:** ${{ github.event.head_commit.timestamp }}
-            
+
             ### ✨ Hướng Dẫn Cài Đặt
             1. Tải file `.ipa` đính kèm bên dưới.
             2. Cài đặt trực tiếp qua **TrollStore**, **Sideloadly**, **AltStore**, hoặc **Esign**.
