@@ -20,139 +20,116 @@ import subprocess
 import plistlib
 
 # ═══════════════════════════════════════════════════════════════
-# Mach-O Code Signature Stripping
-# Fix TrollStore ldid crash: "target.sputn(data, writ) == writ"
+# Mach-O Architecture & Codesign Utilities
+# Bảo đảm các binary là ARM64 hợp lệ và có segment LC_CODE_SIGNATURE,
+# giúp zsign / iSigner ký thành công không bị lỗi "Can't find CodeSignature segment!"
 # ═══════════════════════════════════════════════════════════════
 
 LC_CODE_SIGNATURE = 0x1d
 
-def _strip_macho_slice_signature(f, base_offset):
-    """Tìm và xóa `LC_CODE_SIGNATURE` trong một Mach-O 64-bit slice, cắt bỏ dữ liệu chữ ký cuối file."""
-    f.seek(base_offset)
-    header = f.read(32)
-    magic, cputype, cpusubtype, filetype, ncmds, sizeofcmds, flags, reserved = struct.unpack('<IIIIIIII', header)
-
-    offset_cursor = base_offset + 32
-    codesig_cmd_offset = None
-    codesig_dataoff = None
-
-    for i in range(ncmds):
-        f.seek(offset_cursor)
-        cmd_hdr = f.read(8)
-        if len(cmd_hdr) < 8:
-            break
-        cmd, cmdsize = struct.unpack('<II', cmd_hdr)
-
-        if cmd == LC_CODE_SIGNATURE:
-            # LC_CODE_SIGNATURE payload: dataoff (4 bytes) + datasize (4 bytes)
-            sig_payload = f.read(8)
-            dataoff, datasize = struct.unpack('<II', sig_payload)
-            codesig_cmd_offset = offset_cursor
-            codesig_dataoff = dataoff
-            codesig_cmdsize = cmdsize
-
-            # 1. Dịch chuyển các load commands phía sau lên để không tạo khoảng trống Cmd 0x0 size 0
-            remaining_bytes_offset = codesig_cmd_offset + codesig_cmdsize
-            end_of_cmds = base_offset + 32 + sizeofcmds
-            if remaining_bytes_offset < end_of_cmds:
-                f.seek(remaining_bytes_offset)
-                remaining_cmds = f.read(end_of_cmds - remaining_bytes_offset)
-                f.seek(codesig_cmd_offset)
-                f.write(remaining_cmds)
-                f.write(b'\x00' * codesig_cmdsize)
-            else:
-                f.seek(codesig_cmd_offset)
-                f.write(b'\x00' * codesig_cmdsize)
-
-            # 2. Giảm ncmds và sizeofcmds trong Mach-O header
-            f.seek(base_offset + 16)
-            f.write(struct.pack('<II', ncmds - 1, sizeofcmds - codesig_cmdsize))
-
-            return codesig_dataoff  # Trả về vị trí bắt đầu code signature data để truncate
-
-        offset_cursor += cmdsize
-
-    return None  # Không tìm thấy `LC_CODE_SIGNATURE`
-
-def strip_code_signature(binary_path):
+def thin_to_arm64(filepath):
     """
-    Xóa hoàn toàn chữ ký code signature từ file Mach-O (64-bit hoặc FAT).
-    Sau khi xóa, TrollStore/ldid có thể ký lại sạch từ đầu.
+    Nếu file là Universal/FAT Mach-O, trích xuất slice ARM64 thành file Mach-O 64-bit đơn lẻ.
+    Giúp tránh lỗi FAT truncation và bảo toàn tính toàn vẹn chữ ký cho ARM64.
     """
+    if not os.path.isfile(filepath):
+        return False
     try:
-        with open(binary_path, 'r+b') as f:
-            data = f.read(8)
-            if len(data) < 4:
-                return
-            magic = struct.unpack('<I', data[:4])[0]
-            truncate_at = None
-
-            if magic == 0xbebafeca or magic == 0xcafebabe:  # FAT Mach-O
-                nfat_arch = struct.unpack('>I', data[4:8])[0]
+        with open(filepath, "rb") as f:
+            magic = f.read(4)
+            if len(magic) < 4:
+                return False
+            magic_val = struct.unpack("<I", magic)[0]
+            if magic_val == 0xfeedfacf:  # Đã là Mach-O 64-bit đơn
+                return True
+            if magic_val in (0xbebafeca, 0xcafebabe):  # FAT Mach-O
+                f.seek(4)
+                nfat_arch = struct.unpack(">I", f.read(4))[0]
+                arm64_slice = None
                 for i in range(nfat_arch):
                     f.seek(8 + i * 20)
-                    arch_data = f.read(20)
-                    cputype, cpusubtype, offset, size, align = struct.unpack('>IIIII', arch_data)
-                    # Kiểm tra từng slice
-                    f.seek(offset)
-                    slice_magic = struct.unpack('<I', f.read(4))[0]
-                    if slice_magic == 0xfeedfacf:
-                        result = _strip_macho_slice_signature(f, offset)
-                        if result is not None and (truncate_at is None or result < truncate_at):
-                            truncate_at = result
-            elif magic == 0xfeedfacf:  # Mach-O 64-bit
-                truncate_at = _strip_macho_slice_signature(f, 0)
-
-            # Cắt bỏ phần dữ liệu chữ ký thừa ở cuối file
-            if truncate_at is not None:
-                f.truncate(truncate_at)
-                return True
+                    cputype, cpusubtype, offset, size, align = struct.unpack(">IIIII", f.read(20))
+                    if cputype == 0x0100000c:  # ARM64
+                        f.seek(offset)
+                        arm64_slice = f.read(size)
+                        break
+                if arm64_slice:
+                    with open(filepath, "wb") as f_out:
+                        f_out.write(arm64_slice)
+                    print(f"[+] Đã trích xuất slice ARM64 cho {os.path.basename(filepath)} ({len(arm64_slice)} bytes)")
+                    return True
+                else:
+                    print(f"[!] Không tìm thấy slice ARM64 trong FAT binary {filepath}!")
     except Exception as e:
-        print(f"[!] Không thể strip code signature từ {os.path.basename(binary_path)}: {e}")
+        print(f"[!] Lỗi khi thin ARM64 {filepath}: {e}")
     return False
 
-def strip_all_signatures(app_path):
+def has_code_signature(binary_path):
+    """Kiểm tra xem binary Mach-O (hoặc slice ARM64) đã có LC_CODE_SIGNATURE hay chưa."""
+    try:
+        with open(binary_path, 'rb') as f:
+            magic = f.read(4)
+            if len(magic) < 4:
+                return False
+            mval = struct.unpack('<I', magic)[0]
+            base_offset = 0
+            if mval in (0xbebafeca, 0xcafebabe):  # FAT
+                f.seek(4)
+                nfat = struct.unpack('>I', f.read(4))[0]
+                for i in range(nfat):
+                    f.seek(8 + i * 20)
+                    cputype, _, offset, _, _ = struct.unpack('>IIIII', f.read(20))
+                    if cputype == 0x0100000c:  # ARM64
+                        base_offset = offset
+                        break
+            f.seek(base_offset)
+            hdr = f.read(32)
+            if len(hdr) < 32:
+                return False
+            _, _, _, _, ncmds, sizeofcmds, _, _ = struct.unpack('<IIIIIIII', hdr)
+            offset_cursor = base_offset + 32
+            for _ in range(ncmds):
+                f.seek(offset_cursor)
+                cmd_hdr = f.read(8)
+                if len(cmd_hdr) < 8:
+                    break
+                cmd, cmdsize = struct.unpack('<II', cmd_hdr)
+                if cmd == LC_CODE_SIGNATURE:
+                    return True
+                offset_cursor += cmdsize
+    except Exception:
+        pass
+    return False
+
+def sign_binary(binary_path, entitlements_path=None):
     """
-    Duyệt toàn bộ .app bundle và xóa code signature của MỌI binary Mach-O.
-    Bao gồm: file thực thi chính, tất cả .dylib trong Frameworks/, và .appex trong PlugIns/.
+    Ký ad-hoc cho binary Mach-O bằng `codesign` (trên macOS) hoặc `ldid` (trên Linux/iOS).
+    Bảo đảm binary có LC_CODE_SIGNATURE hợp lệ, giúp zsign/iSigner không bị lỗi:
+    'Can't find CodeSignature segment!'.
     """
-    count = 0
-    for root, dirs, files in os.walk(app_path):
-        for fname in files:
-            fpath = os.path.join(root, fname)
-            # Chỉ xử lý file binary (không có phần mở rộng hoặc .dylib/.appex)
-            _, ext = os.path.splitext(fname)
-            if ext in ('.dylib', '.so', ''):
-                try:
-                    with open(fpath, 'rb') as f:
-                        magic_bytes = f.read(4)
-                        if len(magic_bytes) < 4:
-                            continue
-                        magic = struct.unpack('<I', magic_bytes)[0]
-                        if magic in (0xfeedfacf, 0xbebafeca, 0xcafebabe, 0xfeedface):
-                            if strip_code_signature(fpath):
-                                count += 1
-                except Exception:
-                    pass
-        # Xử lý riêng các file thực thi trong .appex (không có extension)
-        for dname in dirs:
-            if dname.endswith('.appex') or dname.endswith('.framework'):
-                appex_dir = os.path.join(root, dname)
-                for sub_f in os.listdir(appex_dir):
-                    sub_path = os.path.join(appex_dir, sub_f)
-                    if os.path.isfile(sub_path) and '.' not in sub_f:
-                        try:
-                            with open(sub_path, 'rb') as f:
-                                magic_bytes = f.read(4)
-                                if len(magic_bytes) < 4:
-                                    continue
-                                magic = struct.unpack('<I', magic_bytes)[0]
-                                if magic in (0xfeedfacf, 0xbebafeca, 0xcafebabe, 0xfeedface):
-                                    if strip_code_signature(sub_path):
-                                        count += 1
-                        except Exception:
-                            pass
-    return count
+    if not os.path.isfile(binary_path):
+        return False
+    # 1. Thử codesign trước (chuẩn Apple trên macOS)
+    if shutil.which("codesign"):
+        cmd = ["codesign", "-f", "-s", "-"]
+        if entitlements_path and os.path.exists(entitlements_path):
+            cmd.extend(["--entitlements", entitlements_path])
+        cmd.append(binary_path)
+        res = subprocess.run(cmd, capture_output=True, text=True)
+        if res.returncode == 0:
+            return True
+    # 2. Fallback sang ldid
+    if shutil.which("ldid"):
+        cmd = ["ldid"]
+        if entitlements_path and os.path.exists(entitlements_path):
+            cmd.append(f"-S{entitlements_path}")
+        else:
+            cmd.append("-S")
+        cmd.append(binary_path)
+        res = subprocess.run(cmd, capture_output=True, text=True)
+        if res.returncode == 0:
+            return True
+    return False
 
 def validate_dylib(dylib_path):
     """
@@ -317,7 +294,9 @@ def repackage_ipa(input_ipa, dylib_path, bundle_path, output_ipa, strip_plugins=
     # 3. Copy BMTikTok.dylib vào Frameworks
     dest_dylib = os.path.join(frameworks_dir, "BMTikTok.dylib")
     shutil.copy(dylib_path, dest_dylib)
-    print(f"[+] Đã sao chép BMTikTok.dylib -> {dest_dylib}")
+    thin_to_arm64(dest_dylib)
+    sign_binary(dest_dylib)
+    print(f"[+] Đã sao chép, thin ARM64 và ký BMTikTok.dylib -> {dest_dylib}")
     
     # 4. Copy libsubstrate.dylib vào Frameworks và vá dependency cho non-jailbreak
     substrate_src = os.path.join(os.path.dirname(__file__), "deps", "libsubstrate.dylib")
@@ -327,12 +306,15 @@ def repackage_ipa(input_ipa, dylib_path, bundle_path, output_ipa, strip_plugins=
     if os.path.exists(substrate_src):
         dest_substrate = os.path.join(frameworks_dir, "libsubstrate.dylib")
         shutil.copy(substrate_src, dest_substrate)
-        print(f"[+] Đã sao chép libsubstrate.dylib -> {dest_substrate}")
+        thin_to_arm64(dest_substrate)
+        sign_binary(dest_substrate)
+        print(f"[+] Đã sao chép, thin ARM64 và ký libsubstrate.dylib -> {dest_substrate}")
     else:
         print("[!] Không tìm thấy libsubstrate.dylib trong tools/deps!")
         
     # Vá dependency CydiaSubstrate trong BMTikTok.dylib
     patch_dylib_dependency(dest_dylib, "/Library/Frameworks/CydiaSubstrate.framework/CydiaSubstrate", "@rpath/libsubstrate.dylib")
+    sign_binary(dest_dylib)
     
     # 4.2 Copy sideloadKeychainFix.dylib vào Frameworks (Sửa lỗi Keychain & App Groups cho Sideload)
     keychain_src = os.path.join(os.path.dirname(__file__), "deps", "sideloadKeychainFix.dylib")
@@ -343,7 +325,9 @@ def repackage_ipa(input_ipa, dylib_path, bundle_path, output_ipa, strip_plugins=
     if os.path.exists(keychain_src):
         dest_keychain = os.path.join(frameworks_dir, "sideloadKeychainFix.dylib")
         shutil.copy(keychain_src, dest_keychain)
-        print(f"[+] Đã sao chép sideloadKeychainFix.dylib -> {dest_keychain}")
+        thin_to_arm64(dest_keychain)
+        sign_binary(dest_keychain)
+        print(f"[+] Đã sao chép, thin ARM64 và ký sideloadKeychainFix.dylib -> {dest_keychain}")
         has_keychain_fix = True
     else:
         print("[!] Không tìm thấy sideloadKeychainFix.dylib trong tools/deps!")
@@ -384,65 +368,28 @@ def repackage_ipa(input_ipa, dylib_path, bundle_path, output_ipa, strip_plugins=
         shutil.copytree(bundle_path, dest_bundle)
         print(f"[+] Đã sao chép BMTikTok.bundle -> {dest_bundle}")
         
-    # 5.5 Strip code signature trước khi chèn load dylib (tránh hỏng bảng load command Mach-O)
-    print(f"[*] Đang strip code signature từ file thực thi chính: {main_executable}")
-    strip_code_signature(main_executable)
-
     # 6. Patch LC_LOAD_WEAK_DYLIB vào file thực thi
     print(f"[*] Đang chèn load dylib vào file thực thi: {main_executable}")
     inject_load_dylib(main_executable, "@rpath/BMTikTok.dylib")
     if has_keychain_fix:
         inject_load_dylib(main_executable, "@rpath/sideloadKeychainFix.dylib")
 
-    # 7. Ký lại toàn bộ Frameworks, Dylibs, PlugIns và Executable chính bằng ldid
-    if shutil.which("ldid"):
-        print("[*] Đang ký ldid -S cho toàn bộ Frameworks & Dylibs...")
-        for root, dirs, files in os.walk(frameworks_dir):
-            for fname in files:
-                fpath = os.path.join(root, fname)
-                _, ext = os.path.splitext(fname)
-                if ext in ('.dylib', '.so', ''):
-                    try:
-                        with open(fpath, 'rb') as bf:
-                            mb = bf.read(4)
-                        if len(mb) == 4:
-                            magic = struct.unpack('<I', mb)[0]
-                            if magic in (0xfeedfacf, 0xbebafeca, 0xcafebabe, 0xfeedface):
-                                strip_code_signature(fpath)
-                                subprocess.run(["ldid", "-S", fpath], capture_output=True)
-                    except Exception:
-                        pass
+    # 7. Ký lại file thực thi chính sau khi chèn load commands
+    main_ent = os.path.join(app_path, "archived-expanded-entitlements.xcent")
+    print(f"[*] Đang ký lại ad-hoc cho {main_executable}...")
+    if sign_binary(main_executable, main_ent if os.path.exists(main_ent) else None):
+        print(f"[+] Đã ký thành công cho {main_executable}")
+    else:
+        print(f"[!] Cảnh báo: Không thể ký {main_executable}")
 
-        # Ký PlugIns nếu còn
-        plugins_dir = os.path.join(app_path, "PlugIns")
-        if os.path.exists(plugins_dir):
-            print("[*] Đang ký ldid -S cho PlugIns...")
-            for root, dirs, files in os.walk(plugins_dir):
-                for fname in files:
-                    fpath = os.path.join(root, fname)
-                    if '.' not in fname:
-                        try:
-                            with open(fpath, 'rb') as bf:
-                                mb = bf.read(4)
-                            if len(mb) == 4:
-                                magic = struct.unpack('<I', mb)[0]
-                                if magic in (0xfeedfacf, 0xbebafeca, 0xcafebabe, 0xfeedface):
-                                    strip_code_signature(fpath)
-                                    subprocess.run(["ldid", "-S", fpath], capture_output=True)
-                        except Exception:
-                            pass
-
-        main_ent = os.path.join(app_path, "archived-expanded-entitlements.xcent")
-        cmd = ["ldid", f"-S{main_ent}" if os.path.exists(main_ent) else "-S", main_executable]
-        print(f"[*] Đang ký ldid cho {main_executable}...")
-        try:
-            res = subprocess.run(cmd, capture_output=True, text=True)
-            if res.returncode == 0:
-                print(f"[+] Đã ký ldid thành công cho: {main_executable}")
-            else:
-                print(f"[!] Cảnh báo ldid: {res.stderr.strip()}")
-        except Exception as e:
-            print(f"[!] Lỗi khi chạy ldid: {e}")
+    # Kiểm tra tính hợp lệ của tất cả các binary trước khi đóng gói
+    print("[*] Đang kiểm tra tính toàn vẹn chữ ký của các thành phần...")
+    binaries_to_check = [main_executable, dest_dylib, dest_substrate]
+    if has_keychain_fix:
+        binaries_to_check.append(dest_keychain)
+    for b in binaries_to_check:
+        status = "OK (Có LC_CODE_SIGNATURE)" if has_code_signature(b) else "CẢNH BÁO: Thiếu LC_CODE_SIGNATURE!"
+        print(f"    - {os.path.basename(b)}: {status}")
 
     # 8. Đóng gói lại thành file IPA mới
     print(f"[*] Đang nén thành phẩm IPA: {output_ipa}")

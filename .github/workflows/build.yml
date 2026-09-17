@@ -68,15 +68,16 @@ jobs:
           # Sửa dependency CydiaSubstrate sang @rpath/libsubstrate.dylib cho máy không Jailbreak (Sideloading)
           install_name_tool -change /Library/Frameworks/CydiaSubstrate.framework/CydiaSubstrate @rpath/libsubstrate.dylib "$DYLIB_PATH" || true
           install_name_tool -id @rpath/BMTikTok.dylib "$DYLIB_PATH" || true
-          ldid -S "$DYLIB_PATH" || true
 
-          if [ -f "tools/deps/libsubstrate.dylib" ]; then
-            ldid -S tools/deps/libsubstrate.dylib || true
-          fi
+          # Thin tất cả dylib về arm64 để đảm bảo không bị lỗi FAT Mach-O truncation
+          lipo -thin arm64 "$DYLIB_PATH" -output "$DYLIB_PATH" 2>/dev/null || true
+          lipo -thin arm64 tools/deps/libsubstrate.dylib -output tools/deps/libsubstrate.dylib 2>/dev/null || true
+          lipo -thin arm64 tools/deps/sideloadKeychainFix.dylib -output tools/deps/sideloadKeychainFix.dylib 2>/dev/null || true
 
-          if [ -f "tools/deps/sideloadKeychainFix.dylib" ]; then
-            ldid -S tools/deps/sideloadKeychainFix.dylib || true
-          fi
+          # Ký ad-hoc chuẩn bằng Apple codesign
+          codesign -f -s - "$DYLIB_PATH" || ldid -S "$DYLIB_PATH" || true
+          codesign -f -s - tools/deps/libsubstrate.dylib || ldid -S tools/deps/libsubstrate.dylib || true
+          codesign -f -s - tools/deps/sideloadKeychainFix.dylib || ldid -S tools/deps/sideloadKeychainFix.dylib || true
 
           echo "DYLIB_PATH=$DYLIB_PATH" >> $GITHUB_ENV
           echo "✅ Đã tìm thấy và patch dylib thành phẩm: $DYLIB_PATH"

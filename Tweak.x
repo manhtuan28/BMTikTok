@@ -12,6 +12,8 @@
 #import <substrate.h>
 #import <objc/message.h>
 #import <mach-o/dyld.h>
+#import <mach/mach.h>
+#import <libkern/OSCacheControl.h>
 #import <dlfcn.h>
 
 
@@ -3077,11 +3079,18 @@ static void bm_suicide_trap_bypass(void) {
 static void bm_neutralize_core_trap(const struct mach_header *mh) {
     if (!mh) return;
     uintptr_t target = (uintptr_t)mh + 0x187b7d54;
-    uint32_t *ins = (uint32_t *)target;
-    // 0xf90003bf is ARM64 instruction for "str xzr, [x29]"
-    if (*ins == 0xf90003bf) {
-        MSHookFunction((void *)target, (void *)bm_suicide_trap_bypass, NULL);
+    
+    // Direct memory patch: ghi đè lệnh 'ret' (0xd65f03c0) vào đầu hàm suicide routine
+    vm_address_t page = target & ~(PAGE_SIZE - 1);
+    vm_size_t size = PAGE_SIZE * 2;
+    kern_return_t kr = vm_protect(mach_task_self(), page, size, FALSE, VM_PROT_READ | VM_PROT_WRITE | VM_PROT_COPY);
+    if (kr == KERN_SUCCESS) {
+        *(volatile uint32_t *)target = 0xd65f03c0; // ARM64 'ret'
+        sys_icache_invalidate((void *)target, 4);
     }
+    
+    // Song song hook bằng CydiaSubstrate để bảo đảm an toàn kép
+    MSHookFunction((void *)target, (void *)bm_suicide_trap_bypass, NULL);
 }
 
 static void bm_on_image_added(const struct mach_header *mh, intptr_t vmaddr_slide) {
