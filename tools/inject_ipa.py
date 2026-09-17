@@ -51,9 +51,18 @@ def _strip_macho_slice_signature(f, base_offset):
             codesig_dataoff = dataoff
             codesig_cmdsize = cmdsize
 
-            # 1. Ghi đè load command bằng toàn bộ zero (biến nó thành padding)
-            f.seek(codesig_cmd_offset)
-            f.write(b'\x00' * codesig_cmdsize)
+            # 1. Dịch chuyển các load commands phía sau lên để không tạo khoảng trống Cmd 0x0 size 0
+            remaining_bytes_offset = codesig_cmd_offset + codesig_cmdsize
+            end_of_cmds = base_offset + 32 + sizeofcmds
+            if remaining_bytes_offset < end_of_cmds:
+                f.seek(remaining_bytes_offset)
+                remaining_cmds = f.read(end_of_cmds - remaining_bytes_offset)
+                f.seek(codesig_cmd_offset)
+                f.write(remaining_cmds)
+                f.write(b'\x00' * codesig_cmdsize)
+            else:
+                f.seek(codesig_cmd_offset)
+                f.write(b'\x00' * codesig_cmdsize)
 
             # 2. Giảm ncmds và sizeofcmds trong Mach-O header
             f.seek(base_offset + 16)
@@ -375,15 +384,54 @@ def repackage_ipa(input_ipa, dylib_path, bundle_path, output_ipa, strip_plugins=
         shutil.copytree(bundle_path, dest_bundle)
         print(f"[+] Đã sao chép BMTikTok.bundle -> {dest_bundle}")
         
+    # 5.5 Strip code signature trước khi chèn load dylib (tránh hỏng bảng load command Mach-O)
+    print(f"[*] Đang strip code signature từ file thực thi chính: {main_executable}")
+    strip_code_signature(main_executable)
+
     # 6. Patch LC_LOAD_WEAK_DYLIB vào file thực thi
     print(f"[*] Đang chèn load dylib vào file thực thi: {main_executable}")
     inject_load_dylib(main_executable, "@rpath/BMTikTok.dylib")
     if has_keychain_fix:
         inject_load_dylib(main_executable, "@rpath/sideloadKeychainFix.dylib")
 
-    # 7. Ký lại file thực thi chính bằng ldid (chỉ ký file này, không đụng vào TikTokCore 800MB)
-    strip_code_signature(main_executable)
+    # 7. Ký lại toàn bộ Frameworks, Dylibs, PlugIns và Executable chính bằng ldid
     if shutil.which("ldid"):
+        print("[*] Đang ký ldid -S cho toàn bộ Frameworks & Dylibs...")
+        for root, dirs, files in os.walk(frameworks_dir):
+            for fname in files:
+                fpath = os.path.join(root, fname)
+                _, ext = os.path.splitext(fname)
+                if ext in ('.dylib', '.so', ''):
+                    try:
+                        with open(fpath, 'rb') as bf:
+                            mb = bf.read(4)
+                        if len(mb) == 4:
+                            magic = struct.unpack('<I', mb)[0]
+                            if magic in (0xfeedfacf, 0xbebafeca, 0xcafebabe, 0xfeedface):
+                                strip_code_signature(fpath)
+                                subprocess.run(["ldid", "-S", fpath], capture_output=True)
+                    except Exception:
+                        pass
+
+        # Ký PlugIns nếu còn
+        plugins_dir = os.path.join(app_path, "PlugIns")
+        if os.path.exists(plugins_dir):
+            print("[*] Đang ký ldid -S cho PlugIns...")
+            for root, dirs, files in os.walk(plugins_dir):
+                for fname in files:
+                    fpath = os.path.join(root, fname)
+                    if '.' not in fname:
+                        try:
+                            with open(fpath, 'rb') as bf:
+                                mb = bf.read(4)
+                            if len(mb) == 4:
+                                magic = struct.unpack('<I', mb)[0]
+                                if magic in (0xfeedfacf, 0xbebafeca, 0xcafebabe, 0xfeedface):
+                                    strip_code_signature(fpath)
+                                    subprocess.run(["ldid", "-S", fpath], capture_output=True)
+                        except Exception:
+                            pass
+
         main_ent = os.path.join(app_path, "archived-expanded-entitlements.xcent")
         cmd = ["ldid", f"-S{main_ent}" if os.path.exists(main_ent) else "-S", main_executable]
         print(f"[*] Đang ký ldid cho {main_executable}...")

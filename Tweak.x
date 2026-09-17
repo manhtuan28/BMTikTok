@@ -11,6 +11,8 @@
 #import <Security/Security.h>
 #import <substrate.h>
 #import <objc/message.h>
+#import <mach-o/dyld.h>
+#import <dlfcn.h>
 
 
 
@@ -3060,10 +3062,51 @@ static NSString *bm_emojiForCountryCode(NSString *countryCode) {
 
 
 // ═══════════════════════════════════════════════════════════════
-// MARK: - 13. Constructor
+// MARK: - 13. Anti-Tamper / SecGuard Suicide Trap Neutralizer
+// ByteDance SecGuard/Metasec contains an obfuscated trap routine
+// at TikTokCore+0x187b7d54 that wipes the stack to 0x7b and jumps
+// to 0x1000 when third-party dylibs/hooks are detected.
+// We intercept it and safely return so the app continues running.
+// ═══════════════════════════════════════════════════════════════
+
+static void bm_suicide_trap_bypass(void) {
+    // Return safely without crashing the process
+    return;
+}
+
+static void bm_neutralize_core_trap(const struct mach_header *mh) {
+    if (!mh) return;
+    uintptr_t target = (uintptr_t)mh + 0x187b7d54;
+    uint32_t *ins = (uint32_t *)target;
+    // 0xf90003bf is ARM64 instruction for "str xzr, [x29]"
+    if (*ins == 0xf90003bf) {
+        MSHookFunction((void *)target, (void *)bm_suicide_trap_bypass, NULL);
+    }
+}
+
+static void bm_on_image_added(const struct mach_header *mh, intptr_t vmaddr_slide) {
+    Dl_info info;
+    if (dladdr(mh, &info) && info.dli_fname && strstr(info.dli_fname, "TikTokCore.framework/TikTokCore")) {
+        bm_neutralize_core_trap(mh);
+    }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// MARK: - 14. Constructor
 // ═══════════════════════════════════════════════════════════════
 
 %ctor {
+    // 0. Neutralize SecGuard anti-tamper suicide trap
+    _dyld_register_func_for_add_image(bm_on_image_added);
+    uint32_t img_count = _dyld_image_count();
+    for (uint32_t i = 0; i < img_count; i++) {
+        const char *name = _dyld_get_image_name(i);
+        if (name && strstr(name, "TikTokCore.framework/TikTokCore")) {
+            bm_neutralize_core_trap(_dyld_get_image_header(i));
+            break;
+        }
+    }
+
     jailbreakPaths = @[
         @"/Applications/Cydia.app", @"/Applications/blackra1n.app",
         @"/Applications/FakeCarrier.app", @"/Applications/Icy.app",
