@@ -16,6 +16,8 @@ import shutil
 import zipfile
 import struct
 import argparse
+import subprocess
+import plistlib
 
 # ═══════════════════════════════════════════════════════════════
 # Mach-O Code Signature Stripping
@@ -302,12 +304,7 @@ def repackage_ipa(input_ipa, dylib_path, bundle_path, output_ipa, strip_plugins=
     provision_profile = os.path.join(app_path, "embedded.mobileprovision")
     if os.path.exists(provision_profile):
         os.remove(provision_profile)
-        
-    # Xóa _CodeSignature trong các Frameworks
-    for root, dirs, files in os.walk(frameworks_dir):
-        if "_CodeSignature" in dirs:
-            shutil.rmtree(os.path.join(root, "_CodeSignature"))
-    
+
     # 3. Copy BMTikTok.dylib vào Frameworks
     dest_dylib = os.path.join(frameworks_dir, "BMTikTok.dylib")
     shutil.copy(dylib_path, dest_dylib)
@@ -346,12 +343,18 @@ def repackage_ipa(input_ipa, dylib_path, bundle_path, output_ipa, strip_plugins=
     info_plist_path = os.path.join(app_path, "Info.plist")
     if os.path.exists(info_plist_path):
         try:
-            import plistlib
             with open(info_plist_path, 'rb') as fp:
                 plist_obj = plistlib.load(fp)
             plist_obj["UIFileSharingEnabled"] = True
             plist_obj["LSSupportsOpeningDocumentsInPlace"] = True
             
+            # Kích hoạt TrollStore Fast-Path: Báo cho TrollStore app đã có pre-applied exploit/pre-signed,
+            # tránh TrollStore chạy `ldid -s` đệ quy toàn bộ thư mục app trên thiết bị,
+            # gây lỗi ldid.cpp(2817): _assert(): target.sputn(data, writ) == writ (Error 175)
+            # do file TikTokCore.framework/TikTokCore quá lớn (~800MB) gây tràn RAM bộ đệm std::stringbuf của ldid
+            plist_obj["TSPreAppliedExploitType"] = 2
+            plist_obj["TSBundlePreSigned"] = True
+
             if testflight_mode:
                 print("[+] Đang áp dụng cấu hình TestFlight (CHANNEL_NAME=TestFlight_online, SSAppID=1233)...")
                 plist_obj["CHANNEL_NAME"] = "TestFlight_online"
@@ -360,7 +363,7 @@ def repackage_ipa(input_ipa, dylib_path, bundle_path, output_ipa, strip_plugins=
 
             with open(info_plist_path, 'wb') as fp:
                 plistlib.dump(plist_obj, fp)
-            print("[+] Đã cập nhật Info.plist (kích hoạt UIFileSharingEnabled cho Documents)")
+            print("[+] Đã cập nhật Info.plist (kích hoạt UIFileSharingEnabled + TrollStore Fast-Path)")
         except Exception as e:
             print(f"[!] Cảnh báo không thể sửa Info.plist: {e}")
         
@@ -378,18 +381,20 @@ def repackage_ipa(input_ipa, dylib_path, bundle_path, output_ipa, strip_plugins=
     if has_keychain_fix:
         inject_load_dylib(main_executable, "@rpath/sideloadKeychainFix.dylib")
 
-    # 7. Xóa toàn bộ code signature cũ của Apple để TrollStore/ldid có thể ký lại sạch
-    # Fix lỗi: ldid.cpp(2817): _assert(): target.sputn(data, writ) == writ
-    print("[*] Đang xóa toàn bộ chữ ký Apple code signature cũ (để TrollStore/ldid ký lại được)...")
-    stripped_count = strip_all_signatures(app_path)
-    print(f"[+] Đã strip code signature thành công từ {stripped_count} binary Mach-O.")
-
-    # Xóa _CodeSignature trong PlugIns nếu còn sót
-    plugins_dir = os.path.join(app_path, "PlugIns")
-    if os.path.exists(plugins_dir):
-        for root, dirs, files in os.walk(plugins_dir):
-            if "_CodeSignature" in dirs:
-                shutil.rmtree(os.path.join(root, "_CodeSignature"))
+    # 7. Ký lại file thực thi chính bằng ldid (chỉ ký file này, không đụng vào TikTokCore 800MB)
+    strip_code_signature(main_executable)
+    if shutil.which("ldid"):
+        main_ent = os.path.join(app_path, "archived-expanded-entitlements.xcent")
+        cmd = ["ldid", f"-S{main_ent}" if os.path.exists(main_ent) else "-S", main_executable]
+        print(f"[*] Đang ký ldid cho {main_executable}...")
+        try:
+            res = subprocess.run(cmd, capture_output=True, text=True)
+            if res.returncode == 0:
+                print(f"[+] Đã ký ldid thành công cho: {main_executable}")
+            else:
+                print(f"[!] Cảnh báo ldid: {res.stderr.strip()}")
+        except Exception as e:
+            print(f"[!] Lỗi khi chạy ldid: {e}")
 
     # 8. Đóng gói lại thành file IPA mới
     print(f"[*] Đang nén thành phẩm IPA: {output_ipa}")
